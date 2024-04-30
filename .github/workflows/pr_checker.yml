@@ -1,4 +1,4 @@
-name: GoingGoing PR Checker
+name: Genti PR Checker
 
 on:
   pull_request:
