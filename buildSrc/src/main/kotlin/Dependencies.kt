@@ -12,26 +12,17 @@ object AndroidXDependencies {
     const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompatVersion}"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayoutVersion}"
     const val startup = "androidx.startup:startup-runtime:${Versions.appStartUpVersion}"
-    const val activity = "androidx.activity:activity-ktx:${Versions.activityKtxVersion}"
     const val fragment = "androidx.fragment:fragment-ktx:${Versions.fragmentKtxVersion}"
     const val legacy = "androidx.legacy:legacy-support-v4:${Versions.legacySupportVersion}"
     const val security = "androidx.security:security-crypto:${Versions.securityVersion}"
 
     const val lifeCycleKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleVersion}"
-    const val lifeCycleLiveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycleVersion}"
     const val lifecycleJava8 = "androidx.lifecycle:lifecycle-common-java8:${Versions.lifecycleVersion}"
-
-    const val paging = "androidx.paging:paging-common-ktx:${Versions.pagingVersion}"
-    const val pagingRuntime = "androidx.paging:paging-runtime:${Versions.pagingVersion}"
     const val workManager = "androidx.work:work-runtime-ktx:${Versions.workManagerVersion}"
 
     const val hiltWorkManager = "androidx.hilt:hilt-work:1.0.0"
     const val hilt = "com.google.dagger:hilt-android:${Versions.hiltVersion}"
     const val ossLicense = "com.google.android.gms:play-services-oss-licenses:${Versions.ossVersion}"
-
-    const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${Versions.navigationVersion}"
-    const val navigationUi = "androidx.navigation:navigation-ui-ktx:${Versions.navigationVersion}"
-    const val navigationDynamic = "androidx.navigation:navigation-dynamic-features-fragment:${Versions.navigationVersion}"
 }
 
 object TestDependencies {
@@ -62,7 +53,6 @@ object ThirdPartyDependencies {
     const val timber = "com.jakewharton.timber:timber:${Versions.timberVersion}"
 
     const val ossLicense = "com.google.android.gms:play-services-oss-licenses:${Versions.ossVersion}"
-    const val hiltCore = "com.google.dagger:hilt-core:${Versions.hiltVersion}"
 
     const val progressView = "com.github.skydoves:progressview:${Versions.progressViewVersion}"
     const val balloon = "com.github.skydoves:balloon:${Versions.balloonVersion}"
@@ -75,11 +65,6 @@ object ThirdPartyDependencies {
     const val kakaoAuth = "com.kakao.sdk:v2-auth:${Versions.kakaoVersion}"
     const val kakaoTalk = "com.kakao.sdk:v2-talk:${Versions.kakaoVersion}"
     const val kakaoShare = "com.kakao.sdk:v2-share:${Versions.kakaoVersion}"
-
-    const val amplitude = "com.amplitude:android-sdk:${Versions.amplitudeVersion}"
-
-    const val flexbox = "com.google.android.flexbox:flexbox:${Versions.flexboxVersion}"
-    const val circleImageView = "de.hdodenhof:circleimageview:${Versions.circleImageViewVersion}"
 }
 
 object ClassPathPlugins {

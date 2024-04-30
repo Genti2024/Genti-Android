@@ -56,7 +56,6 @@ dependencies {
         implementation(lifeCycleKtx)
         implementation(lifecycleJava8)
         implementation(splashScreen)
-        implementation(pagingRuntime)
         implementation(workManager)
         implementation(hiltWorkManager)
     }

@@ -3,7 +3,6 @@ import org.gradle.api.JavaVersion
 object Versions {
     const val gradleVersion = "8.0.2"
 
-    const val buildToolsVersion = "30.0.3"
     const val kotlinVersion = "1.8.20"
     const val kotlinSerializationJsonVersion = "1.5.1"
     const val kotlinDateTimeVersion = "0.4.0"
@@ -15,10 +14,8 @@ object Versions {
     const val legacySupportVersion = "1.0.0"
     const val securityVersion = "1.1.0-alpha06"
     const val hiltVersion = "2.46.1"
-    const val activityKtxVersion = "1.7.2"
     const val fragmentKtxVersion = "1.5.7"
     const val coroutinesAndroidVersion = "1.7.1"
-    const val pagingVersion = "3.1.1"
     const val lifecycleVersion = "2.6.1"
     const val ossPluginVersion = "0.10.4"
     const val ossVersion = "17.0.0"
@@ -36,13 +33,9 @@ object Versions {
     const val kakaoVersion = "2.19.0"
     const val circleIndicatorVersion = "2.1.6"
     const val shimmerVersion = "0.5.0"
-    const val navigationVersion = "2.6.0"
-    const val amplitudeVersion = "2.23.2"
     const val junitVersion = "4.13.2"
     const val espressoVersion = "3.3.0"
     const val androidTestVersion = "1.1.2"
-    const val flexboxVersion = "3.0.0"
-    const val circleImageViewVersion = "3.1.0"
 
     val javaVersion = JavaVersion.VERSION_17
     const val jvmVersion = "17"
