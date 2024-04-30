@@ -1,46 +1,50 @@
 plugins {
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("com.android.library")
+    kotlin("android")
+    kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
     namespace = "kr.genti.core"
-    compileSdk = 34
+    compileSdk = Constants.compileSdk
 
     defaultConfig {
-        applicationId = "kr.genti.core"
-        minSdk = 28
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = Constants.minSdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "consumer-rules.pro"
-            )
-        }
+        consumerProguardFiles("consumer-rules.pro")
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = Versions.javaVersion
+        targetCompatibility = Versions.javaVersion
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = Versions.jvmVersion
+    }
+
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
     }
 }
 
 dependencies {
+    // Kotlin
+    implementation(KotlinDependencies.kotlin)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    // Lifecycle Ktx
+    implementation(AndroidXDependencies.lifeCycleKtx)
+
+    // Material Design
+    implementation(MaterialDesignDependencies.materialDesign)
+
+    // Hilt
+    implementation(AndroidXDependencies.hilt)
+    kapt(KaptDependencies.hiltAndroidCompiler)
+
+    // Test Dependency
+    testImplementation(TestDependencies.jUnit)
+    androidTestImplementation(TestDependencies.androidTest)
+    androidTestImplementation(TestDependencies.espresso)
 }
