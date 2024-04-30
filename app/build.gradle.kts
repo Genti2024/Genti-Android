@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "kr.genti.genti_android"
+    namespace = "kr.genti.android"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "kr.genti.genti_android"
+        applicationId = "kr.genti.android"
         minSdk = 28
         targetSdk = 34
         versionCode = 1
