@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Main _ Tangerine -->
-    <color name="red_50">#FFECE6</color>
-    <color name="red_100">#FAD3C6</color>
-    <color name="red_200">#FCAD95</color>
-    <color name="red_300">#FE8763</color>
-    <color name="red_500">#FF4F17</color>
-    <color name="red_600">#E03600</color>
+    <!-- Monochrome -->
+    <color name="black">#000000</color>
+    <color name="grey_1">#121212</color>
+    <color name="grey_2">#6F6F6F</color>
+    <color name="grey_3">#B6B6B6</color>
+    <color name="grey_4">#CFCFCF</color>
+    <color name="grey_5">#F3F3F3</color>
+    <color name="background_white">#F9F9F9</color>
 
-    <!-- Sub _ Cool Gray -->
-    <color name="white_000">#FFFFFF</color>
+    <!-- Green -->
+    <color name="genti_green">#00FF20</color>
+    <color name="green_1">#24CF5E</color>
+    <color name="green_2">#83FF92</color>
+    <color name="green_3">#C7FACE</color>
+    <color name="green_4">#EDF9EE</color>
 
-    <color name="gray_50">#F3F3F6</color>
-    <color name="gray_100">#E4E5ED</color>
-    <color name="gray_200">#C3C4CE</color>
-    <color name="gray_300">#9093A8</color>
-    <color name="gray_400">#4A4D63</color>
-    <color name="gray_500">#36394F</color>
-    <color name="gray_600">#292C3C</color>
-    <color name="gray_700">#1D1F29</color>
+    <!-- Purple -->
+    <color name="genti_purple">#9966FF</color>
+    <color name="purple_1">#732DFF</color>
+    <color name="purple_2">#CDB4FF</color>
+    <color name="purple_3">#E6DCFA</color>
+    <color name="purple_4">#F4F2F9</color>
+
+    <!-- Etc. -->
+    <color name="error">#FE0D0D</color>
 
     <!-- Transparent -->
     <color name="transparent">#00000000</color>
@@ -27,8 +33,5 @@
     <color name="transparent_60">#99000000</color>
     <color name="transparent_50">#80000000</color>
     <color name="transparent_30">#4D000000</color>
-
-    <!-- Custom -->
-    <color name="kakao_yellow">#FEE500</color>
 
 </resources>
