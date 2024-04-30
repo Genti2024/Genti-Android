@@ -1,4 +1,4 @@
-package kr.genti.genti_android
+package kr.genti.android
 
 import org.junit.Test
 

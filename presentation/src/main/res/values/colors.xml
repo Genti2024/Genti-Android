@@ -1,10 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+    <!-- Monochrome -->
+    <color name="black">#000000</color>
+    <color name="grey_1">#121212</color>
+    <color name="grey_2">#6F6F6F</color>
+    <color name="grey_3">#B6B6B6</color>
+    <color name="grey_4">#CFCFCF</color>
+    <color name="grey_5">#F3F3F3</color>
+    <color name="background_white">#F9F9F9</color>
+
+    <!-- Green -->
+    <color name="genti_green">#00FF20</color>
+    <color name="green_1">#24CF5E</color>
+    <color name="green_2">#83FF92</color>
+    <color name="green_3">#C7FACE</color>
+    <color name="green_4">#EDF9EE</color>
+
+    <!-- Purple -->
+    <color name="genti_purple">#9966FF</color>
+    <color name="purple_1">#732DFF</color>
+    <color name="purple_2">#CDB4FF</color>
+    <color name="purple_3">#E6DCFA</color>
+    <color name="purple_4">#F4F2F9</color>
+
+    <!-- Etc. -->
+    <color name="error">#FE0D0D</color>
+
+    <!-- Transparent -->
+    <color name="transparent">#00000000</color>
+    <color name="transparent_70">#B3000000</color>
+    <color name="transparent_60">#99000000</color>
+    <color name="transparent_50">#80000000</color>
+    <color name="transparent_30">#4D000000</color>
+
 </resources>

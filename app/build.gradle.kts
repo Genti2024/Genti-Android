@@ -10,8 +10,8 @@ plugins {
 }
 
 android {
-    namespace= Constants.packageName
-    compileSdk= Constants.compileSdk
+    namespace = Constants.packageName
+    compileSdk = Constants.compileSdk
 
     defaultConfig {
         applicationId = Constants.packageName
@@ -21,6 +21,12 @@ android {
         versionName = Constants.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            "String",
+            "BASE_URL",
+            gradleLocalProperties(rootDir).getProperty("base.url"),
+        )
     }
 
     buildTypes {
