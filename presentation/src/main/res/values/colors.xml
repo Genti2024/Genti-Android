@@ -27,6 +27,7 @@
 
     <!-- Etc. -->
     <color name="error">#FE0D0D</color>
+    <color name="kakao_yellow">#FFFEE500</color>
 
     <!-- Transparent -->
     <color name="transparent">#00000000</color>
