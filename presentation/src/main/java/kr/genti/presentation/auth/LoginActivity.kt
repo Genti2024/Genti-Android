@@ -1,5 +1,6 @@
 package kr.genti.presentation.auth
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
@@ -12,6 +13,7 @@ import kr.genti.core.extension.colorOf
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityLoginBinding
+import kr.genti.presentation.main.MainActivity
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
@@ -27,6 +29,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     private fun initLoginBtnListener() {
         binding.btnLoginKakao.setOnSingleClickListener {
+            Intent(this, MainActivity::class.java).apply {
+                startActivity(this)
+            }
+            finish()
         }
     }
 

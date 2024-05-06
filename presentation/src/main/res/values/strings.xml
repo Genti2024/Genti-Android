@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Genti</string>
+
     <string name="login_btn_kakao">카카오로 계속하기</string>
     <string name="login_tv_title">내 마음대로 표현하는\n하나뿐인 AI 사진</string>
+
+    <string name="menu_feed">피드</string>
+    <string name="menu_create">생성</string>
+    <string name="menu_profile">프로필</string>
 </resources>
