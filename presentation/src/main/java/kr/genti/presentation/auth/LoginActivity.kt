@@ -33,8 +33,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     private fun setStatusBarTransparent() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val desiredBottomInset = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
-            v.updatePadding(bottom = desiredBottomInset)
+            v.updatePadding(bottom = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom)
             insets
         }
     }
