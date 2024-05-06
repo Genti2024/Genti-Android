@@ -24,14 +24,27 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/background_white"
-            app:itemRippleColor="@null"
-            android:paddingBottom="10dp"
+            android:elevation="0dp"
             android:paddingTop="8dp"
+            android:paddingBottom="10dp"
+            app:itemRippleColor="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/menu_main" />
 
+        <ImageView
+            android:id="@+id/btn_menu_create"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-5dp"
+            android:background="@null"
+            android:elevation="4dp"
+            android:src="@drawable/menu_create"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/bnv_main" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
