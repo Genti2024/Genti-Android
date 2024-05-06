@@ -2,6 +2,10 @@ package kr.genti.presentation.auth
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.setOnSingleClickListener
@@ -16,10 +20,20 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         super.onCreate(savedInstanceState)
 
         initLoginBtnListener()
+        setStatusBarTransparent()
     }
 
     private fun initLoginBtnListener() {
         binding.btnLoginKakao.setOnSingleClickListener {
+        }
+    }
+
+    private fun setStatusBarTransparent() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val desiredBottomInset = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+            v.updatePadding(bottom = desiredBottomInset)
+            insets
         }
     }
 }
