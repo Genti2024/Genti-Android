@@ -10,8 +10,4 @@
 
     <style name="Theme.Genti" parent="Base.Theme.Genti" />
 
-    <style name="splash_delete" parent="Base.Theme.Genti">
-        <item name="android:windowIsTranslucent">true</item>
-    </style>
-
 </resources>

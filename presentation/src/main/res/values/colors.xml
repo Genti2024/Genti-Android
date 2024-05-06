@@ -8,6 +8,7 @@
     <color name="grey_3">#B6B6B6</color>
     <color name="grey_4">#CFCFCF</color>
     <color name="grey_5">#F3F3F3</color>
+    <color name="white">#FFFFFF</color>
     <color name="background_white">#F9F9F9</color>
 
     <!-- Green -->
@@ -26,6 +27,7 @@
 
     <!-- Etc. -->
     <color name="error">#FE0D0D</color>
+    <color name="kakao_yellow">#FFFEE500</color>
 
     <!-- Transparent -->
     <color name="transparent">#00000000</color>
