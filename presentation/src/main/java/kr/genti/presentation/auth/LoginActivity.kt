@@ -8,6 +8,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
+import kr.genti.core.extension.colorOf
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityLoginBinding
@@ -21,6 +22,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
         initLoginBtnListener()
         setStatusBarTransparent()
+        setNavigationBarGreen()
     }
 
     private fun initLoginBtnListener() {
@@ -35,5 +37,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
             v.updatePadding(bottom = desiredBottomInset)
             insets
         }
+    }
+
+    private fun setNavigationBarGreen() {
+        this.window.navigationBarColor = colorOf(R.color.genti_green)
     }
 }
