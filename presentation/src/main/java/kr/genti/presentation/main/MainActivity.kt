@@ -8,6 +8,7 @@ import com.google.android.material.navigation.NavigationBarView
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.setOnSingleClickListener
+import kr.genti.core.extension.setStatusBarColorFromResource
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityMainBinding
 import kr.genti.presentation.main.create.CreateFragment
@@ -22,6 +23,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         initBnvItemIconTintList()
         initBnvItemSelectedListener()
         initCreateBtnListener()
+        setStatusBarColor()
     }
 
     private fun initBnvItemIconTintList() {
@@ -59,6 +61,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             }
             initBnvItemIconTintList()
         }
+    }
+
+    private fun setStatusBarColor() {
+        setStatusBarColorFromResource(R.color.background_white)
     }
 
     private inline fun <reified T : Fragment> navigateTo() {
