@@ -1,13 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="kr.genti.presentation.main.create.CreateViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background_white">
+
+        <ImageView
+            android:id="@+id/iv_create_logo"
+            android:layout_width="113dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="41dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/logo_genti_3d"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_create_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:src="@drawable/img_progress_one"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_create_logo" />
+
+        <TextView
+            android:id="@+id/tv_create_script_title"
+            style="@style/TextAppearance.Genti.BodyNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="center"
+            android:text="@string/create_tv_script_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_create_progress" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_create_script"
+            style="@style/TextAppearance.Genti.BodySmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="29dp"
+            android:layout_marginTop="14dp"
+            android:afterTextChanged="@{(text) -> vm.checkWritten()}"
+            android:background="@drawable/shape_grey6_fill_grey5_line_10_rect"
+            android:gravity="top"
+            android:hint="@string/create_et_script_hint"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine|textNoSuggestions"
+            android:maxLength="200"
+            android:minLines="4"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="11dp"
+            android:text="@={vm.script}"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey_7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_create_script_title" />
+
+        <TextView
+            android:id="@+id/tv_create_plus_title"
+            style="@style/TextAppearance.Genti.BodyNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="46dp"
+            android:gravity="center"
+            android:text="@string/create_tv_plus_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_create_script" />
+
+        <ImageView
+            android:id="@+id/btn_create_plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:padding="42dp"
+            android:src="@drawable/ic_add"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_create_plus_title" />
+
+        <TextView
+            android:id="@+id/tv_create_plus_guide"
+            style="@style/TextAppearance.Genti.BodyDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="@string/create_tv_plus_guide"
+            android:textColor="@color/grey_3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_create_plus" />
+
+        <TextView
+            android:id="@+id/btn_create_next"
+            style="@style/TextAppearance.Genti.Headline1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="28dp"
+            android:layout_marginBottom="28dp"
+            android:background="@drawable/sel_btn"
+            android:enabled="@{vm.isWritten}"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:text="@string/btn_next"
+            android:textColor="@{vm.isWritten() == true ? @color/white : @color/black}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

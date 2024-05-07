@@ -6,6 +6,9 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
 
+        <!-- Cursor color. -->
+        <item name="colorControlActivated">@color/grey_2</item>
+
     </style>
 
     <style name="Theme.Genti" parent="Base.Theme.Genti" />

@@ -5,9 +5,12 @@
     <color name="black">#000000</color>
     <color name="grey_1">#121212</color>
     <color name="grey_2">#6F6F6F</color>
-    <color name="grey_3">#B6B6B6</color>
-    <color name="grey_4">#CFCFCF</color>
-    <color name="grey_5">#F3F3F3</color>
+    <color name="grey_3">#949494</color>
+    <color name="grey_4">#B6B6B6</color>
+    <color name="grey_5">#CFCFCF</color>
+    <color name="grey_6">#F3F3F3</color>
+    <color name="grey_7">#4D131326</color>
+    <color name="grey_8">#B3121212</color>
     <color name="white">#FFFFFF</color>
     <color name="background_white">#F9F9F9</color>
 

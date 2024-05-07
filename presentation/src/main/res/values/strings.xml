@@ -1,10 +1,17 @@
 <resources>
     <string name="app_name">Genti</string>
 
+    <string name="btn_next">다음으로</string>
+
     <string name="login_btn_kakao">카카오로 계속하기</string>
     <string name="login_tv_title">내 마음대로 표현하는\n하나뿐인 AI 사진</string>
 
     <string name="menu_feed">피드</string>
     <string name="menu_create">생성</string>
     <string name="menu_profile">프로필</string>
+
+    <string name="create_tv_script_title">만들고 싶은 사진을 설명해주세요✏️</string>
+    <string name="create_et_script_hint">ex) 잔디밭에 앉아서 과잠을 입고 막걸리를 먹는 모습을 만들어줘\n\n* 구체적인 지명을 지정하는 것은 불가능해요!</string>
+    <string name="create_tv_plus_title">참고사진이 있다면 추가해주세요</string>
+    <string name="create_tv_plus_guide">(참고사진은 최대 1장 업로드 할 수 있어요)</string>
 </resources>
