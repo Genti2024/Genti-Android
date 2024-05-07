@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
+import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColorFromResource
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityPoseBinding
@@ -14,7 +15,14 @@ class PoseActivity : BaseActivity<ActivityPoseBinding>(R.layout.activity_pose) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initBackBtnListener()
         setStatusBarColor()
+    }
+
+    private fun initBackBtnListener() {
+        binding.btnBack.setOnSingleClickListener {
+            finish()
+        }
     }
 
     private fun setStatusBarColor() {
