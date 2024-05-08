@@ -226,7 +226,7 @@
             android:id="@+id/btn_frame_none"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> vm.selectAngle(4)}"
+            android:onClick="@{() -> vm.selectFrame(4)}"
             android:orientation="horizontal"
             android:padding="7dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -238,14 +238,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pose_tv_frame_none"
-                android:textColor="@{vm.selectedAngle == 4 ? @color/genti_green : @color/grey_3}" />
+                android:textColor="@{vm.selectedFrame == 4 ? @color/genti_green : @color/grey_3}" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginStart="4dp"
-                android:src="@{vm.selectedAngle == 4 ?@drawable/ic_check_selected : @drawable/ic_check_unselected}" />
+                android:src="@{vm.selectedFrame == 4 ?@drawable/ic_check_selected : @drawable/ic_check_unselected}" />
 
         </LinearLayout>
 
