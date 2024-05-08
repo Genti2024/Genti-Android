@@ -16,4 +16,5 @@
     <string name="create_tv_plus_guide">(참고사진은 최대 1장 업로드 할 수 있어요)</string>
 
     <string name="pose_tv_title">카메라 앵글을 골라주세요📷</string>
+    <string name="pose_tv_angle_none">앵글은 자유롭게 맡길래요</string>
 </resources>
