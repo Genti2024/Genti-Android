@@ -3,6 +3,7 @@ package kr.genti.presentation.select.pose
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.setOnSingleClickListener
@@ -12,11 +13,18 @@ import kr.genti.presentation.databinding.ActivityPoseBinding
 
 @AndroidEntryPoint
 class PoseActivity : BaseActivity<ActivityPoseBinding>(R.layout.activity_pose) {
+    private val viewModel by viewModels<PoseViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initView()
         initBackBtnListener()
         setStatusBarColor()
+    }
+
+    private fun initView() {
+        binding.vm = viewModel
     }
 
     private fun initBackBtnListener() {
