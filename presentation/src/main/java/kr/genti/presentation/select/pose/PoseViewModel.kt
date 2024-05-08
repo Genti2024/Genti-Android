@@ -12,8 +12,13 @@ class PoseViewModel
         // private val authRepository: AuthRepository,
     ) : ViewModel() {
         val selectedAngle = MutableLiveData<Int>(-1)
+        val selectedFrame = MutableLiveData<Int>(-1)
 
         fun selectAngle(itemId: Int) {
             selectedAngle.value = itemId
+        }
+
+        fun selectFrame(itemId: Int) {
+            selectedFrame.value = itemId
         }
     }

@@ -17,4 +17,6 @@
 
     <string name="pose_tv_title">카메라 앵글을 골라주세요📷</string>
     <string name="pose_tv_angle_none">앵글은 자유롭게 맡길래요</string>
+    <string name="pose_tv_frame_title">프레임을 골라주세요</string>
+    <string name="pose_tv_frame_none">프레임은 자유롭게 맡길래요</string>
 </resources>
