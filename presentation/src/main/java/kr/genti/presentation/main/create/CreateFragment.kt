@@ -5,8 +5,10 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseFragment
+import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentCreateBinding
+import kr.genti.presentation.select.pose.PoseActivity
 
 @AndroidEntryPoint
 class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_create) {
@@ -19,9 +21,19 @@ class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_c
         super.onViewCreated(view, savedInstanceState)
 
         initView()
+        initCreateBtnListener()
     }
 
     private fun initView() {
         binding.vm = viewModel
+    }
+
+    private fun initCreateBtnListener() {
+        binding.btnCreateNext.setOnSingleClickListener {
+            PoseActivity.createIntent(
+                requireContext(),
+                viewModel.script.value.orEmpty(),
+            ).apply { startActivity(this) }
+        }
     }
 }
