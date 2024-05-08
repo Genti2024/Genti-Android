@@ -20,6 +20,8 @@ class PoseActivity : BaseActivity<ActivityPoseBinding>(R.layout.activity_pose) {
 
         initView()
         initBackBtnListener()
+        initExitBtnListener()
+        initNextBtnListener()
         setStatusBarColor()
     }
 
@@ -30,6 +32,17 @@ class PoseActivity : BaseActivity<ActivityPoseBinding>(R.layout.activity_pose) {
     private fun initBackBtnListener() {
         binding.btnBack.setOnSingleClickListener {
             finish()
+        }
+    }
+
+    private fun initExitBtnListener() {
+        binding.btnExit.setOnSingleClickListener {
+            finish()
+        }
+    }
+
+    private fun initNextBtnListener() {
+        binding.btnPoseNext.setOnSingleClickListener {
         }
     }
 
