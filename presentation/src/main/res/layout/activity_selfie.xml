@@ -194,6 +194,82 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_selfie_angle_title" />
 
+                <ImageView
+                    android:id="@+id/iv_selfie_angle_ex_one"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="15dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_selfie_one"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintEnd_toStartOf="@id/iv_selfie_angle_arrow_up"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_selfie_angle_ex_title" />
+
+                <ImageView
+                    android:id="@+id/iv_selfie_angle_arrow_up"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:paddingHorizontal="23dp"
+                    android:src="@drawable/ic_right_arrow"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_selfie_angle_ex_one"
+                    app:layout_constraintEnd_toStartOf="@id/iv_selfie_angle_ai_one"
+                    app:layout_constraintStart_toEndOf="@id/iv_selfie_angle_ex_one"
+                    app:layout_constraintTop_toTopOf="@id/iv_selfie_angle_ex_one" />
+
+                <ImageView
+                    android:id="@+id/iv_selfie_angle_ai_one"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="25dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_selfie_ai_one"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_selfie_angle_arrow_up"
+                    app:layout_constraintTop_toBottomOf="@id/tv_selfie_angle_ex_title" />
+
+                <ImageView
+                    android:id="@+id/iv_selfie_angle_ex_two"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="15dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_selfie_two"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintEnd_toStartOf="@id/iv_selfie_angle_arrow_down"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_selfie_angle_ex_one" />
+
+                <ImageView
+                    android:id="@+id/iv_selfie_angle_arrow_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:paddingHorizontal="23dp"
+                    android:src="@drawable/ic_right_arrow"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_selfie_angle_ex_two"
+                    app:layout_constraintEnd_toStartOf="@id/iv_selfie_angle_ai_two"
+                    app:layout_constraintStart_toEndOf="@id/iv_selfie_angle_ex_two"
+                    app:layout_constraintTop_toTopOf="@id/iv_selfie_angle_ex_two" />
+
+                <ImageView
+                    android:id="@+id/iv_selfie_angle_ai_two"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="25dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_selfie_ai_two"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_selfie_angle_arrow_down"
+                    app:layout_constraintTop_toBottomOf="@id/iv_selfie_angle_ex_one" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
