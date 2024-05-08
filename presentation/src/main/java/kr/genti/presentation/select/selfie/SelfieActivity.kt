@@ -1,4 +1,4 @@
-package kr.genti.presentation.select.pose
+package kr.genti.presentation.select.selfie
 
 import android.content.Context
 import android.content.Intent
@@ -9,12 +9,11 @@ import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColorFromResource
 import kr.genti.presentation.R
-import kr.genti.presentation.databinding.ActivityPoseBinding
-import kr.genti.presentation.select.selfie.SelfieActivity
+import kr.genti.presentation.databinding.ActivitySelfieBinding
 
 @AndroidEntryPoint
-class PoseActivity : BaseActivity<ActivityPoseBinding>(R.layout.activity_pose) {
-    private val viewModel by viewModels<PoseViewModel>()
+class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_selfie) {
+    private val viewModel by viewModels<SelfieViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +27,6 @@ class PoseActivity : BaseActivity<ActivityPoseBinding>(R.layout.activity_pose) {
 
     private fun initView() {
         binding.vm = viewModel
-        viewModel.script = intent.getStringExtra(EXTRA_SCRIPT).orEmpty()
     }
 
     private fun initBackBtnListener() {
@@ -39,18 +37,13 @@ class PoseActivity : BaseActivity<ActivityPoseBinding>(R.layout.activity_pose) {
 
     private fun initExitBtnListener() {
         binding.btnExit.setOnSingleClickListener {
+            // TODO :
             finish()
         }
     }
 
     private fun initNextBtnListener() {
         binding.btnPoseNext.setOnSingleClickListener {
-            SelfieActivity.createIntent(
-                this,
-                viewModel.script,
-                viewModel.selectedAngle.value ?: -1,
-                viewModel.selectedFrame.value ?: -1,
-            ).apply { startActivity(this) }
         }
     }
 
@@ -60,14 +53,20 @@ class PoseActivity : BaseActivity<ActivityPoseBinding>(R.layout.activity_pose) {
 
     companion object {
         private const val EXTRA_SCRIPT = "EXTRA_SCRIPT"
+        private const val EXTRA_ANGLE = "EXTRA_POSE"
+        private const val EXTRA_FRAME = "EXTRA_FRAME"
 
         @JvmStatic
         fun createIntent(
             context: Context,
             script: String,
+            angle: Int,
+            frame: Int,
         ): Intent =
-            Intent(context, PoseActivity::class.java).apply {
+            Intent(context, SelfieActivity::class.java).apply {
                 putExtra(EXTRA_SCRIPT, script)
+                putExtra(EXTRA_ANGLE, angle)
+                putExtra(EXTRA_FRAME, frame)
             }
     }
 }

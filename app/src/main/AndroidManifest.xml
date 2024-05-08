@@ -36,6 +36,11 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name="kr.genti.presentation.select.selfie.SelfieActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>
