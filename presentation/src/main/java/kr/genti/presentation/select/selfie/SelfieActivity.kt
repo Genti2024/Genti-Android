@@ -35,6 +35,11 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_sel
 
     private fun initView() {
         binding.vm = viewModel
+        with(viewModel) {
+            script = intent.getStringExtra(EXTRA_SCRIPT).orEmpty()
+            angle = intent.getIntExtra(EXTRA_ANGLE, -1)
+            frame = intent.getIntExtra(EXTRA_FRAME, -1)
+        }
     }
 
     private fun initBackBtnListener() {
