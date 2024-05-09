@@ -71,12 +71,12 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_sel
 
     private fun initAddImageBtnListener() {
         binding.btnSelfieAdd.setOnSingleClickListener {
-            val intent =
+            activityResult.launch(
                 Intent(Intent.ACTION_PICK).apply {
                     type = "image/*"
                     putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-                }
-            activityResult.launch(intent)
+                },
+            )
         }
     }
 
