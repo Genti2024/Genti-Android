@@ -20,21 +20,21 @@
             android:id="@+id/btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="28dp"
             android:src="@drawable/ic_back"
+            app:layout_constraintBottom_toBottomOf="@id/iv_pose_logo"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/iv_pose_logo" />
 
         <ImageView
             android:id="@+id/btn_exit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="28dp"
             android:src="@drawable/ic_exit"
+            app:layout_constraintBottom_toBottomOf="@id/iv_pose_logo"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/iv_pose_logo" />
 
         <ImageView
             android:id="@+id/iv_pose_logo"
@@ -159,43 +159,43 @@
             app:layout_constraintTop_toBottomOf="@id/btn_angle_none" />
 
         <ImageView
-            android:id="@+id/btn_frame_wide"
-            android:layout_width="0dp"
+            android:id="@+id/btn_frame_face"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="13dp"
+            android:layout_marginEnd="4dp"
             android:adjustViewBounds="true"
             android:background="@{vm.selectedFrame == 0 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
             android:onClick="@{() -> vm.selectFrame(0)}"
             android:padding="1dp"
             android:src="@drawable/img_angle_up"
-            app:layout_constraintEnd_toStartOf="@id/btn_frame_breast"
+            app:layout_constraintEnd_toStartOf="@id/btn_frame_knee"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_frame_title" />
 
         <ImageView
-            android:id="@+id/btn_frame_breast"
-            android:layout_width="0dp"
+            android:id="@+id/btn_frame_knee"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="9dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="13dp"
             android:adjustViewBounds="true"
             android:background="@{vm.selectedFrame == 1 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
             android:onClick="@{() -> vm.selectFrame(1)}"
             android:padding="1dp"
             android:src="@drawable/img_angle_mid"
-            app:layout_constraintEnd_toStartOf="@id/btn_frame_knee"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toEndOf="@id/btn_frame_wide"
+            app:layout_constraintStart_toEndOf="@id/btn_frame_face"
             app:layout_constraintTop_toBottomOf="@id/tv_frame_title" />
 
         <ImageView
-            android:id="@+id/btn_frame_knee"
-            android:layout_width="0dp"
+            android:id="@+id/btn_frame_breast"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
             android:adjustViewBounds="true"
             android:background="@{vm.selectedFrame == 2 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
             android:onClick="@{() -> vm.selectFrame(2)}"
@@ -203,15 +203,15 @@
             android:src="@drawable/img_angle_down"
             app:layout_constraintEnd_toStartOf="@id/btn_frame_full"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toEndOf="@id/btn_frame_breast"
-            app:layout_constraintTop_toBottomOf="@id/tv_frame_title" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_frame_face" />
 
         <ImageView
             android:id="@+id/btn_frame_full"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
             android:adjustViewBounds="true"
             android:background="@{vm.selectedFrame == 3 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
             android:onClick="@{() -> vm.selectFrame(3)}"
@@ -219,8 +219,8 @@
             android:src="@drawable/img_angle_down"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toEndOf="@id/btn_frame_knee"
-            app:layout_constraintTop_toBottomOf="@id/tv_frame_title" />
+            app:layout_constraintStart_toEndOf="@id/btn_frame_breast"
+            app:layout_constraintTop_toBottomOf="@id/btn_frame_face" />
 
         <LinearLayout
             android:id="@+id/btn_frame_none"
@@ -231,7 +231,7 @@
             android:padding="7dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_frame_breast">
+            app:layout_constraintTop_toBottomOf="@id/btn_frame_full">
 
             <TextView
                 style="@style/TextAppearance.Genti.BodyDescription"

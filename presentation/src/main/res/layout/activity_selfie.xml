@@ -21,23 +21,21 @@
             android:id="@+id/btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:elevation="1dp"
+            android:layout_marginStart="28dp"
             android:src="@drawable/ic_back"
+            app:layout_constraintBottom_toBottomOf="@id/iv_selfie_logo"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/iv_selfie_logo" />
 
         <ImageView
             android:id="@+id/btn_exit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
-            android:elevation="1dp"
+            android:layout_marginEnd="28dp"
             android:src="@drawable/ic_exit"
+            app:layout_constraintBottom_toBottomOf="@id/iv_selfie_logo"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/iv_selfie_logo" />
 
         <ImageView
             android:id="@+id/iv_selfie_logo"
@@ -181,8 +179,8 @@
                     style="@style/TextAppearance.Genti.BodyNumber"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginTop="15dp"
+                    android:gravity="center"
                     android:text="@string/selfie_tv_angle_title"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -298,8 +296,8 @@
             android:id="@+id/iv_selfie_blur_bottom"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="-16dp"
             android:layout_marginHorizontal="28dp"
+            android:layout_marginBottom="-16dp"
             android:adjustViewBounds="true"
             android:src="@drawable/img_blur_bottom"
             app:layout_constraintBottom_toBottomOf="@id/btn_selfie_next"

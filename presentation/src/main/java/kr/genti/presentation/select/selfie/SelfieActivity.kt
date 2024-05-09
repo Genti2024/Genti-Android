@@ -15,6 +15,7 @@ import kr.genti.core.extension.setStatusBarColorFromResource
 import kr.genti.core.extension.stringOf
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivitySelfieBinding
+import kr.genti.presentation.select.wait.WaitActivity
 import kotlin.math.max
 
 @AndroidEntryPoint
@@ -50,14 +51,16 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_sel
 
     private fun initExitBtnListener() {
         binding.btnExit.setOnSingleClickListener {
-            // TODO :
             finish()
         }
     }
 
     private fun initNextBtnListener() {
-//        binding.btnPoseNext.setOnSingleClickListener {
-//        }
+        binding.btnSelfieNext.setOnSingleClickListener {
+            Intent(this, WaitActivity::class.java).apply {
+                startActivity(this)
+            }
+        }
     }
 
     private fun setStatusBarColor() {

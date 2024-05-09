@@ -66,7 +66,7 @@
             android:maxLength="200"
             android:minLines="4"
             android:paddingHorizontal="14dp"
-            android:paddingVertical="11dp"
+            android:paddingVertical="14dp"
             android:text="@={vm.script}"
             android:textColor="@color/black"
             android:textColorHint="@color/grey_7"
@@ -75,17 +75,44 @@
             app:layout_constraintTop_toBottomOf="@id/tv_create_script_title" />
 
         <TextView
+            android:id="@+id/tv_create_random_example"
+            style="@style/TextAppearance.Genti.BodyDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="28dp"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/shape_green1_line_10_rect"
+            android:elevation="5dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="15dp"
+            android:shadowColor="@color/black"
+            android:text="@string/create_tv_example_1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_create_script" />
+
+        <ImageView
+            android:id="@+id/btn_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="10dp"
+            android:padding="12dp"
+            android:src="@drawable/ic_refresh"
+            app:layout_constraintBottom_toBottomOf="@id/tv_create_random_example"
+            app:layout_constraintEnd_toEndOf="@id/tv_create_random_example" />
+
+        <TextView
             android:id="@+id/tv_create_plus_title"
             style="@style/TextAppearance.Genti.BodyNormal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="46dp"
+            android:layout_marginTop="72dp"
             android:gravity="center"
             android:text="@string/create_tv_plus_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_create_script" />
+            app:layout_constraintTop_toBottomOf="@id/tv_create_random_example" />
 
         <ImageView
             android:id="@+id/btn_create_plus"

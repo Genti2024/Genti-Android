@@ -6,6 +6,7 @@ import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseFragment
 import kr.genti.core.extension.setOnSingleClickListener
+import kr.genti.core.extension.stringOf
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentCreateBinding
 import kr.genti.presentation.select.pose.PoseActivity
@@ -22,6 +23,7 @@ class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_c
 
         initView()
         initCreateBtnListener()
+        initRefreshExBtnListener()
     }
 
     private fun initView() {
@@ -34,6 +36,12 @@ class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_c
                 requireContext(),
                 viewModel.script.value.orEmpty(),
             ).apply { startActivity(this) }
+        }
+    }
+
+    private fun initRefreshExBtnListener() {
+        binding.btnRefresh.setOnSingleClickListener {
+            binding.tvCreateRandomExample.text = stringOf(R.string.create_tv_example_1)
         }
     }
 }
