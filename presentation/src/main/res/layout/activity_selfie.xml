@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
+            android:elevation="1dp"
             android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -33,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
+            android:elevation="1dp"
             android:src="@drawable/ic_exit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -43,6 +45,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="41dp"
             android:adjustViewBounds="true"
+            android:elevation="1dp"
             android:src="@drawable/logo_genti_3d"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,6 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
+            android:elevation="1dp"
             android:src="@drawable/img_progress_three"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -65,6 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
             android:layout_marginTop="20dp"
+            android:elevation="1dp"
             android:gravity="center"
             android:text="@string/selfie_tv_title"
             app:layout_constraintEnd_toEndOf="parent"
@@ -75,18 +80,20 @@
             android:id="@+id/btn_selfie_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:elevation="1dp"
             android:src="@drawable/ic_add_full"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_selfie_title" />
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/sv_selfie_guide"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginBottom="28dp"
             app:layout_constraintBottom_toTopOf="@id/btn_selfie_next"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="33dp"
             app:layout_constraintTop_toBottomOf="@id/btn_selfie_add">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -123,7 +130,6 @@
                     style="@style/TextAppearance.Genti.BodyDescription"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp"
                     android:gravity="center"
                     android:text="@string/selfie_tv_guide_example"
                     android:textColor="@color/grey_1"
@@ -175,8 +181,8 @@
                     style="@style/TextAppearance.Genti.BodyNumber"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
                     android:gravity="center"
+                    android:layout_marginTop="15dp"
                     android:text="@string/selfie_tv_angle_title"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -200,7 +206,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="25dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="3dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/img_selfie_one"
                     app:layout_constraintDimensionRatio="1"
@@ -224,7 +230,7 @@
                     android:id="@+id/iv_selfie_angle_ai_one"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="3dp"
                     android:layout_marginEnd="25dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/img_selfie_ai_one"
@@ -274,6 +280,31 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
+
+        <ImageView
+            android:id="@+id/iv_selfie_blur_top"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="28dp"
+            android:layout_marginTop="40dp"
+            android:adjustViewBounds="true"
+            android:alpha="0"
+            android:src="@drawable/img_blur_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_selfie_title" />
+
+        <ImageView
+            android:id="@+id/iv_selfie_blur_bottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-16dp"
+            android:layout_marginHorizontal="28dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/img_blur_bottom"
+            app:layout_constraintBottom_toBottomOf="@id/btn_selfie_next"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/btn_selfie_next"

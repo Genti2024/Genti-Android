@@ -15,6 +15,7 @@ import kr.genti.core.extension.setStatusBarColorFromResource
 import kr.genti.core.extension.stringOf
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivitySelfieBinding
+import kotlin.math.max
 
 @AndroidEntryPoint
 class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_selfie) {
@@ -29,6 +30,7 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_sel
         initNextBtnListener()
         setStatusBarColor()
         setBulletPointList()
+        setGuideListBlur()
     }
 
     private fun initView() {
@@ -81,6 +83,15 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_sel
             }
         }
         binding.tvSelfieGuideBody.text = spannableStringBuilder
+    }
+
+    private fun setGuideListBlur() {
+        with(binding) {
+            svSelfieGuide.setOnScrollChangeListener { _, _, scrollY, _, _ ->
+                ivSelfieBlurBottom.alpha = max(0.0, (1 - scrollY / 500f).toDouble()).toFloat()
+                ivSelfieBlurTop.alpha = 1 - max(0.0, (1 - scrollY / 100f).toDouble()).toFloat()
+            }
+        }
     }
 
     companion object {
