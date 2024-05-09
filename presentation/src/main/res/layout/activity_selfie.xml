@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="kr.genti.presentation.select.selfie.SelfieViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_white">
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:elevation="1dp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btn_exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:elevation="1dp"
+            android:src="@drawable/ic_exit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_selfie_logo"
+            android:layout_width="113dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="41dp"
+            android:adjustViewBounds="true"
+            android:elevation="1dp"
+            android:src="@drawable/logo_genti_3d"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_selfie_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:elevation="1dp"
+            android:src="@drawable/img_progress_three"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_selfie_logo" />
+
+        <TextView
+            android:id="@+id/tv_selfie_title"
+            style="@style/TextAppearance.Genti.BodyNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="20dp"
+            android:elevation="1dp"
+            android:gravity="center"
+            android:text="@string/selfie_tv_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_selfie_progress" />
+
+        <ImageView
+            android:id="@+id/btn_selfie_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="1dp"
+            android:src="@drawable/ic_add_full"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_selfie_title" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/sv_selfie_guide"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="28dp"
+            app:layout_constraintBottom_toTopOf="@id/btn_selfie_next"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_selfie_add">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp">
+
+                <TextView
+                    android:id="@+id/tv_selfie_guide_title"
+                    style="@style/TextAppearance.Genti.BodyNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="@string/selfie_tv_guide_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_selfie_guide_body"
+                    style="@style/TextAppearance.Genti.BodyDescription"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="6dp"
+                    android:textColor="@color/grey_3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_selfie_guide_title"
+                    tools:text="- 모자, 악세사리 등으로 얼굴이 잘 안보이는 사진을 사용하면 얼굴이 잘 안나올 수 있어요" />
+
+                <TextView
+                    android:id="@+id/tv_selfie_guide_ex_title"
+                    style="@style/TextAppearance.Genti.BodyDescription"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/selfie_tv_guide_example"
+                    android:textColor="@color/grey_1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_selfie_guide_body" />
+
+                <ImageView
+                    android:id="@+id/iv_selfie_ex_one"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="3dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/img_selfie_one"
+                    app:layout_constraintEnd_toStartOf="@id/iv_selfie_ex_two"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_selfie_guide_ex_title" />
+
+                <ImageView
+                    android:id="@+id/iv_selfie_ex_two"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="6dp"
+                    android:layout_marginTop="3dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/img_selfie_two"
+                    app:layout_constraintEnd_toStartOf="@id/iv_selfie_ex_three"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@id/iv_selfie_ex_one"
+                    app:layout_constraintTop_toBottomOf="@id/tv_selfie_guide_ex_title" />
+
+                <ImageView
+                    android:id="@+id/iv_selfie_ex_three"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="40dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/img_selfie_three"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@id/iv_selfie_ex_two"
+                    app:layout_constraintTop_toBottomOf="@id/tv_selfie_guide_ex_title" />
+
+                <TextView
+                    android:id="@+id/tv_selfie_angle_title"
+                    style="@style/TextAppearance.Genti.BodyNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/selfie_tv_angle_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_selfie_ex_two" />
+
+                <TextView
+                    android:id="@+id/tv_selfie_angle_ex_title"
+                    style="@style/TextAppearance.Genti.BodyDescription"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:text="@string/selfie_tv_guide_example"
+                    android:textColor="@color/grey_1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_selfie_angle_title" />
+
+                <ImageView
+                    android:id="@+id/iv_selfie_angle_ex_one"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="3dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_selfie_one"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintEnd_toStartOf="@id/iv_selfie_angle_arrow_up"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_selfie_angle_ex_title" />
+
+                <ImageView
+                    android:id="@+id/iv_selfie_angle_arrow_up"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:paddingHorizontal="23dp"
+                    android:src="@drawable/ic_right_arrow"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_selfie_angle_ex_one"
+                    app:layout_constraintEnd_toStartOf="@id/iv_selfie_angle_ai_one"
+                    app:layout_constraintStart_toEndOf="@id/iv_selfie_angle_ex_one"
+                    app:layout_constraintTop_toTopOf="@id/iv_selfie_angle_ex_one" />
+
+                <ImageView
+                    android:id="@+id/iv_selfie_angle_ai_one"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="25dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_selfie_ai_one"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_selfie_angle_arrow_up"
+                    app:layout_constraintTop_toBottomOf="@id/tv_selfie_angle_ex_title" />
+
+                <ImageView
+                    android:id="@+id/iv_selfie_angle_ex_two"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="15dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_selfie_two"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintEnd_toStartOf="@id/iv_selfie_angle_arrow_down"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_selfie_angle_ex_one" />
+
+                <ImageView
+                    android:id="@+id/iv_selfie_angle_arrow_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:paddingHorizontal="23dp"
+                    android:src="@drawable/ic_right_arrow"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_selfie_angle_ex_two"
+                    app:layout_constraintEnd_toStartOf="@id/iv_selfie_angle_ai_two"
+                    app:layout_constraintStart_toEndOf="@id/iv_selfie_angle_ex_two"
+                    app:layout_constraintTop_toTopOf="@id/iv_selfie_angle_ex_two" />
+
+                <ImageView
+                    android:id="@+id/iv_selfie_angle_ai_two"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="25dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_selfie_ai_two"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_selfie_angle_arrow_down"
+                    app:layout_constraintTop_toBottomOf="@id/iv_selfie_angle_ex_one" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <ImageView
+            android:id="@+id/iv_selfie_blur_top"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="28dp"
+            android:layout_marginTop="40dp"
+            android:adjustViewBounds="true"
+            android:alpha="0"
+            android:src="@drawable/img_blur_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_selfie_title" />
+
+        <ImageView
+            android:id="@+id/iv_selfie_blur_bottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-16dp"
+            android:layout_marginHorizontal="28dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/img_blur_bottom"
+            app:layout_constraintBottom_toBottomOf="@id/btn_selfie_next"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/btn_selfie_next"
+            style="@style/TextAppearance.Genti.Headline1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="28dp"
+            android:layout_marginBottom="28dp"
+            android:background="@drawable/sel_btn"
+            android:enabled="@{vm.isSelected}"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:text="@string/btn_next"
+            android:textColor="@{vm.isSelected == true ? @color/white : @color/black}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

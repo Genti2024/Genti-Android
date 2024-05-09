@@ -19,4 +19,12 @@
     <string name="pose_tv_angle_none">앵글은 자유롭게 맡길래요</string>
     <string name="pose_tv_frame_title">프레임을 골라주세요</string>
     <string name="pose_tv_frame_none">프레임은 자유롭게 맡길래요</string>
+
+    <string name="selfie_tv_title">사진 생성에 이용할 얼굴 3장을 업로드해주세요</string>
+    <string name="selfie_tv_guide_title">💡얼굴은 이런 사진을 사용해주세요!</string>
+    <string name="selfie_tv_guide_one">모자, 악세사리 등으로 얼굴이 잘 안보이는 사진을 사용하면 얼굴이 잘 안나올 수 있어요</string>
+    <string name="selfie_tv_guide_two">사진은 정면사진을 포함하여 오른쪽, 왼쪽 등 다양한 각도일수록 얼굴 생성에 도움이 돼요</string>
+    <string name="selfie_tv_guide_three">만들고자 하는 사진의 포즈와 비슷한 각도의 얼굴 사진을 사용하면 얼굴이 더욱 정확하게 반영돼요</string>
+    <string name="selfie_tv_guide_example"><![CDATA[<예시>]]></string>
+    <string name="selfie_tv_angle_title">💡\n만들고자 하는 사진과 같은 각도의 얼굴을 사용하면\n더욱 정확하게 만들어져요!</string>
 </resources>

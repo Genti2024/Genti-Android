@@ -10,6 +10,7 @@ import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColorFromResource
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityPoseBinding
+import kr.genti.presentation.select.selfie.SelfieActivity
 
 @AndroidEntryPoint
 class PoseActivity : BaseActivity<ActivityPoseBinding>(R.layout.activity_pose) {
@@ -27,6 +28,7 @@ class PoseActivity : BaseActivity<ActivityPoseBinding>(R.layout.activity_pose) {
 
     private fun initView() {
         binding.vm = viewModel
+        viewModel.script = intent.getStringExtra(EXTRA_SCRIPT).orEmpty()
     }
 
     private fun initBackBtnListener() {
@@ -43,6 +45,12 @@ class PoseActivity : BaseActivity<ActivityPoseBinding>(R.layout.activity_pose) {
 
     private fun initNextBtnListener() {
         binding.btnPoseNext.setOnSingleClickListener {
+            SelfieActivity.createIntent(
+                this,
+                viewModel.script,
+                viewModel.selectedAngle.value ?: -1,
+                viewModel.selectedFrame.value ?: -1,
+            ).apply { startActivity(this) }
         }
     }
 
