@@ -7,6 +7,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
+import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityWaitBinding
 
@@ -20,8 +21,9 @@ class WaitActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait) {
     }
 
     private fun initReturnBtnListener() {
-//        binding.btnPoseNext.setOnSingleClickListener {
-//        }
+        binding.btnWaitReturn.setOnSingleClickListener {
+            finish()
+        }
     }
 
     private fun setStatusBarTransparent() {
