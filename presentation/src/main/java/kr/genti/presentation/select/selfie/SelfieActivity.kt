@@ -7,12 +7,15 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.BulletSpan
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColorFromResource
 import kr.genti.core.extension.stringOf
+import kr.genti.core.extension.toast
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivitySelfieBinding
 import kr.genti.presentation.select.wait.WaitActivity
@@ -21,6 +24,7 @@ import kotlin.math.max
 @AndroidEntryPoint
 class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_selfie) {
     private val viewModel by viewModels<SelfieViewModel>()
+    lateinit var activityResult: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +33,8 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_sel
         initBackBtnListener()
         initExitBtnListener()
         initNextBtnListener()
+        initAddImageBtnListener()
+        setGalleryImage()
         setStatusBarColor()
         setBulletPointList()
         setGuideListBlur()
@@ -61,6 +67,39 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_sel
                 startActivity(this)
             }
         }
+    }
+
+    private fun initAddImageBtnListener() {
+        binding.btnSelfieAdd.setOnSingleClickListener {
+            val intent =
+                Intent(Intent.ACTION_PICK).apply {
+                    type = "image/*"
+                    putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                }
+            activityResult.launch(intent)
+        }
+    }
+
+    private fun setGalleryImage() {
+        activityResult =
+            registerForActivityResult(
+                ActivityResultContracts.StartActivityForResult(),
+            ) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    val clipData = result.data?.clipData
+                    val count = clipData?.itemCount ?: 0
+                    if (count != 3) {
+                        toast(getString(R.string.selfie_toast_old_picker_limit))
+                        return@registerForActivityResult
+                    } else {
+                        val imageUriList =
+                            (0..2).mapNotNull { index -> clipData?.getItemAt(index)?.uri }
+                        // TODO: 리스트 활용
+                    }
+                } else {
+                    toast(getString(R.string.selfie_toast_picker_error))
+                }
+            }
     }
 
     private fun setStatusBarColor() {
