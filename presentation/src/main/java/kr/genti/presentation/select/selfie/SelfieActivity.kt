@@ -91,11 +91,9 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_sel
                     if (count != 3) {
                         toast(getString(R.string.selfie_toast_old_picker_limit))
                         return@registerForActivityResult
-                    } else {
-                        val imageUriList =
-                            (0..2).mapNotNull { index -> clipData?.getItemAt(index)?.uri }
-                        // TODO: 리스트 활용
                     }
+                    val uriList = (0..2).mapNotNull { index -> clipData?.getItemAt(index)?.uri }
+                    // TODO: 리스트 활용
                 } else {
                     toast(getString(R.string.selfie_toast_picker_error))
                 }
