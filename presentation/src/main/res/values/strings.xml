@@ -26,7 +26,7 @@
     <string name="selfie_tv_guide_two">사진은 정면사진을 포함하여 오른쪽, 왼쪽 등 다양한 각도일수록 얼굴 생성에 도움이 돼요</string>
     <string name="selfie_tv_guide_three">만들고자 하는 사진의 포즈와 비슷한 각도의 얼굴 사진을 사용하면 얼굴이 더욱 정확하게 반영돼요</string>
     <string name="selfie_tv_guide_example"><![CDATA[<예시>]]></string>
-    <string name="selfie_tv_angle_title">💡\n만들고자 하는 사진과 같은 각도의 얼굴을 사용하면\n더욱 정확하게 만들어져요!</string>
+    <string name="selfie_tv_angle_title">💡\n사진의 각도가 다양할수록 얼굴이 자연스러워져요!</string>
     <string name="wait_tv_title">사진을 찍고있어요!</string>
     <string name="wait_tv_time">예상 소요시간은 4시간입니다.</string>
     <string name="wait_tv_time_guide">미리 만들어놓은 컨셉에 얼굴만 바꾸는게 아니라\n’나만의 하나뿐인 사진’을 찍어드리기 위해 \n배경부터 의상, 구도까지 꼼꼼하게 준비하고 있어요</string>

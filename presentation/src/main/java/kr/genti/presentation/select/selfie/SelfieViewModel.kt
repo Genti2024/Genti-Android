@@ -14,7 +14,9 @@ class SelfieViewModel
         var script = ""
         var angle = -1
         var frame = -1
-        var isSelected = MutableLiveData(false)
+
+        // TODO: false로 수정
+        var isSelected = MutableLiveData(true)
 
         private fun checkSelected() {
         }
