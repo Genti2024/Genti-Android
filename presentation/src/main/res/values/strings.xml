@@ -11,7 +11,7 @@
     <string name="menu_profile">프로필</string>
 
     <string name="create_tv_script_title">만들고 싶은 사진을 설명해주세요✏️</string>
-    <string name="create_et_script_hint">ex) 잔디밭에 앉아서 과잠을 입고 막걸리를 먹는 모습을 만들어줘\n\n* 구체적인 지명을 지정하는 것은 불가능해요!</string>
+    <string name="create_et_script_hint">의상과 배경을 포함해서 설명해 주세요!\n\n*너무 특정한 배경과 의상은 구현이 어려울 수 있어요 (반포 한강 공원, 나이키 티셔츠 등)</string>
     <string name="create_tv_plus_title">참고사진이 있다면 추가해주세요</string>
     <string name="create_tv_plus_guide">(참고사진은 최대 1장 업로드 할 수 있어요)</string>
 
@@ -31,4 +31,5 @@
     <string name="wait_tv_time">예상 소요시간은 4시간입니다.</string>
     <string name="wait_tv_time_guide">미리 만들어놓은 컨셉에 얼굴만 바꾸는게 아니라\n’나만의 하나뿐인 사진’을 찍어드리기 위해 \n배경부터 의상, 구도까지 꼼꼼하게 준비하고 있어요</string>
     <string name="wait_btn_return">피드로 돌아가기</string>
+    <string name="create_tv_example_1">프랑스 야경을 즐기는 모습을 그려주세요. 항공점퍼를 입고 테라스에 서 있는 모습이에요.</string>
 </resources>
