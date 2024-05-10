@@ -101,12 +101,23 @@
                 android:id="@+id/iv_added_image_1"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/shape_bg_fill_grey7_line_rect"
-                android:padding="1dp"
+                android:layout_margin="1dp"
+                android:elevation="1dp"
                 android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="@id/iv_added_image_bg_1"
+                app:layout_constraintDimensionRatio="1"
+                app:layout_constraintEnd_toEndOf="@id/iv_added_image_bg_1"
+                app:layout_constraintStart_toStartOf="@id/iv_added_image_bg_1"
+                app:layout_constraintTop_toTopOf="@id/iv_added_image_bg_1" />
+
+            <ImageView
+                android:id="@+id/iv_added_image_bg_1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/shape_bg_fill_grey7_line_rect"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1"
-                app:layout_constraintEnd_toStartOf="@id/iv_added_image_2"
+                app:layout_constraintEnd_toStartOf="@id/iv_added_image_bg_2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -114,27 +125,49 @@
                 android:id="@+id/iv_added_image_2"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:elevation="1dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="@id/iv_added_image_bg_2"
+                app:layout_constraintDimensionRatio="1"
+                app:layout_constraintEnd_toEndOf="@id/iv_added_image_bg_2"
+                app:layout_constraintStart_toStartOf="@id/iv_added_image_bg_2"
+                app:layout_constraintTop_toTopOf="@id/iv_added_image_bg_2" />
+
+            <ImageView
+                android:id="@+id/iv_added_image_bg_2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_marginHorizontal="6dp"
                 android:background="@drawable/shape_bg_fill_grey7_line_rect"
-                android:padding="1dp"
-                android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1"
-                app:layout_constraintEnd_toStartOf="@id/iv_added_image_3"
-                app:layout_constraintStart_toEndOf="@id/iv_added_image_1"
+                app:layout_constraintEnd_toStartOf="@id/iv_added_image_bg_3"
+                app:layout_constraintStart_toEndOf="@id/iv_added_image_bg_1"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/iv_added_image_3"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/shape_bg_fill_grey7_line_rect"
-                android:padding="1dp"
+                android:layout_margin="1dp"
+                android:elevation="1dp"
                 android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="@id/iv_added_image_bg_3"
+                app:layout_constraintDimensionRatio="1"
+                app:layout_constraintEnd_toEndOf="@id/iv_added_image_bg_3"
+                app:layout_constraintStart_toStartOf="@id/iv_added_image_bg_3"
+                app:layout_constraintTop_toTopOf="@id/iv_added_image_bg_3" />
+
+            <ImageView
+                android:id="@+id/iv_added_image_bg_3"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/shape_bg_fill_grey7_line_rect"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/iv_added_image_2"
+                app:layout_constraintStart_toEndOf="@id/iv_added_image_bg_2"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

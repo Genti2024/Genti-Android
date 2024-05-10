@@ -2,7 +2,6 @@ package kr.genti.presentation.select.selfie
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -92,16 +91,12 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_sel
                         uriList = uris
                         isSelected.value = uris.size == 3
                     }
-                    setSelectedImageToView(uris)
+                    val imageViews = with(binding) { listOf(ivAddedImage1, ivAddedImage2, ivAddedImage3) }
+                    imageViews.forEach { it.setImageDrawable(null) }
+                    uris.take(3).forEachIndexed { index, uri -> imageViews[index].load(uri) }
+                    binding.layoutAddedImage.isVisible = uris.isNotEmpty()
                 }
             }
-    }
-
-    private fun setSelectedImageToView(uris: List<Uri>) {
-        val imageViews = with(binding) { listOf(ivAddedImage1, ivAddedImage2, ivAddedImage3) }
-        imageViews.forEach { it.setImageDrawable(null) }
-        uris.take(3).forEachIndexed { index, uri -> imageViews[index].load(uri) }
-        binding.layoutAddedImage.isVisible = uris.isNotEmpty()
     }
 
     private fun setStatusBarColor() {
