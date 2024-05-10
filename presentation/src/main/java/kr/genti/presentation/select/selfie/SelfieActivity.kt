@@ -2,6 +2,7 @@ package kr.genti.presentation.select.selfie
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -47,6 +48,7 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_sel
         binding.vm = viewModel
         with(viewModel) {
             script = intent.getStringExtra(EXTRA_SCRIPT).orEmpty()
+            plusImage = intent.getStringExtra(EXTRA_PLUS_IMAGE)?.let { Uri.parse(it) }
             angle = intent.getIntExtra(EXTRA_ANGLE, -1)
             frame = intent.getIntExtra(EXTRA_FRAME, -1)
         }
@@ -91,7 +93,8 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_sel
                         uriList = uris
                         isSelected.value = uris.size == 3
                     }
-                    val imageViews = with(binding) { listOf(ivAddedImage1, ivAddedImage2, ivAddedImage3) }
+                    val imageViews =
+                        with(binding) { listOf(ivAddedImage1, ivAddedImage2, ivAddedImage3) }
                     imageViews.forEach { it.setImageDrawable(null) }
                     uris.take(3).forEachIndexed { index, uri -> imageViews[index].load(uri) }
                     binding.layoutAddedImage.isVisible = uris.isNotEmpty()
@@ -140,6 +143,7 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_sel
 
     companion object {
         private const val EXTRA_SCRIPT = "EXTRA_SCRIPT"
+        private const val EXTRA_PLUS_IMAGE = "EXTRA_PLUS_IMAGE"
         private const val EXTRA_ANGLE = "EXTRA_POSE"
         private const val EXTRA_FRAME = "EXTRA_FRAME"
 
@@ -147,11 +151,13 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_sel
         fun createIntent(
             context: Context,
             script: String,
+            plusImage: String,
             angle: Int,
             frame: Int,
         ): Intent =
             Intent(context, SelfieActivity::class.java).apply {
                 putExtra(EXTRA_SCRIPT, script)
+                putExtra(EXTRA_PLUS_IMAGE, plusImage)
                 putExtra(EXTRA_ANGLE, angle)
                 putExtra(EXTRA_FRAME, frame)
             }

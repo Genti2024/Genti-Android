@@ -13,6 +13,7 @@ class SelfieViewModel
         // private val authRepository: AuthRepository,
     ) : ViewModel() {
         var script = ""
+        var plusImage = Uri.EMPTY
         var angle = -1
         var frame = -1
         var uriList = listOf<Uri>()

@@ -43,6 +43,7 @@ class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_c
             PoseActivity.createIntent(
                 requireContext(),
                 viewModel.script.value.orEmpty(),
+                viewModel.plusImage.toString(),
             ).apply { startActivity(this) }
         }
     }

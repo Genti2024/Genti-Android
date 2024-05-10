@@ -12,6 +12,7 @@ class PoseViewModel
         // private val authRepository: AuthRepository,
     ) : ViewModel() {
         var script = ""
+        var plusImage = ""
         val selectedAngle = MutableLiveData<Int>(-1)
         val selectedFrame = MutableLiveData<Int>(-1)
         val isSelected = MutableLiveData(false)
