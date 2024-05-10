@@ -2,6 +2,7 @@ package kr.genti.presentation.select.selfie
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -10,6 +11,8 @@ import android.text.style.BulletSpan
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
+import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.setOnSingleClickListener
@@ -92,12 +95,25 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_sel
                         toast(getString(R.string.selfie_toast_old_picker_limit))
                         return@registerForActivityResult
                     }
-                    val uriList = (0..2).mapNotNull { index -> clipData?.getItemAt(index)?.uri }
-                    // TODO: 리스트 활용
+                    viewModel.uriList =
+                        (0..2).mapNotNull { index -> clipData?.getItemAt(index)?.uri }
+                    setImageAdded(viewModel.uriList)
                 } else {
                     toast(getString(R.string.selfie_toast_picker_error))
                 }
             }
+    }
+
+    private fun setImageAdded(list: List<Uri>) {
+        if (list.size == 3) {
+            viewModel.isSelected.value = true
+            with(binding) {
+                ivAddedImage1.load(list[0])
+                ivAddedImage2.load(list[1])
+                ivAddedImage3.load(list[2])
+                layoutAddedImage.isVisible = true
+            }
+        }
     }
 
     private fun setStatusBarColor() {

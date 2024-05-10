@@ -1,5 +1,6 @@
 package kr.genti.presentation.select.selfie
 
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,10 +15,6 @@ class SelfieViewModel
         var script = ""
         var angle = -1
         var frame = -1
-
-        // TODO: false로 수정
-        var isSelected = MutableLiveData(true)
-
-        private fun checkSelected() {
-        }
+        var uriList = listOf<Uri>()
+        var isSelected = MutableLiveData(false)
     }
