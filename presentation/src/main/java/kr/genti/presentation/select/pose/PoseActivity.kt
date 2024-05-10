@@ -29,6 +29,7 @@ class PoseActivity : BaseActivity<ActivityPoseBinding>(R.layout.activity_pose) {
     private fun initView() {
         binding.vm = viewModel
         viewModel.script = intent.getStringExtra(EXTRA_SCRIPT).orEmpty()
+        viewModel.plusImage = intent.getStringExtra(EXTRA_PLUS_IMAGE).orEmpty()
     }
 
     private fun initBackBtnListener() {
@@ -48,6 +49,7 @@ class PoseActivity : BaseActivity<ActivityPoseBinding>(R.layout.activity_pose) {
             SelfieActivity.createIntent(
                 this,
                 viewModel.script,
+                viewModel.plusImage,
                 viewModel.selectedAngle.value ?: -1,
                 viewModel.selectedFrame.value ?: -1,
             ).apply { startActivity(this) }
@@ -60,14 +62,17 @@ class PoseActivity : BaseActivity<ActivityPoseBinding>(R.layout.activity_pose) {
 
     companion object {
         private const val EXTRA_SCRIPT = "EXTRA_SCRIPT"
+        private const val EXTRA_PLUS_IMAGE = "EXTRA_PLUS_IMAGE"
 
         @JvmStatic
         fun createIntent(
             context: Context,
             script: String,
+            plusImage: String,
         ): Intent =
             Intent(context, PoseActivity::class.java).apply {
                 putExtra(EXTRA_SCRIPT, script)
+                putExtra(EXTRA_PLUS_IMAGE, plusImage)
             }
     }
 }
