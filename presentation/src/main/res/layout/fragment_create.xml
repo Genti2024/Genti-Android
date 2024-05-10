@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="28dp"
             android:layout_marginTop="14dp"
-            android:background="@drawable/shape_green1_line_10_rect"
+            android:background="@drawable/shape_bg_fill_green1_line_10_rect"
             android:elevation="5dp"
             android:paddingHorizontal="16dp"
             android:paddingVertical="15dp"

@@ -9,7 +9,9 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.BulletSpan
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts.PickMultipleVisualMedia
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import coil.load
@@ -18,7 +20,6 @@ import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColorFromResource
 import kr.genti.core.extension.stringOf
-import kr.genti.core.extension.toast
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivitySelfieBinding
 import kr.genti.presentation.select.wait.WaitActivity
@@ -27,7 +28,7 @@ import kotlin.math.max
 @AndroidEntryPoint
 class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_selfie) {
     private val viewModel by viewModels<SelfieViewModel>()
-    lateinit var activityResult: ActivityResultLauncher<Intent>
+    lateinit var activityResult: ActivityResultLauncher<PickVisualMediaRequest>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,46 +74,33 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_sel
     }
 
     private fun initAddImageBtnListener() {
-        binding.btnSelfieAdd.setOnSingleClickListener {
-            activityResult.launch(
-                Intent(Intent.ACTION_PICK).apply {
-                    type = "image/*"
-                    putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-                },
-            )
+        with(binding) {
+            btnSelfieAdd.setOnSingleClickListener {
+                activityResult.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
+            }
+            layoutAddedImage.setOnSingleClickListener {
+                activityResult.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
+            }
         }
     }
 
     private fun setGalleryImage() {
         activityResult =
-            registerForActivityResult(
-                ActivityResultContracts.StartActivityForResult(),
-            ) { result ->
-                if (result.resultCode == RESULT_OK) {
-                    val clipData = result.data?.clipData
-                    val count = clipData?.itemCount ?: 0
-                    if (count != 3) {
-                        toast(getString(R.string.selfie_toast_old_picker_limit))
-                        return@registerForActivityResult
-                    }
-                    viewModel.uriList =
-                        (0..2).mapNotNull { index -> clipData?.getItemAt(index)?.uri }
-                    setImageAdded(viewModel.uriList)
-                } else {
-                    toast(getString(R.string.selfie_toast_picker_error))
+            registerForActivityResult(PickMultipleVisualMedia(3)) { uris ->
+                if (uris.isNotEmpty()) {
+                    viewModel.uriList = uris
+                    setSelectedImageToView(uris)
+                    if (uris.size == 3) viewModel.isSelected.value = true
                 }
             }
     }
 
-    private fun setImageAdded(list: List<Uri>) {
-        if (list.size == 3) {
-            viewModel.isSelected.value = true
-            with(binding) {
-                ivAddedImage1.load(list[0])
-                ivAddedImage2.load(list[1])
-                ivAddedImage3.load(list[2])
-                layoutAddedImage.isVisible = true
-            }
+    private fun setSelectedImageToView(uris: List<Uri>) {
+        with(binding) {
+            if (uris.isNotEmpty()) ivAddedImage1.load(uris[0])
+            if (uris.size > 1) ivAddedImage2.load(uris[1])
+            if (uris.size > 2) ivAddedImage3.load(uris[2])
+            layoutAddedImage.isVisible = true
         }
     }
 
