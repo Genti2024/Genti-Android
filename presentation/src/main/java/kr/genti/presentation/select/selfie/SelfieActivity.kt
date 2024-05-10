@@ -88,20 +88,20 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_sel
         activityResult =
             registerForActivityResult(PickMultipleVisualMedia(3)) { uris ->
                 if (uris.isNotEmpty()) {
-                    viewModel.uriList = uris
+                    with(viewModel) {
+                        uriList = uris
+                        isSelected.value = uris.size == 3
+                    }
                     setSelectedImageToView(uris)
-                    if (uris.size == 3) viewModel.isSelected.value = true
                 }
             }
     }
 
     private fun setSelectedImageToView(uris: List<Uri>) {
-        with(binding) {
-            if (uris.isNotEmpty()) ivAddedImage1.load(uris[0])
-            if (uris.size > 1) ivAddedImage2.load(uris[1])
-            if (uris.size > 2) ivAddedImage3.load(uris[2])
-            layoutAddedImage.isVisible = true
-        }
+        val imageViews = with(binding) { listOf(ivAddedImage1, ivAddedImage2, ivAddedImage3) }
+        imageViews.forEach { it.setImageDrawable(null) }
+        uris.take(3).forEachIndexed { index, uri -> imageViews[index].load(uri) }
+        binding.layoutAddedImage.isVisible = uris.isNotEmpty()
     }
 
     private fun setStatusBarColor() {
