@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-import com.going.domain.entity.request.TokenReissueRequestModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.runBlocking
 import kr.genti.core.extension.toast
+import kr.genti.data.local.UserSharedPref
+import kr.genti.domain.entity.request.TokenRequestModel
+import kr.genti.domain.repository.AuthRepository
 import kr.genti.presentation.auth.LoginActivity
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -42,7 +44,7 @@ class AuthInterceptor
                         runBlocking {
                             authRepository.postReissueTokens(
                                 sharedPref.refreshToken,
-                                TokenReissueRequestModel(sharedPref.userId),
+                                TokenRequestModel(sharedPref.userId),
                             )
                         }.onSuccess { data ->
                             sharedPref.apply {
