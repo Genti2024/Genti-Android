@@ -4,9 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-import com.going.data.local.GoingDataStore
 import com.going.domain.entity.request.TokenReissueRequestModel
-import com.going.domain.repository.TokenReissueRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.runBlocking
 import kr.genti.core.extension.toast
@@ -20,17 +18,17 @@ import javax.inject.Inject
 class AuthInterceptor
     @Inject
     constructor(
-        private val tokenReissueRepository: TokenReissueRepository,
-        private val dataStore: GoingDataStore,
+        private val authRepository: AuthRepository,
+        private val sharedPref: UserSharedPref,
         @ApplicationContext private val context: Context,
     ) : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
             val originalRequest = chain.request()
 
-            Timber.d("GET ACCESS TOKEN : ${dataStore.accessToken}")
+            Timber.d("GET ACCESS TOKEN : ${sharedPref.accessToken}")
 
             val authRequest =
-                if (dataStore.accessToken.isNotBlank()) {
+                if (sharedPref.accessToken.isNotBlank()) {
                     originalRequest.newBuilder().newAuthBuilder().build()
                 } else {
                     originalRequest
@@ -42,12 +40,12 @@ class AuthInterceptor
                 CODE_TOKEN_EXPIRED -> {
                     try {
                         runBlocking {
-                            tokenReissueRepository.postReissueTokens(
-                                dataStore.refreshToken,
-                                TokenReissueRequestModel(dataStore.userId),
+                            authRepository.postReissueTokens(
+                                sharedPref.refreshToken,
+                                TokenReissueRequestModel(sharedPref.userId),
                             )
                         }.onSuccess { data ->
-                            dataStore.apply {
+                            sharedPref.apply {
                                 accessToken = data.accessToken
                                 refreshToken = data.refreshToken
                                 userId = data.userId
@@ -65,7 +63,7 @@ class AuthInterceptor
                         Timber.d(t.message)
                     }
 
-                    dataStore.clearInfo()
+                    sharedPref.clearInfo()
 
                     Handler(Looper.getMainLooper()).post {
                         context.toast(TOKEN_EXPIRED_ERROR)
@@ -79,7 +77,7 @@ class AuthInterceptor
             return response
         }
 
-        private fun Request.Builder.newAuthBuilder() = this.addHeader(AUTHORIZATION, "$BEARER ${dataStore.accessToken}")
+        private fun Request.Builder.newAuthBuilder() = this.addHeader(AUTHORIZATION, "$BEARER ${sharedPref.accessToken}")
 
         companion object {
             private const val CODE_TOKEN_EXPIRED = 401
