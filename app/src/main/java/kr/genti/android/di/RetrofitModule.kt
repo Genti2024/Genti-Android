@@ -57,13 +57,15 @@ object RetrofitModule {
 
     @Provides
     @Singleton
+    @RetrofitQualifier.JWT
     fun provideAuthInterceptor(authInterceptor: AuthInterceptor): Interceptor = authInterceptor
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(
+    @RetrofitQualifier.JWT
+    fun provideJWTOkHttpClient(
         loggingInterceptor: Interceptor,
-        authInterceptor: Interceptor,
+        @RetrofitQualifier.JWT authInterceptor: Interceptor,
     ): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
@@ -72,8 +74,30 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(
-        client: OkHttpClient,
+    @RetrofitQualifier.REISSUE
+    fun provideReissueOkHttpClient(loggingInterceptor: Interceptor): OkHttpClient =
+        OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+
+    @Provides
+    @Singleton
+    @RetrofitQualifier.JWT
+    fun provideJWTRetrofit(
+        @RetrofitQualifier.JWT client: OkHttpClient,
+        factory: Converter.Factory,
+    ): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(client)
+            .addConverterFactory(factory)
+            .build()
+
+    @Provides
+    @Singleton
+    @RetrofitQualifier.REISSUE
+    fun provideReissueRetrofit(
+        @RetrofitQualifier.REISSUE client: OkHttpClient,
         factory: Converter.Factory,
     ): Retrofit =
         Retrofit.Builder()
