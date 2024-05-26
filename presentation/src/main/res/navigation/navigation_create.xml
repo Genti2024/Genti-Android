@@ -10,7 +10,11 @@
         android:label="DefineFragment">
         <action
             android:id="@+id/action_define_to_pose"
-            app:destination="@id/poseFragment" />
+            app:destination="@id/poseFragment"
+            app:enterAnim="@anim/slide_right_show"
+            app:exitAnim="@anim/slide_left_exit"
+            app:popEnterAnim="@anim/slide_left_show"
+            app:popExitAnim="@anim/slide_right_exit"/>
     </fragment>
 
     <fragment
@@ -19,7 +23,11 @@
         android:label="PoseFragment">
         <action
             android:id="@+id/action_pose_to_selfie"
-            app:destination="@id/selfieFragment" />
+            app:destination="@id/selfieFragment"
+            app:enterAnim="@anim/slide_right_show"
+            app:exitAnim="@anim/slide_left_exit"
+            app:popEnterAnim="@anim/slide_left_show"
+            app:popExitAnim="@anim/slide_right_exit"/>
     </fragment>
 
     <fragment
