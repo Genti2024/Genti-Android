@@ -1,97 +1,93 @@
-package kr.genti.presentation.select.selfie
+package kr.genti.presentation.main.create
 
-import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.BulletSpan
+import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts.PickMultipleVisualMedia
-import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
-import androidx.activity.viewModels
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
-import kr.genti.core.base.BaseActivity
+import kr.genti.core.base.BaseFragment
 import kr.genti.core.extension.setOnSingleClickListener
-import kr.genti.core.extension.setStatusBarColorFromResource
 import kr.genti.core.extension.stringOf
 import kr.genti.presentation.R
-import kr.genti.presentation.databinding.ActivitySelfieBinding
+import kr.genti.presentation.databinding.FragmentSelfieBinding
 import kr.genti.presentation.select.wait.WaitActivity
 import kotlin.math.max
 
 @AndroidEntryPoint
-class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_selfie) {
-    private val viewModel by viewModels<SelfieViewModel>()
+class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_selfie) {
+    private val viewModel by activityViewModels<CreateViewModel>()
     lateinit var activityResult: ActivityResultLauncher<PickVisualMediaRequest>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
+        super.onViewCreated(view, savedInstanceState)
 
         initView()
-        initBackBtnListener()
-        initExitBtnListener()
         initNextBtnListener()
+        initBackPressedListener()
         initAddImageBtnListener()
         setGalleryImage()
-        setStatusBarColor()
         setBulletPointList()
         setGuideListBlur()
     }
 
     private fun initView() {
         binding.vm = viewModel
-        with(viewModel) {
-            script = intent.getStringExtra(EXTRA_SCRIPT).orEmpty()
-            plusImage = intent.getStringExtra(EXTRA_PLUS_IMAGE)?.let { Uri.parse(it) }
-            angle = intent.getIntExtra(EXTRA_ANGLE, -1)
-            frame = intent.getIntExtra(EXTRA_FRAME, -1)
-        }
-    }
-
-    private fun initBackBtnListener() {
-        binding.btnBack.setOnSingleClickListener {
-            finish()
-        }
-    }
-
-    private fun initExitBtnListener() {
-        binding.btnExit.setOnSingleClickListener {
-            finish()
-        }
     }
 
     private fun initNextBtnListener() {
         binding.btnSelfieNext.setOnSingleClickListener {
-            Intent(this, WaitActivity::class.java).apply {
+            Intent(requireActivity(), WaitActivity::class.java).apply {
                 startActivity(this)
             }
         }
     }
 
+    private fun initBackPressedListener() {
+        val onBackPressedCallback =
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().popBackStack()
+                    viewModel.modCurrentPercent(-34)
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(
+            requireActivity(),
+            onBackPressedCallback,
+        )
+    }
+
     private fun initAddImageBtnListener() {
         with(binding) {
             btnSelfieAdd.setOnSingleClickListener {
-                activityResult.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
+                activityResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
             layoutAddedImage.setOnSingleClickListener {
-                activityResult.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
+                activityResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
         }
     }
 
     private fun setGalleryImage() {
         activityResult =
-            registerForActivityResult(PickMultipleVisualMedia(3)) { uris ->
+            registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(3)) { uris ->
                 if (uris.isNotEmpty()) {
                     with(viewModel) {
                         uriList = uris
-                        isSelected.value = uris.size == 3
+                        isCompleted.value = uris.size == 3
                     }
                     val imageViews =
                         with(binding) { listOf(ivAddedImage1, ivAddedImage2, ivAddedImage3) }
@@ -100,10 +96,6 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_sel
                     binding.layoutAddedImage.isVisible = uris.isNotEmpty()
                 }
             }
-    }
-
-    private fun setStatusBarColor() {
-        setStatusBarColorFromResource(R.color.background_white)
     }
 
     private fun setBulletPointList() {
@@ -139,27 +131,5 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_sel
                 ivSelfieBlurTop.alpha = 1 - max(0.0, (1 - scrollY / 100f).toDouble()).toFloat()
             }
         }
-    }
-
-    companion object {
-        private const val EXTRA_SCRIPT = "EXTRA_SCRIPT"
-        private const val EXTRA_PLUS_IMAGE = "EXTRA_PLUS_IMAGE"
-        private const val EXTRA_ANGLE = "EXTRA_POSE"
-        private const val EXTRA_FRAME = "EXTRA_FRAME"
-
-        @JvmStatic
-        fun createIntent(
-            context: Context,
-            script: String,
-            plusImage: String,
-            angle: Int,
-            frame: Int,
-        ): Intent =
-            Intent(context, SelfieActivity::class.java).apply {
-                putExtra(EXTRA_SCRIPT, script)
-                putExtra(EXTRA_PLUS_IMAGE, plusImage)
-                putExtra(EXTRA_ANGLE, angle)
-                putExtra(EXTRA_FRAME, frame)
-            }
     }
 }

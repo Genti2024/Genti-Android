@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseFragment
+import kr.genti.core.extension.initOnBackPressedListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentProfileBinding
 
@@ -14,5 +15,7 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+
+        initOnBackPressedListener(binding.root)
     }
 }
