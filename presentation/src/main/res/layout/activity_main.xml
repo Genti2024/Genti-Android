@@ -40,7 +40,7 @@
             android:layout_marginTop="-18dp"
             android:background="@null"
             android:elevation="10dp"
-            android:src="@drawable/menu_create"
+            android:src="@drawable/menu_create_unselected"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/bnv_main" />

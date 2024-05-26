@@ -18,6 +18,7 @@ class CreateViewModel
         var plusImage: Uri = Uri.EMPTY
         val isWritten = MutableLiveData(false)
 
+        val selectedRatio = MutableLiveData<Int>(-1)
         val selectedAngle = MutableLiveData<Int>(-1)
         val selectedFrame = MutableLiveData<Int>(-1)
         val isSelected = MutableLiveData(false)
@@ -36,6 +37,11 @@ class CreateViewModel
             isWritten.value = script.value?.isNotEmpty()
         }
 
+        fun selectRatio(itemId: Int) {
+            selectedRatio.value = itemId
+            checkSelected()
+        }
+
         fun selectAngle(itemId: Int) {
             selectedAngle.value = itemId
             checkSelected()
@@ -47,6 +53,7 @@ class CreateViewModel
         }
 
         private fun checkSelected() {
-            isSelected.value = selectedAngle.value != -1 && selectedFrame.value != -1
+            isSelected.value =
+                selectedRatio.value != -1 && selectedAngle.value != -1 && selectedFrame.value != -1
         }
     }

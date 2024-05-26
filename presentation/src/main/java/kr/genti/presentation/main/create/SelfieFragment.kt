@@ -21,7 +21,7 @@ import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.stringOf
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentSelfieBinding
-import kr.genti.presentation.select.wait.WaitActivity
+import kr.genti.presentation.result.wait.WaitActivity
 import kotlin.math.max
 
 @AndroidEntryPoint
@@ -42,6 +42,11 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
         setGalleryImage()
         setBulletPointList()
         setGuideListBlur()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setSavedImages()
     }
 
     private fun initView() {
@@ -96,6 +101,16 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
                     binding.layoutAddedImage.isVisible = uris.isNotEmpty()
                 }
             }
+    }
+
+    private fun setSavedImages() {
+        if (viewModel.uriList.isNotEmpty()) {
+            val imageViews =
+                with(binding) { listOf(ivAddedImage1, ivAddedImage2, ivAddedImage3) }
+            imageViews.forEach { it.setImageDrawable(null) }
+            viewModel.uriList.take(3).forEachIndexed { index, uri -> imageViews[index].load(uri) }
+            binding.layoutAddedImage.isVisible = true
+        }
     }
 
     private fun setBulletPointList() {

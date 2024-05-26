@@ -19,6 +19,7 @@
 
         <TextView
             android:id="@+id/tv_create_script_title"
+            android:layout_marginTop="12dp"
             style="@style/TextAppearance.Genti.BodyNormal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -43,7 +44,7 @@
             android:imeOptions="actionDone"
             android:inputType="textMultiLine|textNoSuggestions"
             android:maxLength="200"
-            android:minLines="4"
+            android:minLines="5"
             android:paddingHorizontal="14dp"
             android:paddingVertical="14dp"
             android:text="@={vm.script}"
@@ -54,44 +55,73 @@
             app:layout_constraintTop_toBottomOf="@id/tv_create_script_title" />
 
         <TextView
+            android:id="@+id/tv_create_random_title"
+            style="@style/TextAppearance.Genti.BodyNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="28dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/create_tv_random_title"
+            android:textColor="@color/green_1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_create_script" />
+
+        <TextView
             android:id="@+id/tv_create_random_example"
             style="@style/TextAppearance.Genti.BodyDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="28dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginEnd="-6dp"
             android:background="@drawable/shape_bg_fill_green1_line_10_rect"
             android:elevation="5dp"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="15dp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="13dp"
             android:shadowColor="@color/black"
             android:text="@string/create_tv_example_1"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_refresh"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_create_script" />
+            app:layout_constraintTop_toBottomOf="@id/tv_create_random_title" />
 
         <ImageView
             android:id="@+id/btn_refresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
             android:elevation="10dp"
             android:padding="12dp"
             android:src="@drawable/ic_refresh"
             app:layout_constraintBottom_toBottomOf="@id/tv_create_random_example"
-            app:layout_constraintEnd_toEndOf="@id/tv_create_random_example" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_create_random_example" />
 
         <TextView
             android:id="@+id/tv_create_plus_title"
             style="@style/TextAppearance.Genti.BodyNormal"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="72dp"
+            android:layout_marginTop="42dp"
             android:gravity="center"
             android:text="@string/create_tv_plus_title"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_create_plus_subtitle"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_create_random_example" />
+
+        <TextView
+            android:id="@+id/tv_create_plus_subtitle"
+            style="@style/TextAppearance.Genti.BodyDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/create_tv_plus_subtitle"
+            app:layout_constraintBottom_toBottomOf="@id/tv_create_plus_title"
+            android:layout_marginBottom="4dp"
+            android:layout_marginStart="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/tv_create_plus_title" />
 
         <ImageView
             android:id="@+id/btn_create_plus"
