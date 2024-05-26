@@ -21,7 +21,7 @@ import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.stringOf
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentSelfieBinding
-import kr.genti.presentation.select.wait.WaitActivity
+import kr.genti.presentation.result.wait.WaitActivity
 import kotlin.math.max
 
 @AndroidEntryPoint

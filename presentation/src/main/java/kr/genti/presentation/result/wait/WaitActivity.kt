@@ -1,4 +1,4 @@
-package kr.genti.presentation.select.wait
+package kr.genti.presentation.result.wait
 
 import android.os.Bundle
 import androidx.core.view.ViewCompat

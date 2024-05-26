@@ -32,17 +32,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="kr.genti.presentation.select.pose.PoseActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="kr.genti.presentation.select.selfie.SelfieActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="kr.genti.presentation.select.wait.WaitActivity"
+            android:name="kr.genti.presentation.result.wait.WaitActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 
