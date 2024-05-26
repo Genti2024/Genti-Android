@@ -9,19 +9,17 @@ import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColorFromResource
 import kr.genti.presentation.R
-import kr.genti.presentation.databinding.ActivityPoseBinding
+import kr.genti.presentation.databinding.FragmentPoseBinding
 import kr.genti.presentation.select.selfie.SelfieActivity
 
 @AndroidEntryPoint
-class PoseActivity : BaseActivity<ActivityPoseBinding>(R.layout.fragment_pose) {
+class PoseActivity : BaseActivity<FragmentPoseBinding>(R.layout.fragment_pose) {
     private val viewModel by viewModels<PoseViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initView()
-        initBackBtnListener()
-        initExitBtnListener()
         initNextBtnListener()
         setStatusBarColor()
     }
@@ -30,18 +28,6 @@ class PoseActivity : BaseActivity<ActivityPoseBinding>(R.layout.fragment_pose) {
         binding.vm = viewModel
         viewModel.script = intent.getStringExtra(EXTRA_SCRIPT).orEmpty()
         viewModel.plusImage = intent.getStringExtra(EXTRA_PLUS_IMAGE).orEmpty()
-    }
-
-    private fun initBackBtnListener() {
-        binding.btnBack.setOnSingleClickListener {
-            finish()
-        }
-    }
-
-    private fun initExitBtnListener() {
-        binding.btnExit.setOnSingleClickListener {
-            finish()
-        }
     }
 
     private fun initNextBtnListener() {

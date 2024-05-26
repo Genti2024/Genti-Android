@@ -6,8 +6,12 @@ import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseFragment
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
@@ -24,40 +28,42 @@ class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_c
         super.onViewCreated(view, savedInstanceState)
 
         initBackBtnListener()
+        observeProgressBar()
     }
 
-    fun initBackBtnListener() {
+    private fun initBackBtnListener() {
         binding.btnBack.setOnSingleClickListener {
-            val navController = view?.findNavController()
-            when (navController?.currentDestination?.id) {
+            val navController = binding.fcvCreate.findNavController()
+            when (navController.currentDestination?.id) {
                 R.id.defineFragment -> return@setOnSingleClickListener
 
                 R.id.poseFragment -> {
                     navController.popBackStack()
-                    modProgressBar(-33)
-                    binding.btnBack.isVisible = false
+                    viewModel.modCurrentPercent(-33)
                 }
 
                 R.id.selfieFragment -> {
                     navController.popBackStack()
-                    modProgressBar(-34)
+                    viewModel.modCurrentPercent(-34)
                 }
             }
         }
     }
 
-    fun modProgressBar(num: Int) {
-        viewModel.currentPercent += num
-        val animator =
+    private fun observeProgressBar() {
+        viewModel.currentPercent.flowWithLifecycle(lifecycle).onEach { percent ->
             ObjectAnimator.ofInt(
                 binding.progressbarCreate,
                 PROPERTY_PROGRESS,
                 binding.progressbarCreate.progress,
-                viewModel.currentPercent,
-            )
-        animator.duration = 300
-        animator.interpolator = LinearInterpolator()
-        animator.start()
+                percent,
+            ).apply {
+                duration = 300
+                interpolator = LinearInterpolator()
+                start()
+            }
+            binding.btnBack.isVisible = viewModel.currentPercent.value > 33
+        }.launchIn(lifecycleScope)
     }
 
     companion object {

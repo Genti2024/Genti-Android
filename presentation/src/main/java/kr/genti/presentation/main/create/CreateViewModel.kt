@@ -4,6 +4,8 @@ import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -12,10 +14,16 @@ class CreateViewModel
     constructor(
         // private val authRepository: AuthRepository,
     ) : ViewModel() {
-        var currentPercent = 33
         val script = MutableLiveData<String>()
         val isWritten = MutableLiveData(false)
         var plusImage: Uri = Uri.EMPTY
+
+        private val _currentPercent = MutableStateFlow<Int>(33)
+        val currentPercent: StateFlow<Int> = _currentPercent
+
+        fun modCurrentPercent(amount: Int) {
+            _currentPercent.value += amount
+        }
 
         fun checkWritten() {
             isWritten.value = script.value?.isNotEmpty()

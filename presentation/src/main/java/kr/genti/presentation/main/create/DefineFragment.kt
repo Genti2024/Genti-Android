@@ -7,6 +7,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseFragment
@@ -14,7 +15,6 @@ import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.stringOf
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentDefineBinding
-import kr.genti.presentation.select.pose.PoseActivity
 
 @AndroidEntryPoint
 class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_define) {
@@ -40,11 +40,8 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
 
     private fun initCreateBtnListener() {
         binding.btnCreateNext.setOnSingleClickListener {
-            PoseActivity.createIntent(
-                requireContext(),
-                viewModel.script.value.orEmpty(),
-                viewModel.plusImage.toString(),
-            ).apply { startActivity(this) }
+            findNavController().navigate(R.id.action_define_to_pose)
+            viewModel.modCurrentPercent(33)
         }
     }
 

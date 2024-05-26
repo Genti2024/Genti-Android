@@ -21,12 +21,12 @@ import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColorFromResource
 import kr.genti.core.extension.stringOf
 import kr.genti.presentation.R
-import kr.genti.presentation.databinding.ActivitySelfieBinding
+import kr.genti.presentation.databinding.FragmentSelfieBinding
 import kr.genti.presentation.select.wait.WaitActivity
 import kotlin.math.max
 
 @AndroidEntryPoint
-class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.fragment_selfie) {
+class SelfieActivity : BaseActivity<FragmentSelfieBinding>(R.layout.fragment_selfie) {
     private val viewModel by viewModels<SelfieViewModel>()
     lateinit var activityResult: ActivityResultLauncher<PickVisualMediaRequest>
 
@@ -34,8 +34,6 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.fragment_sel
         super.onCreate(savedInstanceState)
 
         initView()
-        initBackBtnListener()
-        initExitBtnListener()
         initNextBtnListener()
         initAddImageBtnListener()
         setGalleryImage()
@@ -51,18 +49,6 @@ class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.fragment_sel
             plusImage = intent.getStringExtra(EXTRA_PLUS_IMAGE)?.let { Uri.parse(it) }
             angle = intent.getIntExtra(EXTRA_ANGLE, -1)
             frame = intent.getIntExtra(EXTRA_FRAME, -1)
-        }
-    }
-
-    private fun initBackBtnListener() {
-        binding.btnBack.setOnSingleClickListener {
-            finish()
-        }
-    }
-
-    private fun initExitBtnListener() {
-        binding.btnExit.setOnSingleClickListener {
-            finish()
         }
     }
 
