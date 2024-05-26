@@ -10,6 +10,7 @@ import androidx.core.view.updatePadding
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.colorOf
+import kr.genti.core.extension.initOnBackPressedListener
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityLoginBinding
@@ -23,6 +24,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         super.onCreate(savedInstanceState)
 
         initLoginBtnListener()
+        initOnBackPressedListener(binding.root)
         setStatusBarTransparent()
         setNavigationBarGreen()
     }

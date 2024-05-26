@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseFragment
+import kr.genti.core.extension.initOnBackPressedListener
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.stringOf
 import kr.genti.presentation.R
@@ -36,6 +37,7 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
 
     private fun initView() {
         binding.vm = viewModel
+        initOnBackPressedListener(binding.root)
     }
 
     private fun initCreateBtnListener() {

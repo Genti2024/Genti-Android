@@ -17,9 +17,11 @@ class CreateViewModel
         val script = MutableLiveData<String>()
         var plusImage: Uri = Uri.EMPTY
         val isWritten = MutableLiveData(false)
+
         val selectedAngle = MutableLiveData<Int>(-1)
         val selectedFrame = MutableLiveData<Int>(-1)
         val isSelected = MutableLiveData(false)
+
         var uriList = listOf<Uri>()
         var isCompleted = MutableLiveData(false)
 

@@ -2,6 +2,7 @@ package kr.genti.core.extension
 
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -42,6 +43,26 @@ fun Fragment.setStatusBarColor(colorResId: Int) {
         val statusBarColor = ContextCompat.getColor(it, colorResId)
         it.window.statusBarColor = statusBarColor
     }
+}
+
+fun Fragment.initOnBackPressedListener(
+    view: View,
+    delay: Long = 2000L,
+) {
+    var backPressedTime = 0L
+    val onBackPressedCallback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (System.currentTimeMillis() - backPressedTime >= delay) {
+                    backPressedTime = System.currentTimeMillis()
+                    view.context.toast("버튼을 한번 더 누르면 종료됩니다.")
+                } else {
+                    requireActivity().finish()
+                }
+            }
+        }
+
+    requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
 }
 
 val Fragment.viewLifeCycle
