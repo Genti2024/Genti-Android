@@ -12,6 +12,7 @@ class CreateViewModel
     constructor(
         // private val authRepository: AuthRepository,
     ) : ViewModel() {
+        var currentPercent = 33
         val script = MutableLiveData<String>()
         val isWritten = MutableLiveData(false)
         var plusImage: Uri = Uri.EMPTY
