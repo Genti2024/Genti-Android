@@ -13,7 +13,7 @@ import kr.genti.presentation.databinding.ActivityPoseBinding
 import kr.genti.presentation.select.selfie.SelfieActivity
 
 @AndroidEntryPoint
-class PoseActivity : BaseActivity<ActivityPoseBinding>(R.layout.activity_pose) {
+class PoseActivity : BaseActivity<ActivityPoseBinding>(R.layout.fragment_pose) {
     private val viewModel by viewModels<PoseViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {

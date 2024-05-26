@@ -26,7 +26,7 @@ import kr.genti.presentation.select.wait.WaitActivity
 import kotlin.math.max
 
 @AndroidEntryPoint
-class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.activity_selfie) {
+class SelfieActivity : BaseActivity<ActivitySelfieBinding>(R.layout.fragment_selfie) {
     private val viewModel by viewModels<SelfieViewModel>()
     lateinit var activityResult: ActivityResultLauncher<PickVisualMediaRequest>
 
