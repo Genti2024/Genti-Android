@@ -17,39 +17,17 @@
         android:layout_height="match_parent"
         android:background="@color/background_white">
 
-        <ImageView
-            android:id="@+id/iv_create_logo"
-            android:layout_width="113dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="41dp"
-            android:adjustViewBounds="true"
-            android:src="@drawable/logo_genti_3d"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/iv_create_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            android:src="@drawable/img_progress_one"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_create_logo" />
-
         <TextView
             android:id="@+id/tv_create_script_title"
             style="@style/TextAppearance.Genti.BodyNormal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="32dp"
             android:gravity="center"
             android:text="@string/create_tv_script_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_create_progress" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_create_script"
