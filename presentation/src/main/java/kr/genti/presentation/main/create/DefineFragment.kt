@@ -1,5 +1,6 @@
 package kr.genti.presentation.main.create
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
@@ -33,6 +34,11 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
         initRefreshExBtnListener()
         initAddImageBtnListener()
         setGalleryImage()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setSavedImage()
     }
 
     private fun initView() {
@@ -73,5 +79,12 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
                     binding.layoutAddedImage.isVisible = true
                 }
             }
+    }
+
+    private fun setSavedImage() {
+        if (viewModel.plusImage != Uri.EMPTY) {
+            binding.ivAddedImage.load(viewModel.plusImage)
+            binding.layoutAddedImage.isVisible = true
+        }
     }
 }
