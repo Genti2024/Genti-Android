@@ -19,6 +19,7 @@
 
         <TextView
             android:id="@+id/tv_selfie_title"
+            android:layout_marginTop="12dp"
             style="@style/TextAppearance.Genti.BodyNormal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -251,7 +252,7 @@
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="3dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/img_selfie_one"
+                    android:src="@drawable/img_selfie_ex_one"
                     app:layout_constraintDimensionRatio="1"
                     app:layout_constraintEnd_toStartOf="@id/iv_selfie_angle_arrow_up"
                     app:layout_constraintStart_toStartOf="parent"
@@ -289,7 +290,7 @@
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="15dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/img_selfie_two"
+                    android:src="@drawable/img_selfie_ex_two"
                     app:layout_constraintDimensionRatio="1"
                     app:layout_constraintEnd_toStartOf="@id/iv_selfie_angle_arrow_down"
                     app:layout_constraintStart_toStartOf="parent"
