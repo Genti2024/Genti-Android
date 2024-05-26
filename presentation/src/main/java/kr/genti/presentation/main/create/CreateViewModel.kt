@@ -15,11 +15,13 @@ class CreateViewModel
         // private val authRepository: AuthRepository,
     ) : ViewModel() {
         val script = MutableLiveData<String>()
-        val isWritten = MutableLiveData(false)
         var plusImage: Uri = Uri.EMPTY
+        val isWritten = MutableLiveData(false)
         val selectedAngle = MutableLiveData<Int>(-1)
         val selectedFrame = MutableLiveData<Int>(-1)
         val isSelected = MutableLiveData(false)
+        var uriList = listOf<Uri>()
+        var isCompleted = MutableLiveData(false)
 
         private val _currentPercent = MutableStateFlow<Int>(33)
         val currentPercent: StateFlow<Int> = _currentPercent

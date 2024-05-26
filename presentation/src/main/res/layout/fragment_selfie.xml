@@ -9,7 +9,7 @@
 
         <variable
             name="vm"
-            type="kr.genti.presentation.select.selfie.SelfieViewModel" />
+            type="kr.genti.presentation.main.create.CreateViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -357,7 +357,7 @@
             android:layout_marginHorizontal="28dp"
             android:layout_marginBottom="28dp"
             android:background="@drawable/sel_btn"
-            android:enabled="@{vm.isSelected}"
+            android:enabled="@{vm.isCompleted()}"
             android:gravity="center"
             android:paddingVertical="10dp"
             android:text="@string/btn_next"
