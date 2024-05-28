@@ -1,4 +1,4 @@
-package kr.genti.presentation.result.wait
+package kr.genti.presentation.result.waiting
 
 import android.os.Bundle
 import androidx.core.view.ViewCompat
@@ -12,7 +12,7 @@ import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityWaitBinding
 
 @AndroidEntryPoint
-class WaitActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait) {
+class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

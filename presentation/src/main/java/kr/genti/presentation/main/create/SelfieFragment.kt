@@ -21,7 +21,7 @@ import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.stringOf
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentSelfieBinding
-import kr.genti.presentation.result.wait.WaitActivity
+import kr.genti.presentation.result.waiting.WaitingActivity
 import kotlin.math.max
 
 @AndroidEntryPoint
@@ -55,7 +55,7 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
 
     private fun initNextBtnListener() {
         binding.btnSelfieNext.setOnSingleClickListener {
-            Intent(requireActivity(), WaitActivity::class.java).apply {
+            Intent(requireActivity(), WaitingActivity::class.java).apply {
                 startActivity(this)
             }
         }
