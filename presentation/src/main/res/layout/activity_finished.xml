@@ -33,5 +33,49 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_finished_logo" />
 
+        <ImageView
+            android:id="@+id/iv_finished_background"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="58dp"
+            android:layout_marginTop="32dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/img_background_border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_finished_title" />
+
+        <ImageView
+            android:id="@+id/iv_finished_image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_selfie_one"
+            app:layout_constraintBottom_toBottomOf="@id/iv_finished_background"
+            app:layout_constraintEnd_toEndOf="@id/iv_finished_background"
+            app:layout_constraintStart_toStartOf="@id/iv_finished_background"
+            app:layout_constraintTop_toTopOf="@id/iv_finished_background" />
+
+        <ImageView
+            android:id="@+id/btn_finished_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_download"
+            app:layout_constraintBottom_toBottomOf="@id/iv_finished_image"
+            app:layout_constraintEnd_toEndOf="@id/iv_finished_image" />
+
+        <TextView
+            android:id="@+id/tv_finished_saved"
+            style="@style/TextAppearance.Genti.BodyNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:text="@string/finished_tv_saved"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_finished_background" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
