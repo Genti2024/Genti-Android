@@ -32,9 +32,15 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="kr.genti.presentation.result.wait.WaitActivity"
+            android:name="kr.genti.presentation.result.waiting.WaitingActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="kr.genti.presentation.result.finished.FinishedActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
 
     </application>
 
