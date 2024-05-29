@@ -46,7 +46,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_feed_logo"
-            tools:listitem="@layout/item_feed_info" />
+            tools:listitem="@layout/item_feed_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
