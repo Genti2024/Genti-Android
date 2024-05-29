@@ -47,4 +47,8 @@
     <string name="finished_btn_return_main">메인으로 이동하기</string>
     <string name="finished_btn_unwanted"><u>혹시 만들려고 했던 사진과 전혀 다른 사진이 나왔나요?</u></string>
 
+    <string name="feed_tv_title">젠플루언서들이 만든 사진이에요</string>
+    <string name="feed_btn_genfluencer"><u>젠플루언서란?</u></string>
+    <string name="feed_tv_genfluencer_guide">*여러분이 만든 사진은 자동으로 업로드 되지 않아요️</string>
+
 </resources>
