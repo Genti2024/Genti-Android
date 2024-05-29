@@ -16,6 +16,7 @@
             android:layout_width="77dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:paddingBottom="8dp"
             android:adjustViewBounds="true"
             android:src="@drawable/logo_genti_2d"
             app:layout_constraintEnd_toEndOf="parent"
@@ -32,53 +33,70 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_feed_title"
-            style="@style/TextAppearance.Genti.BodyNormal"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/sv_feed"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
-            android:gravity="center"
-            android:text="@string/feed_tv_title"
+            android:layout_height="0dp"
+            android:layout_marginTop="9dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_feed_logo" />
+            app:layout_constraintTop_toBottomOf="@id/iv_feed_logo">
 
-        <TextView
-            android:id="@+id/btn_feed_genfluencer"
-            style="@style/TextAppearance.Genti.BodyNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="3dp"
-            android:text="@string/feed_btn_genfluencer"
-            android:textColor="@color/green_1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_feed_title" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/iv_feed_gradient"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:adjustViewBounds="true"
-            android:src="@drawable/img_feed_gradient"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_feed_genfluencer" />
+                <TextView
+                    android:id="@+id/tv_feed_title"
+                    style="@style/TextAppearance.Genti.BodyNormal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/feed_tv_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_feed_genfluencer_guide"
-            style="@style/TextAppearance.Genti.BodyDescription"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/feed_tv_genfluencer_guide"
-            android:textColor="@color/grey_2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/iv_feed_gradient" />
+                <TextView
+                    android:id="@+id/btn_feed_genfluencer"
+                    style="@style/TextAppearance.Genti.BodyNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="3dp"
+                    android:text="@string/feed_btn_genfluencer"
+                    android:textColor="@color/green_1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_feed_title" />
+
+                <ImageView
+                    android:id="@+id/iv_feed_gradient"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/img_feed_gradient"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_feed_genfluencer" />
+
+                <TextView
+                    android:id="@+id/tv_feed_genfluencer_guide"
+                    style="@style/TextAppearance.Genti.BodyDescription"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/feed_tv_genfluencer_guide"
+                    android:textColor="@color/grey_2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/iv_feed_gradient" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
