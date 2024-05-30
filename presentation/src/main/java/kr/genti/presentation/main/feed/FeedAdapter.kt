@@ -53,7 +53,7 @@ class FeedAdapter(
 
             is FeedItemViewHolder -> {
                 val itemPosition = position - HEADER_COUNT
-                holder.onBind(itemList[itemPosition], itemPosition)
+                holder.onBind(itemList[itemPosition])
             }
         }
         val layoutParams = holder.itemView.layoutParams as RecyclerView.LayoutParams

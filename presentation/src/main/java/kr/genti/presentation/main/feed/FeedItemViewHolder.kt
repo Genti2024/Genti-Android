@@ -9,10 +9,7 @@ class FeedItemViewHolder(
     val binding: ItemFeedItemBinding,
 ) :
     RecyclerView.ViewHolder(binding.root) {
-    fun onBind(
-        item: FeedItemModel,
-        position: Int,
-    ) {
+    fun onBind(item: FeedItemModel) {
         with(binding) {
             ivFeedItemImage.setImageURI(item.url.toUri())
             tvFeedItemDescription.text = item.prompt
