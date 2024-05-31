@@ -15,7 +15,7 @@ object ServiceModule {
     @Provides
     @Singleton
     fun provideAuthService(
-        @RetrofitQualifier.JWT retrofit: Retrofit,
+        @RetrofitQualifier.REISSUE retrofit: Retrofit,
     ): AuthService = retrofit.create(AuthService::class.java)
 
     @Provides
