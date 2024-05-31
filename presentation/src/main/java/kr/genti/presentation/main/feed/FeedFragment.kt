@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseFragment
 import kr.genti.core.extension.initOnBackPressedListener
+import kr.genti.core.extension.setStatusBarColor
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentFeedBinding
 import kotlin.math.max
@@ -25,10 +26,15 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        initOnBackPressedListener(binding.root)
+        initView()
         initAdapter()
         setItemList()
         setLightningVisibility()
+    }
+
+    private fun initView() {
+        initOnBackPressedListener(binding.root)
+        setStatusBarColor(R.color.background_white)
     }
 
     private fun initAdapter() {
