@@ -1,5 +1,6 @@
 package kr.genti.presentation.main.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -7,9 +8,11 @@ import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseFragment
 import kr.genti.core.extension.initOnBackPressedListener
+import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColor
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentProfileBinding
+import kr.genti.presentation.setting.SettingActivity
 
 @AndroidEntryPoint
 class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment_profile) {
@@ -27,6 +30,7 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
         super.onViewCreated(view, savedInstanceState)
 
         initView()
+        initSettingBtnListener()
         setAdapterList()
         setMockImages()
         observeStatus()
@@ -40,12 +44,20 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
     private fun setAdapterList() {
         _adapter =
             ProfileAdapter(
-                imageClick = ::initImageBtnListner,
+                imageClick = ::initImageClickListener,
             )
     }
 
-    private fun initImageBtnListner(item: Int) {
+    private fun initImageClickListener(item: Int) {
         // TODO
+    }
+
+    private fun initSettingBtnListener() {
+        binding.btnSetting.setOnSingleClickListener {
+            Intent(requireActivity(), SettingActivity::class.java).apply {
+                startActivity(this)
+            }
+        }
     }
 
     private fun setMockImages() {
