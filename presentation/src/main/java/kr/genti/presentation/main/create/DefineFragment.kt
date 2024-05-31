@@ -8,13 +8,19 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseFragment
 import kr.genti.core.extension.initOnBackPressedListener
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.stringOf
+import kr.genti.core.extension.toast
+import kr.genti.core.state.UiState
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentDefineBinding
 
@@ -34,6 +40,8 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
         initRefreshExBtnListener()
         initAddImageBtnListener()
         setGalleryImage()
+        observeGetExamplePromptsResult()
+        observeGetRandomPromptState()
     }
 
     override fun onResume() {
@@ -44,6 +52,7 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
     private fun initView() {
         binding.vm = viewModel
         initOnBackPressedListener(binding.root)
+        viewModel.getExamplePromptsFromServer()
     }
 
     private fun initCreateBtnListener() {
@@ -79,6 +88,22 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
                     binding.layoutAddedImage.isVisible = true
                 }
             }
+    }
+
+    private fun observeGetExamplePromptsResult() {
+        viewModel.getExamplePromptsResult.flowWithLifecycle(lifecycle).onEach { result ->
+            if (!result) toast(stringOf(R.string.error_msg))
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun observeGetRandomPromptState() {
+        viewModel.getRandomPromptState.flowWithLifecycle(lifecycle).onEach { state ->
+            when (state) {
+                is UiState.Success -> binding.tvCreateRandomExample.text = state.data.prompt
+
+                else -> return@onEach
+            }
+        }
     }
 
     private fun setSavedImage() {

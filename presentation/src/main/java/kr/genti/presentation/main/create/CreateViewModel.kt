@@ -10,9 +10,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kr.genti.core.state.UiState
 import kr.genti.domain.entity.response.PromptModel
 import kr.genti.domain.repository.CreateRepository
 import javax.inject.Inject
+import kotlin.random.Random
 
 @HiltViewModel
 class CreateViewModel
@@ -35,10 +37,14 @@ class CreateViewModel
         private val _currentPercent = MutableStateFlow<Int>(33)
         val currentPercent: StateFlow<Int> = _currentPercent
 
-        private val _getExamplePromptResult = MutableSharedFlow<Boolean>()
-        val getExamplePromptResult: SharedFlow<Boolean> = _getExamplePromptResult
+        private val _getExamplePromptsResult = MutableSharedFlow<Boolean>()
+        val getExamplePromptsResult: SharedFlow<Boolean> = _getExamplePromptsResult
 
-        var examplePromptList = listOf<PromptModel>()
+        private var examplePromptList = listOf<PromptModel>()
+        private var currentPromptId: Long = -1
+
+        private val _getRandomPromptState = MutableStateFlow<UiState<PromptModel>>(UiState.Empty)
+        val getRandomPromptState: StateFlow<UiState<PromptModel>> = _getRandomPromptState
 
         fun modCurrentPercent(amount: Int) {
             _currentPercent.value += amount
@@ -73,13 +79,25 @@ class CreateViewModel
                 viewModelScope.launch {
                     createRepository.getExamplePrompts()
                         .onSuccess {
-                            _getExamplePromptResult.emit(true)
+                            _getExamplePromptsResult.emit(true)
                             examplePromptList = it
+                            getRandomPrompt()
                         }
                         .onFailure {
-                            _getExamplePromptResult.emit(false)
+                            _getExamplePromptsResult.emit(false)
                         }
                 }
+            }
+        }
+
+        fun getRandomPrompt() {
+            val filteredList = examplePromptList.filter { it.id != currentPromptId }
+            if (filteredList.isNotEmpty()) {
+                val randomPrompt = filteredList[Random.nextInt(filteredList.size)]
+                currentPromptId = randomPrompt.id
+                _getRandomPromptState.value = UiState.Success(randomPrompt)
+            } else {
+                _getRandomPromptState.value = UiState.Failure(currentPromptId.toString())
             }
         }
     }
