@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseFragment
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColor
+import kr.genti.core.extension.stringOf
+import kr.genti.core.extension.toast
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentCreateBinding
 
@@ -31,10 +33,12 @@ class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_c
         initView()
         initBackBtnListener()
         observeProgressBar()
+        observeGetExamplePromptsResult()
     }
 
     private fun initView() {
         setStatusBarColor(R.color.background_white)
+        viewModel.getExamplePromptsFromServer()
     }
 
     private fun initBackBtnListener() {
@@ -69,6 +73,12 @@ class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_c
                 start()
             }
             binding.btnBack.isVisible = viewModel.currentPercent.value > 33
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun observeGetExamplePromptsResult() {
+        viewModel.getExamplePromptResult.flowWithLifecycle(lifecycle).onEach { result ->
+            if (!result) toast(stringOf(R.string.error_msg))
         }.launchIn(lifecycleScope)
     }
 
