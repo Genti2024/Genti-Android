@@ -20,6 +20,6 @@ class AuthRepositoryImpl
                 authDataSource.postReissueTokens(
                     authorization,
                     request.toTokenRequestModel(),
-                ).data.toAuthTokenModel()
+                ).response.toAuthTokenModel()
             }
     }
