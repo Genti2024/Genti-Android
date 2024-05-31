@@ -64,5 +64,6 @@
 
     <string name="profile_tv_title">마이페이지</string>
     <string name="profile_tv_waiting">세상에 없던 나만의 사진 찍는 중 ⋯</string>
+    <string name="profile_tv_list_title">내가 만든 사진</string>
 
 </resources>
