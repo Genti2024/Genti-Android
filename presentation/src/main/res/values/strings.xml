@@ -66,4 +66,12 @@
     <string name="profile_tv_waiting">세상에 없던 나만의 사진 찍는 중 ⋯</string>
     <string name="profile_tv_list_title">내가 만든 사진</string>
 
+    <string name="setting_tv_title">설정 및 개인정보</string>
+    <string name="setting_btn_terms_of_service">이용 약관</string>
+    <string name="setting_btn_privacy_policy">개인정보처리방침</string>
+    <string name="setting_btn_android_version">앱 버전 정보</string>
+    <string name="setting_btn_company_info">사업자 정보</string>
+    <string name="setting_btn_logout">로그아웃</string>
+    <string name="setting_btn_quit">회원 탈퇴</string>
+
 </resources>
