@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -153,6 +154,7 @@
                 android:layout_height="0dp"
                 android:paddingHorizontal="-1dp"
                 android:layout_marginTop="10dp"
+                tools:listitem="@layout/item_profile_image"
                 android:background="@color/background_white"
                 app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
