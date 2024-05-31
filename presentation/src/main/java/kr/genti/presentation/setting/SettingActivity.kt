@@ -15,6 +15,9 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(R.layout.activity_s
 
         initView()
         initBackBtnListener()
+        initInfoBtnsListener()
+        initLogoutBtnListener()
+        initQuitBtnListener()
     }
 
     private fun initView() {
@@ -24,6 +27,35 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(R.layout.activity_s
     private fun initBackBtnListener() {
         binding.btnBack.setOnSingleClickListener {
             finish()
+        }
+    }
+
+    private fun initInfoBtnsListener() {
+        with(binding) {
+            btnTermsOfService.setOnSingleClickListener {
+                // TODO
+            }
+            btnPrivacyPolicy.setOnSingleClickListener {
+                // TODO
+            }
+            btnAndroidVersion.setOnSingleClickListener {
+                // TODO
+            }
+            btnCompanyInfo.setOnSingleClickListener {
+                // TODO
+            }
+        }
+    }
+
+    private fun initLogoutBtnListener() {
+        binding.btnLogout.setOnSingleClickListener {
+            // TODO
+        }
+    }
+
+    private fun initQuitBtnListener() {
+        binding.btnQuit.setOnSingleClickListener {
+            // TODO
         }
     }
 }
