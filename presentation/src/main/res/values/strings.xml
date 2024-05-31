@@ -62,4 +62,8 @@
     <string name="feed_tv_genfluencer_guide">*여러분이 만든 사진은 자동으로 업로드 되지 않아요️</string>
     <string name="feed_tv_item_title">사진 설명</string>
 
+    <string name="profile_tv_title">마이페이지</string>
+    <string name="profile_tv_waiting">세상에 없던 나만의 사진 찍는 중 ⋯</string>
+    <string name="profile_tv_list_title">내가 만든 사진</string>
+
 </resources>

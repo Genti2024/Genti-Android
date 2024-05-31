@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseFragment
 import kr.genti.core.extension.setOnSingleClickListener
+import kr.genti.core.extension.setStatusBarColor
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentCreateBinding
 
@@ -27,8 +28,13 @@ class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_c
     ) {
         super.onViewCreated(view, savedInstanceState)
 
+        initView()
         initBackBtnListener()
         observeProgressBar()
+    }
+
+    private fun initView() {
+        setStatusBarColor(R.color.background_white)
     }
 
     private fun initBackBtnListener() {

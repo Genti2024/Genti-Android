@@ -15,17 +15,17 @@ class FeedViewModel
             listOf(
                 FeedItemModel(
                     0,
-                    "https://github.com/Marchbreeze/Edu-Public-Data/assets/97405341/3f995ad0-def2-479e-bed8-2f33deff684b",
+                    "https://github.com/Genti2024/Genti-Android/assets/97405341/68bf3348-f732-4874-947d-891f312b241e",
                     "프랑스 야경을 즐기는 모습을 그려주세요. 항공점퍼를 입고 테라스에 서 있는 모습이에요.",
                 ),
                 FeedItemModel(
                     1,
-                    "https://github.com/Marchbreeze/Edu-Public-Data/assets/97405341/3f995ad0-def2-479e-bed8-2f33deff684b",
+                    "https://github.com/Genti2024/Genti-Android/assets/97405341/0eb2d7f2-90d2-436a-aa53-4ad7a414d805",
                     "프랑스 야경을 즐기는 모습을 그려주세요. 항공점퍼를 입고 테라스에 서 있는 모습이에요.",
                 ),
                 FeedItemModel(
                     2,
-                    "https://github.com/Marchbreeze/Edu-Public-Data/assets/97405341/3f995ad0-def2-479e-bed8-2f33deff684b",
+                    "https://github.com/Genti2024/Genti-Android/assets/97405341/0eb2d7f2-90d2-436a-aa53-4ad7a414d805",
                     "프랑스 야경을 즐기는 모습을 그려주세요. 항공점퍼를 입고 테라스에 서 있는 모습이에요.",
                 ),
             )
