@@ -66,4 +66,6 @@
     <string name="profile_tv_waiting">세상에 없던 나만의 사진 찍는 중 ⋯</string>
     <string name="profile_tv_list_title">내가 만든 사진</string>
 
+    <string name="setting_tv_title">설정 및 개인정보</string>
+
 </resources>
