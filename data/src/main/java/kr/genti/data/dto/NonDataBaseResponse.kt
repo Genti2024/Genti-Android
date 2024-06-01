@@ -4,11 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BaseResponse<T>(
+data class NonDataBaseResponse(
     @SerialName("success")
     val success: Boolean,
-    @SerialName("response")
-    val response: T,
     @SerialName("errorCode")
     val errorCode: String?,
     @SerialName("errorMessage")

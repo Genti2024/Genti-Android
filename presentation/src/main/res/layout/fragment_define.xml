@@ -19,11 +19,11 @@
 
         <TextView
             android:id="@+id/tv_create_script_title"
-            android:layout_marginTop="12dp"
             style="@style/TextAppearance.Genti.BodyNormal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="12dp"
             android:gravity="center"
             android:text="@string/create_tv_script_title"
             app:layout_constraintEnd_toEndOf="parent"
@@ -73,23 +73,23 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
-            android:layout_marginEnd="-6dp"
             android:background="@drawable/shape_bg_fill_green1_line_10_rect"
             android:elevation="5dp"
+            android:minLines="2"
             android:paddingHorizontal="8dp"
             android:paddingVertical="13dp"
             android:shadowColor="@color/black"
-            android:text="@string/create_tv_example_1"
             app:layout_constraintEnd_toStartOf="@id/btn_refresh"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_create_random_title" />
+            app:layout_constraintTop_toBottomOf="@id/tv_create_random_title"
+            tools:text="@string/create_tv_example_1" />
 
         <ImageView
             android:id="@+id/btn_refresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="18dp"
-            android:elevation="10dp"
+            android:layout_marginEnd="11dp"
+            android:background="#D9D9D9"
             android:padding="12dp"
             android:src="@drawable/ic_refresh"
             app:layout_constraintBottom_toBottomOf="@id/tv_create_random_example"
@@ -114,11 +114,11 @@
             style="@style/TextAppearance.Genti.BodyDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginBottom="4dp"
             android:gravity="center"
             android:text="@string/create_tv_plus_subtitle"
             app:layout_constraintBottom_toBottomOf="@id/tv_create_plus_title"
-            android:layout_marginBottom="4dp"
-            android:layout_marginStart="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@id/tv_create_plus_title" />
@@ -163,7 +163,22 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/shape_bg_fill_grey7_line_rect"
                 app:layout_constraintDimensionRatio="1" />
+
         </FrameLayout>
+
+        <ImageView
+            android:id="@+id/btn_delete_image"
+            android:layout_width="wrap_content"
+            tools:visibility="visible"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-11dp"
+            android:layout_marginEnd="-11dp"
+            android:elevation="2dp"
+            android:visibility="gone"
+            android:padding="12dp"
+            android:src="@drawable/ic_delete"
+            app:layout_constraintEnd_toEndOf="@id/layout_added_image"
+            app:layout_constraintTop_toTopOf="@id/layout_added_image" />
 
         <TextView
             android:id="@+id/tv_create_plus_guide"
