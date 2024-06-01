@@ -39,6 +39,7 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
         initCreateBtnListener()
         initRefreshExBtnListener()
         initAddImageBtnListener()
+        initDeleteBtnListener()
         setGalleryImage()
         observeGetExamplePromptsResult()
         observeGetRandomPromptState()
@@ -79,6 +80,14 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
         }
     }
 
+    private fun initDeleteBtnListener() {
+        binding.btnDeleteImage.setOnSingleClickListener {
+            viewModel.plusImage = Uri.EMPTY
+            binding.layoutAddedImage.isVisible = false
+            binding.btnDeleteImage.isVisible = false
+        }
+    }
+
     private fun setGalleryImage() {
         activityResult =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -86,6 +95,7 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
                     viewModel.plusImage = uri
                     binding.ivAddedImage.load(uri)
                     binding.layoutAddedImage.isVisible = true
+                    binding.btnDeleteImage.isVisible = true
                 }
             }
     }
