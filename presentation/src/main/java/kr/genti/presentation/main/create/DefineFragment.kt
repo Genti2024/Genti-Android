@@ -63,8 +63,8 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
     }
 
     private fun initRefreshExBtnListener() {
-        binding.btnRefresh.setOnSingleClickListener {
-            binding.tvCreateRandomExample.text = stringOf(R.string.create_tv_example_1)
+        binding.btnRefresh.setOnClickListener {
+            viewModel.getRandomPrompt()
         }
     }
 
@@ -103,7 +103,7 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
 
                 else -> return@onEach
             }
-        }
+        }.launchIn(lifecycleScope)
     }
 
     private fun setSavedImage() {
