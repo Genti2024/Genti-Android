@@ -13,8 +13,10 @@ import kotlinx.coroutines.launch
 import kr.genti.core.state.UiState
 import kr.genti.domain.entity.request.S3RequestModel
 import kr.genti.domain.entity.response.PromptModel
+import kr.genti.domain.entity.response.S3PresignedUrlModel
 import kr.genti.domain.enums.FileType
 import kr.genti.domain.repository.CreateRepository
+import kr.genti.domain.repository.UploadRepository
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -23,6 +25,7 @@ class CreateViewModel
     @Inject
     constructor(
         private val createRepository: CreateRepository,
+        private val uploadRepository: UploadRepository,
     ) : ViewModel() {
         val script = MutableLiveData<String>()
         var plusImage: Uri = Uri.EMPTY
@@ -116,9 +119,9 @@ class CreateViewModel
             if (plusImage != Uri.EMPTY) {
                 viewModelScope.launch {
                     createRepository.getS3SingleUrl(S3RequestModel("1.png", FileType.CREATED_IMAGE))
-                        .onSuccess {
+                        .onSuccess { uriModel ->
                             _getS3UrlResult.emit(true)
-                            postSingleImage()
+                            postSingleImage(uriModel)
                         }.onFailure {
                             _getS3UrlResult.emit(false)
                         }
@@ -131,18 +134,26 @@ class CreateViewModel
                         S3RequestModel("3.png", FileType.CREATED_IMAGE),
                         S3RequestModel("4.png", FileType.CREATED_IMAGE),
                     ),
-                ).onSuccess {
+                ).onSuccess { uriList ->
                     _getS3UrlResult.emit(true)
-                    postMultiImage()
+                    postMultiImage(uriList)
                 }.onFailure {
                     _getS3UrlResult.emit(false)
                 }
             }
         }
 
-        fun postSingleImage() {
+        private fun postSingleImage(uriModel: S3PresignedUrlModel) {
+            viewModelScope.launch {
+                uploadRepository.uploadImage(uriModel.url, plusImage.toString())
+            }
         }
 
-        fun postMultiImage() {
+        private fun postMultiImage(uriList: List<S3PresignedUrlModel>) {
+            viewModelScope.launch {
+                for (i in 0..2) {
+                    uploadRepository.uploadImage(uriList[i].url, plusImage.toString())
+                }
+            }
         }
     }
