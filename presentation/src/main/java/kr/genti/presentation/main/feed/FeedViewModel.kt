@@ -1,32 +1,40 @@
 package kr.genti.presentation.main.feed
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kr.genti.core.state.UiState
 import kr.genti.domain.entity.response.FeedItemModel
+import kr.genti.domain.repository.FeedRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class FeedViewModel
     @Inject
     constructor(
-        // private val profileRepository: ProfileRepository,
+        private val feedRepository: FeedRepository,
     ) : ViewModel() {
-        val mockItemList =
-            listOf(
-                FeedItemModel(
-                    0,
-                    "https://github.com/Genti2024/Genti-Android/assets/97405341/68bf3348-f732-4874-947d-891f312b241e",
-                    "프랑스 야경을 즐기는 모습을 그려주세요. 항공점퍼를 입고 테라스에 서 있는 모습이에요.",
-                ),
-                FeedItemModel(
-                    1,
-                    "https://github.com/Genti2024/Genti-Android/assets/97405341/0eb2d7f2-90d2-436a-aa53-4ad7a414d805",
-                    "프랑스 야경을 즐기는 모습을 그려주세요. 항공점퍼를 입고 테라스에 서 있는 모습이에요.",
-                ),
-                FeedItemModel(
-                    2,
-                    "https://github.com/Genti2024/Genti-Android/assets/97405341/0eb2d7f2-90d2-436a-aa53-4ad7a414d805",
-                    "프랑스 야경을 즐기는 모습을 그려주세요. 항공점퍼를 입고 테라스에 서 있는 모습이에요.",
-                ),
-            )
+        private val _getExampleItemsState =
+            MutableStateFlow<UiState<List<FeedItemModel>>>(UiState.Empty)
+        val getExampleItemsState: StateFlow<UiState<List<FeedItemModel>>> = _getExampleItemsState
+
+        init {
+            getExamplePromptsFromServer()
+        }
+
+        private fun getExamplePromptsFromServer() {
+            viewModelScope.launch {
+                _getExampleItemsState.value = UiState.Loading
+                feedRepository.getExampleItems()
+                    .onSuccess {
+                        _getExampleItemsState.value = UiState.Success(it)
+                    }
+                    .onFailure { t ->
+                        _getExampleItemsState.value = UiState.Failure(t.message.toString())
+                    }
+            }
+        }
     }

@@ -46,6 +46,10 @@ class CreateViewModel
         private val _getRandomPromptState = MutableStateFlow<UiState<PromptModel>>(UiState.Empty)
         val getRandomPromptState: StateFlow<UiState<PromptModel>> = _getRandomPromptState
 
+        init {
+            getExamplePromptsFromServer()
+        }
+
         fun modCurrentPercent(amount: Int) {
             _currentPercent.value += amount
         }
@@ -74,7 +78,7 @@ class CreateViewModel
                 selectedRatio.value != -1 && selectedAngle.value != -1 && selectedFrame.value != -1
         }
 
-        fun getExamplePromptsFromServer() {
+        private fun getExamplePromptsFromServer() {
             if (examplePromptList.isEmpty()) {
                 viewModelScope.launch {
                     createRepository.getExamplePrompts()
