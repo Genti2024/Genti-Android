@@ -6,8 +6,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kr.genti.data.dataSource.AuthDataSource
 import kr.genti.data.dataSource.CreateDataSource
+import kr.genti.data.dataSource.FeedDataSource
 import kr.genti.data.dataSourceImpl.AuthDataSourceImpl
 import kr.genti.data.dataSourceImpl.CreateDataSourceImpl
+import kr.genti.data.dataSourceImpl.FeedDataSourceImpl
 import javax.inject.Singleton
 
 @Module
@@ -20,4 +22,8 @@ object DataSourceModule {
     @Provides
     @Singleton
     fun provideCreateDataSource(createDataSourceImpl: CreateDataSourceImpl): CreateDataSource = createDataSourceImpl
+
+    @Provides
+    @Singleton
+    fun provideFeedDataSource(feedDataSourceImpl: FeedDataSourceImpl): FeedDataSource = feedDataSourceImpl
 }
