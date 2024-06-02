@@ -75,7 +75,7 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    @RetrofitQualifier.REISSUE
+    @RetrofitQualifier.NOTOKEN
     fun provideReissueOkHttpClient(loggingInterceptor: Interceptor): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
@@ -96,9 +96,9 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    @RetrofitQualifier.REISSUE
+    @RetrofitQualifier.NOTOKEN
     fun provideReissueRetrofit(
-        @RetrofitQualifier.REISSUE client: OkHttpClient,
+        @RetrofitQualifier.NOTOKEN client: OkHttpClient,
         factory: Converter.Factory,
     ): Retrofit =
         Retrofit.Builder()

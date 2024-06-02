@@ -17,7 +17,7 @@ object ServiceModule {
     @Provides
     @Singleton
     fun provideAuthService(
-        @RetrofitQualifier.REISSUE retrofit: Retrofit,
+        @RetrofitQualifier.NOTOKEN retrofit: Retrofit,
     ): AuthService = retrofit.create(AuthService::class.java)
 
     @Provides
@@ -35,6 +35,6 @@ object ServiceModule {
     @Provides
     @Singleton
     fun provideUploadService(
-        @RetrofitQualifier.REISSUE retrofit: Retrofit,
+        @RetrofitQualifier.NOTOKEN retrofit: Retrofit,
     ): UploadService = retrofit.create(UploadService::class.java)
 }
