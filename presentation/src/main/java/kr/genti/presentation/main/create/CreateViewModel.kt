@@ -11,7 +11,9 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kr.genti.core.state.UiState
+import kr.genti.domain.entity.request.S3RequestModel
 import kr.genti.domain.entity.response.PromptModel
+import kr.genti.domain.enums.FileType
 import kr.genti.domain.repository.CreateRepository
 import javax.inject.Inject
 import kotlin.random.Random
@@ -45,6 +47,9 @@ class CreateViewModel
 
         private val _getRandomPromptState = MutableStateFlow<UiState<PromptModel>>(UiState.Empty)
         val getRandomPromptState: StateFlow<UiState<PromptModel>> = _getRandomPromptState
+
+        private val _getS3UrlResult = MutableSharedFlow<Boolean>()
+        val getS3UrlResult: SharedFlow<Boolean> = _getS3UrlResult
 
         init {
             getExamplePromptsFromServer()
@@ -103,5 +108,41 @@ class CreateViewModel
             } else {
                 _getRandomPromptState.value = UiState.Failure(currentPromptId.toString())
             }
+        }
+
+        fun getS3PresignedUrls() {
+            // TODO: 파일명 대응
+            // TODO: USER_UPLOAD_IMAGE 로 파일 타입 변경
+            if (plusImage != Uri.EMPTY) {
+                viewModelScope.launch {
+                    createRepository.getS3SingleUrl(S3RequestModel("1.png", FileType.CREATED_IMAGE))
+                        .onSuccess {
+                            _getS3UrlResult.emit(true)
+                            postSingleImage()
+                        }.onFailure {
+                            _getS3UrlResult.emit(false)
+                        }
+                }
+            }
+            viewModelScope.launch {
+                createRepository.getS3MultiUrl(
+                    listOf(
+                        S3RequestModel("2.png", FileType.CREATED_IMAGE),
+                        S3RequestModel("3.png", FileType.CREATED_IMAGE),
+                        S3RequestModel("4.png", FileType.CREATED_IMAGE),
+                    ),
+                ).onSuccess {
+                    _getS3UrlResult.emit(true)
+                    postMultiImage()
+                }.onFailure {
+                    _getS3UrlResult.emit(false)
+                }
+            }
+        }
+
+        fun postSingleImage() {
+        }
+
+        fun postMultiImage() {
         }
     }

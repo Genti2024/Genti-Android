@@ -1,6 +1,5 @@
 package kr.genti.presentation.main.create
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -13,15 +12,19 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseFragment
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.stringOf
+import kr.genti.core.extension.toast
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentSelfieBinding
-import kr.genti.presentation.result.waiting.WaitingActivity
 import kotlin.math.max
 
 @AndroidEntryPoint
@@ -36,12 +39,13 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
         super.onViewCreated(view, savedInstanceState)
 
         initView()
-        initNextBtnListener()
         initBackPressedListener()
         initAddImageBtnListener()
+        initRequestCreateBtnListener()
         setGalleryImage()
         setBulletPointList()
         setGuideListBlur()
+        observeGetS3UrlResult()
     }
 
     override fun onResume() {
@@ -51,14 +55,6 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
 
     private fun initView() {
         binding.vm = viewModel
-    }
-
-    private fun initNextBtnListener() {
-        binding.btnSelfieNext.setOnSingleClickListener {
-            Intent(requireActivity(), WaitingActivity::class.java).apply {
-                startActivity(this)
-            }
-        }
     }
 
     private fun initBackPressedListener() {
@@ -83,6 +79,12 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
             layoutAddedImage.setOnSingleClickListener {
                 activityResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
+        }
+    }
+
+    private fun initRequestCreateBtnListener() {
+        binding.btnSelfieNext.setOnSingleClickListener {
+            viewModel.getS3PresignedUrls()
         }
     }
 
@@ -146,5 +148,11 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
                 ivSelfieBlurTop.alpha = 1 - max(0.0, (1 - scrollY / 100f).toDouble()).toFloat()
             }
         }
+    }
+
+    private fun observeGetS3UrlResult() {
+        viewModel.getS3UrlResult.flowWithLifecycle(lifecycle).onEach { result ->
+            if (!result) toast(stringOf(R.string.error_msg))
+        }.launchIn(lifecycleScope)
     }
 }
