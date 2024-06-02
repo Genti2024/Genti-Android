@@ -12,6 +12,6 @@ class FeedRepositoryImpl
     ) : FeedRepository {
         override suspend fun getExampleItems(): Result<List<FeedItemModel>> =
             runCatching {
-                feedDataSource.getExampleItems().response.map { it.toFeedItemModel() }
+                feedDataSource.getExampleItems().response.map { it.toModel() }
             }
     }

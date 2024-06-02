@@ -11,5 +11,5 @@ data class CreatePromptDto(
     @SerialName("prompt")
     val prompt: String,
 ) {
-    fun toPromptModel() = PromptModel(id, prompt)
+    fun toModel() = PromptModel(id, prompt)
 }
