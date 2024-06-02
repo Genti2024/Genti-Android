@@ -8,4 +8,6 @@ interface CreateRepository {
     suspend fun getExamplePrompts(): Result<List<PromptModel>>
 
     suspend fun getS3SingleUrl(request: S3RequestModel): Result<S3PresignedUrlModel>
+
+    suspend fun getS3MultiUrl(request: List<S3RequestModel>): Result<List<S3PresignedUrlModel>>
 }
