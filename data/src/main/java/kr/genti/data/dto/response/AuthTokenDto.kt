@@ -13,5 +13,5 @@ data class AuthTokenDto(
     @SerialName("userId")
     val userId: Long,
 ) {
-    fun toAuthTokenModel() = AuthTokenModel(accessToken = accessToken, refreshToken = refreshToken, userId = userId)
+    fun toModel() = AuthTokenModel(accessToken = accessToken, refreshToken = refreshToken, userId = userId)
 }

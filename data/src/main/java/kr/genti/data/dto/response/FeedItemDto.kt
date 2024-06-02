@@ -13,5 +13,5 @@ data class FeedItemDto(
     @SerialName("prompt")
     val prompt: String,
 ) {
-    fun toFeedItemModel() = FeedItemModel(id, url, prompt)
+    fun toModel() = FeedItemModel(id, url, prompt)
 }

@@ -1,7 +1,10 @@
 package kr.genti.data.repositoryImpl
 
 import kr.genti.data.dataSource.CreateDataSource
+import kr.genti.data.dto.request.toDto
+import kr.genti.domain.entity.request.S3RequestModel
 import kr.genti.domain.entity.response.PromptModel
+import kr.genti.domain.entity.response.S3PresignedUrlModel
 import kr.genti.domain.repository.CreateRepository
 import javax.inject.Inject
 
@@ -12,6 +15,16 @@ class CreateRepositoryImpl
     ) : CreateRepository {
         override suspend fun getExamplePrompts(): Result<List<PromptModel>> =
             runCatching {
-                createDataSource.getExamplePrompts().response.map { it.toPromptModel() }
+                createDataSource.getExamplePrompts().response.map { it.toModel() }
+            }
+
+        override suspend fun getS3SingleUrl(request: S3RequestModel): Result<S3PresignedUrlModel> =
+            runCatching {
+                createDataSource.getSingleS3Url(request.toDto()).response.toModel()
+            }
+
+        override suspend fun getS3MultiUrl(request: List<S3RequestModel>): Result<List<S3PresignedUrlModel>> =
+            runCatching {
+                createDataSource.getMultiS3Url(request.map { it.toDto() }).response.map { it.toModel() }
             }
     }

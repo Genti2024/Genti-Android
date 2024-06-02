@@ -10,4 +10,4 @@ data class TokenRequestDto(
     val userId: Long,
 )
 
-fun TokenRequestModel.toTokenRequestModel() = TokenRequestDto(userId)
+fun TokenRequestModel.toDto() = TokenRequestDto(userId)
