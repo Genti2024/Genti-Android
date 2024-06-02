@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/shape_green3_fill_15_bottom_rect"
+            app:layout_constraintBottom_toBottomOf="@id/tv_setting_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_setting_title"
+            style="@style/TextAppearance.Genti.BodyNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="74dp"
+            android:paddingVertical="17dp"
+            android:paddingStart="39dp"
+            android:text="@string/setting_tv_title"
+            android:textColor="@color/grey_3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/cv_info_list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/shape_grey6_fill_15_rect"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_setting_title">
+
+            <TextView
+                android:id="@+id/btn_terms_of_service"
+                style="@style/TextAppearance.Genti.BodyNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingVertical="10dp"
+                android:paddingStart="39dp"
+                android:text="@string/setting_btn_terms_of_service" />
+
+            <TextView
+                android:id="@+id/btn_privacy_policy"
+                style="@style/TextAppearance.Genti.BodyNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10dp"
+                android:paddingStart="39dp"
+                android:text="@string/setting_btn_privacy_policy" />
+
+            <TextView
+                android:id="@+id/btn_android_version"
+                style="@style/TextAppearance.Genti.BodyNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10dp"
+                android:paddingStart="39dp"
+                android:text="@string/setting_btn_android_version" />
+
+            <TextView
+                android:id="@+id/btn_company_info"
+                style="@style/TextAppearance.Genti.BodyNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10dp"
+                android:paddingStart="39dp"
+                android:text="@string/setting_btn_company_info" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cv_user_list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/shape_grey6_fill_15_rect"
+            android:orientation="vertical"
+            android:paddingBottom="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cv_info_list">
+
+            <TextView
+                android:id="@+id/btn_logout"
+                style="@style/TextAppearance.Genti.BodyNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:paddingVertical="10dp"
+                android:paddingStart="39dp"
+                android:text="@string/setting_btn_logout" />
+
+            <TextView
+                android:id="@+id/btn_quit"
+                style="@style/TextAppearance.Genti.BodyNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:paddingVertical="10dp"
+                android:paddingStart="39dp"
+                android:text="@string/setting_btn_quit"
+                android:textColor="@color/grey_3" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_marginBottom="35dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/logo_genti_3d"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

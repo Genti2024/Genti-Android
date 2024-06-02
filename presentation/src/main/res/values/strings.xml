@@ -1,6 +1,16 @@
 <resources>
     <string name="app_name">Genti</string>
 
+    <string name="to_string">%s</string>
+    <string name="dummy">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+
+    <string name="token_expire_error_msg">로그인 상태를 확인해주세요!</string>
+    <string name="error_msg">오류가 발생했습니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="kakao_connection_error_msg">카카오톡 연동에 문제가 발생했습니다.</string>
+    <string name="adapter_not_initialized_error_msg">Adapter is not initialized</string>
+    <string name="manager_not_initialized_error_msg">Billing Manager is not initialized</string>
+    <string name="view_type_error_msg">Unknown View Type : %d</string>
+
     <string name="btn_next">다음으로</string>
 
     <string name="login_btn_kakao">카카오로 계속하기</string>
@@ -11,14 +21,18 @@
     <string name="menu_profile">프로필</string>
 
     <string name="create_tv_script_title">만들고 싶은 사진을 설명해주세요✏️</string>
-    <string name="create_et_script_hint">의상과 배경을 포함해서 설명해 주세요!\n\n*너무 특정한 배경과 의상은 구현이 어려울 수 있어요 (반포 한강 공원, 나이키 티셔츠 등)</string>
-    <string name="create_tv_plus_title">참고사진이 있다면 추가해주세요</string>
+    <string name="create_et_script_hint">의상과 배경을 포함해서 설명해 주세요!\n\n*헤어스타일을 변경하는 기능은 준비 중이에요\n*너무 특정한 배경과 의상은 어려울 수 있어요\n(반포 한강 공원, 나이키 티셔츠 등)</string>
+    <string name="create_tv_plus_title">참고할 구도의 사진이 있다면 추가해주세요</string>
+    <string name="create_tv_plus_subtitle">(선택)</string>
     <string name="create_tv_plus_guide">(참고사진은 최대 1장 업로드 할 수 있어요)</string>
+    <string name="create_tv_random_title">이런 사진은 어때요?</string>
     <string name="create_tv_example_1">프랑스 야경을 즐기는 모습을 그려주세요. 항공점퍼를 입고 테라스에 서 있는 모습이에요.</string>
 
-    <string name="pose_tv_title">카메라 앵글을 골라주세요📷</string>
+    <string name="pose_tv_ratio_title">사진의 비율을 선택해주세요 📷</string>
+    <string name="pose_tv_ratio_none">비율은 자유롭게 맡길래요</string>
+    <string name="pose_tv_angle_title">카메라 앵글을 선택해주세요 📷</string>
     <string name="pose_tv_angle_none">앵글은 자유롭게 맡길래요</string>
-    <string name="pose_tv_frame_title">프레임을 골라주세요</string>
+    <string name="pose_tv_frame_title">원하는 프레임을 선택해주세요 📷</string>
     <string name="pose_tv_frame_none">프레임은 자유롭게 맡길래요</string>
 
     <string name="selfie_tv_title">사진 생성에 이용할 얼굴 3장을 업로드해주세요</string>
@@ -27,12 +41,37 @@
     <string name="selfie_tv_guide_two">사진은 정면사진을 포함하여 오른쪽, 왼쪽 등 다양한 각도일수록 얼굴 생성에 도움이 돼요</string>
     <string name="selfie_tv_guide_three">만들고자 하는 사진의 포즈와 비슷한 각도의 얼굴 사진을 사용하면 얼굴이 더욱 정확하게 반영돼요</string>
     <string name="selfie_tv_guide_example"><![CDATA[<예시>]]></string>
-    <string name="selfie_tv_angle_title">💡\n사진의 각도가 다양할수록 얼굴이 자연스러워져요!</string>
+    <string name="selfie_tv_angle_title">💡\n사진의 각도가 다양할수록 생성된 얼굴이 자연스러워져요!</string>
     <string name="selfie_toast_old_picker_limit">3장의 이미지를 선택해 주세요</string>
     <string name="selfie_toast_picker_error">갤러리 이미지를 가져오는 과정에서 오류가 발생했습니다.</string>
 
-    <string name="wait_tv_title">사진을 찍고있어요!</string>
-    <string name="wait_tv_time">예상 소요시간은 4시간입니다.</string>
+    <string name="wait_tv_title">세상에 없던 나만의\n   사진을 찍고있어요!</string>
+    <string name="wait_tv_title_dot">• • •</string>
+    <string name="wait_tv_time">예상 소요시간은 2시간입니다.</string>
     <string name="wait_tv_time_guide">미리 만들어놓은 컨셉에 얼굴만 바꾸는게 아니라\n’나만의 하나뿐인 사진’을 찍어드리기 위해 \n배경부터 의상, 구도까지 꼼꼼하게 준비하고 있어요</string>
     <string name="wait_btn_return">피드로 돌아가기</string>
+
+    <string name="finished_tv_title">하나뿐인 나만의 사진이\n완성되었어요!</string>
+    <string name="finished_tv_saved">사진이 마이페이지에 저장되었어요!</string>
+    <string name="finished_btn_share">공유하기</string>
+    <string name="finished_btn_return_main">메인으로 이동하기</string>
+    <string name="finished_btn_unwanted"><u>혹시 만들려고 했던 사진과 전혀 다른 사진이 나왔나요?</u></string>
+
+    <string name="feed_tv_title">젠플루언서들이 만든 사진이에요</string>
+    <string name="feed_btn_genfluencer"><u>젠플루언서란?</u></string>
+    <string name="feed_tv_genfluencer_guide">*여러분이 만든 사진은 자동으로 업로드 되지 않아요️</string>
+    <string name="feed_tv_item_title">사진 설명</string>
+
+    <string name="profile_tv_title">마이페이지</string>
+    <string name="profile_tv_waiting">세상에 없던 나만의 사진 찍는 중 ⋯</string>
+    <string name="profile_tv_list_title">내가 만든 사진</string>
+
+    <string name="setting_tv_title">설정 및 개인정보</string>
+    <string name="setting_btn_terms_of_service">이용 약관</string>
+    <string name="setting_btn_privacy_policy">개인정보처리방침</string>
+    <string name="setting_btn_android_version">앱 버전 정보</string>
+    <string name="setting_btn_company_info">사업자 정보</string>
+    <string name="setting_btn_logout">로그아웃</string>
+    <string name="setting_btn_quit">회원 탈퇴</string>
+
 </resources>

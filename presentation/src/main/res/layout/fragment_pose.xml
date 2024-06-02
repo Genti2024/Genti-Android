@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="kr.genti.presentation.main.create.CreateViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_white">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/btn_pose_next"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_ratio_title"
+                    style="@style/TextAppearance.Genti.BodyNormal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:gravity="center"
+                    android:text="@string/pose_tv_ratio_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/btn_ratio_none"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> vm.selectRatio(0)}"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="7dp"
+                    android:paddingVertical="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_ratio_title">
+
+                    <TextView
+                        style="@style/TextAppearance.Genti.BodyDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pose_tv_ratio_none"
+                        android:textColor="@{vm.selectedRatio == 0 ? @color/genti_green : @color/grey_3}" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginStart="4dp"
+                        android:src="@{vm.selectedRatio == 0 ?@drawable/ic_check_selected : @drawable/ic_check_unselected}" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/btn_ratio_3_to_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="4dp"
+                    android:adjustViewBounds="true"
+                    android:background="@{vm.selectedRatio == 1 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
+                    android:onClick="@{() -> vm.selectRatio(1)}"
+                    android:padding="1dp"
+                    android:src="@drawable/img_angle_up"
+                    app:layout_constraintEnd_toStartOf="@id/btn_ratio_2_to_3"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_ratio_none" />
+
+                <ImageView
+                    android:id="@+id/btn_ratio_2_to_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="3dp"
+                    android:adjustViewBounds="true"
+                    android:background="@{vm.selectedRatio == 2 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
+                    android:onClick="@{() -> vm.selectRatio(2)}"
+                    android:padding="1dp"
+                    android:src="@drawable/img_angle_mid"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@id/btn_ratio_3_to_2"
+                    app:layout_constraintTop_toBottomOf="@id/btn_ratio_none" />
+
+                <TextView
+                    android:id="@+id/tv_pose_title"
+                    style="@style/TextAppearance.Genti.BodyNormal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:text="@string/pose_tv_angle_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_ratio_3_to_2" />
+
+                <LinearLayout
+                    android:id="@+id/btn_angle_none"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> vm.selectAngle(0)}"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="7dp"
+                    android:paddingVertical="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_pose_title">
+
+                    <TextView
+                        style="@style/TextAppearance.Genti.BodyDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pose_tv_angle_none"
+                        android:textColor="@{vm.selectedAngle == 0 ? @color/genti_green : @color/grey_3}" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginStart="4dp"
+                        android:src="@{vm.selectedAngle == 0 ?@drawable/ic_check_selected : @drawable/ic_check_unselected}" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/btn_angle_up"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="3dp"
+                    android:adjustViewBounds="true"
+                    android:background="@{vm.selectedAngle == 1 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
+                    android:onClick="@{() -> vm.selectAngle(1)}"
+                    android:padding="1dp"
+                    android:src="@drawable/img_angle_up"
+                    app:layout_constraintEnd_toStartOf="@id/btn_angle_mid"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_angle_none" />
+
+                <ImageView
+                    android:id="@+id/btn_angle_mid"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="9dp"
+                    android:layout_marginTop="3dp"
+                    android:adjustViewBounds="true"
+                    android:background="@{vm.selectedAngle == 2 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
+                    android:onClick="@{() -> vm.selectAngle(2)}"
+                    android:padding="1dp"
+                    android:src="@drawable/img_angle_mid"
+                    app:layout_constraintEnd_toStartOf="@id/btn_angle_down"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@id/btn_angle_up"
+                    app:layout_constraintTop_toBottomOf="@id/btn_angle_none" />
+
+                <ImageView
+                    android:id="@+id/btn_angle_down"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="16dp"
+                    android:adjustViewBounds="true"
+                    android:background="@{vm.selectedAngle == 3 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
+                    android:onClick="@{() -> vm.selectAngle(3)}"
+                    android:padding="1dp"
+                    android:src="@drawable/img_angle_down"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@id/btn_angle_mid"
+                    app:layout_constraintTop_toBottomOf="@id/btn_angle_none" />
+
+                <TextView
+                    android:id="@+id/tv_frame_title"
+                    style="@style/TextAppearance.Genti.BodyNormal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:text="@string/pose_tv_frame_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_angle_up" />
+
+                <LinearLayout
+                    android:id="@+id/btn_frame_none"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> vm.selectFrame(0)}"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="7dp"
+                    android:paddingVertical="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_frame_title">
+
+                    <TextView
+                        style="@style/TextAppearance.Genti.BodyDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pose_tv_frame_none"
+                        android:textColor="@{vm.selectedFrame == 0 ? @color/genti_green : @color/grey_3}" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginStart="4dp"
+                        android:src="@{vm.selectedFrame == 0 ?@drawable/ic_check_selected : @drawable/ic_check_unselected}" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/btn_frame_up"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="3dp"
+                    android:adjustViewBounds="true"
+                    android:background="@{vm.selectedFrame == 1 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
+                    android:onClick="@{() -> vm.selectFrame(1)}"
+                    android:padding="1dp"
+                    android:src="@drawable/img_angle_up"
+                    app:layout_constraintEnd_toStartOf="@id/btn_frame_mid"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_frame_none" />
+
+                <ImageView
+                    android:id="@+id/btn_frame_mid"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="9dp"
+                    android:layout_marginTop="3dp"
+                    android:adjustViewBounds="true"
+                    android:background="@{vm.selectedFrame == 2 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
+                    android:onClick="@{() -> vm.selectFrame(2)}"
+                    android:padding="1dp"
+                    android:src="@drawable/img_angle_mid"
+                    app:layout_constraintEnd_toStartOf="@id/btn_frame_down"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@id/btn_frame_up"
+                    app:layout_constraintTop_toBottomOf="@id/btn_frame_none" />
+
+                <ImageView
+                    android:id="@+id/btn_frame_down"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="16dp"
+                    android:adjustViewBounds="true"
+                    android:background="@{vm.selectedFrame == 3 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
+                    android:onClick="@{() -> vm.selectFrame(3)}"
+                    android:padding="1dp"
+                    android:src="@drawable/img_angle_down"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@id/btn_frame_mid"
+                    app:layout_constraintTop_toBottomOf="@id/btn_frame_none" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/btn_pose_next"
+            style="@style/TextAppearance.Genti.Headline1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="28dp"
+            android:layout_marginBottom="28dp"
+            android:background="@drawable/sel_btn"
+            android:enabled="@{vm.isSelected}"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:text="@string/btn_next"
+            android:textColor="@{vm.isSelected == true ? @color/white : @color/black}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

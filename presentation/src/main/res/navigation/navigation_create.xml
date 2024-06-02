@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_create"
+    app:startDestination="@id/defineFragment">
+
+    <fragment
+        android:id="@+id/defineFragment"
+        android:name="kr.genti.presentation.main.create.DefineFragment"
+        android:label="DefineFragment">
+        <action
+            android:id="@+id/action_define_to_pose"
+            app:destination="@id/poseFragment"
+            app:enterAnim="@anim/slide_right_show"
+            app:exitAnim="@anim/slide_left_exit"
+            app:popEnterAnim="@anim/slide_left_show"
+            app:popExitAnim="@anim/slide_right_exit"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/poseFragment"
+        android:name="kr.genti.presentation.main.create.PoseFragment"
+        android:label="PoseFragment">
+        <action
+            android:id="@+id/action_pose_to_selfie"
+            app:destination="@id/selfieFragment"
+            app:enterAnim="@anim/slide_right_show"
+            app:exitAnim="@anim/slide_left_exit"
+            app:popEnterAnim="@anim/slide_left_show"
+            app:popExitAnim="@anim/slide_right_exit"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/selfieFragment"
+        android:name="kr.genti.presentation.main.create.SelfieFragment"
+        android:label="SelfieFragment" />
+
+</navigation>

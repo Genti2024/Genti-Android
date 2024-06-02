@@ -4,7 +4,26 @@
     android:viewportWidth="29"
     android:viewportHeight="29">
   <path
-      android:pathData="M4,13.376C4,12.152 4.561,10.995 5.521,10.236L12.209,4.957C13.662,3.809 15.713,3.809 17.166,4.957L23.854,10.236C24.814,10.995 25.375,12.152 25.375,13.376V21.5C25.375,23.709 23.584,25.5 21.375,25.5H19.063C18.51,25.5 18.063,25.052 18.063,24.5V20.75C18.063,19.645 17.167,18.75 16.063,18.75H13.313C12.208,18.75 11.313,19.645 11.313,20.75V24.5C11.313,25.052 10.865,25.5 10.313,25.5H8C5.791,25.5 4,23.709 4,21.5L4,13.376Z"
+      android:pathData="M6,5L12,5A1,1 0,0 1,13 6L13,13A1,1 0,0 1,12 14L6,14A1,1 0,0 1,5 13L5,6A1,1 0,0 1,6 5z"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="#121212"/>
+  <path
+      android:pathData="M28,21L28,27A1,1 0,0 1,27 28L17,28A1,1 0,0 1,16 27L16,21A1,1 0,0 1,17 20L27,20A1,1 0,0 1,28 21z"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="#121212"/>
+  <path
+      android:pathData="M17,1L23,1A1,1 0,0 1,24 2L24,16A1,1 0,0 1,23 17L17,17A1,1 0,0 1,16 16L16,2A1,1 0,0 1,17 1z"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="#121212"/>
+  <path
+      android:pathData="M1,24L1,18A1,1 0,0 1,2 17L12,17A1,1 0,0 1,13 18L13,24A1,1 0,0 1,12 25L2,25A1,1 0,0 1,1 24z"
+      android:strokeLineJoin="round"
       android:strokeWidth="2"
       android:fillColor="#00000000"
       android:strokeColor="#121212"/>
