@@ -22,6 +22,8 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
         get() = requireNotNull(_adapter) { getString(R.string.adapter_not_initialized_error_msg) }
 
     private val viewModel by activityViewModels<ProfileViewModel>()
+
+    private var profileImageDialog: ProfileImageDialog? = null
     var isWaiting = true
 
     override fun onViewCreated(
@@ -50,7 +52,8 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
     }
 
     private fun initImageClickListener(item: ImageModel) {
-        ProfileImageDialog().show(parentFragmentManager, "")
+        profileImageDialog = ProfileImageDialog.newInstance(item.id, item.url)
+        profileImageDialog?.show(parentFragmentManager, IMAGE_VIEWER)
     }
 
     private fun initSettingBtnListener() {
@@ -81,5 +84,10 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
     override fun onDestroyView() {
         super.onDestroyView()
         _adapter = null
+        profileImageDialog = null
+    }
+
+    companion object {
+        private const val IMAGE_VIEWER = "IMAGE_VIEWER"
     }
 }
