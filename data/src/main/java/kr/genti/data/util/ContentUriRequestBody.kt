@@ -129,7 +129,6 @@ class ContentUriRequestBody(
 
     override fun contentLength(): Long = size
 
-    // override fun contentType(): MediaType? = OCTET_STREAM.toMediaTypeOrNull()
     override fun contentType(): MediaType? = uri?.let { contentResolver.getType(it)?.toMediaTypeOrNull() }
 
     override fun writeTo(sink: BufferedSink) {
@@ -139,6 +138,5 @@ class ContentUriRequestBody(
     companion object {
         const val MAX_WIDTH = 1024
         const val MAX_HEIGHT = 1024
-        // private const val OCTET_STREAM = "application/octet-stream"
     }
 }
