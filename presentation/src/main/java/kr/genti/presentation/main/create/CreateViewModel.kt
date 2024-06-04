@@ -13,8 +13,10 @@ import kotlinx.coroutines.launch
 import kr.genti.core.state.UiState
 import kr.genti.domain.entity.request.S3RequestModel
 import kr.genti.domain.entity.response.PromptModel
+import kr.genti.domain.entity.response.S3PresignedUrlModel
 import kr.genti.domain.enums.FileType
 import kr.genti.domain.repository.CreateRepository
+import kr.genti.domain.repository.UploadRepository
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -23,6 +25,7 @@ class CreateViewModel
     @Inject
     constructor(
         private val createRepository: CreateRepository,
+        private val uploadRepository: UploadRepository,
     ) : ViewModel() {
         val script = MutableLiveData<String>()
         var plusImage: Uri = Uri.EMPTY
@@ -112,13 +115,12 @@ class CreateViewModel
 
         fun getS3PresignedUrls() {
             // TODO: 파일명 대응
-            // TODO: USER_UPLOAD_IMAGE 로 파일 타입 변경
             if (plusImage != Uri.EMPTY) {
                 viewModelScope.launch {
-                    createRepository.getS3SingleUrl(S3RequestModel("1.png", FileType.CREATED_IMAGE))
-                        .onSuccess {
+                    createRepository.getS3SingleUrl(S3RequestModel("sangho1.jpg", FileType.USER_UPLOADED_IMAGE))
+                        .onSuccess { uriModel ->
                             _getS3UrlResult.emit(true)
-                            postSingleImage()
+                            postSingleImage(uriModel)
                         }.onFailure {
                             _getS3UrlResult.emit(false)
                         }
@@ -127,22 +129,30 @@ class CreateViewModel
             viewModelScope.launch {
                 createRepository.getS3MultiUrl(
                     listOf(
-                        S3RequestModel("2.png", FileType.CREATED_IMAGE),
-                        S3RequestModel("3.png", FileType.CREATED_IMAGE),
-                        S3RequestModel("4.png", FileType.CREATED_IMAGE),
+                        S3RequestModel("sangho2.jpg", FileType.USER_UPLOADED_IMAGE),
+                        S3RequestModel("sangho3.jpg", FileType.USER_UPLOADED_IMAGE),
+                        S3RequestModel("sangho4.jpg", FileType.USER_UPLOADED_IMAGE),
                     ),
-                ).onSuccess {
+                ).onSuccess { uriList ->
                     _getS3UrlResult.emit(true)
-                    postMultiImage()
+                    postMultiImage(uriList)
                 }.onFailure {
                     _getS3UrlResult.emit(false)
                 }
             }
         }
 
-        fun postSingleImage() {
+        private fun postSingleImage(uriModel: S3PresignedUrlModel) {
+            viewModelScope.launch {
+                uploadRepository.uploadImage(uriModel.url, plusImage.toString())
+            }
         }
 
-        fun postMultiImage() {
+        private fun postMultiImage(uriList: List<S3PresignedUrlModel>) {
+            viewModelScope.launch {
+                for (i in 0..2) {
+                    uploadRepository.uploadImage(uriList[i].url, plusImage.toString())
+                }
+            }
         }
     }

@@ -9,5 +9,5 @@ object RetrofitQualifier {
 
     @Qualifier
     @Retention(AnnotationRetention.BINARY)
-    annotation class REISSUE
+    annotation class NOTOKEN
 }
