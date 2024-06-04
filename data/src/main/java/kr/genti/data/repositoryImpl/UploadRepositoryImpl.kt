@@ -1,12 +1,11 @@
 package kr.genti.data.repositoryImpl
 
 import android.content.Context
-import androidx.core.net.toUri
+import android.net.Uri
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kr.genti.data.service.UploadService
+import kr.genti.data.util.ContentUriRequestBody
 import kr.genti.domain.repository.UploadRepository
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
 class UploadRepositoryImpl
@@ -18,17 +17,11 @@ class UploadRepositoryImpl
         override suspend fun uploadImage(
             preSignedURL: String,
             imageUri: String,
-        ): Result<Int?> =
+        ): Result<Unit> =
             runCatching {
                 uploadService.putS3Image(
                     preSignedURL,
-                    context.contentResolver.openInputStream(
-                        imageUri.toUri(),
-                    )?.readBytes()?.toRequestBody(OCTET_STREAM.toMediaType()),
+                    ContentUriRequestBody(context, Uri.parse(imageUri)),
                 )
             }
-
-        companion object {
-            private const val OCTET_STREAM = "application/octet-stream"
-        }
     }

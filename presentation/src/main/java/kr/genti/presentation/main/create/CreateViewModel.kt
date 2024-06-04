@@ -115,10 +115,9 @@ class CreateViewModel
 
         fun getS3PresignedUrls() {
             // TODO: 파일명 대응
-            // TODO: USER_UPLOAD_IMAGE 로 파일 타입 변경
             if (plusImage != Uri.EMPTY) {
                 viewModelScope.launch {
-                    createRepository.getS3SingleUrl(S3RequestModel("sangho1.png", FileType.USER_UPLOADED_IMAGE))
+                    createRepository.getS3SingleUrl(S3RequestModel("sangho1.jpg", FileType.USER_UPLOADED_IMAGE))
                         .onSuccess { uriModel ->
                             _getS3UrlResult.emit(true)
                             postSingleImage(uriModel)
@@ -130,9 +129,9 @@ class CreateViewModel
             viewModelScope.launch {
                 createRepository.getS3MultiUrl(
                     listOf(
-                        S3RequestModel("sangho2.png", FileType.USER_UPLOADED_IMAGE),
-                        S3RequestModel("sangho3.png", FileType.USER_UPLOADED_IMAGE),
-                        S3RequestModel("sangho4.png", FileType.USER_UPLOADED_IMAGE),
+                        S3RequestModel("sangho2.jpg", FileType.USER_UPLOADED_IMAGE),
+                        S3RequestModel("sangho3.jpg", FileType.USER_UPLOADED_IMAGE),
+                        S3RequestModel("sangho4.jpg", FileType.USER_UPLOADED_IMAGE),
                     ),
                 ).onSuccess { uriList ->
                     _getS3UrlResult.emit(true)

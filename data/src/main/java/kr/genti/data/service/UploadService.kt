@@ -10,5 +10,5 @@ interface UploadService {
     suspend fun putS3Image(
         @Url preSignedURL: String,
         @Body image: RequestBody?,
-    ): Int?
+    )
 }
