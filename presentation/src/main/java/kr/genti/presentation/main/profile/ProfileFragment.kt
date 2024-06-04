@@ -10,6 +10,7 @@ import kr.genti.core.base.BaseFragment
 import kr.genti.core.extension.initOnBackPressedListener
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColor
+import kr.genti.domain.entity.response.ImageModel
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentProfileBinding
 import kr.genti.presentation.setting.SettingActivity
@@ -21,6 +22,8 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
         get() = requireNotNull(_adapter) { getString(R.string.adapter_not_initialized_error_msg) }
 
     private val viewModel by activityViewModels<ProfileViewModel>()
+
+    private var profileImageDialog: ProfileImageDialog? = null
     var isWaiting = true
 
     override fun onViewCreated(
@@ -48,8 +51,9 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
             )
     }
 
-    private fun initImageClickListener(item: Int) {
-        // TODO
+    private fun initImageClickListener(item: ImageModel) {
+        profileImageDialog = ProfileImageDialog.newInstance(item.id, item.url)
+        profileImageDialog?.show(parentFragmentManager, IMAGE_VIEWER)
     }
 
     private fun initSettingBtnListener() {
@@ -80,5 +84,10 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
     override fun onDestroyView() {
         super.onDestroyView()
         _adapter = null
+        profileImageDialog = null
+    }
+
+    companion object {
+        private const val IMAGE_VIEWER = "IMAGE_VIEWER"
     }
 }

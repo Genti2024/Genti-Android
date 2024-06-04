@@ -8,14 +8,14 @@ import kr.genti.presentation.databinding.ItemProfileImageBinding
 
 class ProfileViewHolder(
     val binding: ItemProfileImageBinding,
-    val imageClick: (Int) -> Unit,
+    val imageClick: (ImageModel) -> Unit,
 ) :
     RecyclerView.ViewHolder(binding.root) {
     fun onBind(item: ImageModel) {
         with(binding) {
             ivProfileItemImage.load(item.url)
             root.setOnSingleClickListener {
-                imageClick
+                imageClick(item)
             }
         }
     }
