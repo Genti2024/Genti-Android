@@ -40,65 +40,42 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
-                    android:id="@+id/btn_ratio_none"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="@{() -> vm.selectRatio(0)}"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="7dp"
-                    android:paddingVertical="2dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_ratio_title">
-
-                    <TextView
-                        style="@style/TextAppearance.Genti.BodyDescription"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/pose_tv_ratio_none"
-                        android:textColor="@{vm.selectedRatio == 0 ? @color/genti_green : @color/grey_3}" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_marginStart="4dp"
-                        android:src="@{vm.selectedRatio == 0 ?@drawable/ic_check_selected : @drawable/ic_check_unselected}" />
-
-                </LinearLayout>
-
-                <ImageView
+                <TextView
                     android:id="@+id/btn_ratio_3_to_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.Genti.BodySmall"
+                    android:layout_width="114dp"
+                    android:layout_height="0dp"
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="4dp"
-                    android:adjustViewBounds="true"
-                    android:background="@{vm.selectedRatio == 1 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
+                    android:background="@{vm.selectedRatio == 1 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:gravity="center"
                     android:onClick="@{() -> vm.selectRatio(1)}"
                     android:padding="1dp"
-                    android:src="@drawable/img_angle_up"
+                    android:text="3:2"
+                    app:layout_constraintDimensionRatio="1"
                     app:layout_constraintEnd_toStartOf="@id/btn_ratio_2_to_3"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btn_ratio_none" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_ratio_title"/>
 
-                <ImageView
+                <TextView
                     android:id="@+id/btn_ratio_2_to_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.Genti.BodySmall"
+                    android:layout_width="114dp"
+                    android:layout_height="0dp"
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedRatio == 2 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
+                    android:background="@{vm.selectedRatio == 2 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:gravity="center"
                     android:onClick="@{() -> vm.selectRatio(2)}"
                     android:padding="1dp"
-                    android:src="@drawable/img_angle_mid"
+                    android:text="2:3"
+                    app:layout_constraintDimensionRatio="1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@id/btn_ratio_3_to_2"
-                    app:layout_constraintTop_toBottomOf="@id/btn_ratio_none" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_ratio_title" />
 
                 <TextView
                     android:id="@+id/tv_pose_title"
@@ -148,7 +125,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedAngle == 1 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
+                    android:background="@{vm.selectedAngle == 1 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
                     android:onClick="@{() -> vm.selectAngle(1)}"
                     android:padding="1dp"
                     android:src="@drawable/img_angle_up"
@@ -164,7 +141,7 @@
                     android:layout_marginHorizontal="9dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedAngle == 2 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
+                    android:background="@{vm.selectedAngle == 2 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
                     android:onClick="@{() -> vm.selectAngle(2)}"
                     android:padding="1dp"
                     android:src="@drawable/img_angle_mid"
@@ -180,7 +157,7 @@
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="16dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedAngle == 3 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
+                    android:background="@{vm.selectedAngle == 3 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
                     android:onClick="@{() -> vm.selectAngle(3)}"
                     android:padding="1dp"
                     android:src="@drawable/img_angle_down"
@@ -237,7 +214,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedFrame == 1 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
+                    android:background="@{vm.selectedFrame == 1 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
                     android:onClick="@{() -> vm.selectFrame(1)}"
                     android:padding="1dp"
                     android:src="@drawable/img_angle_up"
@@ -253,7 +230,7 @@
                     android:layout_marginHorizontal="9dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedFrame == 2 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
+                    android:background="@{vm.selectedFrame == 2 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
                     android:onClick="@{() -> vm.selectFrame(2)}"
                     android:padding="1dp"
                     android:src="@drawable/img_angle_mid"
@@ -269,7 +246,7 @@
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="16dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedFrame == 3 ? @drawable/shape_green_line_rect : @drawable/shape_grey7_line_rect}"
+                    android:background="@{vm.selectedFrame == 3 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
                     android:onClick="@{() -> vm.selectFrame(3)}"
                     android:padding="1dp"
                     android:src="@drawable/img_angle_down"
