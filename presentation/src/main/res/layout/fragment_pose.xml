@@ -9,6 +9,10 @@
         <variable
             name="vm"
             type="kr.genti.presentation.main.create.CreateViewModel" />
+
+        <variable
+            name="shotCoverage"
+            type="kr.genti.domain.enums.ShotCoverage" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -196,14 +200,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/pose_tv_frame_none"
-                        android:textColor="@{vm.selectedFrame == 0 ? @color/genti_green : @color/grey_3}" />
+                        android:textColor="@{vm.selectedCoverage == 0 ? @color/genti_green : @color/grey_3}" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
                         android:layout_marginStart="4dp"
-                        android:src="@{vm.selectedFrame == 0 ?@drawable/ic_check_selected : @drawable/ic_check_unselected}" />
+                        android:src="@{vm.selectedCoverage == 0 ?@drawable/ic_check_selected : @drawable/ic_check_unselected}" />
 
                 </LinearLayout>
 
@@ -214,8 +218,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedFrame == 1 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
-                    android:onClick="@{() -> vm.selectFrame(1)}"
+                    android:background="@{vm.selectedCoverage == 1 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:onClick="@{() -> vm.selectFrame()}"
                     android:padding="1dp"
                     android:src="@drawable/img_angle_up"
                     app:layout_constraintEnd_toStartOf="@id/btn_frame_mid"
@@ -230,7 +234,7 @@
                     android:layout_marginHorizontal="9dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedFrame == 2 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:background="@{vm.selectedCoverage == 2 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
                     android:onClick="@{() -> vm.selectFrame(2)}"
                     android:padding="1dp"
                     android:src="@drawable/img_angle_mid"
@@ -246,7 +250,7 @@
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="16dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedFrame == 3 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:background="@{vm.selectedCoverage == 3 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
                     android:onClick="@{() -> vm.selectFrame(3)}"
                     android:padding="1dp"
                     android:src="@drawable/img_angle_down"

@@ -151,7 +151,7 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
     }
 
     private fun observeGetS3UrlResult() {
-        viewModel.getS3UrlResult.flowWithLifecycle(lifecycle).onEach { result ->
+        viewModel.totalGeneratingResult.flowWithLifecycle(lifecycle).onEach { result ->
             if (!result) toast(stringOf(R.string.error_msg))
         }.launchIn(lifecycleScope)
     }

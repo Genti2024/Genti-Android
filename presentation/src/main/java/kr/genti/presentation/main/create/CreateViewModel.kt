@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kr.genti.core.state.UiState
+import kr.genti.domain.entity.request.GenerateRequestModel
 import kr.genti.domain.entity.request.S3RequestModel
 import kr.genti.domain.entity.response.PromptModel
 import kr.genti.domain.entity.response.S3PresignedUrlModel
@@ -27,13 +28,13 @@ class CreateViewModel
         private val createRepository: CreateRepository,
         private val uploadRepository: UploadRepository,
     ) : ViewModel() {
-        val script = MutableLiveData<String>()
+        val prompt = MutableLiveData<String>()
         var plusImage: Uri = Uri.EMPTY
         val isWritten = MutableLiveData(false)
 
         val selectedRatio = MutableLiveData<Int>(-1)
         val selectedAngle = MutableLiveData<Int>(-1)
-        val selectedFrame = MutableLiveData<Int>(-1)
+        val selectedCoverage = MutableLiveData<Int>(-1)
         val isSelected = MutableLiveData(false)
 
         var uriList = listOf<Uri>()
@@ -42,17 +43,21 @@ class CreateViewModel
         private val _currentPercent = MutableStateFlow<Int>(33)
         val currentPercent: StateFlow<Int> = _currentPercent
 
-        private val _getExamplePromptsResult = MutableSharedFlow<Boolean>()
-        val getExamplePromptsResult: SharedFlow<Boolean> = _getExamplePromptsResult
-
         private var examplePromptList = listOf<PromptModel>()
         private var currentPromptId: Long = -1
+
+        private val _getExamplePromptsResult = MutableSharedFlow<Boolean>()
+        val getExamplePromptsResult: SharedFlow<Boolean> = _getExamplePromptsResult
 
         private val _getRandomPromptState = MutableStateFlow<UiState<PromptModel>>(UiState.Empty)
         val getRandomPromptState: StateFlow<UiState<PromptModel>> = _getRandomPromptState
 
-        private val _getS3UrlResult = MutableSharedFlow<Boolean>()
-        val getS3UrlResult: SharedFlow<Boolean> = _getS3UrlResult
+        private val _totalGeneratingResult = MutableSharedFlow<Boolean>()
+        val totalGeneratingResult: SharedFlow<Boolean> = _totalGeneratingResult
+
+        private var uploadCheckList = mutableListOf(false, false, false, true)
+        private var plusImageS3Key: String? = null
+        private var imageS3KeyList = listOf<String>()
 
         init {
             getExamplePromptsFromServer()
@@ -63,7 +68,7 @@ class CreateViewModel
         }
 
         fun checkWritten() {
-            isWritten.value = script.value?.isNotEmpty()
+            isWritten.value = prompt.value?.isNotEmpty()
         }
 
         fun selectRatio(itemId: Int) {
@@ -77,13 +82,13 @@ class CreateViewModel
         }
 
         fun selectFrame(itemId: Int) {
-            selectedFrame.value = itemId
+            selectedCoverage.value = itemId
             checkSelected()
         }
 
         private fun checkSelected() {
             isSelected.value =
-                selectedRatio.value != -1 && selectedAngle.value != -1 && selectedFrame.value != -1
+                selectedRatio.value != -1 && selectedAngle.value != -1 && selectedCoverage.value != -1
         }
 
         private fun getExamplePromptsFromServer() {
@@ -116,13 +121,19 @@ class CreateViewModel
         fun getS3PresignedUrls() {
             // TODO: 파일명 대응
             if (plusImage != Uri.EMPTY) {
+                uploadCheckList[3] = false
                 viewModelScope.launch {
-                    createRepository.getS3SingleUrl(S3RequestModel("sangho1.jpg", FileType.USER_UPLOADED_IMAGE))
+                    createRepository.getS3SingleUrl(
+                        S3RequestModel(
+                            "sangho1.jpg",
+                            FileType.USER_UPLOADED_IMAGE,
+                        ),
+                    )
                         .onSuccess { uriModel ->
-                            _getS3UrlResult.emit(true)
+                            plusImageS3Key = uriModel.s3Key
                             postSingleImage(uriModel)
                         }.onFailure {
-                            _getS3UrlResult.emit(false)
+                            _totalGeneratingResult.emit(false)
                         }
                 }
             }
@@ -134,10 +145,11 @@ class CreateViewModel
                         S3RequestModel("sangho4.jpg", FileType.USER_UPLOADED_IMAGE),
                     ),
                 ).onSuccess { uriList ->
-                    _getS3UrlResult.emit(true)
+                    imageS3KeyList = uriList.map { it.s3Key }
+                    _totalGeneratingResult.emit(true)
                     postMultiImage(uriList)
                 }.onFailure {
-                    _getS3UrlResult.emit(false)
+                    _totalGeneratingResult.emit(false)
                 }
             }
         }
@@ -145,6 +157,12 @@ class CreateViewModel
         private fun postSingleImage(uriModel: S3PresignedUrlModel) {
             viewModelScope.launch {
                 uploadRepository.uploadImage(uriModel.url, plusImage.toString())
+                    .onSuccess {
+                        plusImageS3Key =
+                            checkAllUploadFinished()
+                    }.onFailure {
+                        _totalGeneratingResult.emit(false)
+                    }
             }
         }
 
@@ -152,6 +170,29 @@ class CreateViewModel
             viewModelScope.launch {
                 for (i in 0..2) {
                     uploadRepository.uploadImage(uriList[i].url, plusImage.toString())
+                        .onSuccess {
+                            uploadCheckList[i] = true
+                            if (i == 2) checkAllUploadFinished()
+                        }.onFailure {
+                            _totalGeneratingResult.emit(false)
+                            return@launch
+                        }
+                }
+            }
+        }
+
+        private fun checkAllUploadFinished() {
+            if (uploadCheckList.all { true }) {
+                viewModelScope.launch {
+                    createRepository.postToGenerate(
+                        GenerateRequestModel(
+                            prompt,
+                            plusImageS3Key,
+                            imageS3KeyList,
+                            selectedAngle,
+                            selectedCoverage,
+                        ),
+                    )
                 }
             }
         }
