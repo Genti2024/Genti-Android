@@ -50,7 +50,7 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
     }
 
     private fun initImageClickListener(item: ImageModel) {
-        // TODO
+        ProfileImageDialog().show(parentFragmentManager, "")
     }
 
     private fun initSettingBtnListener() {
