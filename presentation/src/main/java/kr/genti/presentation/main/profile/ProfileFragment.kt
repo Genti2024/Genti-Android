@@ -10,6 +10,7 @@ import kr.genti.core.base.BaseFragment
 import kr.genti.core.extension.initOnBackPressedListener
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColor
+import kr.genti.domain.entity.response.ImageModel
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentProfileBinding
 import kr.genti.presentation.setting.SettingActivity
@@ -48,7 +49,7 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
             )
     }
 
-    private fun initImageClickListener(item: Int) {
+    private fun initImageClickListener(item: ImageModel) {
         // TODO
     }
 

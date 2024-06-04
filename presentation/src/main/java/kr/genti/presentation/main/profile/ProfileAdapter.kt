@@ -8,7 +8,7 @@ import kr.genti.domain.entity.response.ImageModel
 import kr.genti.presentation.databinding.ItemProfileImageBinding
 
 class ProfileAdapter(
-    private val imageClick: (Int) -> Unit,
+    private val imageClick: (ImageModel) -> Unit,
 ) : ListAdapter<ImageModel, ProfileViewHolder>(diffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
