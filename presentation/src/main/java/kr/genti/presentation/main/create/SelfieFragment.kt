@@ -1,5 +1,6 @@
 package kr.genti.presentation.main.create
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -25,6 +26,7 @@ import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentSelfieBinding
+import kr.genti.presentation.result.waiting.WaitingActivity
 import kotlin.math.max
 
 @AndroidEntryPoint
@@ -152,7 +154,13 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
 
     private fun observeGetS3UrlResult() {
         viewModel.totalGeneratingResult.flowWithLifecycle(lifecycle).onEach { result ->
-            if (!result) toast(stringOf(R.string.error_msg))
+            if (!result) {
+                toast(stringOf(R.string.error_msg))
+            } else {
+                Intent(requireActivity(), WaitingActivity::class.java).apply {
+                    startActivity(this)
+                }
+            }
         }.launchIn(lifecycleScope)
     }
 }

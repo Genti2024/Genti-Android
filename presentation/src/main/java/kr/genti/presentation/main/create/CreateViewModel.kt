@@ -15,7 +15,10 @@ import kr.genti.domain.entity.request.GenerateRequestModel
 import kr.genti.domain.entity.request.S3RequestModel
 import kr.genti.domain.entity.response.PromptModel
 import kr.genti.domain.entity.response.S3PresignedUrlModel
+import kr.genti.domain.enums.CameraAngle
 import kr.genti.domain.enums.FileType
+import kr.genti.domain.enums.ImageRatio
+import kr.genti.domain.enums.ShotCoverage
 import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.repository.UploadRepository
 import javax.inject.Inject
@@ -32,9 +35,9 @@ class CreateViewModel
         var plusImage: Uri = Uri.EMPTY
         val isWritten = MutableLiveData(false)
 
-        val selectedRatio = MutableLiveData<Int>(-1)
-        val selectedAngle = MutableLiveData<Int>(-1)
-        val selectedCoverage = MutableLiveData<Int>(-1)
+        val selectedRatio = MutableLiveData<ImageRatio>()
+        val selectedAngle = MutableLiveData<CameraAngle>()
+        val selectedCoverage = MutableLiveData<ShotCoverage>()
         val isSelected = MutableLiveData(false)
 
         var uriList = listOf<Uri>()
@@ -71,24 +74,24 @@ class CreateViewModel
             isWritten.value = prompt.value?.isNotEmpty()
         }
 
-        fun selectRatio(itemId: Int) {
-            selectedRatio.value = itemId
+        fun selectRatio(item: ImageRatio) {
+            selectedRatio.value = item
             checkSelected()
         }
 
-        fun selectAngle(itemId: Int) {
-            selectedAngle.value = itemId
+        fun selectAngle(item: CameraAngle) {
+            selectedAngle.value = item
             checkSelected()
         }
 
-        fun selectFrame(itemId: Int) {
-            selectedCoverage.value = itemId
+        fun selectFrame(item: ShotCoverage) {
+            selectedCoverage.value = item
             checkSelected()
         }
 
         private fun checkSelected() {
             isSelected.value =
-                selectedRatio.value != -1 && selectedAngle.value != -1 && selectedCoverage.value != -1
+                selectedRatio.value != null && selectedAngle.value != null && selectedCoverage.value != null
         }
 
         private fun getExamplePromptsFromServer() {
@@ -158,8 +161,8 @@ class CreateViewModel
             viewModelScope.launch {
                 uploadRepository.uploadImage(uriModel.url, plusImage.toString())
                     .onSuccess {
-                        plusImageS3Key =
-                            checkAllUploadFinished()
+                        plusImageS3Key = uriModel.s3Key
+                        checkAllUploadFinished()
                     }.onFailure {
                         _totalGeneratingResult.emit(false)
                     }
@@ -186,13 +189,18 @@ class CreateViewModel
                 viewModelScope.launch {
                     createRepository.postToGenerate(
                         GenerateRequestModel(
-                            prompt,
-                            plusImageS3Key,
-                            imageS3KeyList,
-                            selectedAngle,
-                            selectedCoverage,
+                            prompt.value ?: return@launch,
+                            plusImageS3Key ?: return@launch,
+                            imageS3KeyList ?: return@launch,
+                            selectedAngle.value ?: return@launch,
+                            selectedCoverage.value ?: return@launch,
                         ),
                     )
+                        .onSuccess {
+                            _totalGeneratingResult.emit(true)
+                        }.onFailure {
+                            _totalGeneratingResult.emit(false)
+                        }
                 }
             }
         }

@@ -11,6 +11,14 @@
             type="kr.genti.presentation.main.create.CreateViewModel" />
 
         <variable
+            name="imageRatio"
+            type="kr.genti.domain.enums.ImageRatio" />
+
+        <variable
+            name="cameraAngle"
+            type="kr.genti.domain.enums.CameraAngle" />
+
+        <variable
             name="shotCoverage"
             type="kr.genti.domain.enums.ShotCoverage" />
     </data>
@@ -51,16 +59,16 @@
                     android:layout_height="0dp"
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="4dp"
-                    android:background="@{vm.selectedRatio == 1 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:background="@{vm.selectedRatio == imageRatio.THREE ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
                     android:gravity="center"
-                    android:onClick="@{() -> vm.selectRatio(1)}"
+                    android:onClick="@{() -> vm.selectRatio(imageRatio.THREE)}"
                     android:padding="1dp"
-                    android:text="3:2"
+                    android:text="@string/pose_btn_ratio_three"
                     app:layout_constraintDimensionRatio="1"
                     app:layout_constraintEnd_toStartOf="@id/btn_ratio_2_to_3"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_ratio_title"/>
+                    app:layout_constraintTop_toBottomOf="@id/tv_ratio_title" />
 
                 <TextView
                     android:id="@+id/btn_ratio_2_to_3"
@@ -70,11 +78,11 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedRatio == 2 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:background="@{vm.selectedRatio == imageRatio.TWO ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
                     android:gravity="center"
-                    android:onClick="@{() -> vm.selectRatio(2)}"
+                    android:onClick="@{() -> vm.selectRatio(imageRatio.TWO)}"
                     android:padding="1dp"
-                    android:text="2:3"
+                    android:text="@string/pose_btn_ratio_two"
                     app:layout_constraintDimensionRatio="1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_chainStyle="packed"
@@ -98,7 +106,7 @@
                     android:id="@+id/btn_angle_none"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{() -> vm.selectAngle(0)}"
+                    android:onClick="@{() -> vm.selectAngle(cameraAngle.NONE)}"
                     android:orientation="horizontal"
                     android:paddingHorizontal="7dp"
                     android:paddingVertical="2dp"
@@ -111,14 +119,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/pose_tv_angle_none"
-                        android:textColor="@{vm.selectedAngle == 0 ? @color/genti_green : @color/grey_3}" />
+                        android:textColor="@{vm.selectedAngle == cameraAngle.NONE ? @color/genti_green : @color/grey_3}" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
                         android:layout_marginStart="4dp"
-                        android:src="@{vm.selectedAngle == 0 ?@drawable/ic_check_selected : @drawable/ic_check_unselected}" />
+                        android:src="@{vm.selectedAngle == cameraAngle.NONE ?@drawable/ic_check_selected : @drawable/ic_check_unselected}" />
 
                 </LinearLayout>
 
@@ -129,8 +137,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedAngle == 1 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
-                    android:onClick="@{() -> vm.selectAngle(1)}"
+                    android:background="@{vm.selectedAngle == cameraAngle.ABOVE ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:onClick="@{() -> vm.selectAngle(cameraAngle.ABOVE)}"
                     android:padding="1dp"
                     android:src="@drawable/img_angle_up"
                     app:layout_constraintEnd_toStartOf="@id/btn_angle_mid"
@@ -145,8 +153,8 @@
                     android:layout_marginHorizontal="9dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedAngle == 2 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
-                    android:onClick="@{() -> vm.selectAngle(2)}"
+                    android:background="@{vm.selectedAngle == cameraAngle.EYE_LEVEL ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:onClick="@{() -> vm.selectAngle(cameraAngle.EYE_LEVEL)}"
                     android:padding="1dp"
                     android:src="@drawable/img_angle_mid"
                     app:layout_constraintEnd_toStartOf="@id/btn_angle_down"
@@ -161,8 +169,8 @@
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="16dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedAngle == 3 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
-                    android:onClick="@{() -> vm.selectAngle(3)}"
+                    android:background="@{vm.selectedAngle == cameraAngle.BELOW ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:onClick="@{() -> vm.selectAngle(cameraAngle.BELOW)}"
                     android:padding="1dp"
                     android:src="@drawable/img_angle_down"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -187,7 +195,7 @@
                     android:id="@+id/btn_frame_none"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{() -> vm.selectFrame(0)}"
+                    android:onClick="@{() -> vm.selectFrame(shotCoverage.NONE)}"
                     android:orientation="horizontal"
                     android:paddingHorizontal="7dp"
                     android:paddingVertical="2dp"
@@ -200,14 +208,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/pose_tv_frame_none"
-                        android:textColor="@{vm.selectedCoverage == 0 ? @color/genti_green : @color/grey_3}" />
+                        android:textColor="@{vm.selectedCoverage == shotCoverage.NONE ? @color/genti_green : @color/grey_3}" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
                         android:layout_marginStart="4dp"
-                        android:src="@{vm.selectedCoverage == 0 ?@drawable/ic_check_selected : @drawable/ic_check_unselected}" />
+                        android:src="@{vm.selectedCoverage == shotCoverage.NONE ?@drawable/ic_check_selected : @drawable/ic_check_unselected}" />
 
                 </LinearLayout>
 
@@ -218,8 +226,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedCoverage == 1 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
-                    android:onClick="@{() -> vm.selectFrame()}"
+                    android:background="@{vm.selectedCoverage == shotCoverage.UPPER_BODY ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:onClick="@{() -> vm.selectFrame(shotCoverage.UPPER_BODY)}"
                     android:padding="1dp"
                     android:src="@drawable/img_angle_up"
                     app:layout_constraintEnd_toStartOf="@id/btn_frame_mid"
@@ -234,8 +242,8 @@
                     android:layout_marginHorizontal="9dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedCoverage == 2 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
-                    android:onClick="@{() -> vm.selectFrame(2)}"
+                    android:background="@{vm.selectedCoverage == shotCoverage.KNEE_UP ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:onClick="@{() -> vm.selectFrame(shotCoverage.KNEE_UP)}"
                     android:padding="1dp"
                     android:src="@drawable/img_angle_mid"
                     app:layout_constraintEnd_toStartOf="@id/btn_frame_down"
@@ -250,8 +258,8 @@
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="16dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedCoverage == 3 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
-                    android:onClick="@{() -> vm.selectFrame(3)}"
+                    android:background="@{vm.selectedCoverage == shotCoverage.FULL_BODY ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:onClick="@{() -> vm.selectFrame(shotCoverage.FULL_BODY)}"
                     android:padding="1dp"
                     android:src="@drawable/img_angle_down"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -34,6 +34,9 @@
     <string name="pose_tv_angle_none">앵글은 자유롭게 맡길래요</string>
     <string name="pose_tv_frame_title">원하는 프레임을 선택해주세요 📷</string>
     <string name="pose_tv_frame_none">프레임은 자유롭게 맡길래요</string>
+    <string name="pose_btn_ratio_three">3:2</string>
+    <string name="pose_btn_ratio_two">2:3</string>
+
 
     <string name="selfie_tv_title">사진 생성에 이용할 얼굴 3장을 업로드해주세요</string>
     <string name="selfie_tv_guide_title">💡얼굴은 이런 사진을 사용해주세요!</string>
