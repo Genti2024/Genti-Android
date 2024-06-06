@@ -6,6 +6,7 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.text.style.TextAppearanceSpan
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -23,6 +24,7 @@ class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait
         super.onCreate(savedInstanceState)
 
         initReturnBtnListener()
+        setOnBackPressed()
         setStatusBarTransparent()
         setEmphasizedText()
     }
@@ -32,6 +34,17 @@ class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait
             setResult(Activity.RESULT_OK)
             finish()
         }
+    }
+
+    private fun setOnBackPressed() {
+        val onBackPressedCallback =
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    setResult(Activity.RESULT_OK)
+                    finish()
+                }
+            }
+        this.onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     private fun setStatusBarTransparent() {
