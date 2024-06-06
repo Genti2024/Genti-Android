@@ -11,7 +11,7 @@ class FeedItemViewHolder(
     RecyclerView.ViewHolder(binding.root) {
     fun onBind(item: FeedItemModel) {
         with(binding) {
-            ivFeedItemImage.load(item.url)
+            ivFeedItemImage.load(item.picture.url)
             tvFeedItemDescription.text = item.prompt
         }
     }
