@@ -18,15 +18,24 @@ import kr.genti.presentation.util.downloadImage
 @AndroidEntryPoint
 class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity_finished) {
     private val viewModel by viewModels<FinishedViewModel>()
+    private var finishedImageDialog: FinishedImageDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initImageBtnListener()
         initSaveBtnListener()
         initReturnBtnListener()
         initUnwantedBtnListener()
         setFinishedImage()
         setEmphasizedText()
+    }
+
+    private fun initImageBtnListener() {
+        binding.ivFinishedImage.setOnSingleClickListener {
+            finishedImageDialog = FinishedImageDialog()
+            finishedImageDialog?.show(supportFragmentManager, IMAGE_VIEWER)
+        }
     }
 
     private fun initSaveBtnListener() {
@@ -69,5 +78,14 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
                     )
                 }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        finishedImageDialog = null
+    }
+
+    companion object {
+        private const val IMAGE_VIEWER = "IMAGE_VIEWER"
     }
 }
