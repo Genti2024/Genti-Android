@@ -11,8 +11,8 @@ import kr.genti.domain.enums.ShotCoverage
 data class GenerateRequestDto(
     @SerialName("prompt")
     val prompt: String,
-    @SerialName("postPictureKey")
-    val postPictureKey: String,
+    @SerialName("posePictureKey")
+    val posePictureKey: String?,
     @SerialName("facePictureKeyList")
     val facePictureKeyList: List<String>,
     @SerialName("cameraAngle")
@@ -26,7 +26,7 @@ data class GenerateRequestDto(
 fun GenerateRequestModel.toDto() =
     GenerateRequestDto(
         prompt,
-        postPictureKey,
+        posePictureKey,
         facePictureKeyList,
         cameraAngle,
         shotCoverage,
