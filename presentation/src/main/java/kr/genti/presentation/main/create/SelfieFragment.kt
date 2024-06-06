@@ -121,7 +121,7 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
             val imageViews =
                 with(binding) { listOf(ivAddedImage1, ivAddedImage2, ivAddedImage3) }
             imageViews.forEach { it.setImageDrawable(null) }
-            viewModel.imageList.take(3).forEachIndexed { index, uri -> imageViews[index].load(uri) }
+            viewModel.imageList.take(3).forEachIndexed { index, imageFile -> imageViews[index].load(imageFile.url) }
             binding.layoutAddedImage.isVisible = true
         }
     }

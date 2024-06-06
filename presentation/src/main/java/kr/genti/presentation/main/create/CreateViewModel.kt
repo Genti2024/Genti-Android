@@ -184,6 +184,7 @@ class CreateViewModel
             }
         }
 
+        // TODO: request 수정
         private fun checkAllUploadFinished() {
             if (uploadCheckList.all { it }) {
                 viewModelScope.launch {

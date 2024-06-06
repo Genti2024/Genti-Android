@@ -126,7 +126,7 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
 
     private fun setSavedImage() {
         if (viewModel.plusImage.id != (-1).toLong()) {
-            binding.ivAddedImage.load(viewModel.plusImage)
+            binding.ivAddedImage.load(viewModel.plusImage.url)
             binding.layoutAddedImage.isVisible = true
         }
     }
