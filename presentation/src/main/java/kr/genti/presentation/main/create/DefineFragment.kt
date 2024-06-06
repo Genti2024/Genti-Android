@@ -1,6 +1,5 @@
 package kr.genti.presentation.main.create
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
@@ -16,11 +15,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseFragment
+import kr.genti.core.extension.getFileName
 import kr.genti.core.extension.initOnBackPressedListener
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.core.state.UiState
+import kr.genti.domain.entity.response.ImageFileModel
+import kr.genti.domain.entity.response.emptyImageFileModel
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentDefineBinding
 
@@ -81,7 +83,7 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
 
     private fun initDeleteBtnListener() {
         binding.btnDeleteImage.setOnSingleClickListener {
-            viewModel.plusImage = Uri.EMPTY
+            viewModel.plusImage = emptyImageFileModel()
             binding.layoutAddedImage.isVisible = false
             binding.btnDeleteImage.isVisible = false
         }
@@ -91,10 +93,17 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
         activityResult =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
-                    viewModel.plusImage = uri
-                    binding.ivAddedImage.load(uri)
-                    binding.layoutAddedImage.isVisible = true
-                    binding.btnDeleteImage.isVisible = true
+                    viewModel.plusImage =
+                        ImageFileModel(
+                            uri.hashCode().toLong(),
+                            uri.getFileName(requireActivity().contentResolver).toString(),
+                            uri.toString(),
+                        )
+                    with(binding) {
+                        ivAddedImage.load(uri)
+                        layoutAddedImage.isVisible = true
+                        btnDeleteImage.isVisible = true
+                    }
                 }
             }
     }
@@ -116,7 +125,7 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
     }
 
     private fun setSavedImage() {
-        if (viewModel.plusImage != Uri.EMPTY) {
+        if (viewModel.plusImage.id != (-1).toLong()) {
             binding.ivAddedImage.load(viewModel.plusImage)
             binding.layoutAddedImage.isVisible = true
         }

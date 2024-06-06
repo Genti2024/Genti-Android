@@ -1,6 +1,5 @@
 package kr.genti.presentation.main.create
 
-import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,8 +12,10 @@ import kotlinx.coroutines.launch
 import kr.genti.core.state.UiState
 import kr.genti.domain.entity.request.GenerateRequestModel
 import kr.genti.domain.entity.request.S3RequestModel
+import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.domain.entity.response.PromptModel
 import kr.genti.domain.entity.response.S3PresignedUrlModel
+import kr.genti.domain.entity.response.emptyImageFileModel
 import kr.genti.domain.enums.CameraAngle
 import kr.genti.domain.enums.FileType
 import kr.genti.domain.enums.ImageRatio
@@ -32,7 +33,7 @@ class CreateViewModel
         private val uploadRepository: UploadRepository,
     ) : ViewModel() {
         val prompt = MutableLiveData<String>()
-        var plusImage: Uri = Uri.EMPTY
+        var plusImage = emptyImageFileModel()
         val isWritten = MutableLiveData(false)
 
         val selectedRatio = MutableLiveData<ImageRatio>()
@@ -40,7 +41,7 @@ class CreateViewModel
         val selectedCoverage = MutableLiveData<ShotCoverage>()
         val isSelected = MutableLiveData(false)
 
-        var uriList = listOf<Uri>()
+        var imageList = listOf<ImageFileModel>()
         var isCompleted = MutableLiveData(false)
 
         private val _currentPercent = MutableStateFlow<Int>(33)
@@ -122,13 +123,12 @@ class CreateViewModel
         }
 
         fun getS3PresignedUrls() {
-            // TODO: 파일명 대응
-            if (plusImage != Uri.EMPTY) {
+            if (plusImage.id != (-1).toLong()) {
                 uploadCheckList[3] = false
                 viewModelScope.launch {
                     createRepository.getS3SingleUrl(
                         S3RequestModel(
-                            "sangho1.jpg",
+                            plusImage.name,
                             FileType.USER_UPLOADED_IMAGE,
                         ),
                     )
@@ -143,13 +143,12 @@ class CreateViewModel
             viewModelScope.launch {
                 createRepository.getS3MultiUrl(
                     listOf(
-                        S3RequestModel("sangho2.jpg", FileType.USER_UPLOADED_IMAGE),
-                        S3RequestModel("sangho3.jpg", FileType.USER_UPLOADED_IMAGE),
-                        S3RequestModel("sangho4.jpg", FileType.USER_UPLOADED_IMAGE),
+                        S3RequestModel(imageList[0].name, FileType.USER_UPLOADED_IMAGE),
+                        S3RequestModel(imageList[1].name, FileType.USER_UPLOADED_IMAGE),
+                        S3RequestModel(imageList[2].name, FileType.USER_UPLOADED_IMAGE),
                     ),
                 ).onSuccess { uriList ->
                     imageS3KeyList = uriList.map { it.s3Key }
-                    _totalGeneratingResult.emit(true)
                     postMultiImage(uriList)
                 }.onFailure {
                     _totalGeneratingResult.emit(false)
@@ -157,11 +156,11 @@ class CreateViewModel
             }
         }
 
-        private fun postSingleImage(uriModel: S3PresignedUrlModel) {
+        private fun postSingleImage(s3urlModel: S3PresignedUrlModel) {
             viewModelScope.launch {
-                uploadRepository.uploadImage(uriModel.url, plusImage.toString())
+                uploadRepository.uploadImage(s3urlModel.url, plusImage.url)
                     .onSuccess {
-                        plusImageS3Key = uriModel.s3Key
+                        plusImageS3Key = s3urlModel.s3Key
                         checkAllUploadFinished()
                     }.onFailure {
                         _totalGeneratingResult.emit(false)
@@ -169,10 +168,10 @@ class CreateViewModel
             }
         }
 
-        private fun postMultiImage(uriList: List<S3PresignedUrlModel>) {
+        private fun postMultiImage(s3urlList: List<S3PresignedUrlModel>) {
             viewModelScope.launch {
                 for (i in 0..2) {
-                    uploadRepository.uploadImage(uriList[i].url, plusImage.toString())
+                    uploadRepository.uploadImage(s3urlList[i].url, imageList[i].url)
                         .onSuccess {
                             uploadCheckList[i] = true
                             if (i == 2) checkAllUploadFinished()
