@@ -1,5 +1,6 @@
 package kr.genti.presentation.result.waiting
 
+import android.app.Activity
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -28,6 +29,7 @@ class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait
 
     private fun initReturnBtnListener() {
         binding.btnWaitReturn.setOnSingleClickListener {
+            setResult(Activity.RESULT_OK)
             finish()
         }
     }

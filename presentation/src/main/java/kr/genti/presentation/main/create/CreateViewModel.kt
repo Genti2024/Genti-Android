@@ -184,14 +184,14 @@ class CreateViewModel
             }
         }
 
-        // TODO: request 수정
+        // TODO: plusImageS3Key nullable로 수정
         private fun checkAllUploadFinished() {
             if (uploadCheckList.all { it }) {
                 viewModelScope.launch {
                     createRepository.postToGenerate(
                         GenerateRequestModel(
                             prompt.value ?: return@launch,
-                            plusImageS3Key ?: return@launch,
+                            plusImageS3Key ?: "",
                             imageS3KeyList ?: return@launch,
                             selectedAngle.value ?: return@launch,
                             selectedCoverage.value ?: return@launch,

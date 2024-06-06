@@ -1,5 +1,6 @@
 package kr.genti.presentation.main.create
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
@@ -28,13 +29,16 @@ import kr.genti.core.extension.toast
 import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentSelfieBinding
+import kr.genti.presentation.main.MainActivity
+import kr.genti.presentation.main.feed.FeedFragment
 import kr.genti.presentation.result.waiting.WaitingActivity
 import kotlin.math.max
 
 @AndroidEntryPoint
 class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_selfie) {
     private val viewModel by activityViewModels<CreateViewModel>()
-    lateinit var activityResult: ActivityResultLauncher<PickVisualMediaRequest>
+    private lateinit var photoPickerResult: ActivityResultLauncher<PickVisualMediaRequest>
+    private lateinit var waitingResult: ActivityResultLauncher<Intent>
 
     override fun onViewCreated(
         view: View,
@@ -49,6 +53,7 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
         setGalleryImage()
         setBulletPointList()
         setGuideListBlur()
+        initWaitingResult()
         observeGetS3UrlResult()
     }
 
@@ -78,10 +83,10 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
     private fun initAddImageBtnListener() {
         with(binding) {
             btnSelfieAdd.setOnSingleClickListener {
-                activityResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                photoPickerResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
             layoutAddedImage.setOnSingleClickListener {
-                activityResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                photoPickerResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
         }
     }
@@ -93,7 +98,7 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
     }
 
     private fun setGalleryImage() {
-        activityResult =
+        photoPickerResult =
             registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(3)) { uris ->
                 if (uris.isNotEmpty()) {
                     with(viewModel) {
@@ -121,7 +126,8 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
             val imageViews =
                 with(binding) { listOf(ivAddedImage1, ivAddedImage2, ivAddedImage3) }
             imageViews.forEach { it.setImageDrawable(null) }
-            viewModel.imageList.take(3).forEachIndexed { index, imageFile -> imageViews[index].load(imageFile.url) }
+            viewModel.imageList.take(3)
+                .forEachIndexed { index, imageFile -> imageViews[index].load(imageFile.url) }
             binding.layoutAddedImage.isVisible = true
         }
     }
@@ -161,14 +167,28 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
         }
     }
 
+    private fun initWaitingResult() {
+        if (!::waitingResult.isInitialized) {
+            waitingResult =
+                registerForActivityResult(
+                    ActivityResultContracts.StartActivityForResult(),
+                ) { result ->
+                    if (result.resultCode == Activity.RESULT_OK) {
+                        requireActivity().supportFragmentManager.beginTransaction()
+                            .replace(R.id.fcv_main, FeedFragment())
+                            .commit()
+                        (requireActivity() as? MainActivity)?.initBnvItemIconTintList()
+                    }
+                }
+        }
+    }
+
     private fun observeGetS3UrlResult() {
         viewModel.totalGeneratingResult.flowWithLifecycle(lifecycle).onEach { result ->
             if (!result) {
                 toast(stringOf(R.string.error_msg))
             } else {
-                Intent(requireActivity(), WaitingActivity::class.java).apply {
-                    startActivity(this)
-                }
+                waitingResult.launch(Intent(requireContext(), WaitingActivity::class.java))
             }
         }.launchIn(lifecycleScope)
     }
