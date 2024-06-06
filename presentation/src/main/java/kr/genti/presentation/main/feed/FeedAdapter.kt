@@ -90,7 +90,7 @@ class FeedAdapter(
     companion object {
         private val diffUtil =
             ItemDiffCallback<FeedItemModel>(
-                onItemsTheSame = { old, new -> old.id == new.id },
+                onItemsTheSame = { old, new -> old.picture.id == new.picture.id },
                 onContentsTheSame = { old, new -> old == new },
             )
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -51,11 +52,12 @@
             android:layout_height="0dp"
             android:layout_margin="4dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/img_selfie_one"
             app:layout_constraintBottom_toBottomOf="@id/iv_finished_background"
+            app:layout_constraintDimensionRatio="1"
             app:layout_constraintEnd_toEndOf="@id/iv_finished_background"
             app:layout_constraintStart_toStartOf="@id/iv_finished_background"
-            app:layout_constraintTop_toTopOf="@id/iv_finished_background" />
+            app:layout_constraintTop_toTopOf="@id/iv_finished_background"
+            tools:src="@drawable/img_selfie_one" />
 
         <ImageView
             android:id="@+id/btn_download"
@@ -132,11 +134,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
+            android:text="@string/finished_btn_unwanted"
+            android:textColor="@color/error"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:textColor="@color/error"
-            android:text="@string/finished_btn_unwanted"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
