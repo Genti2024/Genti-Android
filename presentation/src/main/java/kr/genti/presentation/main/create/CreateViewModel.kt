@@ -161,6 +161,7 @@ class CreateViewModel
                 uploadRepository.uploadImage(s3urlModel.url, plusImage.url)
                     .onSuccess {
                         plusImageS3Key = s3urlModel.s3Key
+                        uploadCheckList[3] = true
                         checkAllUploadFinished()
                     }.onFailure {
                         _totalGeneratingResult.emit(false)
@@ -184,7 +185,7 @@ class CreateViewModel
         }
 
         private fun checkAllUploadFinished() {
-            if (uploadCheckList.all { true }) {
+            if (uploadCheckList.all { it }) {
                 viewModelScope.launch {
                     createRepository.postToGenerate(
                         GenerateRequestModel(
