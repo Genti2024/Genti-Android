@@ -18,7 +18,7 @@ import kr.genti.domain.entity.response.S3PresignedUrlModel
 import kr.genti.domain.entity.response.emptyImageFileModel
 import kr.genti.domain.enums.CameraAngle
 import kr.genti.domain.enums.FileType
-import kr.genti.domain.enums.ImageRatio
+import kr.genti.domain.enums.PictureRatio
 import kr.genti.domain.enums.ShotCoverage
 import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.repository.UploadRepository
@@ -36,7 +36,7 @@ class CreateViewModel
         var plusImage = emptyImageFileModel()
         val isWritten = MutableLiveData(false)
 
-        val selectedRatio = MutableLiveData<ImageRatio>()
+        val selectedRatio = MutableLiveData<PictureRatio>()
         val selectedAngle = MutableLiveData<CameraAngle>()
         val selectedCoverage = MutableLiveData<ShotCoverage>()
         val isSelected = MutableLiveData(false)
@@ -75,7 +75,7 @@ class CreateViewModel
             isWritten.value = prompt.value?.isNotEmpty()
         }
 
-        fun selectRatio(item: ImageRatio) {
+        fun selectRatio(item: PictureRatio) {
             selectedRatio.value = item
             checkSelected()
         }
@@ -195,6 +195,7 @@ class CreateViewModel
                             imageS3KeyList ?: return@launch,
                             selectedAngle.value ?: return@launch,
                             selectedCoverage.value ?: return@launch,
+                            selectedRatio.value ?: return@launch,
                         ),
                     )
                         .onSuccess {
