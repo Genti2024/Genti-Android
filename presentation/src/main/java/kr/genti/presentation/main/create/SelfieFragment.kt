@@ -1,5 +1,6 @@
 package kr.genti.presentation.main.create
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -20,11 +21,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseFragment
+import kr.genti.core.extension.getFileName
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
+import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentSelfieBinding
+import kr.genti.presentation.result.waiting.WaitingActivity
 import kotlin.math.max
 
 @AndroidEntryPoint
@@ -93,7 +97,14 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
             registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(3)) { uris ->
                 if (uris.isNotEmpty()) {
                     with(viewModel) {
-                        uriList = uris
+                        imageList =
+                            uris.mapIndexed { _, uri ->
+                                ImageFileModel(
+                                    uri.hashCode().toLong(),
+                                    uri.getFileName(requireActivity().contentResolver).toString(),
+                                    uri.toString(),
+                                )
+                            }
                         isCompleted.value = uris.size == 3
                     }
                     val imageViews =
@@ -106,11 +117,11 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
     }
 
     private fun setSavedImages() {
-        if (viewModel.uriList.isNotEmpty()) {
+        if (viewModel.imageList.isNotEmpty()) {
             val imageViews =
                 with(binding) { listOf(ivAddedImage1, ivAddedImage2, ivAddedImage3) }
             imageViews.forEach { it.setImageDrawable(null) }
-            viewModel.uriList.take(3).forEachIndexed { index, uri -> imageViews[index].load(uri) }
+            viewModel.imageList.take(3).forEachIndexed { index, imageFile -> imageViews[index].load(imageFile.url) }
             binding.layoutAddedImage.isVisible = true
         }
     }
@@ -151,8 +162,14 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
     }
 
     private fun observeGetS3UrlResult() {
-        viewModel.getS3UrlResult.flowWithLifecycle(lifecycle).onEach { result ->
-            if (!result) toast(stringOf(R.string.error_msg))
+        viewModel.totalGeneratingResult.flowWithLifecycle(lifecycle).onEach { result ->
+            if (!result) {
+                toast(stringOf(R.string.error_msg))
+            } else {
+                Intent(requireActivity(), WaitingActivity::class.java).apply {
+                    startActivity(this)
+                }
+            }
         }.launchIn(lifecycleScope)
     }
 }

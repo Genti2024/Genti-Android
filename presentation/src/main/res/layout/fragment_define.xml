@@ -47,7 +47,7 @@
             android:minLines="5"
             android:paddingHorizontal="14dp"
             android:paddingVertical="14dp"
-            android:text="@={vm.script}"
+            android:text="@={vm.prompt}"
             android:textColor="@color/black"
             android:textColorHint="@color/grey_7"
             app:layout_constraintEnd_toEndOf="parent"
