@@ -81,7 +81,7 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
     private fun observeGetExampleItemsState() {
         viewModel.getExampleItemsState.flowWithLifecycle(lifecycle).onEach { state ->
             if (state == UiState.Loading) {
-                setStatusBarColor(R.color.transparent_50)
+                setStatusBarColor(R.color.background_50)
                 binding.layoutLoading.isVisible = true
             } else {
                 setStatusBarColor(R.color.background_white)
