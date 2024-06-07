@@ -2,6 +2,7 @@ package kr.genti.presentation.main.feed
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -79,6 +80,13 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
 
     private fun observeGetExampleItemsState() {
         viewModel.getExampleItemsState.flowWithLifecycle(lifecycle).onEach { state ->
+            if (state == UiState.Loading) {
+                setStatusBarColor(R.color.background_50)
+                binding.layoutLoading.isVisible = true
+            } else {
+                setStatusBarColor(R.color.background_white)
+                binding.layoutLoading.isVisible = false
+            }
             when (state) {
                 is UiState.Success -> adapter.addItemList(state.data)
                 is UiState.Failure -> toast(stringOf(R.string.error_msg))

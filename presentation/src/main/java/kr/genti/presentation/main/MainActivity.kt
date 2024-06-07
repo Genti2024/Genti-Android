@@ -26,7 +26,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         setStatusBarColor()
     }
 
-    private fun initBnvItemIconTintList() {
+    fun initBnvItemIconTintList() {
         with(binding.bnvMain) {
             itemIconTintList = null
             selectedItemId = R.id.menu_feed

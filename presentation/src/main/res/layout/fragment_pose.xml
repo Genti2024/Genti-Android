@@ -11,8 +11,8 @@
             type="kr.genti.presentation.main.create.CreateViewModel" />
 
         <variable
-            name="imageRatio"
-            type="kr.genti.domain.enums.ImageRatio" />
+            name="pictureRatio"
+            type="kr.genti.domain.enums.PictureRatio" />
 
         <variable
             name="cameraAngle"
@@ -59,9 +59,9 @@
                     android:layout_height="0dp"
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="4dp"
-                    android:background="@{vm.selectedRatio == imageRatio.THREE ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:background="@{vm.selectedRatio == pictureRatio.THREE_TWO ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
                     android:gravity="center"
-                    android:onClick="@{() -> vm.selectRatio(imageRatio.THREE)}"
+                    android:onClick="@{() -> vm.selectRatio(pictureRatio.THREE_TWO)}"
                     android:padding="1dp"
                     android:text="@string/pose_btn_ratio_three"
                     app:layout_constraintDimensionRatio="1"
@@ -78,9 +78,9 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedRatio == imageRatio.TWO ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:background="@{vm.selectedRatio == pictureRatio.TWO_THREE ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
                     android:gravity="center"
-                    android:onClick="@{() -> vm.selectRatio(imageRatio.TWO)}"
+                    android:onClick="@{() -> vm.selectRatio(pictureRatio.TWO_THREE)}"
                     android:padding="1dp"
                     android:text="@string/pose_btn_ratio_two"
                     app:layout_constraintDimensionRatio="1"

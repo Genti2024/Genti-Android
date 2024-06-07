@@ -19,17 +19,17 @@
 
         <TextView
             android:id="@+id/tv_selfie_title"
-            android:layout_marginTop="12dp"
             style="@style/TextAppearance.Genti.BodyNormal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="12dp"
             android:elevation="1dp"
             android:gravity="center"
             android:text="@string/selfie_tv_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/btn_selfie_add"

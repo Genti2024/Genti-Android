@@ -13,6 +13,7 @@
     <color name="grey_8">#B3121212</color>
     <color name="white">#FFFFFF</color>
     <color name="background_white">#F9F9F9</color>
+    <color name="background_50">#7D7D7D</color>
 
     <!-- Green -->
     <color name="genti_green">#00FF20</color>
