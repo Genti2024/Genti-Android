@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseFragment
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColor
+import kr.genti.core.state.UiState
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentCreateBinding
 
@@ -31,6 +32,7 @@ class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_c
         initView()
         initBackBtnListener()
         observeProgressBar()
+        observeGeneratingState()
     }
 
     private fun initView() {
@@ -69,6 +71,18 @@ class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_c
                 start()
             }
             binding.btnBack.isVisible = viewModel.currentPercent.value > 33
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun observeGeneratingState() {
+        viewModel.totalGeneratingState.flowWithLifecycle(lifecycle).onEach { state ->
+            if (state == UiState.Loading) {
+                setStatusBarColor(R.color.transparent_50)
+                binding.layoutLoading.isVisible = true
+            } else {
+                setStatusBarColor(R.color.background_white)
+                binding.layoutLoading.isVisible = false
+            }
         }.launchIn(lifecycleScope)
     }
 

@@ -56,8 +56,8 @@ class CreateViewModel
         private val _getRandomPromptState = MutableStateFlow<UiState<PromptModel>>(UiState.Empty)
         val getRandomPromptState: StateFlow<UiState<PromptModel>> = _getRandomPromptState
 
-        private val _totalGeneratingResult = MutableSharedFlow<Boolean>()
-        val totalGeneratingResult: SharedFlow<Boolean> = _totalGeneratingResult
+        private val _totalGeneratingState = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
+        val totalGeneratingState: StateFlow<UiState<Boolean>> = _totalGeneratingState
 
         private var uploadCheckList = mutableListOf(false, false, false, true)
         private var plusImageS3Key: String? = null
@@ -123,6 +123,12 @@ class CreateViewModel
         }
 
         fun getS3PresignedUrls() {
+            _totalGeneratingState.value = UiState.Loading
+            getSingleS3Url()
+            getMultiUrls()
+        }
+
+        private fun getSingleS3Url() {
             if (plusImage.id != (-1).toLong()) {
                 uploadCheckList[3] = false
                 viewModelScope.launch {
@@ -136,10 +142,13 @@ class CreateViewModel
                             plusImageS3Key = uriModel.s3Key
                             postSingleImage(uriModel)
                         }.onFailure {
-                            _totalGeneratingResult.emit(false)
+                            _totalGeneratingState.value = UiState.Failure(it.message.toString())
                         }
                 }
             }
+        }
+
+        private fun getMultiUrls() {
             viewModelScope.launch {
                 createRepository.getS3MultiUrl(
                     listOf(
@@ -151,7 +160,7 @@ class CreateViewModel
                     imageS3KeyList = uriList.map { it.s3Key }
                     postMultiImage(uriList)
                 }.onFailure {
-                    _totalGeneratingResult.emit(false)
+                    _totalGeneratingState.value = UiState.Failure(it.message.toString())
                 }
             }
         }
@@ -164,7 +173,7 @@ class CreateViewModel
                         uploadCheckList[3] = true
                         checkAllUploadFinished()
                     }.onFailure {
-                        _totalGeneratingResult.emit(false)
+                        _totalGeneratingState.value = UiState.Failure(it.message.toString())
                     }
             }
         }
@@ -177,7 +186,7 @@ class CreateViewModel
                             uploadCheckList[i] = true
                             if (i == 2) checkAllUploadFinished()
                         }.onFailure {
-                            _totalGeneratingResult.emit(false)
+                            _totalGeneratingState.value = UiState.Failure(it.message.toString())
                             return@launch
                         }
                 }
@@ -199,9 +208,9 @@ class CreateViewModel
                         ),
                     )
                         .onSuccess {
-                            _totalGeneratingResult.emit(true)
+                            _totalGeneratingState.value = UiState.Success(it)
                         }.onFailure {
-                            _totalGeneratingResult.emit(false)
+                            _totalGeneratingState.value = UiState.Failure(it.message.toString())
                         }
                 }
             }

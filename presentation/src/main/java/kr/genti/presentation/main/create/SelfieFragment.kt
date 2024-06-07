@@ -26,6 +26,7 @@ import kr.genti.core.extension.getFileName
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
+import kr.genti.core.state.UiState
 import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentSelfieBinding
@@ -54,7 +55,7 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
         setBulletPointList()
         setGuideListBlur()
         initWaitingResult()
-        observeGetS3UrlResult()
+        observeGeneratingState()
     }
 
     override fun onResume() {
@@ -183,12 +184,18 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
         }
     }
 
-    private fun observeGetS3UrlResult() {
-        viewModel.totalGeneratingResult.flowWithLifecycle(lifecycle).onEach { result ->
-            if (!result) {
-                toast(stringOf(R.string.error_msg))
-            } else {
-                waitingResult.launch(Intent(requireContext(), WaitingActivity::class.java))
+    private fun observeGeneratingState() {
+        viewModel.totalGeneratingState.flowWithLifecycle(lifecycle).onEach { state ->
+            when (state) {
+                is UiState.Success -> {
+                    waitingResult.launch(Intent(requireContext(), WaitingActivity::class.java))
+                }
+
+                is UiState.Failure -> {
+                    toast(stringOf(R.string.error_msg))
+                }
+
+                else -> return@onEach
             }
         }.launchIn(lifecycleScope)
     }
