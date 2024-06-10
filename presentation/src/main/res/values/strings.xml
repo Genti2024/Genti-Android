@@ -65,6 +65,10 @@
     <string name="finished_error_input_btn_submit">제출하기</string>
     <string name="finished_error_input_btn_back">취소</string>
 
+    <string name="finished_error_output_tv_title">의견 감사합니다!</string>
+    <string name="finished_error_output_tv_subtitle">작성해주신 내용 잘 확인하여 더 좋은\n서비스를 제공하는 젠티가 되겠습니다.</string>
+    <string name="finished_error_output_btn_okay">확인했습니다!</string>
+
     <string name="feed_tv_title">젠플루언서들이 만든 사진이에요</string>
     <string name="feed_btn_genfluencer"><u>젠플루언서란?</u></string>
     <string name="feed_tv_genfluencer_guide">*여러분이 만든 사진은 자동으로 업로드 되지 않아요️</string>
