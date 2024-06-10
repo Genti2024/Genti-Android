@@ -41,6 +41,7 @@ class FinishedRatingDialog :
     private fun initSubmitBtnListener() {
         binding.btnSubmit.setOnSingleClickListener {
             // TODO: 서버통신
+            dismiss()
         }
     }
 }

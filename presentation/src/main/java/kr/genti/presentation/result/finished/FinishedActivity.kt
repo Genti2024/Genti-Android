@@ -20,12 +20,14 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
     private val viewModel by viewModels<FinishedViewModel>()
     private var finishedImageDialog: FinishedImageDialog? = null
     private var finishedErrorDialog: FinishedErrorDialog? = null
+    private var finishedRatingDialog: FinishedRatingDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initImageBtnListener()
         initSaveBtnListener()
+        initShareBtnListener()
         initReturnBtnListener()
         initUnwantedBtnListener()
         setFinishedImage()
@@ -45,9 +47,15 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
         }
     }
 
+    private fun initShareBtnListener() {
+        binding.btnShare.setOnSingleClickListener {
+        }
+    }
+
     private fun initReturnBtnListener() {
         binding.btnReturnMain.setOnSingleClickListener {
-            finish()
+            finishedRatingDialog = FinishedRatingDialog()
+            finishedRatingDialog?.show(supportFragmentManager, DIALOG_RATING)
         }
     }
 
@@ -86,10 +94,12 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
         super.onDestroy()
         finishedImageDialog = null
         finishedErrorDialog = null
+        finishedRatingDialog = null
     }
 
     companion object {
         private const val DIALOG_IMAGE = "DIALOG_IMAGE"
         private const val DIALOG_ERROR = "DIALOG_ERROR"
+        private const val DIALOG_RATING = "DIALOG_RATING"
     }
 }
