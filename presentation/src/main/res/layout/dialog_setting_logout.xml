@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_logout_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_logout_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_logout_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="57dp"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="15dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_logout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_logout_title"
+            style="@style/TextAppearance.Genti.Headline4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="45dp"
+            android:gravity="center"
+            android:text="@string/setting_logout_tv_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_logout_subtitle"
+            style="@style/TextAppearance.Genti.BodySmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/setting_logout_subtitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_logout_title" />
+
+        <TextView
+            android:id="@+id/btn_return"
+            style="@style/TextAppearance.Genti.Headline4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="45dp"
+            android:background="@drawable/shape_green1_fill_6_rect"
+            android:paddingHorizontal="35dp"
+            android:paddingVertical="6dp"
+            android:text="@string/setting_logout_btn_return"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_logout_subtitle" />
+
+        <TextView
+            android:id="@+id/btn_logout"
+            style="@style/TextAppearance.Genti.BodySmall"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/shape_green4_fill_6_rect"
+            android:gravity="center"
+            android:text="@string/setting_logout_btn_logout"
+            android:textColor="#989898"
+            app:layout_constraintBottom_toBottomOf="@id/btn_return"
+            app:layout_constraintEnd_toStartOf="@id/btn_return"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btn_return" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
