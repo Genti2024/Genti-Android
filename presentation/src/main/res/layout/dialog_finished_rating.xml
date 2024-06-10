@@ -8,8 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:padding="40dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="40dp">
 
         <ImageView
             android:id="@+id/iv_rating_bg"
@@ -55,12 +55,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:isIndicator="false"
-            android:numStars="5"
             android:layout_marginBottom="10dp"
+            android:numStars="5"
             android:progressTint="@color/genti_green"
             android:rating="5"
-            android:stepSize="1"
+            android:stepSize="0.5"
             app:layout_constraintBottom_toTopOf="@id/btn_submit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

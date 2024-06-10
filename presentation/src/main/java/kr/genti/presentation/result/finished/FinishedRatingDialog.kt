@@ -1,5 +1,6 @@
 package kr.genti.presentation.result.finished
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -8,6 +9,7 @@ import kr.genti.core.base.BaseDialog
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogFinishedRatingBinding
+import kr.genti.presentation.main.MainActivity
 
 class FinishedRatingDialog :
     BaseDialog<DialogFinishedRatingBinding>(R.layout.dialog_finished_rating) {
@@ -41,6 +43,10 @@ class FinishedRatingDialog :
     private fun initSubmitBtnListener() {
         binding.btnSubmit.setOnSingleClickListener {
             // TODO: 서버통신
+            Intent(requireActivity(), MainActivity::class.java).apply {
+                setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                startActivity(this)
+            }
             dismiss()
         }
     }
