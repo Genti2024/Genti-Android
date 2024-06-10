@@ -20,8 +20,8 @@ class FinishedErrorDialog :
         super.onStart()
         dialog?.window?.apply {
             setLayout(
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT,
             )
             setBackgroundDrawableResource(R.color.transparent)
         }
@@ -49,9 +49,11 @@ class FinishedErrorDialog :
     private fun initSubmitBtnListener() {
         binding.btnSubmit.setOnSingleClickListener {
             // TODO: 서버통신
+            requireContext().hideKeyboard(requireView())
             with(binding) {
                 layoutErrorInput.isVisible = false
                 layoutErrorOutput.isVisible = true
+                viewOutside.setOnSingleClickListener { dismiss() }
             }
         }
     }
