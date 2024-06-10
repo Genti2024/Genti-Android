@@ -19,6 +19,7 @@ import kr.genti.presentation.util.downloadImage
 class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity_finished) {
     private val viewModel by viewModels<FinishedViewModel>()
     private var finishedImageDialog: FinishedImageDialog? = null
+    private var finishedErrorDialog: FinishedErrorDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +35,7 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
     private fun initImageBtnListener() {
         binding.ivFinishedImage.setOnSingleClickListener {
             finishedImageDialog = FinishedImageDialog()
-            finishedImageDialog?.show(supportFragmentManager, IMAGE_VIEWER)
+            finishedImageDialog?.show(supportFragmentManager, DIALOG_IMAGE)
         }
     }
 
@@ -52,7 +53,8 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
 
     private fun initUnwantedBtnListener() {
         binding.btnUnwanted.setOnSingleClickListener {
-            // TODO
+            finishedErrorDialog = FinishedErrorDialog()
+            finishedErrorDialog?.show(supportFragmentManager, DIALOG_ERROR)
         }
     }
 
@@ -83,9 +85,11 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
     override fun onDestroy() {
         super.onDestroy()
         finishedImageDialog = null
+        finishedErrorDialog = null
     }
 
     companion object {
-        private const val IMAGE_VIEWER = "IMAGE_VIEWER"
+        private const val DIALOG_IMAGE = "DIALOG_IMAGE"
+        private const val DIALOG_ERROR = "DIALOG_ERROR"
     }
 }

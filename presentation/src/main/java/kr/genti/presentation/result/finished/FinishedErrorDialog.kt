@@ -3,16 +3,15 @@ package kr.genti.presentation.result.finished
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import coil.load
 import kr.genti.core.base.BaseDialog
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
-import kr.genti.presentation.databinding.DialogFinishedImageBinding
-import kr.genti.presentation.util.downloadImage
+import kr.genti.presentation.databinding.DialogFinishedErrorBinding
 
 class FinishedErrorDialog :
-    BaseDialog<DialogFinishedImageBinding>(R.layout.dialog_finished_image) {
+    BaseDialog<DialogFinishedErrorBinding>(R.layout.dialog_finished_error) {
     private val viewModel by activityViewModels<FinishedViewModel>()
 
     override fun onStart() {
@@ -20,7 +19,7 @@ class FinishedErrorDialog :
         dialog?.window?.apply {
             setLayout(
                 WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
             )
             setBackgroundDrawableResource(R.color.transparent)
         }
@@ -33,23 +32,24 @@ class FinishedErrorDialog :
         super.onViewCreated(view, savedInstanceState)
 
         initExitBtnListener()
-        initDownloadBtnListener()
-        setImage()
+        initSubmitBtnListener()
     }
 
     private fun initExitBtnListener() {
-        binding.btnExit.setOnSingleClickListener { dismiss() }
-        binding.ivProfileBackground.setOnSingleClickListener { dismiss() }
-    }
-
-    private fun initDownloadBtnListener() {
-        binding.btnDownload.setOnSingleClickListener {
-            requireActivity().downloadImage(viewModel.finishedImage.id, viewModel.finishedImage.url)
+        with(binding) {
+            btnBack.setOnSingleClickListener { dismiss() }
+            btnClose.setOnSingleClickListener { dismiss() }
+            btnOkay.setOnSingleClickListener { dismiss() }
         }
     }
 
-    private fun setImage() {
-        // TODO: 이미지 비율 대응
-        binding.ivProfile.load(viewModel.finishedImage.url)
+    private fun initSubmitBtnListener() {
+        binding.btnSubmit.setOnSingleClickListener {
+            // TODO: 서버통신
+            with(binding) {
+                layoutErrorInput.isVisible = false
+                layoutErrorOutput.isVisible = true
+            }
+        }
     }
 }
