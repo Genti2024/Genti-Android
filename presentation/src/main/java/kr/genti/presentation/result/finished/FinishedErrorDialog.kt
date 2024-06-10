@@ -1,11 +1,13 @@
 package kr.genti.presentation.result.finished
 
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import kr.genti.core.base.BaseDialog
+import kr.genti.core.extension.hideKeyboard
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogFinishedErrorBinding
@@ -33,6 +35,7 @@ class FinishedErrorDialog :
 
         initExitBtnListener()
         initSubmitBtnListener()
+        setHideKeyboard(view)
     }
 
     private fun initExitBtnListener() {
@@ -50,6 +53,16 @@ class FinishedErrorDialog :
                 layoutErrorInput.isVisible = false
                 layoutErrorOutput.isVisible = true
             }
+        }
+    }
+
+    private fun setHideKeyboard(view: View) {
+        view.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                requireContext().hideKeyboard(view)
+                v.performClick()
+            }
+            false
         }
     }
 }
