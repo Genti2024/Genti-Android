@@ -11,6 +11,7 @@ import kr.genti.presentation.databinding.ActivitySettingBinding
 @AndroidEntryPoint
 class SettingActivity : BaseActivity<ActivitySettingBinding>(R.layout.activity_setting) {
     private var settingLogoutDialog: SettingLogoutDialog? = null
+    private var settingQuitDialog: SettingQuitDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +59,8 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(R.layout.activity_s
 
     private fun initQuitBtnListener() {
         binding.btnQuit.setOnSingleClickListener {
-            // TODO
+            settingQuitDialog = SettingQuitDialog()
+            settingQuitDialog?.show(supportFragmentManager, DIALOG_QUIT)
         }
     }
 
@@ -66,6 +68,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(R.layout.activity_s
         super.onDestroy()
 
         settingLogoutDialog = null
+        settingQuitDialog = null
     }
 
     companion object {
