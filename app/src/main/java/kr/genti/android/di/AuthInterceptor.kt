@@ -30,7 +30,11 @@ class AuthInterceptor
             Timber.d("GET ACCESS TOKEN : ${sharedPref.accessToken}")
 
             val authRequest =
-                originalRequest.newBuilder().newAuthBuilder().build()
+                if (sharedPref.accessToken.isNotBlank()) {
+                    originalRequest.newBuilder().newAuthBuilder().build()
+                } else {
+                    originalRequest
+                }
 
             val response = chain.proceed(authRequest)
 
@@ -75,11 +79,7 @@ class AuthInterceptor
             return response
         }
 
-        private fun Request.Builder.newAuthBuilder() =
-            this.addHeader(
-                AUTHORIZATION,
-                "$BEARER eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfVVNFUiIsImlhdCI6MTcxNzUxNjQxOCwiZXhwIjoxNzc3NTE2NDE4fQ.---BfcQReG0uU4SWLmqAxxw_Y31CFmtakqO1IaBafThZSG1Zt60jB6tSvZ8IEWRBR4Lt9dsmpXMW1a77OvkUUA",
-            )
+        private fun Request.Builder.newAuthBuilder() = this.addHeader(AUTHORIZATION, "$BEARER ${sharedPref.accessToken}")
 
         companion object {
             private const val CODE_TOKEN_EXPIRED = 401
