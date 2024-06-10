@@ -7,7 +7,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
@@ -24,11 +24,11 @@
             android:id="@+id/iv_quit_icon"
             android:layout_width="wrap_content"
             android:layout_height="57dp"
-            android:layout_marginStart="35dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="15dp"
             android:adjustViewBounds="true"
             android:src="@drawable/ic_quit"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/iv_quit_bg"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -37,11 +37,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="45dp"
+            android:layout_marginTop="35dp"
             android:gravity="center"
             android:text="@string/setting_quit_tv_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/iv_quit_bg"
+            app:layout_constraintStart_toStartOf="@id/iv_quit_bg"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -53,8 +53,8 @@
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="@string/setting_quit_tv_subtitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/iv_quit_bg"
+            app:layout_constraintStart_toStartOf="@id/iv_quit_bg"
             app:layout_constraintTop_toBottomOf="@id/tv_quit_title" />
 
         <TextView
@@ -63,13 +63,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="45dp"
+            android:layout_marginEnd="35dp"
             android:background="@drawable/shape_green1_fill_6_rect"
             android:paddingHorizontal="35dp"
             android:paddingVertical="6dp"
             android:text="@string/setting_logout_btn_return"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/iv_quit_bg"
             app:layout_constraintTop_toBottomOf="@id/tv_quit_subtitle" />
 
         <TextView
@@ -77,7 +77,7 @@
             style="@style/TextAppearance.Genti.BodySmall"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="45dp"
+            android:layout_marginStart="35dp"
             android:layout_marginEnd="24dp"
             android:background="@drawable/shape_green4_fill_6_rect"
             android:gravity="center"
@@ -85,7 +85,7 @@
             android:textColor="#989898"
             app:layout_constraintBottom_toBottomOf="@id/btn_return"
             app:layout_constraintEnd_toStartOf="@id/btn_return"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/iv_quit_bg"
             app:layout_constraintTop_toTopOf="@id/btn_return" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

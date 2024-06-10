@@ -8,5 +8,9 @@ import javax.inject.Inject
 class SettingViewModel
     @Inject
     constructor(
-        // private val profileRepository: ProfileRepository,
-    ) : ViewModel()
+        // private val authRepository: AuthRepository
+    ) : ViewModel() {
+        private fun clearLocalInfo() {
+            // authRepository.clearLocalPref()
+        }
+    }
