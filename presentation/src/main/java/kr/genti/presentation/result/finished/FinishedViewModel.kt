@@ -1,5 +1,6 @@
 package kr.genti.presentation.result.finished
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kr.genti.domain.entity.response.ImageModel
@@ -11,6 +12,8 @@ class FinishedViewModel
     constructor(
         // private val profileRepository: ProfileRepository,
     ) : ViewModel() {
+        val errorReport = MutableLiveData<String>()
+
         // TODO: 이미지 받아오기
         val finishedImage =
             ImageModel(

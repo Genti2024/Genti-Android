@@ -1,11 +1,16 @@
 package kr.genti.presentation.result.finished
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.text.style.TextAppearanceSpan
 import androidx.activity.viewModels
+import androidx.core.content.FileProvider
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
@@ -13,18 +18,24 @@ import kr.genti.core.extension.colorOf
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityFinishedBinding
+import kr.genti.presentation.main.profile.ProfileImageDialog
 import kr.genti.presentation.util.downloadImage
+import java.io.File
+import java.io.FileOutputStream
 
 @AndroidEntryPoint
 class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity_finished) {
     private val viewModel by viewModels<FinishedViewModel>()
     private var finishedImageDialog: FinishedImageDialog? = null
+    private var finishedErrorDialog: FinishedErrorDialog? = null
+    private var finishedRatingDialog: FinishedRatingDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initImageBtnListener()
         initSaveBtnListener()
+        initShareBtnListener()
         initReturnBtnListener()
         initUnwantedBtnListener()
         setFinishedImage()
@@ -34,7 +45,7 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
     private fun initImageBtnListener() {
         binding.ivFinishedImage.setOnSingleClickListener {
             finishedImageDialog = FinishedImageDialog()
-            finishedImageDialog?.show(supportFragmentManager, IMAGE_VIEWER)
+            finishedImageDialog?.show(supportFragmentManager, DIALOG_IMAGE)
         }
     }
 
@@ -44,15 +55,45 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
         }
     }
 
+    private fun initShareBtnListener() {
+        binding.btnShare.setOnSingleClickListener {
+            Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_STREAM, getTemporaryUri())
+                type = ProfileImageDialog.IMAGE_TYPE
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                startActivity(Intent.createChooser(this, SHARE_IMAGE_CHOOSER))
+            }
+        }
+    }
+
+    private fun getTemporaryUri(): Uri {
+        val tempFile = File(cacheDir, ProfileImageDialog.TEMP_FILE_NAME)
+        FileOutputStream(tempFile).use { out ->
+            (binding.ivFinishedImage.drawable as BitmapDrawable).bitmap.compress(
+                Bitmap.CompressFormat.PNG,
+                100,
+                out,
+            )
+        }
+        return FileProvider.getUriForFile(
+            this,
+            ProfileImageDialog.FILE_PROVIDER_AUTORITY,
+            tempFile,
+        )
+    }
+
     private fun initReturnBtnListener() {
         binding.btnReturnMain.setOnSingleClickListener {
-            finish()
+            finishedRatingDialog = FinishedRatingDialog()
+            finishedRatingDialog?.show(supportFragmentManager, DIALOG_RATING)
         }
     }
 
     private fun initUnwantedBtnListener() {
         binding.btnUnwanted.setOnSingleClickListener {
-            // TODO
+            finishedErrorDialog = FinishedErrorDialog()
+            finishedErrorDialog?.show(supportFragmentManager, DIALOG_ERROR)
         }
     }
 
@@ -83,9 +124,14 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
     override fun onDestroy() {
         super.onDestroy()
         finishedImageDialog = null
+        finishedErrorDialog = null
+        finishedRatingDialog = null
     }
 
     companion object {
-        private const val IMAGE_VIEWER = "IMAGE_VIEWER"
+        private const val DIALOG_IMAGE = "DIALOG_IMAGE"
+        private const val DIALOG_ERROR = "DIALOG_ERROR"
+        private const val DIALOG_RATING = "DIALOG_RATING"
+        private const val SHARE_IMAGE_CHOOSER = "SHARE_IMAGE_CHOOSER"
     }
 }
