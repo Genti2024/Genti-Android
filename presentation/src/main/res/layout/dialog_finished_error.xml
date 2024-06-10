@@ -7,34 +7,55 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/iv_error_bg"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:src="@drawable/img_error_bg"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_error_input"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/iv_error_bg"
-            app:layout_constraintEnd_toEndOf="@id/iv_error_bg"
-            app:layout_constraintStart_toStartOf="@id/iv_error_bg"
-            app:layout_constraintTop_toTopOf="@id/iv_error_bg">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="0.1dp"
+                android:layout_marginVertical="20dp"
+                android:background="@color/background_white"
+                app:layout_constraintBottom_toBottomOf="@id/iv_finished_bg_bottom_input"
+                app:layout_constraintEnd_toEndOf="@id/iv_finished_bg_top_input"
+                app:layout_constraintStart_toStartOf="@id/iv_finished_bg_top_input"
+                app:layout_constraintTop_toTopOf="@id/iv_finished_bg_top_input" />
+
+            <ImageView
+                android:id="@+id/iv_finished_bg_top_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:src="@drawable/img_error_bg_top"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_finished_bg_bottom_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-70dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/img_error_bg_bottom"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_submit" />
 
             <ImageView
                 android:id="@+id/iv_error_input_axe"
                 android:layout_width="59dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="36dp"
+                android:layout_marginStart="25dp"
                 android:layout_marginTop="8dp"
                 android:adjustViewBounds="true"
                 android:src="@drawable/ic_axe"
@@ -69,12 +90,13 @@
 
             <EditText
                 android:id="@+id/et_error_input"
-                style="@style/TextAppearance.Genti.BodyNormal"
+                style="@style/TextAppearance.Genti.BodySmall"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="45dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/shape_grey5_fill_6_rect"
+                android:padding="6dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_error_input_subtitle" />
@@ -115,13 +137,45 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_error_output"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/iv_error_bg"
-            app:layout_constraintEnd_toEndOf="@id/iv_error_bg"
-            app:layout_constraintStart_toStartOf="@id/iv_error_bg"
-            app:layout_constraintTop_toTopOf="@id/iv_error_bg">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="0.1dp"
+                android:layout_marginVertical="20dp"
+                android:background="@color/background_white"
+                app:layout_constraintBottom_toBottomOf="@id/iv_finished_bg_bottom_output"
+                app:layout_constraintEnd_toEndOf="@id/iv_finished_bg_top_output"
+                app:layout_constraintStart_toStartOf="@id/iv_finished_bg_top_output"
+                app:layout_constraintTop_toTopOf="@id/iv_finished_bg_top_output"/>
+
+            <ImageView
+                android:id="@+id/iv_finished_bg_top_output"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:src="@drawable/img_error_bg_top"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_finished_bg_bottom_output"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-70dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/img_error_bg_bottom"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_okay" />
 
             <ImageView
                 android:id="@+id/btn_close"
@@ -176,17 +230,18 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="29dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/shape_green1_fill_6_rect"
                 android:gravity="center"
                 android:paddingVertical="6dp"
                 android:text="@string/finished_error_output_btn_okay"
                 android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_error_output_subtitle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
