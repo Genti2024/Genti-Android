@@ -52,42 +52,67 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/btn_ratio_3_to_2"
-                    style="@style/TextAppearance.Genti.BodySmall"
-                    android:layout_width="114dp"
+                <ImageView
+                    android:id="@+id/btn_ratio_3_2"
+                    android:layout_width="110dp"
                     android:layout_height="0dp"
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="4dp"
-                    android:background="@{vm.selectedRatio == pictureRatio.RATIO_3_2 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
                     android:gravity="center"
                     android:onClick="@{() -> vm.selectRatio(pictureRatio.RATIO_3_2)}"
                     android:padding="1dp"
-                    android:text="@string/pose_btn_ratio_three"
+                    android:src="@drawable/img_ratio_3_2"
                     app:layout_constraintDimensionRatio="1"
-                    app:layout_constraintEnd_toStartOf="@id/btn_ratio_2_to_3"
+                    app:layout_constraintEnd_toStartOf="@id/btn_ratio_2_3"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_ratio_title" />
 
                 <TextView
-                    android:id="@+id/btn_ratio_2_to_3"
                     style="@style/TextAppearance.Genti.BodySmall"
-                    android:layout_width="114dp"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/shape_grey1_50_fill_green_line_rect"
+                    android:gravity="center"
+                    android:text="@{pictureRatio.RATIO_3_2.toString()}"
+                    android:textColor="@color/genti_green"
+                    android:textSize="12sp"
+                    android:visibility="@{vm.selectedRatio == pictureRatio.RATIO_3_2 ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_ratio_3_2"
+                    app:layout_constraintEnd_toEndOf="@id/btn_ratio_3_2"
+                    app:layout_constraintStart_toStartOf="@id/btn_ratio_3_2"
+                    app:layout_constraintTop_toTopOf="@id/btn_ratio_3_2" />
+
+                <ImageView
+                    android:id="@+id/btn_ratio_2_3"
+                    android:layout_width="110dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="3dp"
-                    android:adjustViewBounds="true"
-                    android:background="@{vm.selectedRatio == pictureRatio.RATIO_2_3 ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
                     android:gravity="center"
                     android:onClick="@{() -> vm.selectRatio(pictureRatio.RATIO_2_3)}"
                     android:padding="1dp"
-                    android:text="@string/pose_btn_ratio_two"
+                    android:src="@drawable/img_ratio_2_3"
                     app:layout_constraintDimensionRatio="1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toEndOf="@id/btn_ratio_3_to_2"
+                    app:layout_constraintStart_toEndOf="@id/btn_ratio_3_2"
                     app:layout_constraintTop_toBottomOf="@id/tv_ratio_title" />
+
+                <TextView
+                    style="@style/TextAppearance.Genti.BodySmall"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/shape_grey1_50_fill_green_line_rect"
+                    android:gravity="center"
+                    android:text="@{pictureRatio.RATIO_2_3.toString()}"
+                    android:textColor="@color/genti_green"
+                    android:textSize="12sp"
+                    android:visibility="@{vm.selectedRatio == pictureRatio.RATIO_2_3 ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_ratio_2_3"
+                    app:layout_constraintEnd_toEndOf="@id/btn_ratio_2_3"
+                    app:layout_constraintStart_toStartOf="@id/btn_ratio_2_3"
+                    app:layout_constraintTop_toTopOf="@id/btn_ratio_2_3" />
 
                 <TextView
                     android:id="@+id/tv_pose_title"
@@ -100,7 +125,7 @@
                     android:text="@string/pose_tv_angle_title"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btn_ratio_3_to_2" />
+                    app:layout_constraintTop_toBottomOf="@id/btn_ratio_3_2" />
 
                 <LinearLayout
                     android:id="@+id/btn_angle_none"
@@ -131,52 +156,97 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/btn_angle_up"
+                    android:id="@+id/btn_angle_high"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedAngle == cameraAngle.HIGH ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:background="@drawable/shape_white_fill_grey7_line_rect"
                     android:onClick="@{() -> vm.selectAngle(cameraAngle.HIGH)}"
                     android:padding="1dp"
                     android:src="@drawable/img_angle_high"
-                    app:layout_constraintEnd_toStartOf="@id/btn_angle_mid"
+                    app:layout_constraintEnd_toStartOf="@id/btn_angle_middle"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/btn_angle_none" />
 
+                <TextView
+                    style="@style/TextAppearance.Genti.BodySmall"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/shape_grey1_50_fill_green_line_rect"
+                    android:gravity="center"
+                    android:text="@{cameraAngle.HIGH.toString()}"
+                    android:textColor="@color/genti_green"
+                    android:textSize="12sp"
+                    android:visibility="@{vm.selectedAngle == cameraAngle.HIGH ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_angle_high"
+                    app:layout_constraintEnd_toEndOf="@id/btn_angle_high"
+                    app:layout_constraintStart_toStartOf="@id/btn_angle_high"
+                    app:layout_constraintTop_toTopOf="@id/btn_angle_high" />
+
                 <ImageView
-                    android:id="@+id/btn_angle_mid"
+                    android:id="@+id/btn_angle_middle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="9dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedAngle == cameraAngle.MIDDLE ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:background="@drawable/shape_white_fill_grey7_line_rect"
                     android:onClick="@{() -> vm.selectAngle(cameraAngle.MIDDLE)}"
                     android:padding="1dp"
                     android:src="@drawable/img_angle_middle"
-                    app:layout_constraintEnd_toStartOf="@id/btn_angle_down"
+                    app:layout_constraintEnd_toStartOf="@id/btn_angle_low"
                     app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toEndOf="@id/btn_angle_up"
+                    app:layout_constraintStart_toEndOf="@id/btn_angle_high"
                     app:layout_constraintTop_toBottomOf="@id/btn_angle_none" />
 
+                <TextView
+                    style="@style/TextAppearance.Genti.BodySmall"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/shape_grey1_50_fill_green_line_rect"
+                    android:gravity="center"
+                    android:text="@{cameraAngle.MIDDLE.toString()}"
+                    android:textColor="@color/genti_green"
+                    android:textSize="12sp"
+                    android:visibility="@{vm.selectedAngle == cameraAngle.MIDDLE ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_angle_middle"
+                    app:layout_constraintEnd_toEndOf="@id/btn_angle_middle"
+                    app:layout_constraintStart_toStartOf="@id/btn_angle_middle"
+                    app:layout_constraintTop_toTopOf="@id/btn_angle_middle" />
+
                 <ImageView
-                    android:id="@+id/btn_angle_down"
+                    android:id="@+id/btn_angle_low"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="16dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedAngle == cameraAngle.LOW ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:background="@{vm.selectedAngle == cameraAngle.LOW ? @drawable/shape_grey1_50_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
                     android:onClick="@{() -> vm.selectAngle(cameraAngle.LOW)}"
                     android:padding="1dp"
                     android:src="@drawable/img_angle_low"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toEndOf="@id/btn_angle_mid"
+                    app:layout_constraintStart_toEndOf="@id/btn_angle_middle"
                     app:layout_constraintTop_toBottomOf="@id/btn_angle_none" />
+
+                <TextView
+                    style="@style/TextAppearance.Genti.BodySmall"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/shape_grey1_50_fill_green_line_rect"
+                    android:gravity="center"
+                    android:text="@{cameraAngle.LOW.toString()}"
+                    android:textColor="@color/genti_green"
+                    android:textSize="12sp"
+                    android:visibility="@{vm.selectedAngle == cameraAngle.LOW ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_angle_low"
+                    app:layout_constraintEnd_toEndOf="@id/btn_angle_low"
+                    app:layout_constraintStart_toStartOf="@id/btn_angle_low"
+                    app:layout_constraintTop_toTopOf="@id/btn_angle_low" />
 
                 <TextView
                     android:id="@+id/tv_frame_title"
@@ -189,7 +259,7 @@
                     android:text="@string/pose_tv_frame_title"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btn_angle_up" />
+                    app:layout_constraintTop_toBottomOf="@id/btn_angle_high" />
 
                 <LinearLayout
                     android:id="@+id/btn_frame_none"
@@ -220,52 +290,97 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/btn_frame_up"
+                    android:id="@+id/btn_frame_upper"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedCoverage == shotCoverage.UPPER_BODY ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:background="@drawable/shape_white_fill_grey7_line_rect"
                     android:onClick="@{() -> vm.selectFrame(shotCoverage.UPPER_BODY)}"
                     android:padding="1dp"
-                    android:src="@drawable/img_angle_high"
-                    app:layout_constraintEnd_toStartOf="@id/btn_frame_mid"
+                    android:src="@drawable/img_frame_upper"
+                    app:layout_constraintEnd_toStartOf="@id/btn_frame_knee"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/btn_frame_none" />
 
+                <TextView
+                    style="@style/TextAppearance.Genti.BodySmall"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/shape_grey1_50_fill_green_line_rect"
+                    android:gravity="center"
+                    android:text="@{shotCoverage.UPPER_BODY.toString()}"
+                    android:textColor="@color/genti_green"
+                    android:textSize="12sp"
+                    android:visibility="@{vm.selectedCoverage == shotCoverage.UPPER_BODY ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_frame_upper"
+                    app:layout_constraintEnd_toEndOf="@id/btn_frame_upper"
+                    app:layout_constraintStart_toStartOf="@id/btn_frame_upper"
+                    app:layout_constraintTop_toTopOf="@id/btn_frame_upper" />
+
                 <ImageView
-                    android:id="@+id/btn_frame_mid"
+                    android:id="@+id/btn_frame_knee"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="9dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedCoverage == shotCoverage.KNEE_SHOT ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:background="@drawable/shape_white_fill_grey7_line_rect"
                     android:onClick="@{() -> vm.selectFrame(shotCoverage.KNEE_SHOT)}"
                     android:padding="1dp"
-                    android:src="@drawable/img_angle_middle"
-                    app:layout_constraintEnd_toStartOf="@id/btn_frame_down"
+                    android:src="@drawable/img_frame_knee"
+                    app:layout_constraintEnd_toStartOf="@id/btn_frame_full"
                     app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toEndOf="@id/btn_frame_up"
+                    app:layout_constraintStart_toEndOf="@id/btn_frame_upper"
                     app:layout_constraintTop_toBottomOf="@id/btn_frame_none" />
 
+                <TextView
+                    style="@style/TextAppearance.Genti.BodySmall"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/shape_grey1_50_fill_green_line_rect"
+                    android:gravity="center"
+                    android:text="@{shotCoverage.KNEE_SHOT.toString()}"
+                    android:textColor="@color/genti_green"
+                    android:textSize="12sp"
+                    android:visibility="@{vm.selectedCoverage == shotCoverage.KNEE_SHOT ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_frame_knee"
+                    app:layout_constraintEnd_toEndOf="@id/btn_frame_knee"
+                    app:layout_constraintStart_toStartOf="@id/btn_frame_knee"
+                    app:layout_constraintTop_toTopOf="@id/btn_frame_knee" />
+
                 <ImageView
-                    android:id="@+id/btn_frame_down"
+                    android:id="@+id/btn_frame_full"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="16dp"
                     android:adjustViewBounds="true"
-                    android:background="@{vm.selectedCoverage == shotCoverage.FULL_BODY ? @drawable/shape_white_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
+                    android:background="@{vm.selectedCoverage == shotCoverage.FULL_BODY ? @drawable/shape_grey1_50_fill_green_line_rect : @drawable/shape_white_fill_grey7_line_rect}"
                     android:onClick="@{() -> vm.selectFrame(shotCoverage.FULL_BODY)}"
                     android:padding="1dp"
-                    android:src="@drawable/img_angle_low"
+                    android:src="@drawable/img_frame_full"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toEndOf="@id/btn_frame_mid"
+                    app:layout_constraintStart_toEndOf="@id/btn_frame_knee"
                     app:layout_constraintTop_toBottomOf="@id/btn_frame_none" />
+
+                <TextView
+                    style="@style/TextAppearance.Genti.BodySmall"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/shape_grey1_50_fill_green_line_rect"
+                    android:gravity="center"
+                    android:text="@{shotCoverage.FULL_BODY.toString()}"
+                    android:textColor="@color/genti_green"
+                    android:textSize="12sp"
+                    android:visibility="@{vm.selectedCoverage == shotCoverage.FULL_BODY ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_frame_full"
+                    app:layout_constraintEnd_toEndOf="@id/btn_frame_full"
+                    app:layout_constraintStart_toStartOf="@id/btn_frame_full"
+                    app:layout_constraintTop_toTopOf="@id/btn_frame_full" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
