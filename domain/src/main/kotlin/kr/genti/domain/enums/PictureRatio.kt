@@ -1,8 +1,8 @@
 package kr.genti.domain.enums
 
 enum class PictureRatio(private val description: String) {
-    THREE_TWO("3:2"),
-    TWO_THREE("2:3"),
+    RATIO_3_2("3:2 비율\n(세로로 긴 사진)"),
+    RATIO_2_3("2:3 비율\n(가로로 긴 사진)"),
     ;
 
     override fun toString(): String {
