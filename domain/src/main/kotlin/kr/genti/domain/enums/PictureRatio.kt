@@ -11,7 +11,7 @@ enum class PictureRatio(private val description: String) {
 
     companion object {
         fun String.toPictureRatio(): PictureRatio? {
-            return PictureRatio.values().find { it.toString() == this }
+            return PictureRatio.values().find { it.name == this }
         }
     }
 }
