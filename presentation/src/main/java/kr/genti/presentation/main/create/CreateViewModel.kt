@@ -93,8 +93,8 @@ class CreateViewModel
                 viewModelScope.launch {
                     createRepository.getS3SingleUrl(
                         S3RequestModel(
-                            plusImage.name,
                             FileType.USER_UPLOADED_IMAGE,
+                            plusImage.name,
                         ),
                     )
                         .onSuccess { uriModel ->
@@ -111,9 +111,9 @@ class CreateViewModel
             viewModelScope.launch {
                 createRepository.getS3MultiUrl(
                     listOf(
-                        S3RequestModel(imageList[0].name, FileType.USER_UPLOADED_IMAGE),
-                        S3RequestModel(imageList[1].name, FileType.USER_UPLOADED_IMAGE),
-                        S3RequestModel(imageList[2].name, FileType.USER_UPLOADED_IMAGE),
+                        S3RequestModel(FileType.USER_UPLOADED_IMAGE, imageList[0].name),
+                        S3RequestModel(FileType.USER_UPLOADED_IMAGE, imageList[1].name),
+                        S3RequestModel(FileType.USER_UPLOADED_IMAGE, imageList[2].name),
                     ),
                 ).onSuccess { uriList ->
                     imageS3KeyList = uriList.map { it.s3Key }

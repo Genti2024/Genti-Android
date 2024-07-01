@@ -12,16 +12,7 @@ enum class PictureType {
 
     companion object {
         fun String.toPictureType(): PictureType? {
-            return when (this) {
-                "PictureCompleted" -> PictureCompleted
-                "PictureCreatedByCreator" -> PictureCreatedByCreator
-                "PicturePose" -> PicturePose
-                "PicturePost" -> PicturePost
-                "PictureProfile" -> PictureProfile
-                "PictureUserFace" -> PictureUserFace
-                "ResponseExample" -> ResponseExample
-                else -> null
-            }
+            return PictureType.values().find { it.toString() == this }
         }
     }
 }

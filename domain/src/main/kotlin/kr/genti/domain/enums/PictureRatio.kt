@@ -11,11 +11,7 @@ enum class PictureRatio(private val description: String) {
 
     companion object {
         fun String.toPictureRatio(): PictureRatio? {
-            return when (this) {
-                "RATIO_3_2" -> RATIO_3_2
-                "RATIO_2_3" -> RATIO_2_3
-                else -> null
-            }
+            return PictureRatio.values().find { it.toString() == this }
         }
     }
 }
