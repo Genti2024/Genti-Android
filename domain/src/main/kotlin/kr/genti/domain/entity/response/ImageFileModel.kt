@@ -4,6 +4,8 @@ data class ImageFileModel(
     var id: Long,
     var name: String,
     var url: String,
-)
-
-fun emptyImageFileModel() = ImageFileModel(-1, "", "")
+) {
+    companion object {
+        fun emptyImageFileModel() = ImageFileModel(-1, "", "")
+    }
+}

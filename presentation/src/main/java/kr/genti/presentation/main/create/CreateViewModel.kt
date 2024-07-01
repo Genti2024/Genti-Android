@@ -11,8 +11,8 @@ import kr.genti.core.state.UiState
 import kr.genti.domain.entity.request.GenerateRequestModel
 import kr.genti.domain.entity.request.S3RequestModel
 import kr.genti.domain.entity.response.ImageFileModel
+import kr.genti.domain.entity.response.ImageFileModel.Companion.emptyImageFileModel
 import kr.genti.domain.entity.response.S3PresignedUrlModel
-import kr.genti.domain.entity.response.emptyImageFileModel
 import kr.genti.domain.enums.CameraAngle
 import kr.genti.domain.enums.FileType
 import kr.genti.domain.enums.PictureRatio
