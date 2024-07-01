@@ -7,22 +7,15 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseFragment
 import kr.genti.core.extension.getFileName
 import kr.genti.core.extension.initOnBackPressedListener
 import kr.genti.core.extension.setOnSingleClickListener
-import kr.genti.core.extension.stringOf
-import kr.genti.core.extension.toast
-import kr.genti.core.state.UiState
 import kr.genti.domain.entity.response.ImageFileModel
-import kr.genti.domain.entity.response.emptyImageFileModel
+import kr.genti.domain.entity.response.ImageFileModel.Companion.emptyImageFileModel
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentDefineBinding
 
@@ -43,8 +36,6 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
         initAddImageBtnListener()
         initDeleteBtnListener()
         setGalleryImage()
-        observeGetExamplePromptsResult()
-        observeGetRandomPromptState()
     }
 
     override fun onResume() {
@@ -55,6 +46,7 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
     private fun initView() {
         binding.vm = viewModel
         initOnBackPressedListener(binding.root)
+        binding.tvCreateRandomExample.text = viewModel.getRandomPrompt()
     }
 
     private fun initCreateBtnListener() {
@@ -66,7 +58,7 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
 
     private fun initRefreshExBtnListener() {
         binding.btnRefresh.setOnClickListener {
-            viewModel.getRandomPrompt()
+            binding.tvCreateRandomExample.text = viewModel.getRandomPrompt()
         }
     }
 
@@ -106,22 +98,6 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
                     }
                 }
             }
-    }
-
-    private fun observeGetExamplePromptsResult() {
-        viewModel.getExamplePromptsResult.flowWithLifecycle(lifecycle).onEach { result ->
-            if (!result) toast(stringOf(R.string.error_msg))
-        }.launchIn(lifecycleScope)
-    }
-
-    private fun observeGetRandomPromptState() {
-        viewModel.getRandomPromptState.flowWithLifecycle(lifecycle).onEach { state ->
-            when (state) {
-                is UiState.Success -> binding.tvCreateRandomExample.text = state.data.prompt
-
-                else -> return@onEach
-            }
-        }.launchIn(lifecycleScope)
     }
 
     private fun setSavedImage() {

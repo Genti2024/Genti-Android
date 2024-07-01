@@ -6,8 +6,8 @@ import kr.genti.domain.enums.ShotCoverage
 
 data class GenerateRequestModel(
     val prompt: String,
-    val posePictureKey: String?,
-    val facePictureKeyList: List<String>,
+    val posePicture: KeyModel?,
+    val facePictureList: List<KeyModel>,
     val cameraAngle: CameraAngle,
     val shotCoverage: ShotCoverage,
     val pictureRatio: PictureRatio,

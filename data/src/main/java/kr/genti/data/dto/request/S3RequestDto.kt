@@ -7,10 +7,10 @@ import kr.genti.domain.enums.FileType
 
 @Serializable
 data class S3RequestDto(
-    @SerialName("fileName")
-    val fileName: String,
     @SerialName("fileType")
     val fileType: FileType,
+    @SerialName("fileName")
+    val fileName: String,
 )
 
-fun S3RequestModel.toDto() = S3RequestDto(fileName, fileType)
+fun S3RequestModel.toDto() = S3RequestDto(fileType, fileName)

@@ -8,4 +8,10 @@ enum class PictureRatio(private val description: String) {
     override fun toString(): String {
         return description
     }
+
+    companion object {
+        fun String.toPictureRatio(): PictureRatio? {
+            return PictureRatio.values().find { it.toString() == this }
+        }
+    }
 }

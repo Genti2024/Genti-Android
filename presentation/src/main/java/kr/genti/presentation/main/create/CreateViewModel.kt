@@ -4,18 +4,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kr.genti.core.state.UiState
 import kr.genti.domain.entity.request.GenerateRequestModel
+import kr.genti.domain.entity.request.KeyModel
 import kr.genti.domain.entity.request.S3RequestModel
 import kr.genti.domain.entity.response.ImageFileModel
-import kr.genti.domain.entity.response.PromptModel
+import kr.genti.domain.entity.response.ImageFileModel.Companion.emptyImageFileModel
 import kr.genti.domain.entity.response.S3PresignedUrlModel
-import kr.genti.domain.entity.response.emptyImageFileModel
 import kr.genti.domain.enums.CameraAngle
 import kr.genti.domain.enums.FileType
 import kr.genti.domain.enums.PictureRatio
@@ -47,25 +45,14 @@ class CreateViewModel
         private val _currentPercent = MutableStateFlow<Int>(33)
         val currentPercent: StateFlow<Int> = _currentPercent
 
-        private var examplePromptList = listOf<PromptModel>()
-        private var currentPromptId: Long = -1
-
-        private val _getExamplePromptsResult = MutableSharedFlow<Boolean>()
-        val getExamplePromptsResult: SharedFlow<Boolean> = _getExamplePromptsResult
-
-        private val _getRandomPromptState = MutableStateFlow<UiState<PromptModel>>(UiState.Empty)
-        val getRandomPromptState: StateFlow<UiState<PromptModel>> = _getRandomPromptState
+        private var currentPrompt: String = ""
 
         private val _totalGeneratingState = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
         val totalGeneratingState: StateFlow<UiState<Boolean>> = _totalGeneratingState
 
         private var uploadCheckList = mutableListOf(false, false, false, true)
-        private var plusImageS3Key: String? = null
-        private var imageS3KeyList = listOf<String>()
-
-        init {
-            getExamplePromptsFromServer()
-        }
+        private var plusImageS3Key = KeyModel(null)
+        private var imageS3KeyList = listOf<KeyModel>()
 
         fun modCurrentPercent(amount: Int) {
             _currentPercent.value += amount
@@ -95,33 +82,6 @@ class CreateViewModel
                 selectedRatio.value != null && selectedAngle.value != null && selectedCoverage.value != null
         }
 
-        private fun getExamplePromptsFromServer() {
-            if (examplePromptList.isEmpty()) {
-                viewModelScope.launch {
-                    createRepository.getExamplePrompts()
-                        .onSuccess {
-                            _getExamplePromptsResult.emit(true)
-                            examplePromptList = it
-                            getRandomPrompt()
-                        }
-                        .onFailure {
-                            _getExamplePromptsResult.emit(false)
-                        }
-                }
-            }
-        }
-
-        fun getRandomPrompt() {
-            val filteredList = examplePromptList.filter { it.id != currentPromptId }
-            if (filteredList.isNotEmpty()) {
-                val randomPrompt = filteredList[Random.nextInt(filteredList.size)]
-                currentPromptId = randomPrompt.id
-                _getRandomPromptState.value = UiState.Success(randomPrompt)
-            } else {
-                _getRandomPromptState.value = UiState.Failure(currentPromptId.toString())
-            }
-        }
-
         fun getS3PresignedUrls() {
             _totalGeneratingState.value = UiState.Loading
             getSingleS3Url()
@@ -134,12 +94,12 @@ class CreateViewModel
                 viewModelScope.launch {
                     createRepository.getS3SingleUrl(
                         S3RequestModel(
-                            plusImage.name,
                             FileType.USER_UPLOADED_IMAGE,
+                            plusImage.name,
                         ),
                     )
                         .onSuccess { uriModel ->
-                            plusImageS3Key = uriModel.s3Key
+                            plusImageS3Key = KeyModel(uriModel.s3Key)
                             postSingleImage(uriModel)
                         }.onFailure {
                             _totalGeneratingState.value = UiState.Failure(it.message.toString())
@@ -152,12 +112,12 @@ class CreateViewModel
             viewModelScope.launch {
                 createRepository.getS3MultiUrl(
                     listOf(
-                        S3RequestModel(imageList[0].name, FileType.USER_UPLOADED_IMAGE),
-                        S3RequestModel(imageList[1].name, FileType.USER_UPLOADED_IMAGE),
-                        S3RequestModel(imageList[2].name, FileType.USER_UPLOADED_IMAGE),
+                        S3RequestModel(FileType.USER_UPLOADED_IMAGE, imageList[0].name),
+                        S3RequestModel(FileType.USER_UPLOADED_IMAGE, imageList[1].name),
+                        S3RequestModel(FileType.USER_UPLOADED_IMAGE, imageList[2].name),
                     ),
                 ).onSuccess { uriList ->
-                    imageS3KeyList = uriList.map { it.s3Key }
+                    imageS3KeyList = uriList.map { KeyModel(it.s3Key) }
                     postMultiImage(uriList)
                 }.onFailure {
                     _totalGeneratingState.value = UiState.Failure(it.message.toString())
@@ -169,7 +129,7 @@ class CreateViewModel
             viewModelScope.launch {
                 uploadRepository.uploadImage(s3urlModel.url, plusImage.url)
                     .onSuccess {
-                        plusImageS3Key = s3urlModel.s3Key
+                        plusImageS3Key = KeyModel(s3urlModel.s3Key)
                         uploadCheckList[3] = true
                         checkAllUploadFinished()
                     }.onFailure {
@@ -200,8 +160,8 @@ class CreateViewModel
                     createRepository.postToGenerate(
                         GenerateRequestModel(
                             prompt.value ?: return@launch,
-                            plusImageS3Key ?: "",
-                            imageS3KeyList ?: return@launch,
+                            plusImageS3Key,
+                            imageS3KeyList,
                             selectedAngle.value ?: return@launch,
                             selectedCoverage.value ?: return@launch,
                             selectedRatio.value ?: return@launch,
@@ -214,5 +174,26 @@ class CreateViewModel
                         }
                 }
             }
+        }
+
+        fun getRandomPrompt(): String {
+            val randomPrompt = promptList[Random.nextInt(promptList.size)]
+            if (randomPrompt != currentPrompt) {
+                currentPrompt = randomPrompt
+            }
+            return currentPrompt
+        }
+
+        companion object {
+            val promptList =
+                listOf(
+                    "프랑스 야경을 즐기는 모습을 그려주세요. 항공점퍼를 입고 테라스에 서 있는 모습이에요",
+                    "시간 대는 밤, 장소는 야경이 이쁘게, 의상은 그냥 캐주얼한 옷. 포즈는 자연스럽게 걷는 자세",
+                    "산 속에서 캠핑카 앞에서 음악 듣고 있는 모습. 배경은 캠핑카이고 자연스러운 캠핑 복장 입고 있으면 좋겠음",
+                    "배경은 저녁 파리에서 옷은 검정 항공잠바와 검정 조거 팬츠를 입고 자세는 서서 구경하는 모습이면 좋겠어",
+                    "멋진 턱시도 정장을 입고 결혼식에서 신랑 입장을 하고 있는 제 모습을 만들어보고 싶어요.",
+                    "배경은 거리의 노란 가로등 아래이고, 저는 우산을 접고 영화처럼 춤을 추고 있어요",
+                    "배경은 캠핑장이고, 저는 텐트 옆에 앉아있고 캠프 파이어 옆에 마시멜로우를 굽고 있어요",
+                )
         }
     }
