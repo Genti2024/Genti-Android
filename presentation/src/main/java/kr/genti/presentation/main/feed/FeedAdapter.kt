@@ -12,7 +12,7 @@ import kr.genti.presentation.databinding.ItemFeedItemBinding
 
 class FeedAdapter(
     private val genBtnClick: (Unit) -> (Unit),
-    private val setLoadingFinished: (Int) -> (Unit),
+    private val checkLoadingFinished: (Int) -> (Unit),
 ) : ListAdapter<FeedItemModel, RecyclerView.ViewHolder>(diffUtil) {
     private var itemList = mutableListOf<FeedItemModel>()
 
@@ -32,7 +32,7 @@ class FeedAdapter(
             VIEW_TYPE_ITEM ->
                 FeedItemViewHolder(
                     ItemFeedItemBinding.inflate(inflater, parent, false),
-                    ::checkLastImageLoadFinished,
+                    checkLoadingFinished,
                 )
 
             else -> throw ClassCastException(
@@ -42,11 +42,6 @@ class FeedAdapter(
                 ),
             )
         }
-    }
-
-    private fun checkLastImageLoadFinished(position: Int) {
-        // TODO : 우선 화면에 표시되는 두번째 아이템으로 기준 설정
-        if (position == 1) setLoadingFinished(position)
     }
 
     override fun onBindViewHolder(
