@@ -4,7 +4,7 @@ import kr.genti.domain.enums.CameraAngle
 import kr.genti.domain.enums.PictureRatio
 import kr.genti.domain.enums.ShotCoverage
 
-data class GenerateRequestModel(
+data class CreateRequestModel(
     val prompt: String,
     val posePicture: KeyModel?,
     val facePictureList: List<KeyModel>,

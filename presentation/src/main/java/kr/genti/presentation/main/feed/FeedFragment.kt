@@ -49,7 +49,7 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
         _adapter =
             FeedAdapter(
                 genBtnClick = ::initGenBtnListener,
-                setLoadingFinished = ::setLoadingFinished,
+                checkLoadingFinished = ::checkLoadingFinished,
             )
         binding.rvFeed.adapter = adapter
     }
@@ -58,12 +58,14 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
         // TODO: 링크 이동
     }
 
-    private fun setLoadingFinished(position: Int) {
-        setStatusBarColor(R.color.background_white)
-        with(binding) {
-            layoutLoading.isVisible = false
-            rvFeed.isVisible = true
-            ivFeedLightning.isVisible = true
+    private fun checkLoadingFinished(position: Int) {
+        if (position == 1) {
+            setStatusBarColor(R.color.background_white)
+            with(binding) {
+                layoutLoading.isVisible = false
+                rvFeed.isVisible = true
+                ivFeedLightning.isVisible = true
+            }
         }
     }
 

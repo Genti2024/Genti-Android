@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kr.genti.core.state.UiState
-import kr.genti.domain.entity.request.GenerateRequestModel
+import kr.genti.domain.entity.request.CreateRequestModel
 import kr.genti.domain.entity.request.KeyModel
 import kr.genti.domain.entity.request.S3RequestModel
 import kr.genti.domain.entity.response.ImageFileModel
@@ -157,8 +157,8 @@ class CreateViewModel
         private fun checkAllUploadFinished() {
             if (uploadCheckList.all { it }) {
                 viewModelScope.launch {
-                    createRepository.postToGenerate(
-                        GenerateRequestModel(
+                    createRepository.postToCreate(
+                        CreateRequestModel(
                             prompt.value ?: return@launch,
                             plusImageS3Key,
                             imageS3KeyList,

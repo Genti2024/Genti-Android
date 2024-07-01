@@ -19,10 +19,11 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_feed_item_image"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:elevation="0dp"
             app:cardCornerRadius="15dp"
             app:cardElevation="0dp"
+            app:layout_constraintDimensionRatio="3:2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -32,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:src="@drawable/img_selfie_ex_one" />
+                android:src="@drawable/img_selfie_ex_two" />
 
         </androidx.cardview.widget.CardView>
 
