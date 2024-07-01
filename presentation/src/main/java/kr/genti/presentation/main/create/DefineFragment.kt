@@ -16,7 +16,6 @@ import kr.genti.core.extension.initOnBackPressedListener
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.domain.entity.response.ImageFileModel.Companion.emptyImageFileModel
-import kr.genti.domain.entity.response.emptyImageFileModel
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentDefineBinding
 
