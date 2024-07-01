@@ -7,6 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import kr.genti.data.service.AuthService
 import kr.genti.data.service.CreateService
 import kr.genti.data.service.FeedService
+import kr.genti.data.service.GenerateService
 import kr.genti.data.service.UploadService
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -37,4 +38,10 @@ object ServiceModule {
     fun provideUploadService(
         @RetrofitQualifier.NOTOKEN retrofit: Retrofit,
     ): UploadService = retrofit.create(UploadService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideGenerateService(
+        @RetrofitQualifier.JWT retrofit: Retrofit,
+    ): GenerateService = retrofit.create(GenerateService::class.java)
 }
