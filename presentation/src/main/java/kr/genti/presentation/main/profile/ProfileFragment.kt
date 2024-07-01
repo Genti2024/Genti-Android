@@ -5,11 +5,18 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseFragment
 import kr.genti.core.extension.initOnBackPressedListener
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColor
+import kr.genti.core.extension.stringOf
+import kr.genti.core.extension.toast
+import kr.genti.core.state.UiState
 import kr.genti.domain.entity.response.ImageModel
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentProfileBinding
@@ -24,7 +31,6 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
     private val viewModel by activityViewModels<ProfileViewModel>()
 
     private var profileImageDialog: ProfileImageDialog? = null
-    var isWaiting = true
 
     override fun onViewCreated(
         view: View,
@@ -69,16 +75,24 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
     }
 
     private fun observeStatus() {
-        // TODO: 서버통신으로 대체
-        with(binding) {
-            cvProfileNormal.isVisible = isWaiting != true
-            cvProfileWaiting.isVisible = isWaiting == true
-            if (!isWaiting) {
-                rvProfileNormalList.adapter = adapter
-            } else {
-                rvProfileWatingList.adapter = adapter
+        viewModel.getGenerateStatusState.flowWithLifecycle(lifecycle).onEach { state ->
+            when (state) {
+                is UiState.Success -> {
+                    with(binding) {
+                        cvProfileNormal.isVisible = state.data != true
+                        cvProfileWaiting.isVisible = state.data == true
+                        if (!state.data) {
+                            rvProfileNormalList.adapter = adapter
+                        } else {
+                            rvProfileWatingList.adapter = adapter
+                        }
+                    }
+                }
+
+                is UiState.Failure -> toast(stringOf(R.string.error_msg))
+                else -> return@onEach
             }
-        }
+        }.launchIn(lifecycleScope)
     }
 
     override fun onDestroyView() {
