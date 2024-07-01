@@ -42,19 +42,29 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
 
     private fun initView() {
         initOnBackPressedListener(binding.root)
-        setStatusBarColor(R.color.background_white)
+        setStatusBarColor(R.color.background_50)
     }
 
     private fun initAdapter() {
         _adapter =
             FeedAdapter(
                 genBtnClick = ::initGenBtnListener,
+                setLoadingFinished = ::setLoadingFinished,
             )
         binding.rvFeed.adapter = adapter
     }
 
     private fun initGenBtnListener(unit: Unit) {
         // TODO: 링크 이동
+    }
+
+    private fun setLoadingFinished(position: Int) {
+        setStatusBarColor(R.color.background_white)
+        with(binding) {
+            layoutLoading.isVisible = false
+            rvFeed.isVisible = true
+            ivFeedLightning.isVisible = true
+        }
     }
 
     private fun setLightningVisibility() {
@@ -80,13 +90,6 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
 
     private fun observeGetExampleItemsState() {
         viewModel.getExampleItemsState.flowWithLifecycle(lifecycle).onEach { state ->
-            if (state == UiState.Loading) {
-                setStatusBarColor(R.color.background_50)
-                binding.layoutLoading.isVisible = true
-            } else {
-                setStatusBarColor(R.color.background_white)
-                binding.layoutLoading.isVisible = false
-            }
             when (state) {
                 is UiState.Success -> adapter.addItemList(state.data)
                 is UiState.Failure -> toast(stringOf(R.string.error_msg))
