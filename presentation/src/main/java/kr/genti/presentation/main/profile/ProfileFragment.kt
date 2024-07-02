@@ -58,7 +58,8 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
     }
 
     private fun initImageClickListener(item: ImageModel) {
-        profileImageDialog = ProfileImageDialog.newInstance(item.id, item.url)
+        profileImageDialog =
+            ProfileImageDialog.newInstance(item.id, item.url, item.pictureRatio?.name ?: "")
         profileImageDialog?.show(parentFragmentManager, IMAGE_VIEWER)
     }
 

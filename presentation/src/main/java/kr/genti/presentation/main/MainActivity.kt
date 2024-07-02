@@ -36,9 +36,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             FinishedActivity.createIntent(
                 this,
                 0,
-                "https://github.com/Genti2024/Genti-Android/assets/97405341/0eb2d7f2-90d2-436a-aa53-4ad7a414d805",
+                "https://github.com/Marchbreeze/Marchbreeze/assets/97405341/ad58982b-9ba3-448d-a788-748511718ffe",
                 PictureRatio.RATIO_2_3.name,
-            )
+            ).apply { startActivity(this) }
         }
     }
 

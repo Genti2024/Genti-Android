@@ -17,6 +17,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.colorOf
 import kr.genti.core.extension.setOnSingleClickListener
+import kr.genti.domain.entity.response.ImageModel
+import kr.genti.domain.enums.PictureRatio.Companion.toPictureRatio
+import kr.genti.domain.enums.PictureType
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityFinishedBinding
 import kr.genti.presentation.main.profile.ProfileImageDialog
@@ -39,6 +42,7 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
         initShareBtnListener()
         initReturnBtnListener()
         initUnwantedBtnListener()
+        getIntentInfo()
         setFinishedImage()
         setEmphasizedText()
     }
@@ -96,6 +100,17 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
             finishedErrorDialog = FinishedErrorDialog()
             finishedErrorDialog?.show(supportFragmentManager, DIALOG_ERROR)
         }
+    }
+
+    private fun getIntentInfo() {
+        viewModel.finishedImage =
+            ImageModel(
+                intent.getLongExtra(EXTRA_ID, -1),
+                intent.getStringExtra(EXTRA_URL) ?: "",
+                "",
+                intent.getStringExtra(EXTRA_RATIO)?.toPictureRatio(),
+                PictureType.PictureCompleted,
+            )
     }
 
     private fun setFinishedImage() {
