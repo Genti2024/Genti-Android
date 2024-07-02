@@ -14,10 +14,12 @@ class FinishedViewModel
     ) : ViewModel() {
         val errorReport = MutableLiveData<String>()
 
-        // TODO: 이미지 받아오기
-        val finishedImage =
+        var finishedImage =
             ImageModel(
-                0,
-                "https://github.com/Genti2024/Genti-Android/assets/97405341/0eb2d7f2-90d2-436a-aa53-4ad7a414d805",
+                -1,
+                "",
+                "",
+                null,
+                null,
             )
     }

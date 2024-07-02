@@ -1,5 +1,6 @@
 package kr.genti.presentation.result.finished
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -133,5 +134,22 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
         private const val DIALOG_ERROR = "DIALOG_ERROR"
         private const val DIALOG_RATING = "DIALOG_RATING"
         private const val SHARE_IMAGE_CHOOSER = "SHARE_IMAGE_CHOOSER"
+
+        private const val EXTRA_ID = "EXTRA_ID"
+        private const val EXTRA_URL = "EXTRA_URL"
+        private const val EXTRA_RATIO = "EXTRA_RATIO"
+
+        @JvmStatic
+        fun createIntent(
+            context: Context,
+            id: Long,
+            url: String,
+            ratio: String,
+        ): Intent =
+            Intent(context, FinishedActivity::class.java).apply {
+                putExtra(EXTRA_ID, id)
+                putExtra(EXTRA_URL, url)
+                putExtra(EXTRA_RATIO, ratio)
+            }
     }
 }

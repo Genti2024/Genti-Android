@@ -8,12 +8,15 @@ import androidx.fragment.app.replace
 import com.google.android.material.navigation.NavigationBarView
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
+import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColorFromResource
+import kr.genti.domain.enums.PictureRatio
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityMainBinding
 import kr.genti.presentation.main.create.CreateFragment
 import kr.genti.presentation.main.feed.FeedFragment
 import kr.genti.presentation.main.profile.ProfileFragment
+import kr.genti.presentation.result.finished.FinishedActivity
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
@@ -24,6 +27,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         initBnvItemSelectedListener()
         initCreateBtnListener()
         setStatusBarColor()
+        moveToFinish()
+    }
+
+    // TODO 서버통신 진행 후 삭제
+    private fun moveToFinish() {
+        binding.btnMoveToFinish.setOnSingleClickListener {
+            FinishedActivity.createIntent(
+                this,
+                0,
+                "https://github.com/Genti2024/Genti-Android/assets/97405341/0eb2d7f2-90d2-436a-aa53-4ad7a414d805",
+                PictureRatio.RATIO_2_3.name,
+            )
+        }
     }
 
     fun initBnvItemIconTintList() {

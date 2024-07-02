@@ -18,7 +18,6 @@ import kr.genti.core.extension.setStatusBarColor
 import kr.genti.core.state.UiState
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentCreateBinding
-import kr.genti.presentation.result.finished.FinishedActivity
 
 @AndroidEntryPoint
 class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_create) {
@@ -38,11 +37,6 @@ class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_c
 
     private fun initView() {
         setStatusBarColor(R.color.background_white)
-    }
-
-    // TODO 추후 삭제
-    private fun moveToFinish() {
-        FinishedActivity
     }
 
     private fun initBackBtnListener() {

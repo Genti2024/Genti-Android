@@ -7,6 +7,6 @@ data class ImageModel(
     val id: Long,
     val url: String,
     val key: String,
-    val pictureRatio: PictureRatio,
-    val type: PictureType,
+    val pictureRatio: PictureRatio?,
+    val type: PictureType?,
 )
