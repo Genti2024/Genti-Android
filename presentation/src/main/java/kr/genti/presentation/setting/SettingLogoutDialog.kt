@@ -1,5 +1,6 @@
 package kr.genti.presentation.setting
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -8,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kr.genti.core.base.BaseDialog
+import kr.genti.core.extension.setGusianBlur
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.util.RestartUtil.restartApp
 import kr.genti.presentation.R
@@ -26,6 +28,7 @@ class SettingLogoutDialog :
             )
             setBackgroundDrawableResource(R.color.transparent)
         }
+        requireActivity().window.decorView.rootView.setGusianBlur(50f)
     }
 
     override fun onViewCreated(
@@ -50,5 +53,10 @@ class SettingLogoutDialog :
                 restartApp(binding.root.context, null)
             }
         }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        requireActivity().window.decorView.rootView.setGusianBlur(null)
     }
 }

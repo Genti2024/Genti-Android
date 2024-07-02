@@ -1,5 +1,6 @@
 package kr.genti.presentation.main.profile
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -11,6 +12,7 @@ import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import coil.load
 import kr.genti.core.base.BaseDialog
+import kr.genti.core.extension.setGusianBlur
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogProfileImageBinding
@@ -28,10 +30,11 @@ class ProfileImageDialog :
         dialog?.window?.apply {
             setLayout(
                 WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
             )
             setBackgroundDrawableResource(R.color.transparent)
         }
+        requireActivity().window.decorView.rootView.setGusianBlur(50f)
     }
 
     override fun onViewCreated(
@@ -55,7 +58,6 @@ class ProfileImageDialog :
 
     private fun initExitBtnListener() {
         binding.btnExit.setOnSingleClickListener { dismiss() }
-        binding.ivProfileBackground.setOnSingleClickListener { dismiss() }
     }
 
     private fun initDownloadBtnListener() {
@@ -97,6 +99,11 @@ class ProfileImageDialog :
             FILE_PROVIDER_AUTORITY,
             tempFile,
         )
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        requireActivity().window.decorView.rootView.setGusianBlur(null)
     }
 
     companion object {
