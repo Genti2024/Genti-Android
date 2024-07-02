@@ -4,11 +4,13 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
 import coil.load
 import kr.genti.core.base.BaseDialog
 import kr.genti.core.extension.setGusianBlur
 import kr.genti.core.extension.setOnSingleClickListener
+import kr.genti.domain.enums.PictureRatio
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogFinishedImageBinding
 import kr.genti.presentation.util.downloadImage
@@ -22,7 +24,7 @@ class FinishedImageDialog :
         dialog?.window?.apply {
             setLayout(
                 WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.MATCH_PARENT,
             )
             setBackgroundDrawableResource(R.color.transparent)
         }
@@ -52,8 +54,14 @@ class FinishedImageDialog :
     }
 
     private fun setImage() {
-        // TODO: 이미지 비율 대응
-        binding.ivProfile.load(viewModel.finishedImage.url)
+        with(binding.ivProfile) {
+            load(viewModel.finishedImage.url)
+            if (viewModel.finishedImage.pictureRatio?.name == PictureRatio.RATIO_3_2.name) {
+                (layoutParams as ConstraintLayout.LayoutParams).dimensionRatio = "3:2"
+            } else {
+                (layoutParams as ConstraintLayout.LayoutParams).dimensionRatio = "2:3"
+            }
+        }
     }
 
     override fun onDismiss(dialog: DialogInterface) {
