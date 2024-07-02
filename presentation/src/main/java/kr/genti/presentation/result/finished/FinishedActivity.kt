@@ -49,7 +49,7 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
     }
 
     private fun initImageBtnListener() {
-        binding.ivFinishedImage.setOnSingleClickListener {
+        binding.cvFinishedImage.setOnSingleClickListener {
             finishedImageDialog = FinishedImageDialog()
             finishedImageDialog?.show(supportFragmentManager, DIALOG_IMAGE)
         }
@@ -129,7 +129,7 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
                     )
                     setSpan(
-                        ForegroundColorSpan(colorOf(R.color.genti_green)),
+                        ForegroundColorSpan(colorOf(R.color.green_1)),
                         0,
                         11,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
