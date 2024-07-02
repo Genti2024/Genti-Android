@@ -30,6 +30,7 @@ import java.io.FileOutputStream
 @AndroidEntryPoint
 class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity_finished) {
     private val viewModel by viewModels<FinishedViewModel>()
+
     private var finishedImageDialog: FinishedImageDialog? = null
     private var finishedErrorDialog: FinishedErrorDialog? = null
     private var finishedRatingDialog: FinishedRatingDialog? = null
