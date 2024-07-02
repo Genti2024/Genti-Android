@@ -1,9 +1,13 @@
 package kr.genti.presentation.main.profile
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.RenderEffect
+import android.graphics.Shader
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -28,10 +32,11 @@ class ProfileImageDialog :
         dialog?.window?.apply {
             setLayout(
                 WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
             )
             setBackgroundDrawableResource(R.color.transparent)
         }
+        setBackgroundBlur(50f)
     }
 
     override fun onViewCreated(
@@ -55,7 +60,6 @@ class ProfileImageDialog :
 
     private fun initExitBtnListener() {
         binding.btnExit.setOnSingleClickListener { dismiss() }
-        binding.ivProfileBackground.setOnSingleClickListener { dismiss() }
     }
 
     private fun initDownloadBtnListener() {
@@ -72,6 +76,20 @@ class ProfileImageDialog :
                 type = IMAGE_TYPE
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 startActivity(Intent.createChooser(this, SHARE_IMAGE_CHOOSER))
+            }
+        }
+    }
+
+    private fun setBackgroundBlur(radius: Float?) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            requireActivity().window.decorView.rootView.let { rootView ->
+                if (radius != null) {
+                    val blurEffect =
+                        RenderEffect.createBlurEffect(radius, radius, Shader.TileMode.REPEAT)
+                    rootView.setRenderEffect(blurEffect)
+                } else {
+                    rootView.setRenderEffect(null)
+                }
             }
         }
     }
@@ -97,6 +115,11 @@ class ProfileImageDialog :
             FILE_PROVIDER_AUTORITY,
             tempFile,
         )
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        setBackgroundBlur(null)
     }
 
     companion object {
