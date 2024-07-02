@@ -3,11 +3,8 @@ package kr.genti.presentation.main.profile
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.RenderEffect
-import android.graphics.Shader
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -15,6 +12,7 @@ import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import coil.load
 import kr.genti.core.base.BaseDialog
+import kr.genti.core.extension.setGusianBlur
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogProfileImageBinding
@@ -36,7 +34,7 @@ class ProfileImageDialog :
             )
             setBackgroundDrawableResource(R.color.transparent)
         }
-        setBackgroundBlur(50f)
+        requireActivity().window.decorView.rootView.setGusianBlur(50f)
     }
 
     override fun onViewCreated(
@@ -80,20 +78,6 @@ class ProfileImageDialog :
         }
     }
 
-    private fun setBackgroundBlur(radius: Float?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            requireActivity().window.decorView.rootView.let { rootView ->
-                if (radius != null) {
-                    val blurEffect =
-                        RenderEffect.createBlurEffect(radius, radius, Shader.TileMode.REPEAT)
-                    rootView.setRenderEffect(blurEffect)
-                } else {
-                    rootView.setRenderEffect(null)
-                }
-            }
-        }
-    }
-
     private fun setImage() {
         // TODO: 이미지 비율 대응
         binding.ivProfile.load(imageUrl)
@@ -119,7 +103,7 @@ class ProfileImageDialog :
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        setBackgroundBlur(null)
+        requireActivity().window.decorView.rootView.setGusianBlur(null)
     }
 
     companion object {
