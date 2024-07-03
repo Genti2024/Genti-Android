@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kr.genti.domain.entity.response.ImageModel
+import kr.genti.domain.enums.PictureRatio
 import javax.inject.Inject
 
 @HiltViewModel
@@ -14,10 +15,18 @@ class FinishedViewModel
     ) : ViewModel() {
         val errorReport = MutableLiveData<String>()
 
-        // TODO: 이미지 받아오기
-        val finishedImage =
+        var finishedImage =
             ImageModel(
-                0,
-                "https://github.com/Genti2024/Genti-Android/assets/97405341/0eb2d7f2-90d2-436a-aa53-4ad7a414d805",
+                -1,
+                "",
+                "",
+                null,
+                null,
             )
+
+        var isRatio23 = true
+
+        fun setPictureRatio() {
+            isRatio23 = finishedImage.pictureRatio?.name == PictureRatio.RATIO_2_3.name
+        }
     }

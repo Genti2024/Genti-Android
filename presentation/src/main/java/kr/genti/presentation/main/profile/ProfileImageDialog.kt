@@ -8,12 +8,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import coil.load
 import kr.genti.core.base.BaseDialog
 import kr.genti.core.extension.setGusianBlur
 import kr.genti.core.extension.setOnSingleClickListener
+import kr.genti.domain.enums.PictureRatio
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogProfileImageBinding
 import kr.genti.presentation.util.downloadImage
@@ -24,6 +26,7 @@ class ProfileImageDialog :
     BaseDialog<DialogProfileImageBinding>(R.layout.dialog_profile_image) {
     private var imageId: Long = -1
     private var imageUrl: String = ""
+    private var imageRatio: String = ""
 
     override fun onStart() {
         super.onStart()
@@ -54,6 +57,7 @@ class ProfileImageDialog :
         arguments ?: return
         imageId = arguments?.getLong(ARGS_IMAGE_ID) ?: -1
         imageUrl = arguments?.getString(ARGS_IMAGE_URL) ?: ""
+        imageRatio = arguments?.getString(ARGS_IMAGE_RATIO) ?: ""
     }
 
     private fun initExitBtnListener() {
@@ -79,8 +83,14 @@ class ProfileImageDialog :
     }
 
     private fun setImage() {
-        // TODO: 이미지 비율 대응
-        binding.ivProfile.load(imageUrl)
+        with(binding.ivProfile) {
+            load(imageUrl)
+            if (imageRatio == PictureRatio.RATIO_3_2.name) {
+                (layoutParams as ConstraintLayout.LayoutParams).dimensionRatio = "3:2"
+            } else {
+                (layoutParams as ConstraintLayout.LayoutParams).dimensionRatio = "2:3"
+            }
+        }
     }
 
     private fun getTemporaryUri(): Uri {
@@ -114,16 +124,19 @@ class ProfileImageDialog :
 
         const val ARGS_IMAGE_ID = "IMAGE_ID"
         const val ARGS_IMAGE_URL = "IMAGE_URL"
+        const val ARGS_IMAGE_RATIO = "IMAGE_RATIO"
 
         @JvmStatic
         fun newInstance(
             id: Long,
             imageUrl: String,
+            imageRatio: String,
         ) = ProfileImageDialog().apply {
             val args =
                 bundleOf(
                     ARGS_IMAGE_ID to id,
                     ARGS_IMAGE_URL to imageUrl,
+                    ARGS_IMAGE_RATIO to imageRatio,
                 )
             arguments = args
         }

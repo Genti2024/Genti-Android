@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:src="@drawable/img_selfie_ex_two" />
+                android:src="@drawable/mock_img_3_2" />
 
         </androidx.cardview.widget.CardView>
 
