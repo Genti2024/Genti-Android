@@ -16,7 +16,11 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,6 +55,7 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
         initReturnBtnListener()
         initUnwantedBtnListener()
         getIntentInfo()
+        setStatusBarTransparent()
     }
 
     private fun initImageBtnListener() {
@@ -178,6 +183,14 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
                     )
                 }
+        }
+    }
+
+    private fun setStatusBarTransparent() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            v.updatePadding(bottom = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom)
+            insets
         }
     }
 
