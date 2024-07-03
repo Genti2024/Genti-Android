@@ -8,12 +8,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
-import android.text.style.TextAppearanceSpan
+import android.text.style.TypefaceSpan
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.content.FileProvider
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import coil.load
 import coil.transform.RoundedCornersTransformation
@@ -157,13 +159,20 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
             text =
                 SpannableStringBuilder(text).apply {
                     setSpan(
-                        TextAppearanceSpan(context, R.style.TextAppearance_Genti_Headline1),
+                        AbsoluteSizeSpan(22, true),
                         0,
                         11,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
                     )
                     setSpan(
                         ForegroundColorSpan(colorOf(R.color.green_1)),
+                        0,
+                        11,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
+                    )
+                    setSpan(
+                        ResourcesCompat.getFont(context, R.font.font_pretendard_bold)
+                            ?.let { TypefaceSpan(it) },
                         0,
                         11,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
