@@ -1,5 +1,6 @@
 package kr.genti.presentation.result.finished
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import kr.genti.core.base.BaseDialog
 import kr.genti.core.extension.hideKeyboard
+import kr.genti.core.extension.setGusianBlur
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogFinishedErrorBinding
@@ -25,6 +27,7 @@ class FinishedErrorDialog :
             )
             setBackgroundDrawableResource(R.color.transparent)
         }
+        requireActivity().window.decorView.rootView.setGusianBlur(50f)
     }
 
     override fun onViewCreated(
@@ -66,5 +69,10 @@ class FinishedErrorDialog :
             }
             false
         }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        requireActivity().window.decorView.rootView.setGusianBlur(null)
     }
 }
