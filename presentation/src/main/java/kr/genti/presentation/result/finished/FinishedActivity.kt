@@ -10,8 +10,11 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.text.style.TextAppearanceSpan
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.content.FileProvider
+import androidx.core.view.isVisible
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
@@ -24,6 +27,7 @@ import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityFinishedBinding
 import kr.genti.presentation.main.profile.ProfileImageDialog
 import kr.genti.presentation.util.downloadImage
+import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 
@@ -44,19 +48,24 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
         initReturnBtnListener()
         initUnwantedBtnListener()
         getIntentInfo()
-        setFinishedImage()
-        setEmphasizedText()
     }
 
     private fun initImageBtnListener() {
-        binding.cvFinishedImage.setOnSingleClickListener {
+        binding.ivFinishedImage23.setOnSingleClickListener {
+            finishedImageDialog = FinishedImageDialog()
+            finishedImageDialog?.show(supportFragmentManager, DIALOG_IMAGE)
+        }
+        binding.ivFinishedImage32.setOnSingleClickListener {
             finishedImageDialog = FinishedImageDialog()
             finishedImageDialog?.show(supportFragmentManager, DIALOG_IMAGE)
         }
     }
 
     private fun initSaveBtnListener() {
-        binding.btnDownload.setOnSingleClickListener {
+        binding.btnDownload23.setOnSingleClickListener {
+            downloadImage(viewModel.finishedImage.id, viewModel.finishedImage.url)
+        }
+        binding.btnDownload32.setOnSingleClickListener {
             downloadImage(viewModel.finishedImage.id, viewModel.finishedImage.url)
         }
     }
@@ -75,8 +84,10 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
 
     private fun getTemporaryUri(): Uri {
         val tempFile = File(cacheDir, ProfileImageDialog.TEMP_FILE_NAME)
+        val imageView: ImageView =
+            if (viewModel.isRatio23) binding.ivFinishedImage23 else binding.ivFinishedImage32
         FileOutputStream(tempFile).use { out ->
-            (binding.ivFinishedImage.drawable as BitmapDrawable).bitmap.compress(
+            (imageView.drawable as BitmapDrawable).bitmap.compress(
                 Bitmap.CompressFormat.PNG,
                 100,
                 out,
@@ -112,14 +123,27 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
                 intent.getStringExtra(EXTRA_RATIO)?.toPictureRatio(),
                 PictureType.PictureCompleted,
             )
+        viewModel.setPictureRatio()
+        setUiWithRatio()
+        Timber.tag("qqqq").d("${viewModel.finishedImage.url} & ${viewModel.finishedImage.pictureRatio} & ${viewModel.isRatio23}")
     }
 
-    private fun setFinishedImage() {
-        binding.ivFinishedImage.load(viewModel.finishedImage.url)
+    private fun setUiWithRatio() {
+        with(binding) {
+            layout23.isVisible = viewModel.isRatio23
+            layout32.isVisible = !viewModel.isRatio23
+            if (viewModel.isRatio23) {
+                ivFinishedImage23.load(viewModel.finishedImage.url)
+                tvFinishedTitle23.setEmphasizedText()
+            } else {
+                ivFinishedImage32.load(viewModel.finishedImage.url)
+                tvFinishedTitle32.setEmphasizedText()
+            }
+        }
     }
 
-    private fun setEmphasizedText() {
-        binding.tvFinishedTitle.apply {
+    private fun TextView.setEmphasizedText() {
+        this.apply {
             text =
                 SpannableStringBuilder(text).apply {
                     setSpan(
