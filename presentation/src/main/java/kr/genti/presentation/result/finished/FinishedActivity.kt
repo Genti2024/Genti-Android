@@ -16,9 +16,11 @@ import androidx.activity.viewModels
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import coil.load
+import coil.transform.RoundedCornersTransformation
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.colorOf
+import kr.genti.core.extension.dpToPx
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.domain.entity.response.ImageModel
 import kr.genti.domain.enums.PictureRatio.Companion.toPictureRatio
@@ -27,7 +29,6 @@ import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityFinishedBinding
 import kr.genti.presentation.main.profile.ProfileImageDialog
 import kr.genti.presentation.util.downloadImage
-import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 
@@ -125,7 +126,6 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
             )
         viewModel.setPictureRatio()
         setUiWithRatio()
-        Timber.tag("qqqq").d("${viewModel.finishedImage.url} & ${viewModel.finishedImage.pictureRatio} & ${viewModel.isRatio23}")
     }
 
     private fun setUiWithRatio() {
@@ -133,12 +133,22 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
             layout23.isVisible = viewModel.isRatio23
             layout32.isVisible = !viewModel.isRatio23
             if (viewModel.isRatio23) {
-                ivFinishedImage23.load(viewModel.finishedImage.url)
+                ivFinishedImage23.loadImageToView()
                 tvFinishedTitle23.setEmphasizedText()
             } else {
-                ivFinishedImage32.load(viewModel.finishedImage.url)
+                ivFinishedImage32.loadImageToView()
                 tvFinishedTitle32.setEmphasizedText()
             }
+        }
+    }
+
+    private fun ImageView.loadImageToView() {
+        this.load(viewModel.finishedImage.url) {
+            transformations(
+                RoundedCornersTransformation(
+                    15.dpToPx(this@FinishedActivity).toFloat(),
+                ),
+            )
         }
     }
 
