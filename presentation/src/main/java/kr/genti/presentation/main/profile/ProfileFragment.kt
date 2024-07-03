@@ -7,6 +7,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -73,6 +75,30 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
 
     private fun setMockImages() {
         adapter.addList(viewModel.mockItemList)
+    }
+
+    private fun setListWithInfinityScroll() {
+        binding.rvProfileWatingList.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(
+                    recyclerView: RecyclerView,
+                    dx: Int,
+                    dy: Int,
+                ) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (dy > 0) {
+                        recyclerView.layoutManager?.let { layoutManager ->
+                            if (!binding.rvProfileWatingList.canScrollVertically(1) &&
+                                layoutManager is LinearLayoutManager &&
+                                layoutManager.findLastVisibleItemPosition() == adapter.itemCount - 1
+                            ) {
+                                viewModel.getPictureListFromServer()
+                            }
+                        }
+                    }
+                }
+            },
+        )
     }
 
     private fun observeStatus() {
