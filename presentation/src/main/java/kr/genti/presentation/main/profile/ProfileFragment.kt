@@ -42,9 +42,10 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
 
         initView()
         initSettingBtnListener()
-        setAdapterList()
-        setMockImages()
+        initAdapter()
+        setListWithInfinityScroll()
         observeGenerateStatus()
+        observePictureListPageState()
     }
 
     private fun initView() {
@@ -52,7 +53,15 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
         setStatusBarColor(R.color.green_3)
     }
 
-    private fun setAdapterList() {
+    private fun initSettingBtnListener() {
+        binding.btnSetting.setOnSingleClickListener {
+            Intent(requireActivity(), SettingActivity::class.java).apply {
+                startActivity(this)
+            }
+        }
+    }
+
+    private fun initAdapter() {
         _adapter =
             ProfileAdapter(
                 imageClick = ::initImageClickListener,
@@ -64,18 +73,6 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
         profileImageDialog =
             ProfileImageDialog.newInstance(item.id, item.url, item.pictureRatio?.name ?: "")
         profileImageDialog?.show(parentFragmentManager, IMAGE_VIEWER)
-    }
-
-    private fun initSettingBtnListener() {
-        binding.btnSetting.setOnSingleClickListener {
-            Intent(requireActivity(), SettingActivity::class.java).apply {
-                startActivity(this)
-            }
-        }
-    }
-
-    private fun setMockImages() {
-        adapter.addList(viewModel.mockItemList)
     }
 
     private fun setListWithInfinityScroll() {
@@ -110,6 +107,19 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
                         layoutProfileWaiting.isVisible = state.data != true
                         layoutProfileNormal.isVisible = state.data == true
                     }
+                }
+
+                is UiState.Failure -> toast(stringOf(R.string.error_msg))
+                else -> return@onEach
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun observePictureListPageState() {
+        viewModel.getPictureListState.flowWithLifecycle(lifecycle).onEach { state ->
+            when (state) {
+                is UiState.Success -> {
+                    adapter.addList(state.data.content)
                 }
 
                 is UiState.Failure -> toast(stringOf(R.string.error_msg))
