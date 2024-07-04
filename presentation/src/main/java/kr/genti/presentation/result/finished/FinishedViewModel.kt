@@ -2,16 +2,22 @@ package kr.genti.presentation.result.finished
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.launch
+import kr.genti.domain.entity.request.ReportRequestModel
 import kr.genti.domain.entity.response.ImageModel
 import kr.genti.domain.enums.PictureRatio
+import kr.genti.domain.repository.GenerateRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class FinishedViewModel
     @Inject
     constructor(
-        // private val profileRepository: ProfileRepository,
+        private val generateRepository: GenerateRepository,
     ) : ViewModel() {
         val errorReport = MutableLiveData<String>()
 
@@ -26,7 +32,25 @@ class FinishedViewModel
 
         var isRatio23 = true
 
+        private val _postReportResult = MutableSharedFlow<Boolean>()
+        val postReportResult: SharedFlow<Boolean> = _postReportResult
+
         fun setPictureRatio() {
             isRatio23 = finishedImage.pictureRatio?.name == PictureRatio.RATIO_2_3.name
+        }
+
+        fun postGenerateReport(
+            responseId: Long,
+            content: String,
+        ) {
+            viewModelScope.launch {
+                generateRepository.postGenerateReport(ReportRequestModel(responseId, content))
+                    .onSuccess {
+                        _postReportResult.emit(true)
+                    }
+                    .onFailure {
+                        _postReportResult.emit(false)
+                    }
+            }
         }
     }
