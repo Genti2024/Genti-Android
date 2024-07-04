@@ -7,6 +7,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -40,27 +42,15 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
 
         initView()
         initSettingBtnListener()
-        setAdapterList()
-        setMockImages()
-        observeStatus()
+        initAdapter()
+        setListWithInfinityScroll()
+        observeGenerateStatus()
+        observePictureListPageState()
     }
 
     private fun initView() {
         initOnBackPressedListener(binding.root)
         setStatusBarColor(R.color.green_3)
-    }
-
-    private fun setAdapterList() {
-        _adapter =
-            ProfileAdapter(
-                imageClick = ::initImageClickListener,
-            )
-    }
-
-    private fun initImageClickListener(item: ImageModel) {
-        profileImageDialog =
-            ProfileImageDialog.newInstance(item.id, item.url, item.pictureRatio?.name ?: "")
-        profileImageDialog?.show(parentFragmentManager, IMAGE_VIEWER)
     }
 
     private fun initSettingBtnListener() {
@@ -71,22 +61,51 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
         }
     }
 
-    private fun setMockImages() {
-        adapter.addList(viewModel.mockItemList)
+    private fun initAdapter() {
+        _adapter =
+            ProfileAdapter(
+                imageClick = ::initImageClickListener,
+            )
+        binding.rvProfilePictureList.adapter = adapter
     }
 
-    private fun observeStatus() {
+    private fun initImageClickListener(item: ImageModel) {
+        profileImageDialog =
+            ProfileImageDialog.newInstance(item.id, item.url, item.pictureRatio?.name ?: "")
+        profileImageDialog?.show(parentFragmentManager, IMAGE_VIEWER)
+    }
+
+    private fun setListWithInfinityScroll() {
+        binding.rvProfilePictureList.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(
+                    recyclerView: RecyclerView,
+                    dx: Int,
+                    dy: Int,
+                ) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (dy > 0) {
+                        recyclerView.layoutManager?.let { layoutManager ->
+                            if (!binding.rvProfilePictureList.canScrollVertically(1) &&
+                                layoutManager is LinearLayoutManager &&
+                                layoutManager.findLastVisibleItemPosition() == adapter.itemCount - 1
+                            ) {
+                                viewModel.getPictureListFromServer()
+                            }
+                        }
+                    }
+                }
+            },
+        )
+    }
+
+    private fun observeGenerateStatus() {
         viewModel.getGenerateStatusState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     with(binding) {
-                        cvProfileNormal.isVisible = state.data != true
-                        cvProfileWaiting.isVisible = state.data == true
-                        if (!state.data) {
-                            rvProfileNormalList.adapter = adapter
-                        } else {
-                            rvProfileWatingList.adapter = adapter
-                        }
+                        layoutProfileWaiting.isVisible = state.data != true
+                        layoutProfileNormal.isVisible = state.data == true
                     }
                 }
 
@@ -94,6 +113,39 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
                 else -> return@onEach
             }
         }.launchIn(lifecycleScope)
+    }
+
+    private fun observePictureListPageState() {
+        viewModel.getPictureListState.flowWithLifecycle(lifecycle).onEach { state ->
+            when (state) {
+                is UiState.Success -> {
+                    setLayoutEmpty(false)
+                    adapter.addList(state.data.content)
+                }
+
+                is UiState.Failure -> {
+                    setLayoutEmpty(true)
+                    toast(stringOf(R.string.error_msg))
+                }
+
+                is UiState.Loading -> {
+                    if (viewModel.isFirstLoading) return@onEach
+                    binding.layoutProfIleLoading.isVisible = true
+                }
+
+                is UiState.Empty -> {
+                    if (viewModel.isFirstLoading) setLayoutEmpty(true)
+                }
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun setLayoutEmpty(isEmpty: Boolean) {
+        with(binding) {
+            rvProfilePictureList.isVisible = !isEmpty
+            layoutProfileEmpty.isVisible = isEmpty
+            layoutProfIleLoading.isVisible = false
+        }
     }
 
     override fun onDestroyView() {
