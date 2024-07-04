@@ -12,9 +12,9 @@ data class CreateRequestDto(
     @SerialName("prompt")
     val prompt: String,
     @SerialName("posePicture")
-    val posePicture: KeyDto?,
+    val posePicture: KeyRequestDto?,
     @SerialName("facePictureList")
-    val facePictureList: List<KeyDto>,
+    val facePictureList: List<KeyRequestDto>,
     @SerialName("cameraAngle")
     val cameraAngle: CameraAngle,
     @SerialName("shotCoverage")

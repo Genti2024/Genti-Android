@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kr.genti.core.state.UiState
 import kr.genti.domain.entity.request.CreateRequestModel
-import kr.genti.domain.entity.request.KeyModel
+import kr.genti.domain.entity.request.KeyRequestModel
 import kr.genti.domain.entity.request.S3RequestModel
 import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.domain.entity.response.ImageFileModel.Companion.emptyImageFileModel
@@ -51,8 +51,8 @@ class CreateViewModel
         val totalGeneratingState: StateFlow<UiState<Boolean>> = _totalGeneratingState
 
         private var uploadCheckList = mutableListOf(false, false, false, true)
-        private var plusImageS3Key = KeyModel(null)
-        private var imageS3KeyList = listOf<KeyModel>()
+        private var plusImageS3Key = KeyRequestModel(null)
+        private var imageS3KeyList = listOf<KeyRequestModel>()
 
         fun modCurrentPercent(amount: Int) {
             _currentPercent.value += amount
@@ -99,7 +99,7 @@ class CreateViewModel
                         ),
                     )
                         .onSuccess { uriModel ->
-                            plusImageS3Key = KeyModel(uriModel.s3Key)
+                            plusImageS3Key = KeyRequestModel(uriModel.s3Key)
                             postSingleImage(uriModel)
                         }.onFailure {
                             _totalGeneratingState.value = UiState.Failure(it.message.toString())
@@ -117,7 +117,7 @@ class CreateViewModel
                         S3RequestModel(FileType.USER_UPLOADED_IMAGE, imageList[2].name),
                     ),
                 ).onSuccess { uriList ->
-                    imageS3KeyList = uriList.map { KeyModel(it.s3Key) }
+                    imageS3KeyList = uriList.map { KeyRequestModel(it.s3Key) }
                     postMultiImage(uriList)
                 }.onFailure {
                     _totalGeneratingState.value = UiState.Failure(it.message.toString())
@@ -129,7 +129,7 @@ class CreateViewModel
             viewModelScope.launch {
                 uploadRepository.uploadImage(s3urlModel.url, plusImage.url)
                     .onSuccess {
-                        plusImageS3Key = KeyModel(s3urlModel.s3Key)
+                        plusImageS3Key = KeyRequestModel(s3urlModel.s3Key)
                         uploadCheckList[3] = true
                         checkAllUploadFinished()
                     }.onFailure {

@@ -1,5 +1,5 @@
 package kr.genti.domain.entity.request
 
-data class KeyModel(
+data class KeyRequestModel(
     val key: String?,
 )
