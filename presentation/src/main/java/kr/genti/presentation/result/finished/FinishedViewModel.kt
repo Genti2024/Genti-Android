@@ -39,12 +39,14 @@ class FinishedViewModel
             isRatio23 = finishedImage.pictureRatio?.name == PictureRatio.RATIO_2_3.name
         }
 
-        fun postGenerateReport(
-            responseId: Long,
-            content: String,
-        ) {
+        fun postGenerateReport() {
             viewModelScope.launch {
-                generateRepository.postGenerateReport(ReportRequestModel(responseId, content))
+                generateRepository.postGenerateReport(
+                    ReportRequestModel(
+                        finishedImage.id,
+                        errorReport.value.orEmpty(),
+                    ),
+                )
                     .onSuccess {
                         _postReportResult.emit(true)
                     }
