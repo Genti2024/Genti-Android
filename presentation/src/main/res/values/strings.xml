@@ -37,7 +37,6 @@
     <string name="pose_btn_ratio_three">3:2</string>
     <string name="pose_btn_ratio_two">2:3</string>
 
-
     <string name="selfie_tv_title">사진 생성에 이용할 얼굴 3장을 업로드해주세요</string>
     <string name="selfie_tv_guide_title">💡얼굴은 이런 사진을 사용해주세요!</string>
     <string name="selfie_tv_guide_one">모자, 악세사리 등으로 얼굴이 잘 안보이는 사진을 사용하면 얼굴이 잘 안나올 수 있어요</string>
@@ -82,6 +81,7 @@
     <string name="profile_tv_title">마이페이지</string>
     <string name="profile_tv_waiting">세상에 없던 나만의 사진 찍는 중 ⋯</string>
     <string name="profile_tv_list_title">내가 만든 사진</string>
+    <string name="profile_tv_empty">아직 내가 만든 사진이 없어요</string>
     <string name="profile_image_download_success">사진이 저장되었어요\n친구들에게 공유해보세요!</string>
 
     <string name="setting_tv_title">설정 및 개인정보</string>

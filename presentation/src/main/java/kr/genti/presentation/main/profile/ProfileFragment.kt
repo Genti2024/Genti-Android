@@ -119,11 +119,27 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
         viewModel.getPictureListState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
+                    with(binding) {
+                        rvProfilePictureList.isVisible = true
+                        layoutProfileEmpty.isVisible = false
+                    }
                     adapter.addList(state.data.content)
                 }
 
                 is UiState.Failure -> toast(stringOf(R.string.error_msg))
-                else -> return@onEach
+
+                is UiState.Loading -> {
+                    if (viewModel.isFirstLoading) return@onEach
+                }
+
+                is UiState.Empty -> {
+                    if (viewModel.isFirstLoading) {
+                        with(binding) {
+                            rvProfilePictureList.isVisible = false
+                            layoutProfileEmpty.isVisible = true
+                        }
+                    }
+                }
             }
         }.launchIn(lifecycleScope)
     }

@@ -23,12 +23,14 @@ class ProfileViewModel
         val getGenerateStatusState: StateFlow<UiState<Boolean>> = _getGenerateStatusState
 
         private val _getPictureListState =
-            MutableStateFlow<UiState<PicturePagedListModel>>(UiState.Empty)
+            MutableStateFlow<UiState<PicturePagedListModel>>(UiState.Loading)
         val getPictureListState: StateFlow<UiState<PicturePagedListModel>> = _getPictureListState
 
         private var currentPage = -1
         private var isPagingFinish = false
         private var totalPage = Int.MAX_VALUE
+
+        var isFirstLoading = true
 
         init {
             getGenerateStatusFromServer()
@@ -71,6 +73,11 @@ class ProfileViewModel
                     .onSuccess {
                         totalPage = it.totalPages - 1
                         if (totalPage == currentPage) isPagingFinish = true
+                        if (it.content.isEmpty()) {
+                            _getPictureListState.value = UiState.Empty
+                            return@launch
+                        }
+                        if (isFirstLoading) isFirstLoading = false
                         _getPictureListState.value = UiState.Success(it)
                     }.onFailure {
                         _getPictureListState.value = UiState.Failure(it.message.toString())
