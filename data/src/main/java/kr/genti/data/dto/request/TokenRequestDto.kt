@@ -8,6 +8,8 @@ import kr.genti.domain.entity.request.TokenRequestModel
 data class TokenRequestDto(
     @SerialName("userId")
     val userId: Long,
-)
-
-fun TokenRequestModel.toDto() = TokenRequestDto(userId)
+) {
+    companion object {
+        fun TokenRequestModel.toDto() = TokenRequestDto(userId)
+    }
+}

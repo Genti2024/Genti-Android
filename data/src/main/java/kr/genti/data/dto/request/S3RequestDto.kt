@@ -11,6 +11,8 @@ data class S3RequestDto(
     val fileType: FileType,
     @SerialName("fileName")
     val fileName: String,
-)
-
-fun S3RequestModel.toDto() = S3RequestDto(fileType, fileName)
+) {
+    companion object {
+        fun S3RequestModel.toDto() = S3RequestDto(fileType, fileName)
+    }
+}

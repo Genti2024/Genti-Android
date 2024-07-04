@@ -8,6 +8,8 @@ import kr.genti.domain.entity.request.KeyRequestModel
 data class KeyRequestDto(
     @SerialName("key")
     val key: String?,
-)
-
-fun KeyRequestModel.toDto() = KeyRequestDto(key)
+) {
+    companion object {
+        fun KeyRequestModel.toDto() = KeyRequestDto(key)
+    }
+}
