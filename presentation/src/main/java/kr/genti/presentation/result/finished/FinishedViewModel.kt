@@ -20,6 +20,7 @@ class FinishedViewModel
         private val generateRepository: GenerateRepository,
     ) : ViewModel() {
         val errorReport = MutableLiveData<String>()
+        val isWritten = MutableLiveData(false)
 
         var finishedImage =
             ImageModel(
@@ -34,6 +35,10 @@ class FinishedViewModel
 
         private val _postReportResult = MutableSharedFlow<Boolean>()
         val postReportResult: SharedFlow<Boolean> = _postReportResult
+
+        fun checkWritten() {
+            isWritten.value = errorReport.value?.isNotEmpty()
+        }
 
         fun setPictureRatio() {
             isRatio23 = finishedImage.pictureRatio?.name == PictureRatio.RATIO_2_3.name
