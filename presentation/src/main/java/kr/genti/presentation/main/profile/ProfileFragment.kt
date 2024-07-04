@@ -44,7 +44,7 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
         initSettingBtnListener()
         setAdapterList()
         setMockImages()
-        observeStatus()
+        observeGenerateStatus()
     }
 
     private fun initView() {
@@ -102,13 +102,13 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
         )
     }
 
-    private fun observeStatus() {
+    private fun observeGenerateStatus() {
         viewModel.getGenerateStatusState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     with(binding) {
                         layoutProfileWaiting.isVisible = state.data != true
-                        layoutProfileNotWaiting.isVisible = state.data == true
+                        layoutProfileNormal.isVisible = state.data == true
                     }
                 }
 
