@@ -57,6 +57,7 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
             ProfileAdapter(
                 imageClick = ::initImageClickListener,
             )
+        binding.rvProfilePictureList.adapter = adapter
     }
 
     private fun initImageClickListener(item: ImageModel) {
@@ -78,7 +79,7 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
     }
 
     private fun setListWithInfinityScroll() {
-        binding.rvProfileWatingList.addOnScrollListener(
+        binding.rvProfilePictureList.addOnScrollListener(
             object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(
                     recyclerView: RecyclerView,
@@ -88,7 +89,7 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
                     super.onScrolled(recyclerView, dx, dy)
                     if (dy > 0) {
                         recyclerView.layoutManager?.let { layoutManager ->
-                            if (!binding.rvProfileWatingList.canScrollVertically(1) &&
+                            if (!binding.rvProfilePictureList.canScrollVertically(1) &&
                                 layoutManager is LinearLayoutManager &&
                                 layoutManager.findLastVisibleItemPosition() == adapter.itemCount - 1
                             ) {
@@ -106,13 +107,8 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
             when (state) {
                 is UiState.Success -> {
                     with(binding) {
-                        cvProfileNormal.isVisible = state.data != true
-                        cvProfileWaiting.isVisible = state.data == true
-                        if (!state.data) {
-                            rvProfileNormalList.adapter = adapter
-                        } else {
-                            rvProfileWatingList.adapter = adapter
-                        }
+                        layoutProfileWaiting.isVisible = state.data != true
+                        layoutProfileNotWaiting.isVisible = state.data == true
                     }
                 }
 
