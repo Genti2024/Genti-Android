@@ -2,6 +2,7 @@ package kr.genti.data.dataSourceImpl
 
 import kr.genti.data.dataSource.GenerateDataSource
 import kr.genti.data.dto.BaseResponse
+import kr.genti.data.dto.request.ReportRequestDto
 import kr.genti.data.dto.response.GenerateStatusDto
 import kr.genti.data.dto.response.PicturePagedListDto
 import kr.genti.data.service.GenerateService
@@ -20,4 +21,7 @@ data class GenerateDataSourceImpl
             sortBy: String?,
             direction: String?,
         ): BaseResponse<PicturePagedListDto> = generateService.getGeneratedPictureList(page, size, sortBy, direction)
+
+        override suspend fun postGenerateReport(request: ReportRequestDto): BaseResponse<Boolean> =
+            generateService.postGenerateReport(request)
     }

@@ -103,6 +103,7 @@
                     android:id="@+id/et_error_input"
                     style="@style/TextAppearance.Genti.BodySmall"
                     android:layout_width="0dp"
+                    android:afterTextChanged="@{(text) -> vm.checkWritten()}"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="45dp"
                     android:layout_marginTop="20dp"
@@ -120,11 +121,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="45dp"
-                    android:background="@drawable/shape_green1_fill_6_rect"
+                    android:background="@drawable/sel_btn"
+                    android:enabled="@{vm.isWritten}"
                     android:paddingHorizontal="35dp"
                     android:paddingVertical="6dp"
                     android:text="@string/finished_error_input_btn_submit"
-                    android:textColor="@color/white"
+                    android:textColor="@{vm.isWritten() == true ? @color/white : @color/black}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/et_error_input" />
 

@@ -1,6 +1,7 @@
 package kr.genti.data.dataSource
 
 import kr.genti.data.dto.BaseResponse
+import kr.genti.data.dto.request.ReportRequestDto
 import kr.genti.data.dto.response.GenerateStatusDto
 import kr.genti.data.dto.response.PicturePagedListDto
 
@@ -13,4 +14,6 @@ interface GenerateDataSource {
         sortBy: String?,
         direction: String?,
     ): BaseResponse<PicturePagedListDto>
+
+    suspend fun postGenerateReport(request: ReportRequestDto): BaseResponse<Boolean>
 }

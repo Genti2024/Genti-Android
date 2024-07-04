@@ -1,6 +1,8 @@
 package kr.genti.data.repositoryImpl
 
 import kr.genti.data.dataSource.GenerateDataSource
+import kr.genti.data.dto.request.ReportRequestDto.Companion.toDto
+import kr.genti.domain.entity.request.ReportRequestModel
 import kr.genti.domain.entity.response.GenerateStatusModel
 import kr.genti.domain.entity.response.PicturePagedListModel
 import kr.genti.domain.repository.GenerateRepository
@@ -29,5 +31,10 @@ class GenerateRepositoryImpl
                     sortBy,
                     direction,
                 ).response.toModel()
+            }
+
+        override suspend fun postGenerateReport(request: ReportRequestModel): Result<Boolean> =
+            runCatching {
+                generateDataSource.postGenerateReport(request.toDto()).response
             }
     }

@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseFragment
@@ -116,7 +117,7 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
     }
 
     private fun observePictureListPageState() {
-        viewModel.getPictureListState.flowWithLifecycle(lifecycle).onEach { state ->
+        viewModel.getPictureListState.flowWithLifecycle(lifecycle).distinctUntilChanged().onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     setLayoutEmpty(false)

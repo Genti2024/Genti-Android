@@ -1,5 +1,6 @@
 package kr.genti.domain.repository
 
+import kr.genti.domain.entity.request.ReportRequestModel
 import kr.genti.domain.entity.response.GenerateStatusModel
 import kr.genti.domain.entity.response.PicturePagedListModel
 
@@ -12,4 +13,6 @@ interface GenerateRepository {
         sortBy: String?,
         direction: String?,
     ): Result<PicturePagedListModel>
+
+    suspend fun postGenerateReport(request: ReportRequestModel): Result<Boolean>
 }

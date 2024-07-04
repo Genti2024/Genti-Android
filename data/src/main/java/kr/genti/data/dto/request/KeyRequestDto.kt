@@ -2,12 +2,14 @@ package kr.genti.data.dto.request
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kr.genti.domain.entity.request.KeyModel
+import kr.genti.domain.entity.request.KeyRequestModel
 
 @Serializable
-data class KeyDto(
+data class KeyRequestDto(
     @SerialName("key")
     val key: String?,
-)
-
-fun KeyModel.toDto() = KeyDto(key)
+) {
+    companion object {
+        fun KeyRequestModel.toDto() = KeyRequestDto(key)
+    }
+}

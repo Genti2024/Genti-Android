@@ -7,10 +7,16 @@ import android.view.View
 import android.view.WindowManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseDialog
 import kr.genti.core.extension.hideKeyboard
 import kr.genti.core.extension.setGusianBlur
 import kr.genti.core.extension.setOnSingleClickListener
+import kr.genti.core.extension.stringOf
+import kr.genti.core.extension.toast
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogFinishedErrorBinding
 
@@ -36,9 +42,11 @@ class FinishedErrorDialog :
     ) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.vm = viewModel
         initExitBtnListener()
         initSubmitBtnListener()
         setHideKeyboard(view)
+        observeReportResult()
     }
 
     private fun initExitBtnListener() {
@@ -51,13 +59,7 @@ class FinishedErrorDialog :
 
     private fun initSubmitBtnListener() {
         binding.btnSubmit.setOnSingleClickListener {
-            // TODO: 서버통신
-            requireContext().hideKeyboard(requireView())
-            with(binding) {
-                layoutErrorInput.isVisible = false
-                layoutErrorOutput.isVisible = true
-                viewOutside.setOnSingleClickListener { dismiss() }
-            }
+            viewModel.postGenerateReport()
         }
     }
 
@@ -69,6 +71,21 @@ class FinishedErrorDialog :
             }
             false
         }
+    }
+
+    private fun observeReportResult() {
+        viewModel.postReportResult.flowWithLifecycle(lifecycle).onEach { result ->
+            if (result) {
+                requireContext().hideKeyboard(requireView())
+                with(binding) {
+                    layoutErrorInput.isVisible = false
+                    layoutErrorOutput.isVisible = true
+                    viewOutside.setOnSingleClickListener { dismiss() }
+                }
+            } else {
+                toast(stringOf(R.string.error_msg))
+            }
+        }.launchIn(lifecycleScope)
     }
 
     override fun onDismiss(dialog: DialogInterface) {

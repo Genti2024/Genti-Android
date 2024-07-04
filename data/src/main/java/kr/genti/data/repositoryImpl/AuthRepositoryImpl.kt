@@ -1,7 +1,7 @@
 package kr.genti.data.repositoryImpl
 
 import kr.genti.data.dataSource.AuthDataSource
-import kr.genti.data.dto.request.toDto
+import kr.genti.data.dto.request.TokenRequestDto.Companion.toDto
 import kr.genti.domain.entity.request.TokenRequestModel
 import kr.genti.domain.entity.response.AuthTokenModel
 import kr.genti.domain.repository.AuthRepository

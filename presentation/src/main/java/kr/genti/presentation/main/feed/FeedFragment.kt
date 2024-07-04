@@ -8,6 +8,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseFragment
@@ -91,13 +92,14 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
     }
 
     private fun observeGetExampleItemsState() {
-        viewModel.getExampleItemsState.flowWithLifecycle(lifecycle).onEach { state ->
-            when (state) {
-                is UiState.Success -> adapter.addItemList(state.data)
-                is UiState.Failure -> toast(stringOf(R.string.error_msg))
-                else -> return@onEach
-            }
-        }.launchIn(lifecycleScope)
+        viewModel.getExampleItemsState.flowWithLifecycle(lifecycle).distinctUntilChanged()
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> adapter.addItemList(state.data)
+                    is UiState.Failure -> toast(stringOf(R.string.error_msg))
+                    else -> return@onEach
+                }
+            }.launchIn(lifecycleScope)
     }
 
     override fun onDestroyView() {
