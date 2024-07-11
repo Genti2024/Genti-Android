@@ -8,17 +8,17 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface CreateService {
-    @POST("/api/presigned-url")
+    @POST("api/v1/presigned-url")
     suspend fun getSingleS3Url(
         @Body request: S3RequestDto,
     ): BaseResponse<S3PresignedUrlDto>
 
-    @POST("/api/presigned-url/many")
+    @POST("api/v1/presigned-url/many")
     suspend fun getMultiS3Url(
         @Body request: List<S3RequestDto>,
     ): BaseResponse<List<S3PresignedUrlDto>>
 
-    @POST("/api/users/picture-generate-requests")
+    @POST("api/v1/users/picture-generate-requests")
     suspend fun postToCreate(
         @Body request: CreateRequestDto,
     ): BaseResponse<Boolean>
