@@ -10,6 +10,7 @@ import kr.genti.core.state.UiState
 import kr.genti.domain.entity.response.PicturePagedListModel
 import kr.genti.domain.enums.GenerateStatus
 import kr.genti.domain.repository.GenerateRepository
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -81,6 +82,7 @@ class ProfileViewModel
                         _getPictureListState.value = UiState.Success(it)
                     }.onFailure {
                         _getPictureListState.value = UiState.Failure(it.message.toString())
+                        Timber.tag("okhttp").d("@@@@${it.message}")
                     }
             }
         }
