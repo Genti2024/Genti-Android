@@ -10,7 +10,7 @@ data class BaseResponse<T>(
     @SerialName("response")
     val response: T,
     @SerialName("errorCode")
-    val errorCode: String,
+    val errorCode: String?,
     @SerialName("errorMessage")
-    val errorMessage: String,
+    val errorMessage: String?,
 )
