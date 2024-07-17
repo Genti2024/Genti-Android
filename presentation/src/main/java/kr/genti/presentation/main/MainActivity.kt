@@ -1,15 +1,22 @@
 package kr.genti.presentation.main
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.navigation.NavigationBarView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColorFromResource
+import kr.genti.core.extension.stringOf
+import kr.genti.core.extension.toast
 import kr.genti.domain.enums.PictureRatio
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityMainBinding
@@ -20,6 +27,8 @@ import kr.genti.presentation.result.finished.FinishedActivity
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
+    private val viewModel by viewModels<MainViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -27,7 +36,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         initBnvItemSelectedListener()
         initCreateBtnListener()
         setStatusBarColor()
-        moveToFinish()
+        observeStatusResult()
     }
 
     // TODO 서버통신 진행 후 삭제
@@ -60,7 +69,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             when (menu.itemId) {
                 R.id.menu_feed -> navigateTo<FeedFragment>()
 
-                R.id.menu_create -> navigateTo<CreateFragment>()
+                R.id.menu_create -> navigateByGenerateStatus()
 
                 R.id.menu_profile -> navigateTo<ProfileFragment>()
 
@@ -82,6 +91,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private fun setStatusBarColor() {
         setStatusBarColorFromResource(R.color.background_white)
+    }
+
+    private fun navigateByGenerateStatus() {
+    }
+
+    private fun observeStatusResult() {
+        viewModel.getStatusResult.flowWithLifecycle(lifecycle).onEach { result ->
+            if (!result) {
+                toast(stringOf(R.string.error_msg))
+            }
+        }.launchIn(lifecycleScope)
     }
 
     private inline fun <reified T : Fragment> navigateTo() {
