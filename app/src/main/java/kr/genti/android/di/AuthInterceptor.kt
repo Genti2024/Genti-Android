@@ -5,8 +5,6 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.runBlocking
-import kr.genti.core.extension.toast
 import kr.genti.data.local.UserSharedPref
 import kr.genti.domain.entity.request.TokenRequestModel
 import kr.genti.domain.repository.AuthRepository
