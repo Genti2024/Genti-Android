@@ -1,5 +1,7 @@
 package kr.genti.presentation.main.feed
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -55,8 +57,10 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
         binding.rvFeed.adapter = adapter
     }
 
-    private fun initGenBtnListener(unit: Unit) {
-        // TODO: 링크 이동
+    private fun initGenBtnListener(x: Boolean) {
+        Intent(Intent.ACTION_VIEW, Uri.parse(WEB_GENFLUENCER)).apply {
+            startActivity(this)
+        }
     }
 
     private fun checkLoadingFinished(position: Int) {
@@ -105,5 +109,10 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
     override fun onDestroyView() {
         super.onDestroyView()
         _adapter = null
+    }
+
+    companion object {
+        private const val WEB_GENFLUENCER =
+            "https://stealth-goose-156.notion.site/57a00e1d610b4c1786c6ab1fdb4c4659?pvs=4"
     }
 }
