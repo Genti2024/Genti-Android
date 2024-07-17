@@ -39,4 +39,6 @@ class MainViewModel
                     }
             }
         }
+
+        fun checkNerPictureInitialized() = ::newPicture.isInitialized
     }

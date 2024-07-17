@@ -1,5 +1,6 @@
 package kr.genti.presentation.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
@@ -13,17 +14,17 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseActivity
-import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColorFromResource
 import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
-import kr.genti.domain.enums.PictureRatio
+import kr.genti.domain.enums.GenerateStatus
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityMainBinding
 import kr.genti.presentation.main.create.CreateFragment
 import kr.genti.presentation.main.feed.FeedFragment
 import kr.genti.presentation.main.profile.ProfileFragment
 import kr.genti.presentation.result.finished.FinishedActivity
+import kr.genti.presentation.result.waiting.WaitingActivity
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
@@ -37,18 +38,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         initCreateBtnListener()
         setStatusBarColor()
         observeStatusResult()
-    }
-
-    // TODO 서버통신 진행 후 삭제
-    private fun moveToFinish() {
-        binding.btnMoveToFinish.setOnSingleClickListener {
-            FinishedActivity.createIntent(
-                this,
-                0,
-                "https://github.com/Marchbreeze/Marchbreeze/assets/97405341/ad58982b-9ba3-448d-a788-748511718ffe",
-                PictureRatio.RATIO_2_3.name,
-            ).apply { startActivity(this) }
-        }
     }
 
     fun initBnvItemIconTintList() {
@@ -82,9 +71,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private fun initCreateBtnListener() {
         binding.btnMenuCreate.setOnClickListener {
-            supportFragmentManager.commit {
-                replace<CreateFragment>(R.id.fcv_main)
-            }
+            navigateByGenerateStatus()
             binding.bnvMain.selectedItemId = R.id.menu_create
         }
     }
@@ -94,6 +81,33 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     }
 
     private fun navigateByGenerateStatus() {
+        when (viewModel.currentStatus) {
+            GenerateStatus.COMPLETED -> navigateTo<CreateFragment>()
+
+            GenerateStatus.AWAIT_USER_VERIFICATION -> {
+                // TODO 다이얼로그 이후 이동
+                if (viewModel.checkNerPictureInitialized()) {
+                    FinishedActivity.createIntent(
+                        this,
+                        viewModel.newPicture.pictureGenerateRequestId,
+                        viewModel.newPicture.pictureGenerateResponse.url,
+                        viewModel.newPicture.pictureGenerateResponse.pictureRatio.name,
+                    ).apply { startActivity(this) }
+                } else {
+                    toast(stringOf(R.string.error_msg))
+                }
+            }
+
+            GenerateStatus.IN_PROGRESS -> {
+                Intent(this, WaitingActivity::class.java).apply {
+                    startActivity(this)
+                }
+            }
+
+            GenerateStatus.ERROR -> {
+                // TODO 다이얼로그
+            }
+        }
     }
 
     private fun observeStatusResult() {
