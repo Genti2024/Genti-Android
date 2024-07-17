@@ -176,6 +176,10 @@ class CreateViewModel
             }
         }
 
+        fun resetGeneratingState() {
+            _totalGeneratingState.value = UiState.Empty
+        }
+
         fun getRandomPrompt(): String {
             val randomPrompt = promptList[Random.nextInt(promptList.size)]
             if (randomPrompt != currentPrompt) {

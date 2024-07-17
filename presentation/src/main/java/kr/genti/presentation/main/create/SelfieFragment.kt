@@ -189,12 +189,10 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
             when (state) {
                 is UiState.Success -> {
                     waitingResult.launch(Intent(requireContext(), WaitingActivity::class.java))
+                    viewModel.resetGeneratingState()
                 }
 
-                is UiState.Failure -> {
-                    toast(stringOf(R.string.error_msg))
-                }
-
+                is UiState.Failure -> toast(stringOf(R.string.error_msg))
                 else -> return@onEach
             }
         }.launchIn(lifecycleScope)
