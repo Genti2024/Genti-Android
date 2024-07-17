@@ -182,9 +182,7 @@ class CreateViewModel
 
         fun getRandomPrompt(): String {
             val randomPrompt = promptList[Random.nextInt(promptList.size)]
-            if (randomPrompt != currentPrompt) {
-                currentPrompt = randomPrompt
-            }
+            if (randomPrompt != currentPrompt) currentPrompt = randomPrompt
             return currentPrompt
         }
 

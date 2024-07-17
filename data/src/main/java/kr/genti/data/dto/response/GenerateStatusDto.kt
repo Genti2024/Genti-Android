@@ -11,10 +11,13 @@ data class GenerateStatusDto(
     val pictureGenerateRequestId: Long,
     @SerialName("status")
     val status: GenerateStatus,
+    @SerialName("pictureGenerateResponse")
+    val pictureGenerateResponse: ImageDto?,
 ) {
     fun toModel() =
         GenerateStatusModel(
             pictureGenerateRequestId,
             status,
+            pictureGenerateResponse?.toModel(),
         )
 }
