@@ -11,7 +11,7 @@ import kr.genti.presentation.databinding.ItemFeedInfoBinding
 import kr.genti.presentation.databinding.ItemFeedItemBinding
 
 class FeedAdapter(
-    private val genBtnClick: (Unit) -> (Unit),
+    private val genBtnClick: (Boolean) -> (Unit),
     private val checkLoadingFinished: (Int) -> (Unit),
 ) : ListAdapter<FeedItemModel, RecyclerView.ViewHolder>(diffUtil) {
     private var itemList = mutableListOf<FeedItemModel>()

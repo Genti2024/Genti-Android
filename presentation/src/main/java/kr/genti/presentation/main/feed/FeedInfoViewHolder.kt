@@ -6,12 +6,12 @@ import kr.genti.presentation.databinding.ItemFeedInfoBinding
 
 class FeedInfoViewHolder(
     val binding: ItemFeedInfoBinding,
-    val genBtnClick: (Unit) -> (Unit),
+    val genBtnClick: (Boolean) -> (Unit),
 ) :
     RecyclerView.ViewHolder(binding.root) {
     fun onBind() {
         binding.btnFeedGenfluencer.setOnSingleClickListener {
-            genBtnClick
+            genBtnClick(true)
         }
     }
 }
