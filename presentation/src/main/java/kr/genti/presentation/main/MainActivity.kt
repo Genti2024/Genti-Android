@@ -1,6 +1,5 @@
 package kr.genti.presentation.main
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
@@ -93,13 +92,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             }
 
             GenerateStatus.IN_PROGRESS -> {
-                Intent(this, WaitingActivity::class.java).apply {
+                WaitingActivity.createIntent(this, false).apply {
                     startActivity(this)
                 }
             }
 
             GenerateStatus.ERROR -> {
-                // TODO 다이얼로그
+                WaitingActivity.createIntent(this, true).apply {
+                    startActivity(this)
+                }
             }
         }
     }
