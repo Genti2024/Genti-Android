@@ -91,13 +91,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             }
 
             GenerateStatus.IN_PROGRESS -> {
-                WaitingActivity.createIntent(this, false).apply {
+                WaitingActivity.createIntent(this, false, -1).apply {
                     startActivity(this)
                 }
             }
 
             GenerateStatus.ERROR -> {
-                WaitingActivity.createIntent(this, true).apply {
+                WaitingActivity.createIntent(
+                    this,
+                    true,
+                    viewModel.newPicture.pictureGenerateResponse?.id?.toInt() ?: -1,
+                ).apply {
                     startActivity(this)
                 }
             }
