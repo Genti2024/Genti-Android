@@ -38,6 +38,7 @@ class CreateViewModel
         val selectedAngle = MutableLiveData<CameraAngle>()
         val selectedCoverage = MutableLiveData<ShotCoverage>()
         val isSelected = MutableLiveData(false)
+        var isGuideNeeded = true
 
         var imageList = listOf<ImageFileModel>()
         var isCompleted = MutableLiveData(false)

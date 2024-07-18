@@ -1,4 +1,4 @@
-package kr.genti.presentation.result.waiting
+package kr.genti.presentation.main.create
 
 import android.os.Bundle
 import android.view.View
@@ -6,10 +6,10 @@ import android.view.WindowManager
 import kr.genti.core.base.BaseDialog
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
-import kr.genti.presentation.databinding.DialogWaitingErrorBinding
+import kr.genti.presentation.databinding.DialogCreateGuideBinding
 
-class WaitingErrorDialog :
-    BaseDialog<DialogWaitingErrorBinding>(R.layout.dialog_waiting_error) {
+class CreateGuideDialog :
+    BaseDialog<DialogCreateGuideBinding>(R.layout.dialog_create_guide) {
     override fun onStart() {
         super.onStart()
         dialog?.window?.apply {
@@ -28,17 +28,9 @@ class WaitingErrorDialog :
         super.onViewCreated(view, savedInstanceState)
 
         initCloseBtnListener()
-        initMoveToFinishBtnListener()
     }
 
     private fun initCloseBtnListener() {
         binding.btnClose.setOnSingleClickListener { dismiss() }
-    }
-
-    private fun initMoveToFinishBtnListener() {
-        binding.btnAgain.setOnSingleClickListener {
-            requireActivity().finish()
-            dismiss()
-        }
     }
 }
