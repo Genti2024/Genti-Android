@@ -90,8 +90,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                     FinishedActivity.createIntent(
                         this,
                         viewModel.newPicture.pictureGenerateRequestId,
-                        viewModel.newPicture.pictureGenerateResponse.url,
-                        viewModel.newPicture.pictureGenerateResponse.pictureRatio.name,
+                        viewModel.newPicture.pictureGenerateResponse?.url.orEmpty(),
+                        viewModel.newPicture.pictureGenerateResponse?.pictureRatio?.name.orEmpty(),
                     ).apply { startActivity(this) }
                 } else {
                     toast(stringOf(R.string.error_msg))
