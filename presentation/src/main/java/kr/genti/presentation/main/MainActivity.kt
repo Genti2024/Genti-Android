@@ -58,7 +58,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             when (menu.itemId) {
                 R.id.menu_feed -> navigateTo<FeedFragment>()
 
-                R.id.menu_create -> navigateByGenerateStatus()
+                R.id.menu_create -> navigateTo<CreateFragment>()
 
                 R.id.menu_profile -> navigateTo<ProfileFragment>()
 
@@ -82,7 +82,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private fun navigateByGenerateStatus() {
         when (viewModel.currentStatus) {
             GenerateStatus.COMPLETED -> {
-                navigateTo<CreateFragment>()
                 binding.bnvMain.selectedItemId = R.id.menu_create
             }
 
