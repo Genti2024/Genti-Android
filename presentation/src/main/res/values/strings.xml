@@ -53,6 +53,14 @@
     <string name="wait_tv_time_guide">미리 만들어놓은 컨셉에 얼굴만 바꾸는게 아니라\n’나만의 하나뿐인 사진’을 찍어드리기 위해 \n배경부터 의상, 구도까지 꼼꼼하게 준비하고 있어요</string>
     <string name="wait_btn_return">피드로 돌아가기</string>
 
+    <string name="waiting_error_tv_title">정말 죄송합니다.</string>
+    <string name="waiting_error_tv_subtitle">서버에 오류가 발생해서\n사진이 만들어지지 않았어요.</string>
+    <string name="waiting_error_btn_again">사진 다시 생성하기</string>
+
+    <string name="main_dialog_tv_title">사진이 완성되었어요!</string>
+    <string name="main_dialog_tv_subtitle">다른 사진을 만들기 전에\n완성된 사진을 확인할까요?</string>
+    <string name="main_dialog_btn_move_to_finish">사진 확인하기</string>
+
     <string name="finished_tv_title">하나뿐인 나만의 사진이\n완성되었어요!</string>
     <string name="finished_tv_saved">사진이 마이페이지에 저장되었어요!</string>
     <string name="finished_btn_share">공유하기</string>
