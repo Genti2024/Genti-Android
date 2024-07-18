@@ -1,6 +1,8 @@
 package kr.genti.presentation.result.waiting
 
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -20,10 +22,13 @@ import kr.genti.presentation.databinding.ActivityWaitBinding
 
 @AndroidEntryPoint
 class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait) {
+    private var waitingErrorDialog: WaitingErrorDialog? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initReturnBtnListener()
+        getIntentIsError()
         setOnBackPressed()
         setStatusBarTransparent()
         setEmphasizedText()
@@ -33,6 +38,14 @@ class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait
         binding.btnWaitReturn.setOnSingleClickListener {
             setResult(Activity.RESULT_OK)
             finish()
+        }
+    }
+
+    private fun getIntentIsError() {
+        val isError = intent.getBooleanExtra(EXTRA_IS_ERROR, false)
+        if (isError) {
+            waitingErrorDialog = WaitingErrorDialog()
+            waitingErrorDialog?.show(supportFragmentManager, DIALOG_ERROR)
         }
     }
 
@@ -73,5 +86,25 @@ class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait
                     )
                 }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        waitingErrorDialog = null
+    }
+
+    companion object {
+        private const val DIALOG_ERROR = "DIALOG_ERROR"
+
+        private const val EXTRA_IS_ERROR = "EXTRA_IS_ERROR"
+
+        @JvmStatic
+        fun createIntent(
+            context: Context,
+            isError: Boolean,
+        ): Intent =
+            Intent(context, WaitingActivity::class.java).apply {
+                putExtra(EXTRA_IS_ERROR, isError)
+            }
     }
 }

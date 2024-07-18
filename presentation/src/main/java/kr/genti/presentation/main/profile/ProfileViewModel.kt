@@ -10,7 +10,6 @@ import kr.genti.core.state.UiState
 import kr.genti.domain.entity.response.PicturePagedListModel
 import kr.genti.domain.enums.GenerateStatus
 import kr.genti.domain.repository.GenerateRepository
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,17 +42,8 @@ class ProfileViewModel
                 _getGenerateStatusState.value = UiState.Loading
                 generateRepository.getGenerateStatus()
                     .onSuccess {
-                        val isGenerating =
-                            when (it.status) {
-                                GenerateStatus.CREATED,
-                                GenerateStatus.ASSIGNING,
-                                GenerateStatus.IN_PROGRESS,
-                                GenerateStatus.MATCH_TO_ADMIN,
-                                -> true
-
-                                else -> false
-                            }
-                        _getGenerateStatusState.value = UiState.Success(isGenerating)
+                        _getGenerateStatusState.value =
+                            UiState.Success(it.status == GenerateStatus.IN_PROGRESS)
                     }
                     .onFailure { t ->
                         _getGenerateStatusState.value = UiState.Failure(t.message.toString())
@@ -82,7 +72,6 @@ class ProfileViewModel
                         _getPictureListState.value = UiState.Success(it)
                     }.onFailure {
                         _getPictureListState.value = UiState.Failure(it.message.toString())
-                        Timber.tag("okhttp").d("@@@@${it.message}")
                     }
             }
         }
