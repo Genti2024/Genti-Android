@@ -21,6 +21,15 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:id="@+id/btn_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:src="@drawable/ic_close_dialog"
+            app:layout_constraintEnd_toEndOf="@id/iv_logout_bg"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
             android:id="@+id/iv_finished_icon"
             android:layout_width="wrap_content"
             android:layout_height="100dp"

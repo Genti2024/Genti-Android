@@ -47,6 +47,13 @@
     <string name="selfie_toast_old_picker_limit">3장의 이미지를 선택해 주세요</string>
     <string name="selfie_toast_picker_error">갤러리 이미지를 가져오는 과정에서 오류가 발생했습니다.</string>
 
+    <string name="create_guide_tv_title_up">이번에는</string>
+    <string name="create_guide_tv_ratio">비율</string>
+    <string name="create_guide_tv_angle">앵글</string>
+    <string name="create_guide_tv_frame">프레임</string>
+    <string name="create_guide_tv_title_down">을 선택해야 해요!</string>
+    <string name="create_guide_tv_ex">예시</string>
+
     <string name="wait_tv_title">세상에 없던 나만의\n   사진을 찍고있어요!</string>
     <string name="wait_tv_title_dot">• • •</string>
     <string name="wait_tv_time">예상 소요시간은 2시간입니다.</string>
