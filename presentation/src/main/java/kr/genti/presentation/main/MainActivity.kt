@@ -23,12 +23,13 @@ import kr.genti.presentation.databinding.ActivityMainBinding
 import kr.genti.presentation.main.create.CreateFragment
 import kr.genti.presentation.main.feed.FeedFragment
 import kr.genti.presentation.main.profile.ProfileFragment
-import kr.genti.presentation.result.finished.FinishedActivity
 import kr.genti.presentation.result.waiting.WaitingActivity
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val viewModel by viewModels<MainViewModel>()
+
+    private var mainFinishedDialog: MainFinishedDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +73,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private fun initCreateBtnListener() {
         binding.btnMenuCreate.setOnClickListener {
             navigateByGenerateStatus()
-            binding.bnvMain.selectedItemId = R.id.menu_create
         }
     }
 
@@ -82,20 +82,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private fun navigateByGenerateStatus() {
         when (viewModel.currentStatus) {
-            GenerateStatus.COMPLETED -> navigateTo<CreateFragment>()
+            GenerateStatus.COMPLETED -> {
+                navigateTo<CreateFragment>()
+                binding.bnvMain.selectedItemId = R.id.menu_create
+            }
 
             GenerateStatus.AWAIT_USER_VERIFICATION -> {
-                // TODO 다이얼로그 이후 이동
-                if (viewModel.checkNerPictureInitialized()) {
-                    FinishedActivity.createIntent(
-                        this,
-                        viewModel.newPicture.pictureGenerateRequestId,
-                        viewModel.newPicture.pictureGenerateResponse?.url.orEmpty(),
-                        viewModel.newPicture.pictureGenerateResponse?.pictureRatio?.name.orEmpty(),
-                    ).apply { startActivity(this) }
-                } else {
-                    toast(stringOf(R.string.error_msg))
-                }
+                mainFinishedDialog = MainFinishedDialog()
+                mainFinishedDialog?.show(supportFragmentManager, DIALOG_FINISHED)
             }
 
             GenerateStatus.IN_PROGRESS -> {
@@ -122,5 +116,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         supportFragmentManager.commit {
             replace<T>(R.id.fcv_main, T::class.java.canonicalName)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mainFinishedDialog = null
+    }
+
+    companion object {
+        private const val DIALOG_FINISHED = "DIALOG_FINISHED"
     }
 }

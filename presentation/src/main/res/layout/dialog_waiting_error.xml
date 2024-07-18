@@ -23,8 +23,8 @@
         <ImageView
             android:id="@+id/iv_error_icon"
             android:layout_width="79dp"
-            android:layout_marginStart="25dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
             android:adjustViewBounds="true"
             android:src="@drawable/ic_error_icon"
             app:layout_constraintStart_toStartOf="@id/iv_quit_bg"
@@ -69,8 +69,8 @@
             android:text="@string/waiting_error_btn_again"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/iv_quit_bg"
+            app:layout_constraintStart_toStartOf="@id/iv_quit_bg"
             app:layout_constraintTop_toBottomOf="@id/tv_logout_subtitle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
