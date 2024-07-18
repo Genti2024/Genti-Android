@@ -6,9 +6,15 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseDialog
 import kr.genti.core.extension.setGusianBlur
 import kr.genti.core.extension.setOnSingleClickListener
+import kr.genti.core.extension.stringOf
+import kr.genti.core.extension.toast
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogFinishedRatingBinding
 import kr.genti.presentation.main.MainActivity
@@ -37,10 +43,13 @@ class FinishedRatingDialog :
 
         initSkipBtnListener()
         initSubmitBtnListener()
+        observeResetResult()
     }
 
     private fun initSkipBtnListener() {
-        binding.btnSkip.setOnSingleClickListener { navigateToMain() }
+        binding.btnSkip.setOnSingleClickListener {
+            viewModel.postResetStateToServer()
+        }
     }
 
     private fun initSubmitBtnListener() {
@@ -56,6 +65,16 @@ class FinishedRatingDialog :
             startActivity(this)
         }
         dismiss()
+    }
+
+    private fun observeResetResult() {
+        viewModel.postResetResult.flowWithLifecycle(lifecycle).onEach { result ->
+            if (result) {
+                navigateToMain()
+            } else {
+                toast(stringOf(R.string.error_msg))
+            }
+        }.launchIn(lifecycleScope)
     }
 
     override fun onDismiss(dialog: DialogInterface) {
