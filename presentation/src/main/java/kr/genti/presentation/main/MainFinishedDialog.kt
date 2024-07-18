@@ -33,7 +33,12 @@ class MainFinishedDialog :
     ) {
         super.onViewCreated(view, savedInstanceState)
 
+        initCloseBtnListener()
         initMoveToFinishBtnListener()
+    }
+
+    private fun initCloseBtnListener() {
+        binding.btnClose.setOnSingleClickListener { dismiss() }
     }
 
     private fun initMoveToFinishBtnListener() {
