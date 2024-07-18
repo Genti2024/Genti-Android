@@ -59,7 +59,7 @@ class FinishedErrorDialog :
 
     private fun initSubmitBtnListener() {
         binding.btnSubmit.setOnSingleClickListener {
-            viewModel.postGenerateReport()
+            viewModel.postGenerateReportToServer()
         }
     }
 

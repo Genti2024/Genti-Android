@@ -7,6 +7,7 @@ import kr.genti.data.dto.response.PicturePagedListDto
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface GenerateService {
@@ -24,5 +25,10 @@ interface GenerateService {
     @POST("api/v1/users/reports")
     suspend fun postGenerateReport(
         @Body request: ReportRequestDto,
+    ): BaseResponse<Boolean>
+
+    @POST("api/v1/users/picture-generate-responses/{pictureGenerateResponseId}/verify")
+    suspend fun postResetState(
+        @Path("pictureGenerateResponseId") id: Int,
     ): BaseResponse<Boolean>
 }

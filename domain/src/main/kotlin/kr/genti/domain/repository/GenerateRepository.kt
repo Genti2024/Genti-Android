@@ -15,4 +15,6 @@ interface GenerateRepository {
     ): Result<PicturePagedListModel>
 
     suspend fun postGenerateReport(request: ReportRequestModel): Result<Boolean>
+
+    suspend fun postResetState(id: Int): Result<Boolean>
 }

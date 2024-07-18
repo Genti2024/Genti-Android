@@ -36,6 +36,9 @@ class FinishedViewModel
         private val _postReportResult = MutableSharedFlow<Boolean>()
         val postReportResult: SharedFlow<Boolean> = _postReportResult
 
+        private val _postResetResult = MutableSharedFlow<Boolean>()
+        val postResetResult: SharedFlow<Boolean> = _postResetResult
+
         fun checkWritten() {
             isWritten.value = errorReport.value?.isNotEmpty()
         }
@@ -44,7 +47,7 @@ class FinishedViewModel
             isRatio23 = finishedImage.pictureRatio?.name == PictureRatio.RATIO_2_3.name
         }
 
-        fun postGenerateReport() {
+        fun postGenerateReportToServer() {
             viewModelScope.launch {
                 generateRepository.postGenerateReport(
                     ReportRequestModel(
@@ -57,6 +60,18 @@ class FinishedViewModel
                     }
                     .onFailure {
                         _postReportResult.emit(false)
+                    }
+            }
+        }
+
+        fun postResetStateToServer() {
+            viewModelScope.launch {
+                generateRepository.postResetState(finishedImage.id.toInt())
+                    .onSuccess {
+                        _postResetResult.emit(true)
+                    }
+                    .onFailure {
+                        _postResetResult.emit(false)
                     }
             }
         }

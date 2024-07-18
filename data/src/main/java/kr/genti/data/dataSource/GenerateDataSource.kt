@@ -16,4 +16,6 @@ interface GenerateDataSource {
     ): BaseResponse<PicturePagedListDto>
 
     suspend fun postGenerateReport(request: ReportRequestDto): BaseResponse<Boolean>
+
+    suspend fun postResetState(id: Int): BaseResponse<Boolean>
 }

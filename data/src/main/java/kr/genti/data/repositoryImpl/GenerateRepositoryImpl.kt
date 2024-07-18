@@ -37,4 +37,9 @@ class GenerateRepositoryImpl
             runCatching {
                 generateDataSource.postGenerateReport(request.toDto()).response
             }
+
+        override suspend fun postResetState(id: Int): Result<Boolean> =
+            runCatching {
+                generateDataSource.postResetState(id).response
+            }
     }
