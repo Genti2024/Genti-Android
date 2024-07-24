@@ -20,7 +20,10 @@ class MainViewModel
         private val _getStatusResult = MutableSharedFlow<Boolean>()
         val getStatusResult: SharedFlow<Boolean> = _getStatusResult
 
-        var currentStatus: GenerateStatus = GenerateStatus.COMPLETED
+        private val _postResetResult = MutableSharedFlow<Boolean>()
+        val postResetResult: SharedFlow<Boolean> = _postResetResult
+
+        var currentStatus: GenerateStatus = GenerateStatus.NEW_REQUEST_AVAILABLE
         lateinit var newPicture: GenerateStatusModel
 
         init {
@@ -31,11 +34,23 @@ class MainViewModel
             viewModelScope.launch {
                 generateRepository.getGenerateStatus()
                     .onSuccess {
-                        currentStatus = it.status
+                        currentStatus = GenerateStatus.NEW_REQUEST_AVAILABLE
                         newPicture = it
                     }
                     .onFailure {
                         _getStatusResult.emit(false)
+                    }
+            }
+        }
+
+        fun postResetStateToServer(id: Int) {
+            viewModelScope.launch {
+                generateRepository.postResetState(id)
+                    .onSuccess {
+                        _postResetResult.emit(true)
+                    }
+                    .onFailure {
+                        _postResetResult.emit(false)
                     }
             }
         }

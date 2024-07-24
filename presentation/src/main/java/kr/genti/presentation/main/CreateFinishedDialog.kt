@@ -12,7 +12,7 @@ import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogMainFinishedBinding
 import kr.genti.presentation.result.finished.FinishedActivity
 
-class MainFinishedDialog :
+class CreateFinishedDialog :
     BaseDialog<DialogMainFinishedBinding>(R.layout.dialog_main_finished) {
     private val viewModel by activityViewModels<MainViewModel>()
 

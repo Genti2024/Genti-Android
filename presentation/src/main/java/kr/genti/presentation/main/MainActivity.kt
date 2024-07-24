@@ -1,5 +1,6 @@
 package kr.genti.presentation.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
@@ -28,7 +29,8 @@ import kr.genti.presentation.result.waiting.WaitingActivity
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val viewModel by viewModels<MainViewModel>()
 
-    private var mainFinishedDialog: MainFinishedDialog? = null
+    private var createFinishedDialog: CreateFinishedDialog? = null
+    private var createErrorDialog: CreateErrorDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +40,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         initCreateBtnListener()
         setStatusBarColor()
         observeStatusResult()
+        observeResetResult()
     }
 
     fun initBnvItemIconTintList() {
@@ -81,29 +84,24 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private fun navigateByGenerateStatus() {
         when (viewModel.currentStatus) {
-            GenerateStatus.COMPLETED -> {
+            GenerateStatus.NEW_REQUEST_AVAILABLE -> {
                 binding.bnvMain.selectedItemId = R.id.menu_create
             }
 
             GenerateStatus.AWAIT_USER_VERIFICATION -> {
-                mainFinishedDialog = MainFinishedDialog()
-                mainFinishedDialog?.show(supportFragmentManager, DIALOG_FINISHED)
+                createFinishedDialog = CreateFinishedDialog()
+                createFinishedDialog?.show(supportFragmentManager, DIALOG_FINISHED)
             }
 
             GenerateStatus.IN_PROGRESS -> {
-                WaitingActivity.createIntent(this, false, -1).apply {
+                Intent(this, WaitingActivity::class.java).apply {
                     startActivity(this)
                 }
             }
 
-            GenerateStatus.ERROR -> {
-                WaitingActivity.createIntent(
-                    this,
-                    true,
-                    viewModel.newPicture.pictureGenerateResponse?.id?.toInt() ?: -1,
-                ).apply {
-                    startActivity(this)
-                }
+            GenerateStatus.CANCELED -> {
+                createErrorDialog = CreateErrorDialog()
+                createErrorDialog?.show(supportFragmentManager, DIALOG_ERROR)
             }
         }
     }
@@ -116,6 +114,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         }.launchIn(lifecycleScope)
     }
 
+    private fun observeResetResult() {
+        viewModel.postResetResult.flowWithLifecycle(lifecycle).onEach { result ->
+            if (!result) toast(stringOf(R.string.error_msg))
+        }.launchIn(lifecycleScope)
+    }
+
     private inline fun <reified T : Fragment> navigateTo() {
         supportFragmentManager.commit {
             replace<T>(R.id.fcv_main, T::class.java.canonicalName)
@@ -124,10 +128,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     override fun onDestroy() {
         super.onDestroy()
-        mainFinishedDialog = null
+        createFinishedDialog = null
+        createErrorDialog = null
     }
 
     companion object {
         private const val DIALOG_FINISHED = "DIALOG_FINISHED"
+        private const val DIALOG_ERROR = "DIALOG_ERROR"
     }
 }

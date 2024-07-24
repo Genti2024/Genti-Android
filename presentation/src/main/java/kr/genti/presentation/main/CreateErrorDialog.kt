@@ -1,4 +1,4 @@
-package kr.genti.presentation.result.waiting
+package kr.genti.presentation.main
 
 import android.os.Bundle
 import android.view.View
@@ -8,7 +8,7 @@ import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogWaitingErrorBinding
 
-class WaitingErrorDialog :
+class CreateErrorDialog :
     BaseDialog<DialogWaitingErrorBinding>(R.layout.dialog_waiting_error) {
     override fun onStart() {
         super.onStart()
