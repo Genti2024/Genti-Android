@@ -22,4 +22,6 @@ interface GenerateRepository {
     ): Result<Boolean>
 
     suspend fun postVerifyGenerateState(responseId: Int): Result<Boolean>
+
+    suspend fun getCanceledToReset(requestId: String): Result<Boolean>
 }
