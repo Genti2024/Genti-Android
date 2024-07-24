@@ -64,9 +64,9 @@ class FinishedViewModel
             }
         }
 
-        fun postResetStateToServer() {
+        fun postVerifyGenerateStateToServer() {
             viewModelScope.launch {
-                generateRepository.postResetState(finishedImage.id.toInt())
+                generateRepository.postVerifyGenerateState(finishedImage.id.toInt())
                     .onSuccess {
                         _postResetResult.emit(true)
                     }

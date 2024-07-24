@@ -45,7 +45,7 @@ class MainViewModel
 
         fun postResetStateToServer() {
             viewModelScope.launch {
-                generateRepository.postResetState(
+                generateRepository.postVerifyGenerateState(
                     newPicture.pictureGenerateResponse?.pictureGenerateResponseId?.toInt() ?: -1,
                 )
                     .onSuccess {

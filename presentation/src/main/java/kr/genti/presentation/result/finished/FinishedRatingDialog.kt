@@ -48,7 +48,7 @@ class FinishedRatingDialog :
 
     private fun initSkipBtnListener() {
         binding.btnSkip.setOnSingleClickListener {
-            viewModel.postResetStateToServer()
+            viewModel.postVerifyGenerateStateToServer()
         }
     }
 
