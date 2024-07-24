@@ -25,5 +25,11 @@ data class GenerateDataSourceImpl
         override suspend fun postGenerateReport(request: ReportRequestDto): BaseResponse<Boolean> =
             generateService.postGenerateReport(request)
 
-        override suspend fun postResetState(id: Int): BaseResponse<Boolean> = generateService.postResetState(id)
+        override suspend fun postGenerateRate(
+            responseId: Int,
+            star: Int,
+        ): BaseResponse<Boolean> = generateService.postGenerateRate(responseId, star)
+
+        override suspend fun postVerifyGenerateState(responseId: Int): BaseResponse<Boolean> =
+            generateService.postVerifyGenerateState(responseId)
     }

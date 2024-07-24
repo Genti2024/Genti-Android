@@ -27,8 +27,14 @@ interface GenerateService {
         @Body request: ReportRequestDto,
     ): BaseResponse<Boolean>
 
+    @POST("/api/v1/users/picture-generate-responses/{pictureGenerateResponseId}/rate")
+    suspend fun postGenerateRate(
+        @Path("pictureGenerateResponseId") responseId: Int,
+        @Query("star") star: Int,
+    ): BaseResponse<Boolean>
+
     @POST("api/v1/users/picture-generate-responses/{pictureGenerateResponseId}/verify")
-    suspend fun postResetState(
-        @Path("pictureGenerateResponseId") id: Int,
+    suspend fun postVerifyGenerateState(
+        @Path("pictureGenerateResponseId") responseId: Int,
     ): BaseResponse<Boolean>
 }

@@ -38,8 +38,16 @@ class GenerateRepositoryImpl
                 generateDataSource.postGenerateReport(request.toDto()).response
             }
 
+        override suspend fun postGenerateRate(
+            responseId: Int,
+            star: Int,
+        ): Result<Boolean> =
+            runCatching {
+                generateDataSource.postGenerateRate(responseId, star).response
+            }
+
         override suspend fun postVerifyGenerateState(responseId: Int): Result<Boolean> =
             runCatching {
-                generateDataSource.postResetState(responseId).response
+                generateDataSource.postVerifyGenerateState(responseId).response
             }
     }
