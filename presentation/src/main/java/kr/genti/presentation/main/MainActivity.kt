@@ -100,6 +100,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             }
 
             GenerateStatus.CANCELED -> {
+                viewModel.postResetStateToServer()
                 createErrorDialog = CreateErrorDialog()
                 createErrorDialog?.show(supportFragmentManager, DIALOG_ERROR)
             }
@@ -108,15 +109,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private fun observeStatusResult() {
         viewModel.getStatusResult.flowWithLifecycle(lifecycle).onEach { result ->
-            if (!result) {
-                toast(stringOf(R.string.error_msg))
-            }
+            if (!result) toast(stringOf(R.string.error_msg))
         }.launchIn(lifecycleScope)
     }
 
     private fun observeResetResult() {
         viewModel.postResetResult.flowWithLifecycle(lifecycle).onEach { result ->
-            if (!result) toast(stringOf(R.string.error_msg))
+            if (!result) {
+                toast(stringOf(R.string.error_msg))
+            } else {
+                binding.bnvMain.selectedItemId = R.id.menu_create
+            }
         }.launchIn(lifecycleScope)
     }
 

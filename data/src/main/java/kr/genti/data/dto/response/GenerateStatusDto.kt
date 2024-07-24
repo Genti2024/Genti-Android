@@ -12,8 +12,22 @@ data class GenerateStatusDto(
     @SerialName("status")
     val status: GenerateStatus,
     @SerialName("pictureGenerateResponse")
-    val pictureGenerateResponse: ImageDto?,
+    val pictureGenerateResponse: GenerateResponseDto?,
 ) {
+    @Serializable
+    data class GenerateResponseDto(
+        @SerialName("pictureGenerateResponseId")
+        val pictureGenerateResponseId: Long,
+        @SerialName("pictureCompleted")
+        val pictureCompleted: ImageDto?,
+    ) {
+        fun toModel() =
+            GenerateStatusModel.GenerateResponseModel(
+                pictureGenerateResponseId,
+                pictureCompleted?.toModel(),
+            )
+    }
+
     fun toModel() =
         GenerateStatusModel(
             pictureGenerateRequestId,

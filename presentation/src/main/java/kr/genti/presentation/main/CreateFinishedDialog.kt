@@ -47,8 +47,8 @@ class CreateFinishedDialog :
                 FinishedActivity.createIntent(
                     requireContext(),
                     viewModel.newPicture.pictureGenerateRequestId,
-                    viewModel.newPicture.pictureGenerateResponse?.url.orEmpty(),
-                    viewModel.newPicture.pictureGenerateResponse?.pictureRatio?.name.orEmpty(),
+                    viewModel.newPicture.pictureGenerateResponse?.pictureCompleted?.url.orEmpty(),
+                    viewModel.newPicture.pictureGenerateResponse?.pictureCompleted?.pictureRatio?.name.orEmpty(),
                 ).apply { startActivity(this) }
             } else {
                 toast(stringOf(R.string.error_msg))

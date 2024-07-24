@@ -36,9 +36,6 @@ class CreateErrorDialog :
     }
 
     private fun initMoveToFinishBtnListener() {
-        binding.btnAgain.setOnSingleClickListener {
-            requireActivity().finish()
-            dismiss()
-        }
+        binding.btnAgain.setOnSingleClickListener { dismiss() }
     }
 }
