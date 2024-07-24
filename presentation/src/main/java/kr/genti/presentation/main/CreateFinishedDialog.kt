@@ -12,7 +12,7 @@ import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogMainFinishedBinding
 import kr.genti.presentation.result.finished.FinishedActivity
 
-class MainFinishedDialog :
+class CreateFinishedDialog :
     BaseDialog<DialogMainFinishedBinding>(R.layout.dialog_main_finished) {
     private val viewModel by activityViewModels<MainViewModel>()
 
@@ -47,8 +47,8 @@ class MainFinishedDialog :
                 FinishedActivity.createIntent(
                     requireContext(),
                     viewModel.newPicture.pictureGenerateRequestId,
-                    viewModel.newPicture.pictureGenerateResponse?.url.orEmpty(),
-                    viewModel.newPicture.pictureGenerateResponse?.pictureRatio?.name.orEmpty(),
+                    viewModel.newPicture.pictureGenerateResponse?.pictureCompleted?.url.orEmpty(),
+                    viewModel.newPicture.pictureGenerateResponse?.pictureCompleted?.pictureRatio?.name.orEmpty(),
                 ).apply { startActivity(this) }
             } else {
                 toast(stringOf(R.string.error_msg))
