@@ -50,4 +50,9 @@ class GenerateRepositoryImpl
             runCatching {
                 generateDataSource.postVerifyGenerateState(responseId).response
             }
+
+        override suspend fun getCanceledToReset(requestId: String): Result<Boolean> =
+            runCatching {
+                generateDataSource.getCanceledToReset(requestId).response
+            }
     }

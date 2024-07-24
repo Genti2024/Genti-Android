@@ -23,4 +23,6 @@ interface GenerateDataSource {
     ): BaseResponse<Boolean>
 
     suspend fun postVerifyGenerateState(responseId: Int): BaseResponse<Boolean>
+
+    suspend fun getCanceledToReset(requestId: String): BaseResponse<Boolean>
 }

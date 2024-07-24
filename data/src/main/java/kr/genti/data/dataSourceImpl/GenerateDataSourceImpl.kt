@@ -32,4 +32,6 @@ data class GenerateDataSourceImpl
 
         override suspend fun postVerifyGenerateState(responseId: Int): BaseResponse<Boolean> =
             generateService.postVerifyGenerateState(responseId)
+
+        override suspend fun getCanceledToReset(requestId: String): BaseResponse<Boolean> = generateService.getCanceledToReset(requestId)
     }
