@@ -8,7 +8,7 @@ import kr.genti.domain.enums.GenerateStatus
 @Serializable
 data class GenerateStatusDto(
     @SerialName("pictureGenerateRequestId")
-    val pictureGenerateRequestId: Long,
+    val pictureGenerateRequestId: Long?,
     @SerialName("status")
     val status: GenerateStatus,
     @SerialName("pictureGenerateResponse")
