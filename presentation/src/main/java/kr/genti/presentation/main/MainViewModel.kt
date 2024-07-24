@@ -34,7 +34,7 @@ class MainViewModel
             viewModelScope.launch {
                 generateRepository.getGenerateStatus()
                     .onSuccess {
-                        currentStatus = GenerateStatus.CANCELED
+                        currentStatus = it.status
                         newPicture = it
                     }
                     .onFailure {
@@ -45,11 +45,12 @@ class MainViewModel
 
         fun postResetStateToServer() {
             viewModelScope.launch {
-                generateRepository.postResetState(
-                    newPicture.pictureGenerateResponse?.pictureGenerateResponseId?.toInt() ?: -1,
+                generateRepository.getCanceledToReset(
+                    newPicture.pictureGenerateRequestId.toString(),
                 )
                     .onSuccess {
                         _postResetResult.emit(true)
+                        getGenerateStatusFromServer()
                     }
                     .onFailure {
                         _postResetResult.emit(false)

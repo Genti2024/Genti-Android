@@ -43,19 +43,19 @@ class FinishedRatingDialog :
 
         initSkipBtnListener()
         initSubmitBtnListener()
-        observeResetResult()
+        observeVerifyResult()
+        observeRateResult()
     }
 
     private fun initSkipBtnListener() {
         binding.btnSkip.setOnSingleClickListener {
-            viewModel.postResetStateToServer()
+            viewModel.postVerifyGenerateStateToServer()
         }
     }
 
     private fun initSubmitBtnListener() {
         binding.btnSubmit.setOnSingleClickListener {
-            // TODO: 서버통신
-            navigateToMain()
+            viewModel.postGenerateRateToServer(binding.ratingBar.rating.toInt())
         }
     }
 
@@ -67,8 +67,18 @@ class FinishedRatingDialog :
         dismiss()
     }
 
-    private fun observeResetResult() {
-        viewModel.postResetResult.flowWithLifecycle(lifecycle).onEach { result ->
+    private fun observeVerifyResult() {
+        viewModel.postVerifyResult.flowWithLifecycle(lifecycle).onEach { result ->
+            if (result) {
+                navigateToMain()
+            } else {
+                toast(stringOf(R.string.error_msg))
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun observeRateResult() {
+        viewModel.postRateResult.flowWithLifecycle(lifecycle).onEach { result ->
             if (result) {
                 navigateToMain()
             } else {

@@ -36,8 +36,11 @@ class FinishedViewModel
         private val _postReportResult = MutableSharedFlow<Boolean>()
         val postReportResult: SharedFlow<Boolean> = _postReportResult
 
-        private val _postResetResult = MutableSharedFlow<Boolean>()
-        val postResetResult: SharedFlow<Boolean> = _postResetResult
+        private val _postRateResult = MutableSharedFlow<Boolean>()
+        val postRateResult: SharedFlow<Boolean> = _postRateResult
+
+        private val _postVerifyResult = MutableSharedFlow<Boolean>()
+        val postVerifyResult: SharedFlow<Boolean> = _postVerifyResult
 
         fun checkWritten() {
             isWritten.value = errorReport.value?.isNotEmpty()
@@ -45,6 +48,21 @@ class FinishedViewModel
 
         fun setPictureRatio() {
             isRatio23 = finishedImage.pictureRatio?.name == PictureRatio.RATIO_2_3.name
+        }
+
+        fun postGenerateRateToServer(star: Int) {
+            viewModelScope.launch {
+                generateRepository.postGenerateRate(
+                    finishedImage.id.toInt(),
+                    star,
+                )
+                    .onSuccess {
+                        _postRateResult.emit(true)
+                    }
+                    .onFailure {
+                        _postRateResult.emit(false)
+                    }
+            }
         }
 
         fun postGenerateReportToServer() {
@@ -64,14 +82,14 @@ class FinishedViewModel
             }
         }
 
-        fun postResetStateToServer() {
+        fun postVerifyGenerateStateToServer() {
             viewModelScope.launch {
-                generateRepository.postResetState(finishedImage.id.toInt())
+                generateRepository.postVerifyGenerateState(finishedImage.id.toInt())
                     .onSuccess {
-                        _postResetResult.emit(true)
+                        _postVerifyResult.emit(true)
                     }
                     .onFailure {
-                        _postResetResult.emit(false)
+                        _postVerifyResult.emit(false)
                     }
             }
         }

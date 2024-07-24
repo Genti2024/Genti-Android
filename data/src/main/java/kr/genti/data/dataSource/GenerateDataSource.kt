@@ -17,5 +17,12 @@ interface GenerateDataSource {
 
     suspend fun postGenerateReport(request: ReportRequestDto): BaseResponse<Boolean>
 
-    suspend fun postResetState(id: Int): BaseResponse<Boolean>
+    suspend fun postGenerateRate(
+        responseId: Int,
+        star: Int,
+    ): BaseResponse<Boolean>
+
+    suspend fun postVerifyGenerateState(responseId: Int): BaseResponse<Boolean>
+
+    suspend fun getCanceledToReset(requestId: String): BaseResponse<Boolean>
 }

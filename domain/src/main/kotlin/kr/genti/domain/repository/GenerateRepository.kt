@@ -16,5 +16,12 @@ interface GenerateRepository {
 
     suspend fun postGenerateReport(request: ReportRequestModel): Result<Boolean>
 
-    suspend fun postResetState(id: Int): Result<Boolean>
+    suspend fun postGenerateRate(
+        responseId: Int,
+        star: Int,
+    ): Result<Boolean>
+
+    suspend fun postVerifyGenerateState(responseId: Int): Result<Boolean>
+
+    suspend fun getCanceledToReset(requestId: String): Result<Boolean>
 }
