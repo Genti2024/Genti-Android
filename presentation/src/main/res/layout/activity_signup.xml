@@ -5,6 +5,15 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="kr.genti.presentation.auth.signup.SignupViewModel" />
+
+        <variable
+            name="gender"
+            type="kr.genti.domain.enums.Gender" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -83,11 +92,12 @@
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="18dp"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/shape_grey2_line_8_rect"
+                android:background="@{vm.selectedGender == gender.MALE ? @drawable/shape_green1_line_8_rect : @drawable/shape_grey2_line_8_rect}"
                 android:gravity="center"
+                android:onClick="@{() -> vm.selectGender(gender.MALE)}"
                 android:paddingVertical="4dp"
                 android:text="@string/signup_tv_gender_male"
-                android:textColor="@color/grey_2"
+                android:textColor="@{vm.selectedGender == gender.MALE ? @color/green_1 : @color/grey_2}"
                 app:layout_constraintEnd_toStartOf="@id/btn_gender_female"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
@@ -101,11 +111,12 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="18dp"
                 android:layout_marginEnd="40dp"
-                android:background="@drawable/shape_grey2_line_8_rect"
+                android:background="@{vm.selectedGender == gender.FEMALE ? @drawable/shape_green1_line_8_rect : @drawable/shape_grey2_line_8_rect}"
                 android:gravity="center"
+                android:onClick="@{() -> vm.selectGender(gender.FEMALE)}"
                 android:paddingVertical="4dp"
                 android:text="@string/signup_tv_gender_female"
-                android:textColor="@color/grey_2"
+                android:textColor="@{vm.selectedGender == gender.FEMALE ? @color/green_1 : @color/grey_2}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toEndOf="@id/btn_gender_male"
@@ -181,9 +192,11 @@
             android:layout_marginHorizontal="28dp"
             android:layout_marginBottom="28dp"
             android:background="@drawable/sel_btn"
+            android:enabled="@{vm.isAllSelected()}"
             android:gravity="center"
             android:paddingVertical="10dp"
             android:text="@string/signup_btn_submit"
+            android:textColor="@{vm.isAllSelected == true ? @color/white : @color/black}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

@@ -20,6 +20,7 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(R.layout.activity_sig
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding.vm = viewModel
         initOnBackPressedListener(binding.root)
         setStatusBarTransparent()
         setNavigationBarGreen()
