@@ -1,5 +1,6 @@
 package kr.genti.presentation.auth.signup
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
@@ -10,8 +11,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.colorOf
 import kr.genti.core.extension.initOnBackPressedListener
+import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivitySignupBinding
+import kr.genti.presentation.main.MainActivity
 import java.util.Calendar
 
 @AndroidEntryPoint
@@ -23,9 +26,20 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(R.layout.activity_sig
 
         binding.vm = viewModel
         initOnBackPressedListener(binding.root)
+        initSubmitBtnListener()
         setYearPicker()
         setStatusBarTransparent()
         setNavigationBarGreen()
+    }
+
+    private fun initSubmitBtnListener() {
+        binding.btnSubmit.setOnSingleClickListener {
+            // TODO 회원가입 서버통신 구현
+            Intent(this, MainActivity::class.java).apply {
+                startActivity(this)
+            }
+            finish()
+        }
     }
 
     private fun setYearPicker() {
