@@ -1,5 +1,6 @@
 package kr.genti.presentation.auth.login
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -33,7 +34,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         binding.btnLoginKakao.setOnSingleClickListener {
             // TODO 자동 로그인 구현
             Intent(this, SignupActivity::class.java).apply {
-                startActivity(this)
+                startActivity(this, ActivityOptions.makeCustomAnimation(this@LoginActivity, 0, 0).toBundle())
             }
             finish()
         }

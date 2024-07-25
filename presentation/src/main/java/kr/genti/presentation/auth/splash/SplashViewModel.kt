@@ -1,4 +1,4 @@
-package kr.genti.presentation.splash
+package kr.genti.presentation.auth.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
