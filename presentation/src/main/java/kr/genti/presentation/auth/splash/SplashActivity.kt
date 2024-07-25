@@ -1,5 +1,6 @@
-package kr.genti.presentation.splash
+package kr.genti.presentation.auth.splash
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -15,7 +16,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseActivity
 import kr.genti.presentation.R
-import kr.genti.presentation.auth.LoginActivity
+import kr.genti.presentation.auth.login.LoginActivity
 import kr.genti.presentation.databinding.ActivitySplashBinding
 import kr.genti.presentation.main.MainActivity
 
@@ -48,7 +49,11 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
                     }
                 } else {
                     Intent(this, LoginActivity::class.java).apply {
-                        startActivity(this)
+                        startActivity(
+                            this,
+                            ActivityOptions.makeCustomAnimation(this@SplashActivity, 0, 0)
+                                .toBundle(),
+                        )
                     }
                 }
                 finish()

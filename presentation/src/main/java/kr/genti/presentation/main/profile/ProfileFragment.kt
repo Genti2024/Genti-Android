@@ -105,8 +105,8 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
             when (state) {
                 is UiState.Success -> {
                     with(binding) {
-                        layoutProfileWaiting.isVisible = state.data != true
-                        layoutProfileNormal.isVisible = state.data == true
+                        layoutProfileWaiting.isVisible = state.data == true
+                        layoutProfileNormal.isVisible = state.data != true
                     }
                 }
 

@@ -1,5 +1,6 @@
-package kr.genti.presentation.auth
+package kr.genti.presentation.auth.login
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -13,8 +14,8 @@ import kr.genti.core.extension.colorOf
 import kr.genti.core.extension.initOnBackPressedListener
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
+import kr.genti.presentation.auth.signup.SignupActivity
 import kr.genti.presentation.databinding.ActivityLoginBinding
-import kr.genti.presentation.main.MainActivity
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
@@ -31,8 +32,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     private fun initLoginBtnListener() {
         binding.btnLoginKakao.setOnSingleClickListener {
-            Intent(this, MainActivity::class.java).apply {
-                startActivity(this)
+            // TODO 자동 로그인 구현
+            Intent(this, SignupActivity::class.java).apply {
+                startActivity(this, ActivityOptions.makeCustomAnimation(this@LoginActivity, 0, 0).toBundle())
             }
             finish()
         }
