@@ -1,4 +1,4 @@
-package kr.genti.presentation.auth
+package kr.genti.presentation.auth.login
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

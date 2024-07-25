@@ -27,7 +27,7 @@
         </activity>
 
         <activity
-            android:name="kr.genti.presentation.auth.LoginActivity"
+            android:name="kr.genti.presentation.auth.login.LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 

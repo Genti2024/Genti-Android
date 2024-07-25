@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseActivity
 import kr.genti.presentation.R
-import kr.genti.presentation.auth.LoginActivity
+import kr.genti.presentation.auth.login.LoginActivity
 import kr.genti.presentation.databinding.ActivitySplashBinding
 import kr.genti.presentation.main.MainActivity
 

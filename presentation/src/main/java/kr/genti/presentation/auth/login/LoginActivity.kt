@@ -1,4 +1,4 @@
-package kr.genti.presentation.auth
+package kr.genti.presentation.auth.login
 
 import android.content.Intent
 import android.os.Bundle
