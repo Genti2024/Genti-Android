@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -7,7 +9,171 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/iv_signup_bg_top"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/img_signup_bg_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_signup_bg_bottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/img_signup_bg_bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_signup_logo"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="85dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/logo_genti_3d"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_signup_title"
+            style="@style/TextAppearance.Genti.BodySmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="사진을 더 나처럼 표현하기 위해\n아래의 정보가 필요해요!"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_signup_logo" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_gender"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/layout_birth"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_signup_title">
+
+            <TextView
+                android:id="@+id/tv_signup_gender_title"
+                style="@style/TextAppearance.Genti.BodyNormal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="성별을 알려주세요!"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/btn_gender_male"
+                style="@style/TextAppearance.Genti.Headline2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/shape_grey2_line_8_rect"
+                android:gravity="center"
+                android:paddingVertical="4dp"
+                android:text="남자"
+                app:layout_constraintEnd_toStartOf="@id/btn_gender_female"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_signup_gender_title" />
+
+            <TextView
+                android:id="@+id/btn_gender_female"
+                style="@style/TextAppearance.Genti.Headline2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/shape_grey2_line_8_rect"
+                android:gravity="center"
+                android:paddingVertical="4dp"
+                android:text="여자"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@id/btn_gender_male"
+                app:layout_constraintTop_toBottomOf="@id/tv_signup_gender_title" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_birth"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/btn_submit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_gender">
+
+            <TextView
+                android:id="@+id/tv_signup_birth_title"
+                style="@style/TextAppearance.Genti.BodyNormal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="태어난 연도를 알려주세요!"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/btn_birth_year"
+                style="@style/TextAppearance.Genti.Headline2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/shape_grey2_line_8_rect"
+                android:gravity="center"
+                android:paddingVertical="4dp"
+                android:textColor="@color/green_1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_signup_birth_title"
+                tools:text="2024년" />
+
+            <View
+                android:layout_width="220dp"
+                android:layout_height="220dp"
+                android:layout_marginTop="18dp"
+                android:background="@color/grey_6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_birth_year" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/btn_submit"
+            style="@style/TextAppearance.Genti.Headline1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="28dp"
+            android:layout_marginBottom="28dp"
+            android:background="@drawable/sel_btn"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:text="입력 완료"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
