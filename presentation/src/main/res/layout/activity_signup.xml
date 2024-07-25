@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:text="사진을 더 나처럼 표현하기 위해\n아래의 정보가 필요해요!"
+            android:text="@string/signup_tv_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_signup_logo" />
@@ -70,7 +70,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="성별을 알려주세요!"
+                android:text="@string/signup_tv_gender_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -86,7 +86,7 @@
                 android:background="@drawable/shape_grey2_line_8_rect"
                 android:gravity="center"
                 android:paddingVertical="4dp"
-                android:text="남자"
+                android:text="@string/signup_tv_gender_male"
                 app:layout_constraintEnd_toStartOf="@id/btn_gender_female"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +103,7 @@
                 android:background="@drawable/shape_grey2_line_8_rect"
                 android:gravity="center"
                 android:paddingVertical="4dp"
-                android:text="여자"
+                android:text="@string/signup_tv_gender_female"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toEndOf="@id/btn_gender_male"
@@ -126,7 +126,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="태어난 연도를 알려주세요!"
+                android:text="@string/signup_tv_birth_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -147,6 +147,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_signup_birth_title"
                 tools:text="2024년" />
+
+            <TextView
+                android:id="@+id/tv_signup_birth_guide"
+                style="@style/TextAppearance.Genti.BodySmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signup_btn_birth_guide"
+                android:textColor="@color/grey_4"
+                app:layout_constraintBottom_toBottomOf="@id/btn_birth_year"
+                app:layout_constraintEnd_toEndOf="@id/btn_birth_year"
+                app:layout_constraintStart_toStartOf="@id/btn_birth_year"
+                app:layout_constraintTop_toTopOf="@id/btn_birth_year" />
 
             <View
                 android:layout_width="220dp"
@@ -169,7 +181,7 @@
             android:background="@drawable/sel_btn"
             android:gravity="center"
             android:paddingVertical="10dp"
-            android:text="입력 완료"
+            android:text="@string/signup_btn_submit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

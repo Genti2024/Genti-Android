@@ -20,6 +20,14 @@
     <string name="menu_create">생성</string>
     <string name="menu_profile">프로필</string>
 
+    <string name="signup_tv_title">사진을 더 나처럼 표현하기 위해\n아래의 정보가 필요해요!</string>
+    <string name="signup_tv_gender_title">성별을 알려주세요!</string>
+    <string name="signup_tv_gender_male">남자</string>
+    <string name="signup_tv_gender_female">여자</string>
+    <string name="signup_tv_birth_title">태어난 연도를 알려주세요!</string>
+    <string name="signup_btn_birth_guide">눌러서 태어난 연도 선택하기</string>
+    <string name="signup_btn_submit">입력 완료</string>
+
     <string name="create_tv_script_title">만들고 싶은 사진을 설명해주세요✏️</string>
     <string name="create_et_script_hint">의상과 배경을 포함해서 설명해 주세요!\n\n*헤어스타일을 변경하는 기능은 준비 중이에요\n*너무 특정한 배경과 의상은 어려울 수 있어요\n(반포 한강 공원, 나이키 티셔츠 등)</string>
     <string name="create_tv_plus_title">참고할 구도의 사진이 있다면 추가해주세요</string>
