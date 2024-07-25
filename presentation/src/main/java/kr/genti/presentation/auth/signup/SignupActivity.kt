@@ -1,6 +1,5 @@
-package kr.genti.presentation.auth.login
+package kr.genti.presentation.auth.signup
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
@@ -11,32 +10,19 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.colorOf
 import kr.genti.core.extension.initOnBackPressedListener
-import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
-import kr.genti.presentation.auth.signup.SignupActivity
-import kr.genti.presentation.databinding.ActivityLoginBinding
+import kr.genti.presentation.databinding.ActivitySignupBinding
 
 @AndroidEntryPoint
-class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
-    private val viewModel by viewModels<LoginViewModel>()
+class SignupActivity : BaseActivity<ActivitySignupBinding>(R.layout.activity_signup) {
+    private val viewModel by viewModels<SignupViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initLoginBtnListener()
         initOnBackPressedListener(binding.root)
         setStatusBarTransparent()
         setNavigationBarGreen()
-    }
-
-    private fun initLoginBtnListener() {
-        binding.btnLoginKakao.setOnSingleClickListener {
-            // TODO 자동 로그인 구현
-            Intent(this, SignupActivity::class.java).apply {
-                startActivity(this)
-            }
-            finish()
-        }
     }
 
     private fun setStatusBarTransparent() {
@@ -48,6 +34,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     }
 
     private fun setNavigationBarGreen() {
-        this.window.navigationBarColor = colorOf(R.color.genti_green)
+        this.window.navigationBarColor = colorOf(R.color.green_5)
     }
 }

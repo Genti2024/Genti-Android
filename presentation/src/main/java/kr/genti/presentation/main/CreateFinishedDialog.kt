@@ -46,7 +46,7 @@ class CreateFinishedDialog :
             if (viewModel.checkNerPictureInitialized()) {
                 FinishedActivity.createIntent(
                     requireContext(),
-                    viewModel.newPicture.pictureGenerateRequestId,
+                    viewModel.newPicture.pictureGenerateRequestId ?: -1,
                     viewModel.newPicture.pictureGenerateResponse?.pictureCompleted?.url.orEmpty(),
                     viewModel.newPicture.pictureGenerateResponse?.pictureCompleted?.pictureRatio?.name.orEmpty(),
                 ).apply { startActivity(this) }
