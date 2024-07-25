@@ -12,6 +12,7 @@ import kr.genti.core.extension.colorOf
 import kr.genti.core.extension.initOnBackPressedListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivitySignupBinding
+import java.util.Calendar
 
 @AndroidEntryPoint
 class SignupActivity : BaseActivity<ActivitySignupBinding>(R.layout.activity_signup) {
@@ -22,8 +23,22 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(R.layout.activity_sig
 
         binding.vm = viewModel
         initOnBackPressedListener(binding.root)
+        setYearPicker()
         setStatusBarTransparent()
         setNavigationBarGreen()
+    }
+
+    private fun setYearPicker() {
+        binding.npSignupBirth.apply {
+            maxValue = 2100
+            minValue = 1900
+            val currentYear = Calendar.getInstance()[Calendar.YEAR]
+            value = currentYear
+            viewModel.selectBirthYear(currentYear)
+            setOnValueChangedListener { _, _, newVal ->
+                viewModel.selectBirthYear(newVal)
+            }
+        }
     }
 
     private fun setStatusBarTransparent() {

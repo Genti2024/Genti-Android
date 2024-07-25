@@ -15,15 +15,26 @@ class SignupViewModel
         val selectedGender = MutableLiveData<Gender>(Gender.NONE)
         val isGenderSelected = MutableLiveData<Boolean>(false)
 
-        // TODO 수정
         val selectedYear = MutableLiveData<Int>()
-        val isYearSelected = MutableLiveData<Boolean>(true)
+        val selectedYearText = MutableLiveData<String>()
+        val isYearSelected = MutableLiveData<Boolean>(false)
 
         val isAllSelected = MutableLiveData<Boolean>(false)
 
         fun selectGender(gender: Gender) {
             selectedGender.value = gender
             isGenderSelected.value = true
+            checkAllSelected()
+        }
+
+        fun selectBirthYear(year: Int) {
+            selectedYear.value = year
+            if (isYearSelected.value == true) selectedYearText.value = year.toString() + "년"
+        }
+
+        fun showYearPicker() {
+            isYearSelected.value = true
+            selectedYearText.value = selectedYear.value.toString() + "년"
             checkAllSelected()
         }
 
