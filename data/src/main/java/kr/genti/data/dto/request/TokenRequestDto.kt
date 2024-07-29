@@ -2,7 +2,7 @@ package kr.genti.data.dto.request
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kr.genti.domain.entity.request.TokenRequestModel
+import kr.genti.domain.entity.request.ReissueRequestModel
 
 @Serializable
 data class TokenRequestDto(
@@ -10,6 +10,6 @@ data class TokenRequestDto(
     val userId: Long,
 ) {
     companion object {
-        fun TokenRequestModel.toDto() = TokenRequestDto(userId)
+        fun ReissueRequestModel.toDto() = TokenRequestDto(userId)
     }
 }

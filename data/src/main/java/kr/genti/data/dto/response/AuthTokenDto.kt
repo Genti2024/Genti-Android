@@ -2,7 +2,7 @@ package kr.genti.data.dto.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kr.genti.domain.entity.response.AuthTokenModel
+import kr.genti.domain.entity.response.ReissueTokenModel
 
 @Serializable
 data class AuthTokenDto(
@@ -13,5 +13,5 @@ data class AuthTokenDto(
     @SerialName("userId")
     val userId: Long,
 ) {
-    fun toModel() = AuthTokenModel(accessToken = accessToken, refreshToken = refreshToken, userId = userId)
+    fun toModel() = ReissueTokenModel(accessToken = accessToken, refreshToken = refreshToken, userId = userId)
 }
