@@ -1,20 +1,21 @@
 package kr.genti.presentation.auth.login
 
-import android.app.ActivityOptions
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.colorOf
 import kr.genti.core.extension.initOnBackPressedListener
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
-import kr.genti.presentation.auth.signup.SignupActivity
 import kr.genti.presentation.databinding.ActivityLoginBinding
 
 @AndroidEntryPoint
@@ -28,15 +29,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         initOnBackPressedListener(binding.root)
         setStatusBarTransparent()
         setNavigationBarGreen()
+        observeAppLoginError()
     }
 
     private fun initLoginBtnListener() {
         binding.btnLoginKakao.setOnSingleClickListener {
-            // TODO 자동 로그인 구현
-            Intent(this, SignupActivity::class.java).apply {
-                startActivity(this, ActivityOptions.makeCustomAnimation(this@LoginActivity, 0, 0).toBundle())
-            }
-            finish()
+            viewModel.startLogInWithKakao(this)
         }
     }
 
@@ -50,5 +48,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     private fun setNavigationBarGreen() {
         this.window.navigationBarColor = colorOf(R.color.genti_green)
+    }
+
+    private fun observeAppLoginError() {
+        viewModel.isAppLoginAvailable.flowWithLifecycle(lifecycle).onEach { isAvailable ->
+            if (!isAvailable) viewModel.startLogInWithKakao(this)
+        }.launchIn(lifecycleScope)
     }
 }
