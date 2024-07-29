@@ -1,7 +1,6 @@
 package kr.genti.domain.entity.response
 
-data class AuthTokenModel(
+data class ReissueTokenModel(
     val accessToken: String,
     val refreshToken: String,
-    val userRoleString: String,
 )

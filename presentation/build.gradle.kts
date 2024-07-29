@@ -19,7 +19,7 @@ android {
 
     compileOptions {
         sourceCompatibility = Versions.javaVersion
-        targetCompatibility=  Versions.javaVersion
+        targetCompatibility = Versions.javaVersion
     }
 
     kotlinOptions {
@@ -84,5 +84,9 @@ dependencies {
         implementation(lottie)
         implementation(circularProgressBar)
         implementation(circleIndicator)
+    }
+
+    KakaoDependencies.run {
+        implementation(user)
     }
 }

@@ -10,7 +10,5 @@ interface UserRepository {
         refreshToken: String,
     )
 
-    fun setUserId(userId: Long)
-
     fun clearInfo()
 }

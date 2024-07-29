@@ -60,11 +60,6 @@ object ThirdPartyDependencies {
     const val circularProgressBar = "com.mikhaellopez:circularprogressbar:${Versions.circularProgressBar}"
     const val circleIndicator = "me.relex:circleindicator:${Versions.circleIndicatorVersion}"
     const val shimmer = "com.facebook.shimmer:shimmer:${Versions.shimmerVersion}"
-
-    const val kakaoLogin = "com.kakao.sdk:v2-user:${Versions.kakaoVersion}"
-    const val kakaoAuth = "com.kakao.sdk:v2-auth:${Versions.kakaoVersion}"
-    const val kakaoTalk = "com.kakao.sdk:v2-talk:${Versions.kakaoVersion}"
-    const val kakaoShare = "com.kakao.sdk:v2-share:${Versions.kakaoVersion}"
 }
 
 object ClassPathPlugins {
@@ -84,5 +79,4 @@ object FirebaseDependencies {
 
 object KakaoDependencies {
     const val user = "com.kakao.sdk:v2-user:${Versions.kakaoVersion}"
-    const val share = "com.kakao.sdk:v2-share:${Versions.kakaoVersion}"
 }

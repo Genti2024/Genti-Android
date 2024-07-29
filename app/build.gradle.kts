@@ -27,6 +27,15 @@ android {
             "BASE_URL",
             gradleLocalProperties(rootDir).getProperty("base.url"),
         )
+
+        buildConfigField(
+            "String",
+            "NATIVE_APP_KEY",
+            gradleLocalProperties(rootDir).getProperty("native.app.key"),
+        )
+
+        manifestPlaceholders["NATIVE_APP_KEY"] =
+            gradleLocalProperties(rootDir).getProperty("nativeAppKey")
     }
 
     buildTypes {
@@ -94,5 +103,9 @@ dependencies {
         implementation(retrofitJsonConverter)
         implementation(timber)
         implementation(ossLicense)
+    }
+
+    KakaoDependencies.run {
+        implementation(user)
     }
 }
