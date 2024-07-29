@@ -21,6 +21,7 @@ import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.core.state.UiState
 import kr.genti.presentation.R
+import kr.genti.presentation.auth.signup.SignupActivity
 import kr.genti.presentation.databinding.ActivityLoginBinding
 import kr.genti.presentation.main.MainActivity
 
@@ -37,6 +38,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         setNavigationBarGreen()
         observeAppLoginAvailable()
         observeChangeTokenState()
+        observeKakaoBasicInfoState()
     }
 
     private fun initLoginBtnListener() {
@@ -74,7 +76,26 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                             }
                             finish()
                         } else {
+                            viewModel.getUserInfoFromKakao()
                         }
+                    }
+
+                    is UiState.Failure -> toast(stringOf(R.string.error_msg))
+                    else -> return@onEach
+                }
+            }.launchIn(lifecycleScope)
+    }
+
+    private fun observeKakaoBasicInfoState() {
+        viewModel.kakaoBasicInfoState.flowWithLifecycle(lifecycle).distinctUntilChanged()
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        // TODO : User의 정보 추가 state.data?.kakaoAccount?.profile?.nickname, state.data?.kakaoAccount?.email
+                        Intent(this, SignupActivity::class.java).apply {
+                            startActivity(this)
+                        }
+                        finish()
                     }
 
                     is UiState.Failure -> toast(stringOf(R.string.error_msg))

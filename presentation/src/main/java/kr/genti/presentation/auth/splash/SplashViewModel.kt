@@ -27,9 +27,10 @@ class SplashViewModel
             viewModelScope.launch {
                 delay(DELAY_SPLASH)
                 if (userRepository.getAccessToken().isEmpty()) {
+                    // TODO 다시 원상복귀
                     _isAutoLogined.emit(false)
                 } else {
-                    _isAutoLogined.emit(true)
+                    _isAutoLogined.emit(false)
                 }
             }
         }
