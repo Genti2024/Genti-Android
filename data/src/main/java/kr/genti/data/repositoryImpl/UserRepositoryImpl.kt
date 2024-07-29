@@ -21,10 +21,6 @@ class UserRepositoryImpl
             userSharedPref.refreshToken = refreshToken
         }
 
-        override fun setUserId(userId: Long) {
-            userSharedPref.userId = userId
-        }
-
         override fun clearInfo() {
             userSharedPref.clearInfo()
         }
