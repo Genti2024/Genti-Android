@@ -95,4 +95,8 @@ dependencies {
         implementation(timber)
         implementation(ossLicense)
     }
+
+    KakaoDependencies.run {
+        implementation(user)
+    }
 }

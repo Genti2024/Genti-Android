@@ -2,6 +2,7 @@ package kr.genti.android
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
 import kr.genti.presentation.BuildConfig
 import timber.log.Timber
