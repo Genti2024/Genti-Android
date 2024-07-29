@@ -2,6 +2,7 @@ package kr.genti.presentation.auth.login
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -9,18 +10,27 @@ import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kr.genti.core.state.UiState
+import kr.genti.domain.entity.request.AuthRequestModel
+import kr.genti.domain.repository.AuthRepository
+import kr.genti.domain.repository.UserRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel
     @Inject
     constructor(
-        // private val authRepository: AuthRepository,
+        private val authRepository: AuthRepository,
+        private val userRepository: UserRepository,
     ) : ViewModel() {
         private val serviceTermsList = listOf(NICKNAME, EMAIL)
 
         private val _isAppLoginAvailable = MutableStateFlow(true)
         val isAppLoginAvailable: StateFlow<Boolean> = _isAppLoginAvailable
+
+        private val _changeTokenState = MutableStateFlow<UiState<String>>(UiState.Empty)
+        val changeTokenState: StateFlow<UiState<String>> = _changeTokenState
 
         private var appLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
@@ -54,32 +64,17 @@ class LoginViewModel
             }
         }
 
-        private fun changeTokenFromServer(
-            accessToken: String,
-            social: String = KAKAO,
-        ) {
-//        viewModelScope.launch {
-//            onboardingRepository.postTokenToServiceToken(
-//                AuthTokenRequestModel(accessToken, social, deviceToken),
-//            )
-//                .onSuccess {
-//                    // 200(가입된 아이디): 온보딩 뷰 생략하고 바로 메인 화면으로 이동 위해 유저 정보 받기
-//                    if (it == null) {
-//                        _postChangeTokenResult.emit(false)
-//                        return@launch
-//                    }
-//                    authRepository.setAutoLogin(it.accessToken, it.refreshToken)
-//                    isResigned = it.isResigned
-//                    getUserDataFromServer()
-//                }
-//                .onFailure {
-//                    // 403, 404 : 온보딩 뷰로 이동 위해 카카오 유저 정보 얻기
-//                    if (it is HttpException && (it.code() == 403 || it.code() == 404)) {
-//                        getUserInfoFromKakao()
-//                    } else {
-//                        _postChangeTokenResult.emit(false)
-//                    }
-//                }
+        private fun changeTokenFromServer(accessToken: String) {
+            viewModelScope.launch {
+                authRepository.postOauthDataToGetToken(AuthRequestModel(accessToken, KAKAO))
+                    .onSuccess {
+                        userRepository.setTokens(it.accessToken, it.refreshToken)
+                        _changeTokenState.value = UiState.Success(it.userRoleString)
+                    }
+                    .onFailure {
+                        _changeTokenState.value = UiState.Failure(it.message.toString())
+                    }
+            }
         }
 
         companion object {
