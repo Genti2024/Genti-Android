@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
+import kr.genti.android.BuildConfig.NATIVE_APP_KEY
 import kr.genti.presentation.BuildConfig
 import timber.log.Timber
 
