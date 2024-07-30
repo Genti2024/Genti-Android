@@ -7,7 +7,6 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import com.kakao.sdk.user.model.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,9 +31,6 @@ class LoginViewModel
 
         private val _changeTokenState = MutableStateFlow<UiState<String>>(UiState.Empty)
         val changeTokenState: StateFlow<UiState<String>> = _changeTokenState
-
-        private val _kakaoBasicInfoState = MutableStateFlow<UiState<User?>>(UiState.Empty)
-        val kakaoBasicInfoState: StateFlow<UiState<User?>> = _kakaoBasicInfoState
 
         private var appLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
@@ -78,18 +74,6 @@ class LoginViewModel
                     .onFailure {
                         _changeTokenState.value = UiState.Failure(it.message.toString())
                     }
-            }
-        }
-
-        fun getUserInfoFromKakao() {
-            UserApiClient.instance.me { user, _ ->
-                runCatching {
-                    UiState.Success(user)
-                }.onSuccess {
-                    _kakaoBasicInfoState.value = it
-                }.onFailure { e ->
-                    _kakaoBasicInfoState.value = UiState.Failure(e.message.toString())
-                }
             }
         }
 
