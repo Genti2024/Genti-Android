@@ -8,6 +8,7 @@ import kr.genti.data.service.AuthService
 import kr.genti.data.service.CreateService
 import kr.genti.data.service.FeedService
 import kr.genti.data.service.GenerateService
+import kr.genti.data.service.InfoService
 import kr.genti.data.service.UploadService
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -20,6 +21,12 @@ object ServiceModule {
     fun provideAuthService(
         @RetrofitQualifier.NOTOKEN retrofit: Retrofit,
     ): AuthService = retrofit.create(AuthService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideInfoService(
+        @RetrofitQualifier.JWT retrofit: Retrofit,
+    ): InfoService = retrofit.create(InfoService::class.java)
 
     @Provides
     @Singleton

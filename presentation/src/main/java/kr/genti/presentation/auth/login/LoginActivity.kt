@@ -38,7 +38,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         setNavigationBarGreen()
         observeAppLoginAvailable()
         observeChangeTokenState()
-        observeKakaoBasicInfoState()
     }
 
     private fun initLoginBtnListener() {
@@ -74,26 +73,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                             Intent(this, MainActivity::class.java).apply {
                                 startActivity(this)
                             }
-                            finish()
                         } else {
-                            viewModel.getUserInfoFromKakao()
-                        }
-                    }
-
-                    is UiState.Failure -> toast(stringOf(R.string.error_msg))
-                    else -> return@onEach
-                }
-            }.launchIn(lifecycleScope)
-    }
-
-    private fun observeKakaoBasicInfoState() {
-        viewModel.kakaoBasicInfoState.flowWithLifecycle(lifecycle).distinctUntilChanged()
-            .onEach { state ->
-                when (state) {
-                    is UiState.Success -> {
-                        // TODO : User의 정보 추가 state.data?.kakaoAccount?.profile?.nickname, state.data?.kakaoAccount?.email
-                        Intent(this, SignupActivity::class.java).apply {
-                            startActivity(this)
+                            Intent(this, SignupActivity::class.java).apply {
+                                startActivity(this)
+                            }
                         }
                         finish()
                     }

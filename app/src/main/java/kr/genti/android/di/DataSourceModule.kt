@@ -8,10 +8,12 @@ import kr.genti.data.dataSource.AuthDataSource
 import kr.genti.data.dataSource.CreateDataSource
 import kr.genti.data.dataSource.FeedDataSource
 import kr.genti.data.dataSource.GenerateDataSource
+import kr.genti.data.dataSource.InfoDataSource
 import kr.genti.data.dataSourceImpl.AuthDataSourceImpl
 import kr.genti.data.dataSourceImpl.CreateDataSourceImpl
 import kr.genti.data.dataSourceImpl.FeedDataSourceImpl
 import kr.genti.data.dataSourceImpl.GenerateDataSourceImpl
+import kr.genti.data.dataSourceImpl.InfoDataSourceImpl
 import javax.inject.Singleton
 
 @Module
@@ -20,6 +22,10 @@ object DataSourceModule {
     @Provides
     @Singleton
     fun provideAuthDataSource(authDataSourceImpl: AuthDataSourceImpl): AuthDataSource = authDataSourceImpl
+
+    @Provides
+    @Singleton
+    fun provideInfoDataSource(infoDataSourceImpl: InfoDataSourceImpl): InfoDataSource = infoDataSourceImpl
 
     @Provides
     @Singleton

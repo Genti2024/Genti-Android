@@ -13,12 +13,18 @@ class UserRepositoryImpl
 
         override fun getRefreshToken(): String = userSharedPref.refreshToken
 
+        override fun getUserRole(): String = userSharedPref.userRole
+
         override fun setTokens(
             accessToken: String,
             refreshToken: String,
         ) {
             userSharedPref.accessToken = accessToken
             userSharedPref.refreshToken = refreshToken
+        }
+
+        override fun setUserRole(userRole: String) {
+            userSharedPref.userRole = userRole
         }
 
         override fun clearInfo() {

@@ -1,7 +1,7 @@
 package kr.genti.domain.enums
 
 enum class Gender {
-    MALE,
-    FEMALE,
+    M,
+    W,
     NONE,
 }
