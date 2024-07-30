@@ -5,6 +5,8 @@ interface UserRepository {
 
     fun getRefreshToken(): String
 
+    fun getUserRole(): String
+
     fun setTokens(
         accessToken: String,
         refreshToken: String,

@@ -26,9 +26,8 @@ class SplashViewModel
         private fun getAutoLoginState() {
             viewModelScope.launch {
                 delay(DELAY_SPLASH)
-                if (userRepository.getAccessToken().isEmpty()) {
-                    // TODO 다시 원상복귀
-                    _isAutoLogined.emit(false)
+                if (userRepository.getUserRole() == ROLE_USER) {
+                    _isAutoLogined.emit(true)
                 } else {
                     _isAutoLogined.emit(false)
                 }
@@ -37,5 +36,6 @@ class SplashViewModel
 
         companion object {
             private const val DELAY_SPLASH = 1500L
+            private const val ROLE_USER = "USER"
         }
     }
