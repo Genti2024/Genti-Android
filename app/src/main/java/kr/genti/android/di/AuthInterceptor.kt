@@ -27,7 +27,7 @@ class AuthInterceptor
         override fun intercept(chain: Interceptor.Chain): Response {
             val originalRequest = chain.request()
 
-            Timber.d("GET ACCESS TOKEN : ${userRepository.getAccessToken()}")
+            Timber.tag("okhttp").d("ACCESS TOKEN : ${userRepository.getAccessToken()}")
 
             val authRequest =
                 if (userRepository.getAccessToken().isNotBlank()) {
@@ -38,37 +38,35 @@ class AuthInterceptor
 
             val response = chain.proceed(authRequest)
 
-            when (response.code) {
-                CODE_TOKEN_EXPIRED -> {
-                    try {
-                        runBlocking {
-                            authRepository.postReissueTokens(
-                                ReissueRequestModel(
-                                    userRepository.getAccessToken(),
-                                    userRepository.getRefreshToken(),
-                                ),
-                            )
-                        }.onSuccess { data ->
-                            userRepository.setTokens(data.accessToken, data.refreshToken)
-                            response.close()
+            if (response.code == CODE_TOKEN_EXPIRED) {
+                try {
+                    runBlocking {
+                        authRepository.postReissueTokens(
+                            ReissueRequestModel(
+                                userRepository.getAccessToken(),
+                                userRepository.getRefreshToken(),
+                            ),
+                        )
+                    }.onSuccess { data ->
+                        userRepository.setTokens(data.accessToken, data.refreshToken)
+                        response.close()
 
-                            val newRequest =
-                                authRequest.newBuilder().removeHeader(AUTHORIZATION).newAuthBuilder()
-                                    .build()
-                            return chain.proceed(newRequest)
-                        }
-                    } catch (t: Throwable) {
-                        Timber.d(t.message)
+                        val newRequest =
+                            authRequest.newBuilder().removeHeader(AUTHORIZATION).newAuthBuilder()
+                                .build()
+                        return chain.proceed(newRequest)
                     }
+                } catch (t: Throwable) {
+                    Timber.d(t.message)
+                }
 
-                    userRepository.clearInfo()
+                userRepository.clearInfo()
 
-                    Handler(Looper.getMainLooper()).post {
-                        context.toast(TOKEN_EXPIRED_ERROR)
-                        Intent(context, LoginActivity::class.java).apply {
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                            context.startActivity(this)
-                        }
+                Handler(Looper.getMainLooper()).post {
+                    context.toast(TOKEN_EXPIRED_ERROR)
+                    Intent(context, LoginActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        context.startActivity(this)
                     }
                 }
             }
