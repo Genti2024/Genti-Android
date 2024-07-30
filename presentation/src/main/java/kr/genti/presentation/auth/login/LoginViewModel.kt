@@ -24,8 +24,6 @@ class LoginViewModel
         private val authRepository: AuthRepository,
         private val userRepository: UserRepository,
     ) : ViewModel() {
-        private val serviceTermsList = listOf(NICKNAME, EMAIL)
-
         private val _isAppLoginAvailable = MutableStateFlow(true)
         val isAppLoginAvailable: StateFlow<Boolean> = _isAppLoginAvailable
 
@@ -53,13 +51,11 @@ class LoginViewModel
                 UserApiClient.instance.loginWithKakaoTalk(
                     context = context,
                     callback = appLoginCallback,
-                    serviceTerms = serviceTermsList,
                 )
             } else {
                 UserApiClient.instance.loginWithKakaoAccount(
                     context = context,
                     callback = webLoginCallback,
-                    serviceTerms = serviceTermsList,
                 )
             }
         }
@@ -79,7 +75,5 @@ class LoginViewModel
 
         companion object {
             const val KAKAO = "KAKAO"
-            const val NICKNAME = "profile_nickname"
-            const val EMAIL = "account_email"
         }
     }
