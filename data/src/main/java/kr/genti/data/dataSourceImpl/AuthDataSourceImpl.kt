@@ -14,10 +14,8 @@ data class AuthDataSourceImpl
     constructor(
         private val authService: AuthService,
     ) : AuthDataSource {
-        override suspend fun postReissueTokens(
-            authorization: String,
-            request: ReissueRequestDto,
-        ): BaseResponse<ReissueTokenDto> = authService.postReissueTokens(authorization, request)
+        override suspend fun postReissueTokens(request: ReissueRequestDto): BaseResponse<ReissueTokenDto> =
+            authService.postReissueTokens(request)
 
         override suspend fun postOauthDataToGetToken(request: AuthRequestDto): BaseResponse<AuthTokenDto> =
             authService.postOauthDataToGetToken(request)

@@ -7,10 +7,7 @@ import kr.genti.data.dto.response.AuthTokenDto
 import kr.genti.data.dto.response.ReissueTokenDto
 
 interface AuthDataSource {
-    suspend fun postReissueTokens(
-        authorization: String,
-        request: ReissueRequestDto,
-    ): BaseResponse<ReissueTokenDto>
+    suspend fun postReissueTokens(request: ReissueRequestDto): BaseResponse<ReissueTokenDto>
 
     suspend fun postOauthDataToGetToken(request: AuthRequestDto): BaseResponse<AuthTokenDto>
 }
