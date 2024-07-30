@@ -17,6 +17,10 @@ class UserSharedPrefImpl
             get() = dataStore.getString(REFRESH_TOKEN, "").orEmpty()
             set(value) = dataStore.edit { putString(REFRESH_TOKEN, value) }
 
+        override var userRole: String
+            get() = dataStore.getString(USER_ROLE, "").orEmpty()
+            set(value) = dataStore.edit { putString(USER_ROLE, value) }
+
         override fun clearInfo() {
             dataStore.edit().clear().apply()
         }
@@ -24,5 +28,6 @@ class UserSharedPrefImpl
         companion object {
             private const val ACCESS_TOKEN = "ACCESS_TOKEN"
             private const val REFRESH_TOKEN = "REFRESH_TOKEN"
+            private const val USER_ROLE = "USER_ROLE"
         }
     }

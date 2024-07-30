@@ -64,7 +64,10 @@ class LoginViewModel
             viewModelScope.launch {
                 authRepository.postOauthDataToGetToken(AuthRequestModel(accessToken, KAKAO))
                     .onSuccess {
-                        userRepository.setTokens(it.accessToken, it.refreshToken)
+                        with(userRepository) {
+                            setTokens(it.accessToken, it.refreshToken)
+                            setUserRole(it.userRoleString)
+                        }
                         _changeTokenState.value = UiState.Success(it.userRoleString)
                     }
                     .onFailure {

@@ -21,6 +21,10 @@ class UserRepositoryImpl
             userSharedPref.refreshToken = refreshToken
         }
 
+        override fun setUserRole(userRole: String) {
+            userSharedPref.userRole = userRole
+        }
+
         override fun clearInfo() {
             userSharedPref.clearInfo()
         }

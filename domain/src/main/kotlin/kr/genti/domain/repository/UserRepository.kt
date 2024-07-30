@@ -10,5 +10,7 @@ interface UserRepository {
         refreshToken: String,
     )
 
+    fun setUserRole(userRole: String)
+
     fun clearInfo()
 }
