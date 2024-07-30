@@ -7,9 +7,9 @@ import android.os.Looper
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.runBlocking
 import kr.genti.core.extension.toast
+import kr.genti.data.local.UserSharedPref
 import kr.genti.domain.entity.request.ReissueRequestModel
 import kr.genti.domain.repository.AuthRepository
-import kr.genti.domain.repository.UserRepository
 import kr.genti.presentation.auth.login.LoginActivity
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -21,16 +21,16 @@ class AuthInterceptor
     @Inject
     constructor(
         private val authRepository: AuthRepository,
-        private val userRepository: UserRepository,
+        private val sharedPref: UserSharedPref,
         @ApplicationContext private val context: Context,
     ) : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
             val originalRequest = chain.request()
 
-            Timber.tag("okhttp").d("ACCESS TOKEN : ${userRepository.getAccessToken()}")
+            Timber.tag("okhttp").d("ACCESS TOKEN : ${sharedPref.accessToken}")
 
             val authRequest =
-                if (userRepository.getAccessToken().isNotBlank()) {
+                if (sharedPref.accessToken.isNotBlank()) {
                     originalRequest.newBuilder().newAuthBuilder().build()
                 } else {
                     originalRequest
@@ -43,12 +43,15 @@ class AuthInterceptor
                     runBlocking {
                         authRepository.postReissueTokens(
                             ReissueRequestModel(
-                                userRepository.getAccessToken(),
-                                userRepository.getRefreshToken(),
+                                sharedPref.accessToken,
+                                sharedPref.refreshToken,
                             ),
                         )
                     }.onSuccess { data ->
-                        userRepository.setTokens(data.accessToken, data.refreshToken)
+                        sharedPref.apply {
+                            this.accessToken = data.accessToken
+                            this.refreshToken = data.refreshToken
+                        }
                         response.close()
 
                         val newRequest =
@@ -60,7 +63,7 @@ class AuthInterceptor
                     Timber.d(t.message)
                 }
 
-                userRepository.clearInfo()
+                sharedPref.clearInfo()
 
                 Handler(Looper.getMainLooper()).post {
                     context.toast(TOKEN_EXPIRED_ERROR)
@@ -73,7 +76,7 @@ class AuthInterceptor
             return response
         }
 
-        private fun Request.Builder.newAuthBuilder() = this.addHeader(AUTHORIZATION, "$BEARER ${userRepository.getAccessToken()}")
+        private fun Request.Builder.newAuthBuilder() = this.addHeader(AUTHORIZATION, "$BEARER ${sharedPref.accessToken}")
 
         companion object {
             private const val CODE_TOKEN_EXPIRED = 401
