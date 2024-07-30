@@ -5,10 +5,12 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kr.genti.data.local.UserSharedPref
-import kr.genti.domain.entity.request.TokenRequestModel
+import kotlinx.coroutines.runBlocking
+import kr.genti.core.extension.toast
+import kr.genti.domain.entity.request.ReissueRequestModel
 import kr.genti.domain.repository.AuthRepository
-import kr.genti.presentation.auth.LoginActivity
+import kr.genti.domain.repository.UserRepository
+import kr.genti.presentation.auth.login.LoginActivity
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -19,16 +21,16 @@ class AuthInterceptor
     @Inject
     constructor(
         private val authRepository: AuthRepository,
-        private val sharedPref: UserSharedPref,
+        private val userRepository: UserRepository,
         @ApplicationContext private val context: Context,
     ) : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
             val originalRequest = chain.request()
 
-            Timber.d("GET ACCESS TOKEN : ${sharedPref.accessToken}")
+            Timber.tag("okhttp").d("ACCESS TOKEN : ${userRepository.getAccessToken()}")
 
             val authRequest =
-                if (sharedPref.accessToken.isNotBlank()) {
+                if (userRepository.getAccessToken().isNotBlank()) {
                     originalRequest.newBuilder().newAuthBuilder().build()
                 } else {
                     originalRequest
@@ -36,48 +38,42 @@ class AuthInterceptor
 
             val response = chain.proceed(authRequest)
 
-            when (response.code) {
-                CODE_TOKEN_EXPIRED -> {
-                    try {
-                        runBlocking {
-                            authRepository.postReissueTokens(
-                                sharedPref.refreshToken,
-                                TokenRequestModel(sharedPref.userId),
-                            )
-                        }.onSuccess { data ->
-                            sharedPref.apply {
-                                accessToken = data.accessToken
-                                refreshToken = data.refreshToken
-                                userId = data.userId
-                            }
+            if (response.code == CODE_TOKEN_EXPIRED) {
+                try {
+                    runBlocking {
+                        authRepository.postReissueTokens(
+                            ReissueRequestModel(
+                                userRepository.getAccessToken(),
+                                userRepository.getRefreshToken(),
+                            ),
+                        )
+                    }.onSuccess { data ->
+                        userRepository.setTokens(data.accessToken, data.refreshToken)
+                        response.close()
 
-                            response.close()
-
-                            val newRequest =
-                                authRequest.newBuilder().removeHeader(AUTHORIZATION).newAuthBuilder()
-                                    .build()
-
-                            return chain.proceed(newRequest)
-                        }
-                    } catch (t: Throwable) {
-                        Timber.d(t.message)
+                        val newRequest =
+                            authRequest.newBuilder().removeHeader(AUTHORIZATION).newAuthBuilder()
+                                .build()
+                        return chain.proceed(newRequest)
                     }
+                } catch (t: Throwable) {
+                    Timber.d(t.message)
+                }
 
-                    sharedPref.clearInfo()
+                userRepository.clearInfo()
 
-                    Handler(Looper.getMainLooper()).post {
-                        context.toast(TOKEN_EXPIRED_ERROR)
-                        Intent(context, LoginActivity::class.java).apply {
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                            context.startActivity(this)
-                        }
+                Handler(Looper.getMainLooper()).post {
+                    context.toast(TOKEN_EXPIRED_ERROR)
+                    Intent(context, LoginActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        context.startActivity(this)
                     }
                 }
             }
             return response
         }
 
-        private fun Request.Builder.newAuthBuilder() = this.addHeader(AUTHORIZATION, "$BEARER ${sharedPref.accessToken}")
+        private fun Request.Builder.newAuthBuilder() = this.addHeader(AUTHORIZATION, "$BEARER ${userRepository.getAccessToken()}")
 
         companion object {
             private const val CODE_TOKEN_EXPIRED = 401

@@ -6,13 +6,11 @@ import kr.genti.data.dto.request.ReissueRequestDto
 import kr.genti.data.dto.response.AuthTokenDto
 import kr.genti.data.dto.response.ReissueTokenDto
 import retrofit2.http.Body
-import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface AuthService {
-    @POST("api/v1/users/reissue")
+    @POST("auth/v1/reissue")
     suspend fun postReissueTokens(
-        @Header("Authorization") authorization: String,
         @Body request: ReissueRequestDto,
     ): BaseResponse<ReissueTokenDto>
 
