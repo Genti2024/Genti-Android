@@ -43,6 +43,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         observeResetResult()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getGenerateStatusFromServer()
+    }
+
     fun initBnvItemIconTintList() {
         with(binding.bnvMain) {
             itemIconTintList = null
