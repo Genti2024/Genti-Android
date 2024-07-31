@@ -57,9 +57,9 @@
             android:id="@+id/dot_indicator"
             android:layout_width="30dp"
             android:layout_height="9dp"
-            android:layout_marginBottom="18dp"
+            android:layout_marginBottom="98dp"
             android:background="@color/green_3"
-            app:layout_constraintBottom_toTopOf="@id/btn_next"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
