@@ -29,6 +29,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
 
         setSystemWindowsTransparent()
         observeAutoLoginState()
+        observeReissueTokenResult()
     }
 
     private fun setSystemWindowsTransparent() {
@@ -44,19 +45,35 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
         viewModel.isAutoLogined.flowWithLifecycle(lifecycle).distinctUntilChanged()
             .onEach { isAutoLogined ->
                 if (isAutoLogined) {
+                    viewModel.postToReissueToken()
+                } else {
+                    navigateToLoginView()
+                }
+            }.launchIn(lifecycleScope)
+    }
+
+    private fun observeReissueTokenResult() {
+        viewModel.reissueTokenResult.flowWithLifecycle(lifecycle).distinctUntilChanged()
+            .onEach { isSuccess ->
+                if (isSuccess) {
                     Intent(this, MainActivity::class.java).apply {
                         startActivity(this)
                     }
+                    finish()
                 } else {
-                    Intent(this, LoginActivity::class.java).apply {
-                        startActivity(
-                            this,
-                            ActivityOptions.makeCustomAnimation(this@SplashActivity, 0, 0)
-                                .toBundle(),
-                        )
-                    }
+                    navigateToLoginView()
                 }
-                finish()
             }.launchIn(lifecycleScope)
+    }
+
+    private fun navigateToLoginView() {
+        Intent(this, LoginActivity::class.java).apply {
+            startActivity(
+                this,
+                ActivityOptions.makeCustomAnimation(this@SplashActivity, 0, 0)
+                    .toBundle(),
+            )
+        }
+        finish()
     }
 }
