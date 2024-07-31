@@ -16,7 +16,7 @@
 ![2024-08-01_00-34-24](https://github.com/user-attachments/assets/649fb66d-6788-4d6c-a6de-f4b673f9623b)
 ![2024-08-01_00-34-43](https://github.com/user-attachments/assets/897c4340-d6d9-4f1a-b9bd-ff4c69675864)
 
-
+<br>
 
 ## TECH STACK
 - Android App Architecture
@@ -65,4 +65,7 @@
  ┗ 📂기능 별 패키징
 
 ```
+
 <br>
+
+
