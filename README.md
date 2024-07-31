@@ -18,6 +18,15 @@
 
 <br>
 
+## ACHIEVEMENT
+- 2024 정주영 창업경진대회 (아산나눔재단) 사업실행팀 선발
+- 2024 고려대 KU 창업동아리 아이디어 트랙 선정
+- 2024 동국대 아이디어 사업화 지원사업 선발
+- 2024 KUCT 딥테크 스타트업 프론티어 선발전 도전상 수상
+- 2024 K-Digital Challenge AI 스타트업 창업 경진대회 장려상 수상
+
+<br>
+
 ## TECH STACK
 - Android App Architecture
 - Multi-Module
