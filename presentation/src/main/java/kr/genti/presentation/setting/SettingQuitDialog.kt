@@ -5,13 +5,19 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseDialog
 import kr.genti.core.extension.setGusianBlur
 import kr.genti.core.extension.setOnSingleClickListener
-import kr.genti.core.util.RestartUtil
+import kr.genti.core.extension.stringOf
+import kr.genti.core.extension.toast
+import kr.genti.core.state.UiState
+import kr.genti.core.util.RestartUtil.restartApp
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogSettingQuitBinding
 
@@ -39,6 +45,7 @@ class SettingQuitDialog :
 
         initReturnBtnListener()
         initLogoutBtnListener()
+        observeUserQuitState()
     }
 
     private fun initReturnBtnListener() {
@@ -46,13 +53,24 @@ class SettingQuitDialog :
     }
 
     private fun initLogoutBtnListener() {
-        // TODO : 토큰 설정 이후 탈퇴 설정
         binding.btnLogout.setOnSingleClickListener {
-            lifecycleScope.launch {
-                delay(500)
-                RestartUtil.restartApp(binding.root.context, null)
-            }
+            viewModel.quitFromKakao()
         }
+    }
+
+    private fun observeUserQuitState() {
+        viewModel.userDeleteState.flowWithLifecycle(lifecycle).distinctUntilChanged()
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        delay(500)
+                        restartApp(binding.root.context, null)
+                    }
+
+                    is UiState.Failure -> toast(stringOf(R.string.error_msg))
+                    else -> return@onEach
+                }
+            }.launchIn(lifecycleScope)
     }
 
     override fun onDismiss(dialog: DialogInterface) {
