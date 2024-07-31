@@ -12,4 +12,8 @@ data class InfoDataSourceImpl
         private val infoService: InfoService,
     ) : InfoDataSource {
         override suspend fun postSignupData(request: SignupRequestDto): BaseResponse<Boolean> = infoService.postSignupData(request)
+
+        override suspend fun postUserLogout(): BaseResponse<Boolean> = infoService.postUserLogout()
+
+        override suspend fun deleteUser(): BaseResponse<Boolean> = infoService.deleteUser()
     }

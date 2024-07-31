@@ -15,4 +15,14 @@ class InfoRepositoryImpl
             runCatching {
                 infoDataSource.postSignupData(request.toDto()).response
             }
+
+        override suspend fun postUserLogout(): Result<Boolean> =
+            runCatching {
+                infoDataSource.postUserLogout().response
+            }
+
+        override suspend fun deleteUser(): Result<Boolean> =
+            runCatching {
+                infoDataSource.deleteUser().response
+            }
     }
