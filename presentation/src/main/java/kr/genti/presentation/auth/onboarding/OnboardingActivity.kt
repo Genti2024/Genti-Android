@@ -19,6 +19,7 @@ class OnboardingActivity : BaseActivity<ActivityOnboardingBinding>(R.layout.acti
 
         initViewPager()
         initNextBtnListener()
+        initFinishBtnListener()
     }
 
     private fun initViewPager() {
@@ -27,6 +28,7 @@ class OnboardingActivity : BaseActivity<ActivityOnboardingBinding>(R.layout.acti
             adapter = onboardingAdapter
             getChildAt(0).setOnTouchListener { _, _ -> true }
         }
+        binding.dotIndicator.setViewPager(binding.vpOnboarding)
     }
 
     private fun initNextBtnListener() {
@@ -38,6 +40,13 @@ class OnboardingActivity : BaseActivity<ActivityOnboardingBinding>(R.layout.acti
                 tvOnboardingTitle.isVisible = false
                 btnExit.isVisible = false
             }
+        }
+    }
+
+    private fun initFinishBtnListener() {
+        with(binding) {
+            btnFinish.setOnSingleClickListener { }
+            btnExit.setOnSingleClickListener { }
         }
     }
 
