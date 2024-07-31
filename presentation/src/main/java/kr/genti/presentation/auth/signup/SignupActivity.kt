@@ -19,8 +19,8 @@ import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.presentation.R
+import kr.genti.presentation.auth.onboarding.OnboardingActivity
 import kr.genti.presentation.databinding.ActivitySignupBinding
-import kr.genti.presentation.main.MainActivity
 import java.util.Calendar
 
 @AndroidEntryPoint
@@ -73,7 +73,7 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(R.layout.activity_sig
     private fun observePostSignupResult() {
         viewModel.postSignupResult.flowWithLifecycle(lifecycle).onEach { isSuccess ->
             if (isSuccess) {
-                Intent(this, MainActivity::class.java).apply {
+                Intent(this, OnboardingActivity::class.java).apply {
                     startActivity(this)
                 }
                 finish()

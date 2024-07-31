@@ -1,6 +1,7 @@
 package kr.genti.presentation.auth.onboarding
 
 import android.animation.ValueAnimator
+import android.content.Intent
 import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
@@ -10,6 +11,7 @@ import kr.genti.core.extension.dpToPx
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityOnboardingBinding
+import kr.genti.presentation.main.MainActivity
 
 @AndroidEntryPoint
 class OnboardingActivity : BaseActivity<ActivityOnboardingBinding>(R.layout.activity_onboarding) {
@@ -61,9 +63,16 @@ class OnboardingActivity : BaseActivity<ActivityOnboardingBinding>(R.layout.acti
 
     private fun initFinishBtnListener() {
         with(binding) {
-            btnFinish.setOnSingleClickListener { }
-            btnExit.setOnSingleClickListener { }
+            btnFinish.setOnSingleClickListener { navigateToMain() }
+            btnExit.setOnSingleClickListener { navigateToMain() }
         }
+    }
+
+    private fun navigateToMain() {
+        Intent(this, MainActivity::class.java).apply {
+            startActivity(this)
+        }
+        finish()
     }
 
     override fun onDestroy() {
