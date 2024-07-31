@@ -5,4 +5,8 @@ import kr.genti.data.dto.request.SignupRequestDto
 
 interface InfoDataSource {
     suspend fun postSignupData(request: SignupRequestDto): BaseResponse<Boolean>
+
+    suspend fun postUserLogout(): BaseResponse<Boolean>
+
+    suspend fun deleteUser(): BaseResponse<Boolean>
 }

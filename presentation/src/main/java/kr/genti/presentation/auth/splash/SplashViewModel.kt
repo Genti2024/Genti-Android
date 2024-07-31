@@ -7,6 +7,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
+import kr.genti.domain.entity.request.ReissueRequestModel
+import kr.genti.domain.repository.AuthRepository
 import kr.genti.domain.repository.UserRepository
 import javax.inject.Inject
 
@@ -15,9 +17,13 @@ class SplashViewModel
     @Inject
     constructor(
         private val userRepository: UserRepository,
+        private val authRepository: AuthRepository,
     ) : ViewModel() {
         private val _isAutoLogined = MutableSharedFlow<Boolean>()
         val isAutoLogined: SharedFlow<Boolean> = _isAutoLogined
+
+        private val _reissueTokenResult = MutableSharedFlow<Boolean>()
+        val reissueTokenResult: SharedFlow<Boolean> = _reissueTokenResult
 
         init {
             getAutoLoginState()
@@ -30,6 +36,22 @@ class SplashViewModel
                     _isAutoLogined.emit(true)
                 } else {
                     _isAutoLogined.emit(false)
+                }
+            }
+        }
+
+        fun postToReissueToken() {
+            viewModelScope.launch {
+                authRepository.postReissueTokens(
+                    ReissueRequestModel(
+                        userRepository.getAccessToken(),
+                        userRepository.getRefreshToken(),
+                    ),
+                ).onSuccess {
+                    userRepository.setTokens(it.accessToken, it.refreshToken)
+                    _reissueTokenResult.emit(true)
+                }.onFailure {
+                    _reissueTokenResult.emit(false)
                 }
             }
         }

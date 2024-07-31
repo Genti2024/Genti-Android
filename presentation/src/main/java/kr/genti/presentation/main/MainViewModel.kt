@@ -26,11 +26,7 @@ class MainViewModel
         var currentStatus: GenerateStatus = GenerateStatus.NEW_REQUEST_AVAILABLE
         lateinit var newPicture: GenerateStatusModel
 
-        init {
-            getGenerateStatusFromServer()
-        }
-
-        private fun getGenerateStatusFromServer() {
+        fun getGenerateStatusFromServer() {
             viewModelScope.launch {
                 generateRepository.getGenerateStatus()
                     .onSuccess {
