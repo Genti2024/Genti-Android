@@ -57,9 +57,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
             .onEach { isSuccess ->
                 if (isSuccess) {
                     Intent(this, MainActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         startActivity(this)
                     }
-                    finish()
                 } else {
                     navigateToLoginView()
                 }
@@ -68,12 +68,15 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
 
     private fun navigateToLoginView() {
         Intent(this, LoginActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(
                 this,
-                ActivityOptions.makeCustomAnimation(this@SplashActivity, 0, 0)
-                    .toBundle(),
+                ActivityOptions.makeCustomAnimation(
+                    this@SplashActivity,
+                    0,
+                    0,
+                ).toBundle(),
             )
         }
-        finish()
     }
 }
