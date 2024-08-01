@@ -56,19 +56,23 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
         viewModel.reissueTokenResult.flowWithLifecycle(lifecycle).distinctUntilChanged()
             .onEach { isSuccess ->
                 if (isSuccess) {
-                    Intent(this, MainActivity::class.java).apply {
-                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        startActivity(this)
-                    }
+                    navigateToMainView()
                 } else {
                     navigateToLoginView()
                 }
             }.launchIn(lifecycleScope)
     }
 
+    private fun navigateToMainView() {
+        Intent(this, MainActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(this)
+        }
+    }
+
     private fun navigateToLoginView() {
         Intent(this, LoginActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(
                 this,
                 ActivityOptions.makeCustomAnimation(
