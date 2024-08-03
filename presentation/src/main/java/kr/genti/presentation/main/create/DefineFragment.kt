@@ -72,14 +72,14 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
     private fun initAddImageBtnListener() {
         with(binding) {
             btnCreatePlus.setOnSingleClickListener { checkAndGetImages() }
-            layoutAddedImage.setOnSingleClickListener { checkAndGetImages() }
+            layoutPlusImage.setOnSingleClickListener { checkAndGetImages() }
         }
     }
 
     private fun initDeleteBtnListener() {
         binding.btnDeleteImage.setOnSingleClickListener {
             viewModel.plusImage = emptyImageFileModel()
-            binding.layoutAddedImage.isVisible = false
+            binding.layoutPlusImage.isVisible = false
             binding.btnDeleteImage.isVisible = false
         }
     }
@@ -123,15 +123,18 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
             )
         with(binding) {
             ivAddedImage.load(uri)
-            layoutAddedImage.isVisible = true
+            layoutPlusImage.isVisible = true
             btnDeleteImage.isVisible = true
         }
     }
 
     private fun setSavedImage() {
         if (viewModel.plusImage.id != (-1).toLong()) {
-            binding.ivAddedImage.load(viewModel.plusImage.url)
-            binding.layoutAddedImage.isVisible = true
+            with(binding) {
+                ivAddedImage.load(viewModel.plusImage.url)
+                layoutPlusImage.isVisible = true
+                btnDeleteImage.isVisible = true
+            }
         }
     }
 }
