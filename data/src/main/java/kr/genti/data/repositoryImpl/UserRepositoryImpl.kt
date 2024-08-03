@@ -15,6 +15,8 @@ class UserRepositoryImpl
 
         override fun getUserRole(): String = userSharedPref.userRole
 
+        override fun getIsGuideNeeded(): Boolean = userSharedPref.isGuideNeeded
+
         override fun setTokens(
             accessToken: String,
             refreshToken: String,
@@ -25,6 +27,10 @@ class UserRepositoryImpl
 
         override fun setUserRole(userRole: String) {
             userSharedPref.userRole = userRole
+        }
+
+        override fun setIsGuideNeeded(isGuideNeeded: Boolean) {
+            userSharedPref.isGuideNeeded = isGuideNeeded
         }
 
         override fun clearInfo() {
