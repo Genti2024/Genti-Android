@@ -127,12 +127,9 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
             ) { result ->
                 when (result.resultCode) {
                     RESULT_OK -> {
-                        if (result.data?.clipData?.itemCount != 0) {
-                            val imageCount = result.data?.clipData?.itemCount ?: 0
+                        result.data?.clipData?.let {
                             setImageListWithUri(
-                                (0 until imageCount).mapNotNull { index ->
-                                    result.data?.clipData?.getItemAt(index)?.uri
-                                },
+                                (0 until it.itemCount).mapNotNull { index -> it.getItemAt(index)?.uri },
                             )
                         }
                     }

@@ -1,10 +1,14 @@
 package kr.genti.presentation.main.create
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.Companion.isPhotoPickerAvailable
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -14,6 +18,7 @@ import kr.genti.core.base.BaseFragment
 import kr.genti.core.extension.getFileName
 import kr.genti.core.extension.initOnBackPressedListener
 import kr.genti.core.extension.setOnSingleClickListener
+import kr.genti.core.extension.toast
 import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.domain.entity.response.ImageFileModel.Companion.emptyImageFileModel
 import kr.genti.presentation.R
@@ -22,7 +27,8 @@ import kr.genti.presentation.databinding.FragmentDefineBinding
 @AndroidEntryPoint
 class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_define) {
     private val viewModel by activityViewModels<CreateViewModel>()
-    lateinit var activityResult: ActivityResultLauncher<PickVisualMediaRequest>
+    private lateinit var photoPickerResult: ActivityResultLauncher<PickVisualMediaRequest>
+    private lateinit var galleryPickerResult: ActivityResultLauncher<Intent>
 
     override fun onViewCreated(
         view: View,
@@ -35,7 +41,8 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
         initRefreshExBtnListener()
         initAddImageBtnListener()
         initDeleteBtnListener()
-        setGalleryImage()
+        setGalleryImageWithPhotoPicker()
+        setGalleryImageWithGalleryPicker()
     }
 
     override fun onResume() {
@@ -64,12 +71,8 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
 
     private fun initAddImageBtnListener() {
         with(binding) {
-            btnCreatePlus.setOnSingleClickListener {
-                activityResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            }
-            layoutAddedImage.setOnSingleClickListener {
-                activityResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            }
+            btnCreatePlus.setOnSingleClickListener { checkAndGetImages() }
+            layoutAddedImage.setOnSingleClickListener { checkAndGetImages() }
         }
     }
 
@@ -81,23 +84,48 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
         }
     }
 
-    private fun setGalleryImage() {
-        activityResult =
+    private fun checkAndGetImages() {
+        if (isPhotoPickerAvailable(requireContext())) {
+            photoPickerResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        } else {
+            galleryPickerResult.launch(
+                Intent(Intent.ACTION_PICK).apply { type = "image/*" },
+            )
+        }
+    }
+
+    private fun setGalleryImageWithPhotoPicker() {
+        photoPickerResult =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-                if (uri != null) {
-                    viewModel.plusImage =
-                        ImageFileModel(
-                            uri.hashCode().toLong(),
-                            uri.getFileName(requireActivity().contentResolver).toString(),
-                            uri.toString(),
-                        )
-                    with(binding) {
-                        ivAddedImage.load(uri)
-                        layoutAddedImage.isVisible = true
-                        btnDeleteImage.isVisible = true
-                    }
+                if (uri != null) setImageWithUri(uri)
+            }
+    }
+
+    private fun setGalleryImageWithGalleryPicker() {
+        galleryPickerResult =
+            registerForActivityResult(
+                ActivityResultContracts.StartActivityForResult(),
+            ) { result ->
+                when (result.resultCode) {
+                    Activity.RESULT_OK -> result.data?.data?.let { setImageWithUri(it) }
+                    Activity.RESULT_CANCELED -> return@registerForActivityResult
+                    else -> toast(getString(R.string.selfie_toast_picker_error))
                 }
             }
+    }
+
+    private fun setImageWithUri(uri: Uri) {
+        viewModel.plusImage =
+            ImageFileModel(
+                uri.hashCode().toLong(),
+                uri.getFileName(requireActivity().contentResolver).toString(),
+                uri.toString(),
+            )
+        with(binding) {
+            ivAddedImage.load(uri)
+            layoutAddedImage.isVisible = true
+            btnDeleteImage.isVisible = true
+        }
     }
 
     private fun setSavedImage() {
