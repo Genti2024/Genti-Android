@@ -1,7 +1,10 @@
 package kr.genti.presentation.main.create
 
 import android.app.Activity
+import android.app.Activity.RESULT_CANCELED
+import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -12,6 +15,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.Companion.isPhotoPickerAvailable
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -39,6 +43,7 @@ import kotlin.math.max
 class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_selfie) {
     private val viewModel by activityViewModels<CreateViewModel>()
     private lateinit var photoPickerResult: ActivityResultLauncher<PickVisualMediaRequest>
+    private lateinit var galleryPickerResult: ActivityResultLauncher<Intent>
     private lateinit var waitingResult: ActivityResultLauncher<Intent>
 
     override fun onViewCreated(
@@ -51,7 +56,8 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
         initBackPressedListener()
         initAddImageBtnListener()
         initRequestCreateBtnListener()
-        setGalleryImage()
+        setGalleryImageWithPhotoPicker()
+        setGalleryImageWithGalleryPicker()
         setBulletPointList()
         setGuideListBlur()
         initWaitingResult()
@@ -83,12 +89,8 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
 
     private fun initAddImageBtnListener() {
         with(binding) {
-            btnSelfieAdd.setOnSingleClickListener {
-                photoPickerResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            }
-            layoutAddedImage.setOnSingleClickListener {
-                photoPickerResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            }
+            btnSelfieAdd.setOnSingleClickListener { checkAndGetImages() }
+            layoutAddedImage.setOnSingleClickListener { checkAndGetImages() }
         }
     }
 
@@ -98,28 +100,71 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
         }
     }
 
-    private fun setGalleryImage() {
+    private fun checkAndGetImages() {
+        if (isPhotoPickerAvailable(requireContext())) {
+            photoPickerResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        } else {
+            galleryPickerResult.launch(
+                Intent(Intent.ACTION_PICK).apply {
+                    type = "image/*"
+                    putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                },
+            )
+        }
+    }
+
+    private fun setGalleryImageWithPhotoPicker() {
         photoPickerResult =
             registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(3)) { uris ->
-                if (uris.isNotEmpty()) {
-                    with(viewModel) {
-                        imageList =
-                            uris.mapIndexed { _, uri ->
-                                ImageFileModel(
-                                    uri.hashCode().toLong(),
-                                    uri.getFileName(requireActivity().contentResolver).toString(),
-                                    uri.toString(),
-                                )
-                            }
-                        isCompleted.value = uris.size == 3
+                if (uris.isNotEmpty()) setImageListWithUri(uris)
+            }
+    }
+
+    private fun setGalleryImageWithGalleryPicker() {
+        galleryPickerResult =
+            registerForActivityResult(
+                ActivityResultContracts.StartActivityForResult(),
+            ) { result ->
+                when (result.resultCode) {
+                    RESULT_OK -> {
+                        if (result.data?.clipData?.itemCount != 0) {
+                            val imageCount = result.data?.clipData?.itemCount ?: 0
+                            setImageListWithUri(
+                                (0 until imageCount).mapNotNull { index ->
+                                    result.data?.clipData?.getItemAt(index)?.uri
+                                },
+                            )
+                        }
                     }
-                    val imageViews =
-                        with(binding) { listOf(ivAddedImage1, ivAddedImage2, ivAddedImage3) }
-                    imageViews.forEach { it.setImageDrawable(null) }
-                    uris.take(3).forEachIndexed { index, uri -> imageViews[index].load(uri) }
-                    binding.layoutAddedImage.isVisible = uris.isNotEmpty()
+
+                    RESULT_CANCELED -> return@registerForActivityResult
+
+                    else -> toast(getString(R.string.selfie_toast_picker_error))
                 }
             }
+    }
+
+    private fun setImageListWithUri(uris: List<Uri>) {
+        with(viewModel) {
+            imageList =
+                uris.mapIndexed { _, uri ->
+                    ImageFileModel(
+                        uri.hashCode().toLong(),
+                        uri.getFileName(requireActivity().contentResolver).toString(),
+                        uri.toString(),
+                    )
+                }
+            isCompleted.value = uris.size == 3
+        }
+        with(binding) {
+            listOf(ivAddedImage1, ivAddedImage2, ivAddedImage3).apply {
+                forEach { it.setImageDrawable(null) }
+                uris.take(size).forEachIndexed { index, uri ->
+                    this[index].load(uri)
+                }
+            }
+        }
+        binding.layoutAddedImage.isVisible = uris.isNotEmpty()
     }
 
     private fun setSavedImages() {
