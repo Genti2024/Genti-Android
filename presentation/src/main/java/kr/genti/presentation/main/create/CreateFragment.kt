@@ -35,6 +35,11 @@ class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_c
         observeGeneratingState()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setCurrentFragment()
+    }
+
     private fun initView() {
         setStatusBarColor(R.color.background_white)
     }
@@ -55,6 +60,15 @@ class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_c
                     viewModel.modCurrentPercent(-34)
                 }
             }
+        }
+    }
+
+    private fun setCurrentFragment() {
+        when (viewModel.currentPercent.value) {
+            33 -> binding.fcvCreate.findNavController().navigate(R.id.defineFragment)
+            66 -> binding.fcvCreate.findNavController().navigate(R.id.poseFragment)
+            100 -> binding.fcvCreate.findNavController().navigate(R.id.selfieFragment)
+            else -> return
         }
     }
 
