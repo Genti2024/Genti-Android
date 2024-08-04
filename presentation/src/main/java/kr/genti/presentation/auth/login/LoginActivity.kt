@@ -1,5 +1,6 @@
 package kr.genti.presentation.auth.login
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -71,14 +72,29 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                     is UiState.Success -> {
                         if (state.data == ALREADY_ASSIGNED) {
                             Intent(this, MainActivity::class.java).apply {
-                                startActivity(this)
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                startActivity(
+                                    this,
+                                    ActivityOptions.makeCustomAnimation(
+                                        this@LoginActivity,
+                                        0,
+                                        0,
+                                    ).toBundle(),
+                                )
                             }
                         } else {
                             Intent(this, SignupActivity::class.java).apply {
-                                startActivity(this)
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                startActivity(
+                                    this,
+                                    ActivityOptions.makeCustomAnimation(
+                                        this@LoginActivity,
+                                        0,
+                                        0,
+                                    ).toBundle(),
+                                )
                             }
                         }
-                        finish()
                     }
 
                     is UiState.Failure -> toast(stringOf(R.string.error_msg))

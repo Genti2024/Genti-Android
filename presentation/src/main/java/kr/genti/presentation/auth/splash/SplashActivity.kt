@@ -66,7 +66,14 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
     private fun navigateToMainView() {
         Intent(this, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            startActivity(this)
+            startActivity(
+                this,
+                ActivityOptions.makeCustomAnimation(
+                    this@SplashActivity,
+                    0,
+                    0,
+                ).toBundle(),
+            )
         }
     }
 

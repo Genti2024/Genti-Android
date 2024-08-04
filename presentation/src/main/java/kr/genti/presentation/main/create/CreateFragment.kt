@@ -8,7 +8,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -22,6 +23,7 @@ import kr.genti.presentation.databinding.FragmentCreateBinding
 @AndroidEntryPoint
 class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_create) {
     private val viewModel by activityViewModels<CreateViewModel>()
+    lateinit var navController: NavController
 
     override fun onViewCreated(
         view: View,
@@ -31,17 +33,18 @@ class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_c
 
         initView()
         initBackBtnListener()
+        setCurrentFragment()
         observeProgressBar()
         observeGeneratingState()
     }
 
     private fun initView() {
         setStatusBarColor(R.color.background_white)
+        navController = binding.fcvCreate.getFragment<NavHostFragment>().navController
     }
 
     private fun initBackBtnListener() {
         binding.btnBack.setOnSingleClickListener {
-            val navController = binding.fcvCreate.findNavController()
             when (navController.currentDestination?.id) {
                 R.id.defineFragment -> return@setOnSingleClickListener
 
@@ -54,6 +57,17 @@ class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_c
                     navController.popBackStack()
                     viewModel.modCurrentPercent(-34)
                 }
+            }
+        }
+    }
+
+    private fun setCurrentFragment() {
+        if (::navController.isInitialized) {
+            when (viewModel.currentPercent.value) {
+                33 -> navController.navigate(R.id.defineFragment)
+                66 -> navController.navigate(R.id.poseFragment)
+                100 -> navController.navigate(R.id.selfieFragment)
+                else -> return
             }
         }
     }

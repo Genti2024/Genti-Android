@@ -55,10 +55,10 @@ class PoseFragment() : BaseFragment<FragmentPoseBinding>(R.layout.fragment_pose)
     }
 
     private fun initGuideIfNeeded() {
-        if (viewModel.isGuideNeeded) {
+        if (viewModel.getIsGuideNeeded()) {
             createGuideDialog = CreateGuideDialog()
             createGuideDialog?.show(childFragmentManager, DIALOG_GUIDE)
-            viewModel.isGuideNeeded = false
+            viewModel.setIsGuideNeeded(false)
         }
     }
 

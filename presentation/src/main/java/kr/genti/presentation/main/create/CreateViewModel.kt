@@ -20,6 +20,7 @@ import kr.genti.domain.enums.PictureRatio
 import kr.genti.domain.enums.ShotCoverage
 import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.repository.UploadRepository
+import kr.genti.domain.repository.UserRepository
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -29,6 +30,7 @@ class CreateViewModel
     constructor(
         private val createRepository: CreateRepository,
         private val uploadRepository: UploadRepository,
+        private val userRepository: UserRepository,
     ) : ViewModel() {
         val prompt = MutableLiveData<String>()
         var plusImage = emptyImageFileModel()
@@ -38,7 +40,6 @@ class CreateViewModel
         val selectedAngle = MutableLiveData<CameraAngle>()
         val selectedCoverage = MutableLiveData<ShotCoverage>()
         val isSelected = MutableLiveData(false)
-        var isGuideNeeded = true
 
         var imageList = listOf<ImageFileModel>()
         var isCompleted = MutableLiveData(false)
@@ -180,6 +181,10 @@ class CreateViewModel
         fun resetGeneratingState() {
             _totalGeneratingState.value = UiState.Empty
         }
+
+        fun getIsGuideNeeded() = userRepository.getIsGuideNeeded()
+
+        fun setIsGuideNeeded(isGuideNeeded: Boolean) = userRepository.setIsGuideNeeded(isGuideNeeded)
 
         fun getRandomPrompt(): String {
             val randomPrompt = promptList[Random.nextInt(promptList.size)]
