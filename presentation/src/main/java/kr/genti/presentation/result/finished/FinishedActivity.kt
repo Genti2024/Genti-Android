@@ -43,7 +43,7 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
     private val viewModel by viewModels<FinishedViewModel>()
 
     private var finishedImageDialog: FinishedImageDialog? = null
-    private var finishedErrorDialog: FinishedErrorDialog? = null
+    private var finishedReportDialog: FinishedReportDialog? = null
     private var finishedRatingDialog: FinishedRatingDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,8 +117,8 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
 
     private fun initUnwantedBtnListener() {
         binding.btnUnwanted.setOnSingleClickListener {
-            finishedErrorDialog = FinishedErrorDialog()
-            finishedErrorDialog?.show(supportFragmentManager, DIALOG_ERROR)
+            finishedReportDialog = FinishedReportDialog()
+            finishedReportDialog?.show(supportFragmentManager, DIALOG_ERROR)
         }
     }
 
@@ -197,7 +197,7 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
     override fun onDestroy() {
         super.onDestroy()
         finishedImageDialog = null
-        finishedErrorDialog = null
+        finishedReportDialog = null
         finishedRatingDialog = null
     }
 
