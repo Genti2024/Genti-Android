@@ -2,7 +2,6 @@ package kr.genti.presentation.setting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,18 +24,8 @@ class SettingViewModel
         private val _userDeleteState = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
         val userDeleteState: StateFlow<UiState<Boolean>> = _userDeleteState
 
-        fun logoutFromKakao() {
+        fun logoutFromServer() {
             _userLogoutState.value = UiState.Loading
-            UserApiClient.instance.logout { error ->
-                if (error == null) {
-                    logoutFromServer()
-                } else {
-                    _userLogoutState.value = UiState.Failure(error.toString())
-                }
-            }
-        }
-
-        private fun logoutFromServer() {
             viewModelScope.launch {
                 infoRepository.postUserLogout()
                     .onSuccess {
@@ -48,18 +37,8 @@ class SettingViewModel
             }
         }
 
-        fun quitFromKakao() {
+        fun quitFromServer() {
             _userDeleteState.value = UiState.Loading
-            UserApiClient.instance.unlink { error ->
-                if (error == null) {
-                    quitFromServer()
-                } else {
-                    _userDeleteState.value = UiState.Failure(error.toString())
-                }
-            }
-        }
-
-        private fun quitFromServer() {
             viewModelScope.launch {
                 infoRepository.deleteUser()
                     .onSuccess {
