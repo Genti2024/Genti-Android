@@ -105,7 +105,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             }
 
             GenerateStatus.CANCELED -> {
-                viewModel.postResetStateToServer()
                 createErrorDialog = CreateErrorDialog()
                 createErrorDialog?.show(supportFragmentManager, DIALOG_ERROR)
             }
