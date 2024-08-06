@@ -25,6 +25,8 @@ class CreateFinishedDialog :
             )
             setBackgroundDrawableResource(R.color.transparent)
         }
+        isCancelable = false
+        dialog?.setCancelable(false)
     }
 
     override fun onViewCreated(
