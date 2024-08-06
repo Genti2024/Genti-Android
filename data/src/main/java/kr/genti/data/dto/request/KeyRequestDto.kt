@@ -7,7 +7,7 @@ import kr.genti.domain.entity.request.KeyRequestModel
 @Serializable
 data class KeyRequestDto(
     @SerialName("key")
-    val key: String?,
+    val key: String,
 ) {
     companion object {
         fun KeyRequestModel.toDto() = KeyRequestDto(key)

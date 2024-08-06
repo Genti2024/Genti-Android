@@ -53,7 +53,7 @@ class CreateViewModel
         val totalGeneratingState: StateFlow<UiState<Boolean>> = _totalGeneratingState
 
         private var uploadCheckList = mutableListOf(false, false, false, true)
-        private var plusImageS3Key = KeyRequestModel(null)
+        private var plusImageS3Key: KeyRequestModel? = null
         private var imageS3KeyList = listOf<KeyRequestModel>()
 
         fun modCurrentPercent(amount: Int) {
