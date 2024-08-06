@@ -12,7 +12,6 @@ import kr.genti.presentation.databinding.ItemFeedItemBinding
 
 class FeedAdapter(
     private val genBtnClick: (Boolean) -> (Unit),
-    private val checkLoadingFinished: (Int) -> (Unit),
 ) : ListAdapter<FeedItemModel, RecyclerView.ViewHolder>(diffUtil) {
     private var itemList = mutableListOf<FeedItemModel>()
 
@@ -32,7 +31,6 @@ class FeedAdapter(
             VIEW_TYPE_ITEM ->
                 FeedItemViewHolder(
                     ItemFeedItemBinding.inflate(inflater, parent, false),
-                    checkLoadingFinished,
                 )
 
             else -> throw ClassCastException(
@@ -55,7 +53,7 @@ class FeedAdapter(
 
             is FeedItemViewHolder -> {
                 val itemPosition = position - HEADER_COUNT
-                holder.onBind(itemList[itemPosition], itemPosition)
+                holder.onBind(itemList[itemPosition])
             }
         }
         val layoutParams = holder.itemView.layoutParams as RecyclerView.LayoutParams
@@ -70,11 +68,6 @@ class FeedAdapter(
             0 -> VIEW_TYPE_GEN_INFO
             else -> VIEW_TYPE_ITEM
         }
-
-    fun addItemList(newItems: List<FeedItemModel>) {
-        this.itemList.addAll(newItems)
-        notifyDataSetChanged()
-    }
 
     fun setItemList(itemList: List<FeedItemModel>) {
         this.itemList = itemList.toMutableList()

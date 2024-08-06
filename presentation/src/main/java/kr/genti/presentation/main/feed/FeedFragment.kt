@@ -10,6 +10,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -46,13 +47,13 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
     private fun initView() {
         initOnBackPressedListener(binding.root)
         setStatusBarColor(R.color.background_50)
+        viewModel.getExamplePromptsFromServer()
     }
 
     private fun initAdapter() {
         _adapter =
             FeedAdapter(
                 genBtnClick = ::initGenBtnListener,
-                checkLoadingFinished = ::checkLoadingFinished,
             )
         binding.rvFeed.adapter = adapter
     }
@@ -60,17 +61,6 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
     private fun initGenBtnListener(x: Boolean) {
         Intent(Intent.ACTION_VIEW, Uri.parse(WEB_GENFLUENCER)).apply {
             startActivity(this)
-        }
-    }
-
-    private fun checkLoadingFinished(position: Int) {
-        if (position == 1) {
-            setStatusBarColor(R.color.background_white)
-            with(binding) {
-                layoutLoading.isVisible = false
-                rvFeed.isVisible = true
-                ivFeedLightning.isVisible = true
-            }
         }
     }
 
@@ -99,7 +89,17 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
         viewModel.getExampleItemsState.flowWithLifecycle(lifecycle).distinctUntilChanged()
             .onEach { state ->
                 when (state) {
-                    is UiState.Success -> adapter.addItemList(state.data)
+                    is UiState.Success -> {
+                        adapter.setItemList(state.data)
+                        delay(500)
+                        setStatusBarColor(R.color.background_white)
+                        with(binding) {
+                            layoutLoading.isVisible = false
+                            rvFeed.isVisible = true
+                            ivFeedLightning.isVisible = true
+                        }
+                    }
+
                     is UiState.Failure -> toast(stringOf(R.string.error_msg))
                     else -> return@onEach
                 }
