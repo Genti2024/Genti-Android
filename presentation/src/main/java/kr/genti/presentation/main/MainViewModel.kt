@@ -30,7 +30,7 @@ class MainViewModel
             viewModelScope.launch {
                 generateRepository.getGenerateStatus()
                     .onSuccess {
-                        currentStatus = GenerateStatus.CANCELED
+                        currentStatus = it.status
                         newPicture = it
                     }
                     .onFailure {
