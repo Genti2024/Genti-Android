@@ -15,7 +15,6 @@ import coil.load
 import kr.genti.core.base.BaseDialog
 import kr.genti.core.extension.setGusianBlur
 import kr.genti.core.extension.setOnSingleClickListener
-import kr.genti.domain.enums.PictureRatio
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogProfileImageBinding
 import kr.genti.presentation.util.downloadImage
@@ -83,12 +82,14 @@ class ProfileImageDialog :
     }
 
     private fun setImage() {
-        with(binding.ivProfile) {
-            load(imageUrl)
-            if (imageRatio == PictureRatio.RATIO_3_2.name) {
-                (layoutParams as ConstraintLayout.LayoutParams).dimensionRatio = "3:2"
+        with(binding) {
+            ivProfile.load(imageUrl)
+            if (imageRatio == "RATIO_3_2") {
+                (ivProfile.layoutParams as ConstraintLayout.LayoutParams).dimensionRatio = "3:2"
+                (ivProfileBg.layoutParams as ConstraintLayout.LayoutParams).dimensionRatio = "3:2"
             } else {
-                (layoutParams as ConstraintLayout.LayoutParams).dimensionRatio = "2:3"
+                (ivProfile.layoutParams as ConstraintLayout.LayoutParams).dimensionRatio = "2:3"
+                (ivProfileBg.layoutParams as ConstraintLayout.LayoutParams).dimensionRatio = "2:3"
             }
         }
     }
