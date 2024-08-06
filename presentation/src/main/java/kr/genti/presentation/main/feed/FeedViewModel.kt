@@ -21,11 +21,7 @@ class FeedViewModel
             MutableStateFlow<UiState<List<FeedItemModel>>>(UiState.Empty)
         val getExampleItemsState: StateFlow<UiState<List<FeedItemModel>>> = _getExampleItemsState
 
-        init {
-            getExamplePromptsFromServer()
-        }
-
-        private fun getExamplePromptsFromServer() {
+        fun getExamplePromptsFromServer() {
             viewModelScope.launch {
                 _getExampleItemsState.value = UiState.Loading
                 feedRepository.getExampleItems()

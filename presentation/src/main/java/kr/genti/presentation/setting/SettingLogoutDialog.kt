@@ -54,7 +54,7 @@ class SettingLogoutDialog :
 
     private fun initLogoutBtnListener() {
         binding.btnLogout.setOnSingleClickListener {
-            viewModel.logoutFromKakao()
+            viewModel.logoutFromServer()
         }
     }
 

@@ -43,6 +43,7 @@ class FinishedRatingDialog :
 
         initSkipBtnListener()
         initSubmitBtnListener()
+        setMinRating()
         observeVerifyResult()
         observeRateResult()
     }
@@ -59,9 +60,15 @@ class FinishedRatingDialog :
         }
     }
 
+    private fun setMinRating() {
+        binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
+            if (rating < 1.0f) binding.ratingBar.rating = 1.0f
+        }
+    }
+
     private fun navigateToMain() {
         Intent(requireActivity(), MainActivity::class.java).apply {
-            setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(this)
         }
         dismiss()

@@ -25,6 +25,8 @@ class CreateFinishedDialog :
             )
             setBackgroundDrawableResource(R.color.transparent)
         }
+        isCancelable = false
+        dialog?.setCancelable(false)
     }
 
     override fun onViewCreated(
@@ -46,7 +48,7 @@ class CreateFinishedDialog :
             if (viewModel.checkNerPictureInitialized()) {
                 FinishedActivity.createIntent(
                     requireContext(),
-                    viewModel.newPicture.pictureGenerateRequestId ?: -1,
+                    viewModel.newPicture.pictureGenerateResponse?.pictureGenerateResponseId ?: -1,
                     viewModel.newPicture.pictureGenerateResponse?.pictureCompleted?.url.orEmpty(),
                     viewModel.newPicture.pictureGenerateResponse?.pictureCompleted?.pictureRatio?.name.orEmpty(),
                 ).apply { startActivity(this) }

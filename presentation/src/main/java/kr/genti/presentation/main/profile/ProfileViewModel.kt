@@ -32,12 +32,7 @@ class ProfileViewModel
 
         var isFirstLoading = true
 
-        init {
-            getGenerateStatusFromServer()
-            getPictureListFromServer()
-        }
-
-        private fun getGenerateStatusFromServer() {
+        fun getGenerateStatusFromServer() {
             viewModelScope.launch {
                 _getGenerateStatusState.value = UiState.Loading
                 generateRepository.getGenerateStatus()

@@ -43,7 +43,7 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
     private val viewModel by viewModels<FinishedViewModel>()
 
     private var finishedImageDialog: FinishedImageDialog? = null
-    private var finishedErrorDialog: FinishedErrorDialog? = null
+    private var finishedReportDialog: FinishedReportDialog? = null
     private var finishedRatingDialog: FinishedRatingDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,15 +117,15 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
 
     private fun initUnwantedBtnListener() {
         binding.btnUnwanted.setOnSingleClickListener {
-            finishedErrorDialog = FinishedErrorDialog()
-            finishedErrorDialog?.show(supportFragmentManager, DIALOG_ERROR)
+            finishedReportDialog = FinishedReportDialog()
+            finishedReportDialog?.show(supportFragmentManager, DIALOG_ERROR)
         }
     }
 
     private fun getIntentInfo() {
         viewModel.finishedImage =
             ImageModel(
-                intent.getLongExtra(EXTRA_ID, -1),
+                intent.getLongExtra(EXTRA_RESPONSE_ID, -1),
                 intent.getStringExtra(EXTRA_URL) ?: "",
                 "",
                 intent.getStringExtra(EXTRA_RATIO)?.toPictureRatio(),
@@ -197,7 +197,7 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
     override fun onDestroy() {
         super.onDestroy()
         finishedImageDialog = null
-        finishedErrorDialog = null
+        finishedReportDialog = null
         finishedRatingDialog = null
     }
 
@@ -207,7 +207,7 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
         private const val DIALOG_RATING = "DIALOG_RATING"
         private const val SHARE_IMAGE_CHOOSER = "SHARE_IMAGE_CHOOSER"
 
-        private const val EXTRA_ID = "EXTRA_ID"
+        private const val EXTRA_RESPONSE_ID = "EXTRA_RESPONSE_ID"
         private const val EXTRA_URL = "EXTRA_URL"
         private const val EXTRA_RATIO = "EXTRA_RATIO"
 
@@ -219,7 +219,7 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
             ratio: String,
         ): Intent =
             Intent(context, FinishedActivity::class.java).apply {
-                putExtra(EXTRA_ID, id)
+                putExtra(EXTRA_RESPONSE_ID, id)
                 putExtra(EXTRA_URL, url)
                 putExtra(EXTRA_RATIO, ratio)
             }

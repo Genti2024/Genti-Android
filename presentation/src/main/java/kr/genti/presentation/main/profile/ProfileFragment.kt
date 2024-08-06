@@ -52,6 +52,10 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
     private fun initView() {
         initOnBackPressedListener(binding.root)
         setStatusBarColor(R.color.green_3)
+        with(viewModel) {
+            getGenerateStatusFromServer()
+            getPictureListFromServer()
+        }
     }
 
     private fun initSettingBtnListener() {
@@ -117,28 +121,29 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
     }
 
     private fun observePictureListPageState() {
-        viewModel.getPictureListState.flowWithLifecycle(lifecycle).distinctUntilChanged().onEach { state ->
-            when (state) {
-                is UiState.Success -> {
-                    setLayoutEmpty(false)
-                    adapter.addList(state.data.content)
-                }
+        viewModel.getPictureListState.flowWithLifecycle(lifecycle).distinctUntilChanged()
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        setLayoutEmpty(false)
+                        adapter.addList(state.data.content)
+                    }
 
-                is UiState.Failure -> {
-                    setLayoutEmpty(true)
-                    toast(stringOf(R.string.error_msg))
-                }
+                    is UiState.Failure -> {
+                        setLayoutEmpty(true)
+                        toast(stringOf(R.string.error_msg))
+                    }
 
-                is UiState.Loading -> {
-                    if (viewModel.isFirstLoading) return@onEach
-                    binding.layoutProfIleLoading.isVisible = true
-                }
+                    is UiState.Loading -> {
+                        if (viewModel.isFirstLoading) return@onEach
+                        binding.layoutProfIleLoading.isVisible = true
+                    }
 
-                is UiState.Empty -> {
-                    if (viewModel.isFirstLoading) setLayoutEmpty(true)
+                    is UiState.Empty -> {
+                        if (viewModel.isFirstLoading) setLayoutEmpty(true)
+                    }
                 }
-            }
-        }.launchIn(lifecycleScope)
+            }.launchIn(lifecycleScope)
     }
 
     private fun setLayoutEmpty(isEmpty: Boolean) {

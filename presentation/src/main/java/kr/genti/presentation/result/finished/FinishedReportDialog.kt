@@ -18,10 +18,10 @@ import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.presentation.R
-import kr.genti.presentation.databinding.DialogFinishedErrorBinding
+import kr.genti.presentation.databinding.DialogFinishedReportBinding
 
-class FinishedErrorDialog :
-    BaseDialog<DialogFinishedErrorBinding>(R.layout.dialog_finished_error) {
+class FinishedReportDialog :
+    BaseDialog<DialogFinishedReportBinding>(R.layout.dialog_finished_report) {
     private val viewModel by activityViewModels<FinishedViewModel>()
 
     override fun onStart() {
@@ -53,7 +53,10 @@ class FinishedErrorDialog :
         with(binding) {
             btnBack.setOnSingleClickListener { dismiss() }
             btnClose.setOnSingleClickListener { dismiss() }
-            btnOkay.setOnSingleClickListener { dismiss() }
+            btnOkay.setOnSingleClickListener {
+                dismiss()
+                requireActivity().finish()
+            }
         }
     }
 
@@ -80,7 +83,10 @@ class FinishedErrorDialog :
                 with(binding) {
                     layoutErrorInput.isVisible = false
                     layoutErrorOutput.isVisible = true
-                    viewOutside.setOnSingleClickListener { dismiss() }
+                    viewOutside.setOnSingleClickListener {
+                        dismiss()
+                        requireActivity().finish()
+                    }
                 }
             } else {
                 toast(stringOf(R.string.error_msg))

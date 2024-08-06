@@ -9,16 +9,11 @@ import kr.genti.presentation.databinding.ItemFeedItemBinding
 
 class FeedItemViewHolder(
     val binding: ItemFeedItemBinding,
-    private val checkLastImageLoadFinished: (Int) -> (Unit),
 ) :
     RecyclerView.ViewHolder(binding.root) {
-    fun onBind(
-        item: FeedItemModel,
-        position: Int,
-    ) {
+    fun onBind(item: FeedItemModel) {
         with(binding) {
             tvFeedItemDescription.text = item.prompt
-
             if (item.picture.pictureRatio?.name == PictureRatio.RATIO_3_2.name) {
                 (cvFeedItemImage.layoutParams as ConstraintLayout.LayoutParams).dimensionRatio =
                     "3:2"
@@ -26,14 +21,7 @@ class FeedItemViewHolder(
                 (cvFeedItemImage.layoutParams as ConstraintLayout.LayoutParams).dimensionRatio =
                     "2:3"
             }
-
-            ivFeedItemImage.load(item.picture.url) {
-                listener(
-                    onSuccess = { _, _ ->
-                        checkLastImageLoadFinished(position)
-                    },
-                )
-            }
+            ivFeedItemImage.load(item.picture.url)
         }
     }
 }
