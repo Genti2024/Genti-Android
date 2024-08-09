@@ -15,6 +15,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("String", "VERSION_NAME", "\"${Constants.versionName}\"")
+        buildConfigField("String", "VERSION_CODE", "\"${Constants.versionCode}\"")
     }
 
     compileOptions {

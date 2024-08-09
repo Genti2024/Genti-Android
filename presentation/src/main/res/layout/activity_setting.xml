@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -43,7 +44,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cv_info_list"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -58,7 +59,10 @@
             <TextView
                 android:id="@+id/btn_terms_of_service"
                 style="@style/TextAppearance.Genti.BodyNormal"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:paddingVertical="10dp"
@@ -68,31 +72,51 @@
             <TextView
                 android:id="@+id/btn_privacy_policy"
                 style="@style/TextAppearance.Genti.BodyNormal"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_terms_of_service"
                 android:layout_height="wrap_content"
                 android:paddingVertical="10dp"
                 android:paddingStart="39dp"
                 android:text="@string/setting_btn_privacy_policy" />
 
             <TextView
-                android:id="@+id/btn_android_version"
+                android:id="@+id/btn_company_info"
                 style="@style/TextAppearance.Genti.BodyNormal"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_privacy_policy"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10dp"
+                android:paddingStart="39dp"
+                android:text="@string/setting_btn_company_info" />
+
+            <TextView
+                android:id="@+id/tv_android_version_title"
+                style="@style/TextAppearance.Genti.BodyNormal"
+                android:layout_width="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_company_info"
                 android:layout_height="wrap_content"
                 android:paddingVertical="10dp"
                 android:paddingStart="39dp"
                 android:text="@string/setting_btn_android_version" />
 
             <TextView
-                android:id="@+id/btn_company_info"
+                android:id="@+id/tv_android_version"
                 style="@style/TextAppearance.Genti.BodyNormal"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:textColor="@color/grey_3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_company_info"
                 android:layout_height="wrap_content"
                 android:paddingVertical="10dp"
-                android:paddingStart="39dp"
-                android:text="@string/setting_btn_company_info" />
+                android:layout_marginEnd="39dp"
+                tools:text="v1.0.4"/>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/cv_user_list"
