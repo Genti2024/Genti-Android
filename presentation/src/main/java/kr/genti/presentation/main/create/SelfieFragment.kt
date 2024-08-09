@@ -181,6 +181,7 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
                 stringOf(R.string.selfie_tv_guide_one),
                 stringOf(R.string.selfie_tv_guide_two),
                 stringOf(R.string.selfie_tv_guide_three),
+                stringOf(R.string.selfie_tv_guide_four),
             )
         val spannableStringBuilder = SpannableStringBuilder()
         points.forEach { point ->
