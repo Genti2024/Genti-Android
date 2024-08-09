@@ -64,9 +64,12 @@ class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_c
     private fun setCurrentFragment() {
         if (::navController.isInitialized) {
             when (viewModel.currentPercent.value) {
-                33 -> navController.navigate(R.id.defineFragment)
                 66 -> navController.navigate(R.id.poseFragment)
-                100 -> navController.navigate(R.id.selfieFragment)
+                100 -> {
+                    navController.navigate(R.id.poseFragment)
+                    navController.navigate(R.id.selfieFragment)
+                }
+
                 else -> return
             }
         }

@@ -12,6 +12,7 @@
     <string name="view_type_error_msg">Unknown View Type : %d</string>
 
     <string name="btn_next">다음으로</string>
+    <string name="btn_done">사진 생성하기</string>
 
     <string name="menu_feed">피드</string>
     <string name="menu_create">생성</string>
@@ -33,6 +34,7 @@
     <string name="onboarding_btn_finish">젠티하러 가기</string>
 
     <string name="create_tv_script_title">만들고 싶은 사진을 설명해주세요✏️</string>
+    <string name="create_tv_script_subtitle">성적이거나 폭력적인 사진은 만들어지지 않아요</string>
     <string name="create_et_script_hint">의상과 배경을 포함해서 설명해 주세요!\n\n*헤어스타일을 변경하는 기능은 준비 중이에요\n*너무 특정한 배경과 의상은 어려울 수 있어요\n(반포 한강 공원, 나이키 티셔츠 등)</string>
     <string name="create_tv_plus_title">참고할 구도의 사진이 있다면 추가해주세요</string>
     <string name="create_tv_plus_subtitle">(선택)</string>
@@ -46,14 +48,15 @@
     <string name="pose_tv_angle_none">앵글은 자유롭게 맡길래요</string>
     <string name="pose_tv_frame_title">원하는 프레임을 선택해주세요 📷</string>
     <string name="pose_tv_frame_none">프레임은 자유롭게 맡길래요</string>
-    <string name="pose_btn_ratio_three">3:2</string>
-    <string name="pose_btn_ratio_two">2:3</string>
+    <string name="pose_btn_ratio_sero">3:2 비율\n(세로로 긴 사진)</string>
+    <string name="pose_btn_ratio_garo">2:3 비율\n(가로로 긴 사진)</string>
 
     <string name="selfie_tv_title">사진 생성에 이용할 얼굴 3장을 업로드해주세요</string>
     <string name="selfie_tv_guide_title">💡얼굴은 이런 사진을 사용해주세요!</string>
     <string name="selfie_tv_guide_one">모자, 악세사리 등으로 얼굴이 잘 안보이는 사진을 사용하면 얼굴이 잘 안나올 수 있어요</string>
     <string name="selfie_tv_guide_two">사진은 정면사진을 포함하여 오른쪽, 왼쪽 등 다양한 각도일수록 얼굴 생성에 도움이 돼요</string>
     <string name="selfie_tv_guide_three">만들고자 하는 사진의 포즈와 비슷한 각도의 얼굴 사진을 사용하면 얼굴이 더욱 정확하게 반영돼요</string>
+    <string name="selfie_tv_guide_four">본인의 사진만 업로드해주세요. 타인의 사진을 이용할 경우 서비스 이용이 차단되며 법적인 제재를 받을 수도 있어요!</string>
     <string name="selfie_tv_guide_example"><![CDATA[<예시>]]></string>
     <string name="selfie_tv_angle_title">💡\n사진의 각도가 다양할수록 생성된 얼굴이 자연스러워져요!</string>
     <string name="selfie_toast_old_picker_limit">3장의 이미지를 선택해 주세요</string>
@@ -114,7 +117,8 @@
     <string name="setting_tv_title">설정 및 개인정보</string>
     <string name="setting_btn_terms_of_service">이용 약관</string>
     <string name="setting_btn_privacy_policy">개인정보처리방침</string>
-    <string name="setting_btn_android_version">앱 버전 정보</string>
+    <string name="setting_btn_android_version">앱 버전</string>
+    <string name="setting_tv_android_version">v%s.%s</string>
     <string name="setting_btn_company_info">사업자 정보</string>
     <string name="setting_btn_logout">로그아웃</string>
     <string name="setting_btn_quit">회원 탈퇴</string>

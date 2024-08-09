@@ -7,6 +7,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColorFromResource
+import kr.genti.presentation.BuildConfig
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivitySettingBinding
 
@@ -23,6 +24,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(R.layout.activity_s
         initInfoBtnsListener()
         initLogoutBtnListener()
         initQuitBtnListener()
+        setAndroidVersion()
     }
 
     private fun initView() {
@@ -44,11 +46,6 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(R.layout.activity_s
             }
             btnPrivacyPolicy.setOnSingleClickListener {
                 Intent(Intent.ACTION_VIEW, Uri.parse(WEB_PRIVACY_POLICY)).apply {
-                    startActivity(this)
-                }
-            }
-            btnAndroidVersion.setOnSingleClickListener {
-                Intent(Intent.ACTION_VIEW, Uri.parse(WEB_ANDROID_VERSION)).apply {
                     startActivity(this)
                 }
             }
@@ -74,6 +71,15 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(R.layout.activity_s
         }
     }
 
+    private fun setAndroidVersion() {
+        binding.tvAndroidVersion.text =
+            getString(
+                R.string.setting_tv_android_version,
+                BuildConfig.VERSION_NAME,
+                BuildConfig.VERSION_CODE,
+            )
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 
@@ -89,8 +95,6 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(R.layout.activity_s
             "https://stealth-goose-156.notion.site/5e84488cbf874b8f91e779ea4dc8f08a?pvs=4"
         private const val WEB_PRIVACY_POLICY =
             "https://stealth-goose-156.notion.site/e0f2e17a3a60437b8e62423f61cca2a9?pvs=4"
-        private const val WEB_ANDROID_VERSION =
-            "https://stealth-goose-156.notion.site/fbddaabccb734f949812dcc6a33b0e78?pvs=4"
         private const val WEB_COMPANY_INFO =
             "https://stealth-goose-156.notion.site/39d39ae82a3a436fa053e5287ff9742c?pvs=4"
     }

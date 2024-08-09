@@ -1,17 +1,17 @@
 package kr.genti.domain.enums
 
-enum class PictureRatio(private val description: String) {
-    RATIO_3_2("3:2 비율\n(세로로 긴 사진)"),
-    RATIO_2_3("2:3 비율\n(가로로 긴 사진)"),
+enum class PictureRatio {
+    RATIO_SERO,
+    RATIO_GARO,
     ;
 
-    override fun toString(): String {
-        return description
-    }
-
     companion object {
-        fun String.toPictureRatio(): PictureRatio? {
-            return PictureRatio.values().find { it.name == this }
+        fun String.toPictureRatio(): PictureRatio {
+            return if (this == "RATIO_GARO") {
+                RATIO_GARO
+            } else {
+                RATIO_SERO
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package kr.genti.presentation.auth.splash
 
+import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Intent
 import android.graphics.Color
@@ -47,7 +48,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
                 if (isAutoLogined) {
                     viewModel.postToReissueToken()
                 } else {
-                    navigateToLoginView()
+                    navigateTo<LoginActivity>()
                 }
             }.launchIn(lifecycleScope)
     }
@@ -56,29 +57,15 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
         viewModel.reissueTokenResult.flowWithLifecycle(lifecycle).distinctUntilChanged()
             .onEach { isSuccess ->
                 if (isSuccess) {
-                    navigateToMainView()
+                    navigateTo<MainActivity>()
                 } else {
-                    navigateToLoginView()
+                    navigateTo<LoginActivity>()
                 }
             }.launchIn(lifecycleScope)
     }
 
-    private fun navigateToMainView() {
-        Intent(this, MainActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            startActivity(
-                this,
-                ActivityOptions.makeCustomAnimation(
-                    this@SplashActivity,
-                    0,
-                    0,
-                ).toBundle(),
-            )
-        }
-    }
-
-    private fun navigateToLoginView() {
-        Intent(this, LoginActivity::class.java).apply {
+    private inline fun <reified T : Activity> navigateTo() {
+        Intent(this, T::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(
                 this,

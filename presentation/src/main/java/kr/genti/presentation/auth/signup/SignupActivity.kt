@@ -47,9 +47,9 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(R.layout.activity_sig
 
     private fun setYearPicker() {
         binding.npSignupBirth.apply {
-            maxValue = 2100
-            minValue = 1900
             val currentYear = Calendar.getInstance()[Calendar.YEAR]
+            maxValue = currentYear
+            minValue = 1900
             value = currentYear
             viewModel.selectBirthYear(currentYear)
             setOnValueChangedListener { _, _, newVal ->

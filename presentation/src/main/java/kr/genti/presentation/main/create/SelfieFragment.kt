@@ -1,6 +1,5 @@
 package kr.genti.presentation.main.create
 
-import android.app.Activity
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -181,6 +180,7 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
                 stringOf(R.string.selfie_tv_guide_one),
                 stringOf(R.string.selfie_tv_guide_two),
                 stringOf(R.string.selfie_tv_guide_three),
+                stringOf(R.string.selfie_tv_guide_four),
             )
         val spannableStringBuilder = SpannableStringBuilder()
         points.forEach { point ->
@@ -216,7 +216,7 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
                 registerForActivityResult(
                     ActivityResultContracts.StartActivityForResult(),
                 ) { result ->
-                    if (result.resultCode == Activity.RESULT_OK) {
+                    if (result.resultCode == RESULT_OK) {
                         requireActivity().supportFragmentManager.beginTransaction()
                             .replace(R.id.fcv_main, FeedFragment())
                             .commit()
