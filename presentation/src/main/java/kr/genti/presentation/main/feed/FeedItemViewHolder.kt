@@ -14,7 +14,7 @@ class FeedItemViewHolder(
     fun onBind(item: FeedItemModel) {
         with(binding) {
             tvFeedItemDescription.text = item.prompt
-            if (item.picture.pictureRatio?.name == PictureRatio.RATIO_3_2.name) {
+            if (item.picture.pictureRatio == PictureRatio.RATIO_GARO) {
                 (cvFeedItemImage.layoutParams as ConstraintLayout.LayoutParams).dimensionRatio =
                     "3:2"
             } else {

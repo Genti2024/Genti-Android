@@ -84,7 +84,7 @@ class ProfileImageDialog :
     private fun setImage() {
         with(binding) {
             ivProfile.load(imageUrl)
-            if (imageRatio == "RATIO_3_2") {
+            if (imageRatio == "RATIO_SERO") {
                 (ivProfile.layoutParams as ConstraintLayout.LayoutParams).dimensionRatio = "3:2"
                 (ivProfileBg.layoutParams as ConstraintLayout.LayoutParams).dimensionRatio = "3:2"
             } else {

@@ -31,7 +31,7 @@ class FinishedViewModel
                 null,
             )
 
-        var isRatio23 = true
+        var isRatioGaro = true
 
         private val _postReportResult = MutableSharedFlow<Boolean>()
         val postReportResult: SharedFlow<Boolean> = _postReportResult
@@ -47,7 +47,7 @@ class FinishedViewModel
         }
 
         fun setPictureRatio() {
-            isRatio23 = finishedImage.pictureRatio?.name == PictureRatio.RATIO_2_3.name
+            isRatioGaro = finishedImage.pictureRatio == PictureRatio.RATIO_GARO
         }
 
         fun postGenerateRateToServer(star: Int) {

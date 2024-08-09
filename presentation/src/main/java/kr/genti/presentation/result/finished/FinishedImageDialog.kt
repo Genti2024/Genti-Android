@@ -56,7 +56,7 @@ class FinishedImageDialog :
     private fun setImage() {
         with(binding.ivProfile) {
             load(viewModel.finishedImage.url)
-            if (viewModel.finishedImage.pictureRatio?.name == PictureRatio.RATIO_3_2.name) {
+            if (viewModel.finishedImage.pictureRatio == PictureRatio.RATIO_GARO) {
                 (layoutParams as ConstraintLayout.LayoutParams).dimensionRatio = "3:2"
             } else {
                 (layoutParams as ConstraintLayout.LayoutParams).dimensionRatio = "2:3"
