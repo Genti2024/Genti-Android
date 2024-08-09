@@ -59,6 +59,7 @@
             android:imeOptions="actionDone"
             android:inputType="textMultiLine|textNoSuggestions"
             android:maxLength="200"
+            android:maxLines="5"
             android:minLines="5"
             android:paddingHorizontal="14dp"
             android:paddingVertical="14dp"
