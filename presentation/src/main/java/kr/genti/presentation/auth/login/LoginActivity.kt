@@ -1,5 +1,6 @@
 package kr.genti.presentation.auth.login
 
+import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
@@ -71,29 +72,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                 when (state) {
                     is UiState.Success -> {
                         if (state.data == ALREADY_ASSIGNED) {
-                            Intent(this, MainActivity::class.java).apply {
-                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                startActivity(
-                                    this,
-                                    ActivityOptions.makeCustomAnimation(
-                                        this@LoginActivity,
-                                        0,
-                                        0,
-                                    ).toBundle(),
-                                )
-                            }
+                            navigateTo<MainActivity>()
                         } else {
-                            Intent(this, SignupActivity::class.java).apply {
-                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                startActivity(
-                                    this,
-                                    ActivityOptions.makeCustomAnimation(
-                                        this@LoginActivity,
-                                        0,
-                                        0,
-                                    ).toBundle(),
-                                )
-                            }
+                            navigateTo<SignupActivity>()
                         }
                     }
 
@@ -101,6 +82,20 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                     else -> return@onEach
                 }
             }.launchIn(lifecycleScope)
+    }
+
+    private inline fun <reified T : Activity> navigateTo() {
+        Intent(this, T::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(
+                this,
+                ActivityOptions.makeCustomAnimation(
+                    this@LoginActivity,
+                    0,
+                    0,
+                ).toBundle(),
+            )
+        }
     }
 
     companion object {
