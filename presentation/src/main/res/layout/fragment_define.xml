@@ -30,6 +30,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/tv_create_script_subtitle"
+            style="@style/TextAppearance.Genti.BodyDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="1dp"
+            android:gravity="center"
+            android:text="@string/create_tv_script_subtitle"
+            android:textColor="@color/grey_3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_create_script_title" />
+
+
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_create_script"
             style="@style/TextAppearance.Genti.BodySmall"
@@ -52,7 +67,7 @@
             android:textColorHint="@color/grey_7"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_create_script_title" />
+            app:layout_constraintTop_toBottomOf="@id/tv_create_script_subtitle" />
 
         <TextView
             android:id="@+id/tv_create_random_title"
