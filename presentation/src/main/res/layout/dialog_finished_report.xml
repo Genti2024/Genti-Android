@@ -126,7 +126,7 @@
                     android:paddingHorizontal="35dp"
                     android:paddingVertical="6dp"
                     android:text="@string/finished_error_input_btn_submit"
-                    android:textColor="@{vm.isWritten() == true ? @color/white : @color/black}"
+                    android:textColor="@{vm.isWritten() == true ? @color/white : @color/grey_2}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/et_error_input" />
 

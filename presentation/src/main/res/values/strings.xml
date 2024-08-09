@@ -12,6 +12,7 @@
     <string name="view_type_error_msg">Unknown View Type : %d</string>
 
     <string name="btn_next">다음으로</string>
+    <string name="btn_done">사진 생성하기</string>
 
     <string name="menu_feed">피드</string>
     <string name="menu_create">생성</string>

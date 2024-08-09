@@ -361,8 +361,8 @@
             android:enabled="@{vm.isCompleted()}"
             android:gravity="center"
             android:paddingVertical="10dp"
-            android:text="@string/btn_next"
-            android:textColor="@{vm.isSelected == true ? @color/white : @color/black}"
+            android:text="@string/btn_done"
+            android:textColor="@{vm.isSelected == true ? @color/white : @color/grey_2}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
