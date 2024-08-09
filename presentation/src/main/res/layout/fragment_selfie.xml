@@ -358,11 +358,11 @@
             android:layout_marginHorizontal="28dp"
             android:layout_marginBottom="28dp"
             android:background="@drawable/sel_btn"
-            android:enabled="@{vm.isCompleted()}"
+            android:enabled="@{vm.isCompleted}"
             android:gravity="center"
             android:paddingVertical="10dp"
             android:text="@string/btn_done"
-            android:textColor="@{vm.isSelected == true ? @color/white : @color/grey_2}"
+            android:textColor="@{vm.isCompleted == true ? @color/white : @color/grey_2}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

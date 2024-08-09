@@ -93,7 +93,7 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
     private fun getTemporaryUri(): Uri {
         val tempFile = File(cacheDir, ProfileImageDialog.TEMP_FILE_NAME)
         val imageView: ImageView =
-            if (viewModel.isRatioGaro) binding.ivFinishedImage23 else binding.ivFinishedImage32
+            if (viewModel.isRatioGaro) binding.ivFinishedImage32 else binding.ivFinishedImage23
         FileOutputStream(tempFile).use { out ->
             (imageView.drawable as BitmapDrawable).bitmap.compress(
                 Bitmap.CompressFormat.PNG,
@@ -137,14 +137,14 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
 
     private fun setUiWithRatio() {
         with(binding) {
-            layout23.isVisible = viewModel.isRatioGaro
-            layout32.isVisible = !viewModel.isRatioGaro
+            layout32.isVisible = viewModel.isRatioGaro
+            layout23.isVisible = !viewModel.isRatioGaro
             if (viewModel.isRatioGaro) {
-                ivFinishedImage23.loadImageToView()
-                tvFinishedTitle23.setEmphasizedText()
-            } else {
                 ivFinishedImage32.loadImageToView()
                 tvFinishedTitle32.setEmphasizedText()
+            } else {
+                ivFinishedImage23.loadImageToView()
+                tvFinishedTitle23.setEmphasizedText()
             }
         }
     }
