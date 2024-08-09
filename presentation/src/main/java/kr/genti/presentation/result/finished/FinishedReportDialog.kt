@@ -52,7 +52,10 @@ class FinishedReportDialog :
     private fun initExitBtnListener() {
         with(binding) {
             btnBack.setOnSingleClickListener { dismiss() }
-            btnClose.setOnSingleClickListener { dismiss() }
+            btnClose.setOnSingleClickListener {
+                dismiss()
+                requireActivity().finish()
+            }
             btnOkay.setOnSingleClickListener {
                 dismiss()
                 requireActivity().finish()
