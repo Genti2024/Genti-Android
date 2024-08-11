@@ -57,7 +57,7 @@ class SplashViewModel
         }
 
         companion object {
-            private const val DELAY_SPLASH = 1500L
+            private const val DELAY_SPLASH = 1800L
             private const val ROLE_USER = "USER"
         }
     }
