@@ -61,4 +61,10 @@ object AmplitudeManager {
     fun plusIntProperties(propertyName: String) {
         amplitude.identify(Identify().add(propertyName, 1))
     }
+
+    const val EVENT_CLICK_BTN = "click_button"
+
+    const val PROPERTY_METHOD = "signup_method"
+    const val PROPERTY_PAGE = "page_name"
+    const val PROPERTY_BTN = "button_name"
 }

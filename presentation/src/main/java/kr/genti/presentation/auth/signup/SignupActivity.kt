@@ -21,6 +21,7 @@ import kr.genti.core.extension.toast
 import kr.genti.presentation.R
 import kr.genti.presentation.auth.onboarding.OnboardingActivity
 import kr.genti.presentation.databinding.ActivitySignupBinding
+import kr.genti.presentation.util.AmplitudeManager
 import java.util.Calendar
 
 @AndroidEntryPoint
@@ -30,13 +31,18 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(R.layout.activity_sig
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding.vm = viewModel
-        initOnBackPressedListener(binding.root)
+        initView()
         initSubmitBtnListener()
         setYearPicker()
         setStatusBarTransparent()
         setNavigationBarGreen()
         observePostSignupResult()
+    }
+
+    private fun initView() {
+        AmplitudeManager.trackEvent("view_infoget")
+        binding.vm = viewModel
+        initOnBackPressedListener(binding.root)
     }
 
     private fun initSubmitBtnListener() {
@@ -73,6 +79,7 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(R.layout.activity_sig
     private fun observePostSignupResult() {
         viewModel.postSignupResult.flowWithLifecycle(lifecycle).onEach { isSuccess ->
             if (isSuccess) {
+                AmplitudeManager.trackEvent("complete_infoget")
                 Intent(this, OnboardingActivity::class.java).apply {
                     startActivity(this)
                 }
