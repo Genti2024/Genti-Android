@@ -34,6 +34,7 @@
 - Coroutine & Flow
 - Data Binding
 - Timber,  Coil,  Lottie
+- Amplitude
 - Firebase Cloud Messaging
 - Kakao Open API
 - AWS S3 with Presigned Url
