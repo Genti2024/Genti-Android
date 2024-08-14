@@ -10,6 +10,10 @@ import kr.genti.core.base.BaseFragment
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentPoseBinding
+import kr.genti.presentation.util.AmplitudeManager
+import kr.genti.presentation.util.AmplitudeManager.EVENT_CLICK_BTN
+import kr.genti.presentation.util.AmplitudeManager.PROPERTY_BTN
+import kr.genti.presentation.util.AmplitudeManager.PROPERTY_PAGE
 
 @AndroidEntryPoint
 class PoseFragment() : BaseFragment<FragmentPoseBinding>(R.layout.fragment_pose) {
@@ -35,6 +39,11 @@ class PoseFragment() : BaseFragment<FragmentPoseBinding>(R.layout.fragment_pose)
 
     private fun initNextBtnListener() {
         binding.btnPoseNext.setOnSingleClickListener {
+            AmplitudeManager.trackEvent(
+                EVENT_CLICK_BTN,
+                mapOf(PROPERTY_PAGE to "create2"),
+                mapOf(PROPERTY_BTN to "next"),
+            )
             findNavController().navigate(R.id.action_pose_to_selfie)
             viewModel.modCurrentPercent(34)
         }

@@ -23,6 +23,10 @@ import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.domain.entity.response.ImageFileModel.Companion.emptyImageFileModel
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentDefineBinding
+import kr.genti.presentation.util.AmplitudeManager
+import kr.genti.presentation.util.AmplitudeManager.EVENT_CLICK_BTN
+import kr.genti.presentation.util.AmplitudeManager.PROPERTY_BTN
+import kr.genti.presentation.util.AmplitudeManager.PROPERTY_PAGE
 
 @AndroidEntryPoint
 class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_define) {
@@ -58,6 +62,11 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
 
     private fun initCreateBtnListener() {
         binding.btnCreateNext.setOnSingleClickListener {
+            AmplitudeManager.trackEvent(
+                EVENT_CLICK_BTN,
+                mapOf(PROPERTY_PAGE to "create1"),
+                mapOf(PROPERTY_BTN to "next"),
+            )
             findNavController().navigate(R.id.action_define_to_pose)
             viewModel.modCurrentPercent(33)
         }
@@ -65,6 +74,11 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
 
     private fun initRefreshExBtnListener() {
         binding.btnRefresh.setOnClickListener {
+            AmplitudeManager.trackEvent(
+                EVENT_CLICK_BTN,
+                mapOf(PROPERTY_PAGE to "create1"),
+                mapOf(PROPERTY_BTN to "promptsuggest_refresh"),
+            )
             binding.tvCreateRandomExample.text = viewModel.getRandomPrompt()
         }
     }

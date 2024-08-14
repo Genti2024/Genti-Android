@@ -36,6 +36,10 @@ import kr.genti.presentation.databinding.FragmentSelfieBinding
 import kr.genti.presentation.main.MainActivity
 import kr.genti.presentation.main.feed.FeedFragment
 import kr.genti.presentation.result.waiting.WaitingActivity
+import kr.genti.presentation.util.AmplitudeManager
+import kr.genti.presentation.util.AmplitudeManager.EVENT_CLICK_BTN
+import kr.genti.presentation.util.AmplitudeManager.PROPERTY_BTN
+import kr.genti.presentation.util.AmplitudeManager.PROPERTY_PAGE
 import kotlin.math.max
 
 @AndroidEntryPoint
@@ -88,13 +92,32 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
 
     private fun initAddImageBtnListener() {
         with(binding) {
-            btnSelfieAdd.setOnSingleClickListener { checkAndGetImages() }
-            layoutAddedImage.setOnSingleClickListener { checkAndGetImages() }
+            btnSelfieAdd.setOnSingleClickListener {
+                AmplitudeManager.trackEvent(
+                    EVENT_CLICK_BTN,
+                    mapOf(PROPERTY_PAGE to "create3"),
+                    mapOf(PROPERTY_BTN to "selectpic"),
+                )
+                checkAndGetImages()
+            }
+            layoutAddedImage.setOnSingleClickListener {
+                AmplitudeManager.trackEvent(
+                    EVENT_CLICK_BTN,
+                    mapOf(PROPERTY_PAGE to "create3"),
+                    mapOf(PROPERTY_BTN to "reselectpic"),
+                )
+                checkAndGetImages()
+            }
         }
     }
 
     private fun initRequestCreateBtnListener() {
         binding.btnSelfieNext.setOnSingleClickListener {
+            AmplitudeManager.trackEvent(
+                EVENT_CLICK_BTN,
+                mapOf(PROPERTY_PAGE to "create3"),
+                mapOf(PROPERTY_BTN to "createpic"),
+            )
             viewModel.getS3PresignedUrls()
         }
     }
@@ -127,6 +150,7 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
                 when (result.resultCode) {
                     RESULT_OK -> {
                         result.data?.clipData?.let {
+                            if (it.itemCount > 3) AmplitudeManager.trackEvent("add_create3_userpic3")
                             setImageListWithUri(
                                 (0 until it.itemCount).mapNotNull { index -> it.getItemAt(index)?.uri },
                             )
