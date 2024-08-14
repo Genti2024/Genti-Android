@@ -12,6 +12,10 @@ import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityWaitBinding
+import kr.genti.presentation.util.AmplitudeManager
+import kr.genti.presentation.util.AmplitudeManager.EVENT_CLICK_BTN
+import kr.genti.presentation.util.AmplitudeManager.PROPERTY_BTN
+import kr.genti.presentation.util.AmplitudeManager.PROPERTY_PAGE
 
 @AndroidEntryPoint
 class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait) {
@@ -25,6 +29,11 @@ class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait
 
     private fun initReturnBtnListener() {
         binding.btnWaitReturn.setOnSingleClickListener {
+            AmplitudeManager.trackEvent(
+                EVENT_CLICK_BTN,
+                mapOf(PROPERTY_PAGE to "picwaiting"),
+                mapOf(PROPERTY_BTN to "gomain"),
+            )
             setResult(Activity.RESULT_OK)
             finish()
         }
