@@ -25,6 +25,7 @@ object Versions {
     const val retrofitVersion = "2.9.0"
     const val kotlinSerializationConverterVersion = "1.0.0"
     const val okHttpVersion = "4.11.0"
+    const val amplitudeVersion = "1.17.3"
     const val timberVersion = "5.0.1"
     const val progressViewVersion = "1.1.3"
     const val balloonVersion = "1.4.5"

@@ -117,6 +117,7 @@ dependencies {
         implementation(okHttpLoggingInterceptor)
         implementation(retrofit)
         implementation(retrofitJsonConverter)
+        implementation(amplitude)
         implementation(timber)
         implementation(ossLicense)
     }
