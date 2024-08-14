@@ -81,6 +81,7 @@ dependencies {
     ThirdPartyDependencies.run {
         implementation(coil)
         implementation(timber)
+        implementation(amplitude)
         implementation(ossLicense)
         implementation(progressView)
         implementation(balloon)
