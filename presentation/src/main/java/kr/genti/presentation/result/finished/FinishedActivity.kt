@@ -83,21 +83,27 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
     }
 
     private fun saveImage() {
-        AmplitudeManager.trackEvent(
-            EVENT_CLICK_BTN,
-            mapOf(PROPERTY_PAGE to "picdone"),
-            mapOf(PROPERTY_BTN to "picdownload"),
-        )
+        AmplitudeManager.apply {
+            trackEvent(
+                EVENT_CLICK_BTN,
+                mapOf(PROPERTY_PAGE to "picdone"),
+                mapOf(PROPERTY_BTN to "picdownload"),
+            )
+            plusIntProperties("user_picturedownload")
+        }
         downloadImage(viewModel.finishedImage.id, viewModel.finishedImage.url)
     }
 
     private fun initShareBtnListener() {
         binding.btnShare.setOnSingleClickListener {
-            AmplitudeManager.trackEvent(
-                EVENT_CLICK_BTN,
-                mapOf(PROPERTY_PAGE to "picdone"),
-                mapOf(PROPERTY_BTN to "picshare"),
-            )
+            AmplitudeManager.apply {
+                trackEvent(
+                    EVENT_CLICK_BTN,
+                    mapOf(PROPERTY_PAGE to "picdone"),
+                    mapOf(PROPERTY_BTN to "picshare"),
+                )
+                plusIntProperties("user_share")
+            }
             Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_STREAM, getTemporaryUri())

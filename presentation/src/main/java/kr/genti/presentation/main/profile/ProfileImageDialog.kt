@@ -20,9 +20,6 @@ import kr.genti.domain.enums.PictureRatio.Companion.toPictureRatio
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogProfileImageBinding
 import kr.genti.presentation.util.AmplitudeManager
-import kr.genti.presentation.util.AmplitudeManager.EVENT_CLICK_BTN
-import kr.genti.presentation.util.AmplitudeManager.PROPERTY_BTN
-import kr.genti.presentation.util.AmplitudeManager.PROPERTY_PAGE
 import kr.genti.presentation.util.downloadImage
 import java.io.File
 import java.io.FileOutputStream
@@ -71,22 +68,28 @@ class ProfileImageDialog :
 
     private fun initDownloadBtnListener() {
         binding.btnDownload.setOnSingleClickListener {
-            AmplitudeManager.trackEvent(
-                EVENT_CLICK_BTN,
-                mapOf(PROPERTY_PAGE to "mypage"),
-                mapOf(PROPERTY_BTN to "picdownload"),
-            )
+            AmplitudeManager.apply {
+                trackEvent(
+                    EVENT_CLICK_BTN,
+                    mapOf(PROPERTY_PAGE to "mypage"),
+                    mapOf(PROPERTY_BTN to "picdownload"),
+                )
+                plusIntProperties("user_picturedownload")
+            }
             requireActivity().downloadImage(imageId, imageUrl)
         }
     }
 
     private fun initShareBtnListener() {
         binding.btnShare.setOnSingleClickListener {
-            AmplitudeManager.trackEvent(
-                EVENT_CLICK_BTN,
-                mapOf(PROPERTY_PAGE to "mypage"),
-                mapOf(PROPERTY_BTN to "picshare"),
-            )
+            AmplitudeManager.apply {
+                trackEvent(
+                    EVENT_CLICK_BTN,
+                    mapOf(PROPERTY_PAGE to "mypage"),
+                    mapOf(PROPERTY_BTN to "picshare"),
+                )
+                plusIntProperties("user_share")
+            }
             Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_STREAM, getTemporaryUri())

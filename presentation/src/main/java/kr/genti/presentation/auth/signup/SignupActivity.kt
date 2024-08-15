@@ -20,6 +20,7 @@ import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.core.state.UiState
+import kr.genti.domain.entity.response.SignUpUserModel
 import kr.genti.presentation.R
 import kr.genti.presentation.auth.onboarding.OnboardingActivity
 import kr.genti.presentation.databinding.ActivitySignupBinding
@@ -83,14 +84,7 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(R.layout.activity_sig
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
-                        AmplitudeManager.apply {
-                            trackEvent("complete_infoget")
-                            updateProperties("user_email", state.data.email)
-                            updateProperties("user_platform", state.data.lastLoginOauthPlatform)
-                            updateProperties("user_nickname", state.data.nickname)
-                            updateProperties("user_birth_date", state.data.birthDate)
-                            updateProperties("user_sex", state.data.sex)
-                        }
+                        setAmplitudeUserProperty(state)
                         Intent(this, OnboardingActivity::class.java).apply {
                             startActivity(this)
                         }
@@ -101,5 +95,20 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(R.layout.activity_sig
                     else -> return@onEach
                 }
             }.launchIn(lifecycleScope)
+    }
+
+    private fun setAmplitudeUserProperty(state: UiState.Success<SignUpUserModel>) {
+        AmplitudeManager.apply {
+            trackEvent("complete_infoget")
+            updateProperties("user_email", state.data.email)
+            updateProperties("user_platform", state.data.lastLoginOauthPlatform)
+            updateProperties("user_nickname", state.data.nickname)
+            updateProperties("user_birth_date", state.data.birthDate)
+            updateProperties("user_sex", state.data.sex)
+            updateIntProperties("user_share", 0)
+            updateIntProperties("user_picturedownload", 0)
+            updateIntProperties("user_main_scroll", 0)
+            updateIntProperties("user_promptsuggest_refresh", 0)
+        }
     }
 }

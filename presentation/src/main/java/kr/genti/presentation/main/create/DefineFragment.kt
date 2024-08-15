@@ -74,11 +74,14 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
 
     private fun initRefreshExBtnListener() {
         binding.btnRefresh.setOnClickListener {
-            AmplitudeManager.trackEvent(
-                EVENT_CLICK_BTN,
-                mapOf(PROPERTY_PAGE to "create1"),
-                mapOf(PROPERTY_BTN to "promptsuggest_refresh"),
-            )
+            AmplitudeManager.apply {
+                trackEvent(
+                    EVENT_CLICK_BTN,
+                    mapOf(PROPERTY_PAGE to "create1"),
+                    mapOf(PROPERTY_BTN to "promptsuggest_refresh"),
+                )
+                plusIntProperties("user_promptsuggest_refresh")
+            }
             binding.tvCreateRandomExample.text = viewModel.getRandomPrompt()
         }
     }

@@ -50,7 +50,10 @@ class FinishedImageDialog :
 
     private fun initDownloadBtnListener() {
         binding.btnDownload.setOnSingleClickListener {
-            AmplitudeManager.trackEvent("download_picdone_enlargedpicture")
+            AmplitudeManager.apply {
+                trackEvent("download_picdone_enlargedpicture")
+                plusIntProperties("user_picturedownload")
+            }
             requireActivity().downloadImage(viewModel.finishedImage.id, viewModel.finishedImage.url)
         }
     }

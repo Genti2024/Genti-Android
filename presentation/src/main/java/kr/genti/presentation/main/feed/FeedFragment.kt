@@ -81,7 +81,10 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
                         ivFeedLightning.alpha =
                             max(0.0, (1 - accumScrollY / 130f).toDouble()).toFloat()
                         if (accumScrollY > 4500 && !viewModel.isAmplitudeScrollTracked) {
-                            AmplitudeManager.trackEvent("scroll_main_3pic")
+                            AmplitudeManager.apply {
+                                trackEvent("scroll_main_3pic")
+                                plusIntProperties("user_main_scroll")
+                            }
                             viewModel.isAmplitudeScrollTracked = true
                         }
                     }
