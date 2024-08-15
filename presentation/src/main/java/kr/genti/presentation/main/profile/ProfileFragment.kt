@@ -24,6 +24,7 @@ import kr.genti.domain.entity.response.ImageModel
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentProfileBinding
 import kr.genti.presentation.setting.SettingActivity
+import kr.genti.presentation.util.AmplitudeManager
 
 @AndroidEntryPoint
 class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment_profile) {
@@ -75,6 +76,7 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
     }
 
     private fun initImageClickListener(item: ImageModel) {
+        AmplitudeManager.trackEvent("enlarge_mypage_picture")
         profileImageDialog =
             ProfileImageDialog.newInstance(item.id, item.url, item.pictureRatio?.name ?: "")
         profileImageDialog?.show(parentFragmentManager, IMAGE_VIEWER)

@@ -20,6 +20,7 @@ import kr.genti.core.state.UiState
 import kr.genti.core.util.RestartUtil.restartApp
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogSettingLogoutBinding
+import kr.genti.presentation.util.AmplitudeManager
 
 class SettingLogoutDialog :
     BaseDialog<DialogSettingLogoutBinding>(R.layout.dialog_setting_logout) {
@@ -63,6 +64,7 @@ class SettingLogoutDialog :
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
+                        AmplitudeManager.trackEvent("log_out")
                         delay(500)
                         restartApp(binding.root.context, null)
                     }

@@ -20,6 +20,7 @@ import kr.genti.core.state.UiState
 import kr.genti.core.util.RestartUtil.restartApp
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogSettingQuitBinding
+import kr.genti.presentation.util.AmplitudeManager
 
 class SettingQuitDialog :
     BaseDialog<DialogSettingQuitBinding>(R.layout.dialog_setting_quit) {
@@ -63,6 +64,7 @@ class SettingQuitDialog :
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
+                        AmplitudeManager.trackEvent("sign_out")
                         delay(500)
                         restartApp(binding.root.context, null)
                     }
