@@ -21,6 +21,8 @@ class FeedViewModel
             MutableStateFlow<UiState<List<FeedItemModel>>>(UiState.Empty)
         val getExampleItemsState: StateFlow<UiState<List<FeedItemModel>>> = _getExampleItemsState
 
+        var isAmplitudeScrollTracked = false
+
         fun getExamplePromptsFromServer() {
             viewModelScope.launch {
                 _getExampleItemsState.value = UiState.Loading

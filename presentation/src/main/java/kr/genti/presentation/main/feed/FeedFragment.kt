@@ -79,6 +79,10 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
                         accumScrollY += dy
                         ivFeedLightning.alpha =
                             max(0.0, (1 - accumScrollY / 130f).toDouble()).toFloat()
+                        if (dy > 500 && !viewModel.isAmplitudeScrollTracked) {
+                            setStatusBarColor(R.color.green_1)
+                            viewModel.isAmplitudeScrollTracked = true
+                        }
                     }
                 },
             )
