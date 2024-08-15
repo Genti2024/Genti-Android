@@ -22,6 +22,7 @@ import kr.genti.core.extension.toast
 import kr.genti.core.state.UiState
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentFeedBinding
+import kr.genti.presentation.util.AmplitudeManager
 import kotlin.math.max
 
 @AndroidEntryPoint
@@ -79,8 +80,8 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
                         accumScrollY += dy
                         ivFeedLightning.alpha =
                             max(0.0, (1 - accumScrollY / 130f).toDouble()).toFloat()
-                        if (dy > 500 && !viewModel.isAmplitudeScrollTracked) {
-                            setStatusBarColor(R.color.green_1)
+                        if (accumScrollY > 4500 && !viewModel.isAmplitudeScrollTracked) {
+                            AmplitudeManager.trackEvent("scroll_main_3pic")
                             viewModel.isAmplitudeScrollTracked = true
                         }
                     }
