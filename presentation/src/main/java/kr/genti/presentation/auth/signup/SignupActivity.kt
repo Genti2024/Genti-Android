@@ -10,6 +10,7 @@ import androidx.core.view.updatePadding
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseActivity
@@ -18,6 +19,7 @@ import kr.genti.core.extension.initOnBackPressedListener
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
+import kr.genti.core.state.UiState
 import kr.genti.presentation.R
 import kr.genti.presentation.auth.onboarding.OnboardingActivity
 import kr.genti.presentation.databinding.ActivitySignupBinding
@@ -36,7 +38,7 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(R.layout.activity_sig
         setYearPicker()
         setStatusBarTransparent()
         setNavigationBarGreen()
-        observePostSignupResult()
+        observePostSignupState()
     }
 
     private fun initView() {
@@ -76,17 +78,28 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(R.layout.activity_sig
         this.window.navigationBarColor = colorOf(R.color.green_5)
     }
 
-    private fun observePostSignupResult() {
-        viewModel.postSignupResult.flowWithLifecycle(lifecycle).onEach { isSuccess ->
-            if (isSuccess) {
-                AmplitudeManager.trackEvent("complete_infoget")
-                Intent(this, OnboardingActivity::class.java).apply {
-                    startActivity(this)
+    private fun observePostSignupState() {
+        viewModel.postSignupState.flowWithLifecycle(lifecycle).distinctUntilChanged()
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        AmplitudeManager.apply {
+                            trackEvent("complete_infoget")
+                            updateProperties("user_email", state.data.email)
+                            updateProperties("user_platform", state.data.lastLoginOauthPlatform)
+                            updateProperties("user_nickname", state.data.nickname)
+                            updateProperties("user_birth_date", state.data.birthDate)
+                            updateProperties("user_sex", state.data.sex)
+                        }
+                        Intent(this, OnboardingActivity::class.java).apply {
+                            startActivity(this)
+                        }
+                        finish()
+                    }
+
+                    is UiState.Failure -> toast(stringOf(R.string.error_msg))
+                    else -> return@onEach
                 }
-                finish()
-            } else {
-                toast(stringOf(R.string.error_msg))
-            }
-        }.launchIn(lifecycleScope)
+            }.launchIn(lifecycleScope)
     }
 }
