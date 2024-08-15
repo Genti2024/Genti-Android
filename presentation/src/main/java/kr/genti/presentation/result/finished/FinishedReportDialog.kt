@@ -19,6 +19,7 @@ import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogFinishedReportBinding
+import kr.genti.presentation.util.AmplitudeManager
 
 class FinishedReportDialog :
     BaseDialog<DialogFinishedReportBinding>(R.layout.dialog_finished_report) {
@@ -82,6 +83,7 @@ class FinishedReportDialog :
     private fun observeReportResult() {
         viewModel.postReportResult.flowWithLifecycle(lifecycle).onEach { result ->
             if (result) {
+                AmplitudeManager.trackEvent("reportpic_picdone")
                 requireContext().hideKeyboard(requireView())
                 with(binding) {
                     layoutErrorInput.isVisible = false
