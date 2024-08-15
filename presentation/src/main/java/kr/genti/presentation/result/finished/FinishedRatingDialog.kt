@@ -18,6 +18,7 @@ import kr.genti.core.extension.toast
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogFinishedRatingBinding
 import kr.genti.presentation.main.MainActivity
+import kr.genti.presentation.util.AmplitudeManager
 
 class FinishedRatingDialog :
     BaseDialog<DialogFinishedRatingBinding>(R.layout.dialog_finished_rating) {
@@ -50,12 +51,14 @@ class FinishedRatingDialog :
 
     private fun initSkipBtnListener() {
         binding.btnSkip.setOnSingleClickListener {
+            AmplitudeManager.trackEvent("ratingpass_picdone")
             viewModel.postVerifyGenerateStateToServer()
         }
     }
 
     private fun initSubmitBtnListener() {
         binding.btnSubmit.setOnSingleClickListener {
+            AmplitudeManager.trackEvent("ratingsubmit_picdone")
             viewModel.postGenerateRateToServer(binding.ratingBar.rating.toInt())
         }
     }

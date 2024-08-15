@@ -34,6 +34,10 @@ import kr.genti.domain.enums.PictureType
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityFinishedBinding
 import kr.genti.presentation.main.profile.ProfileImageDialog
+import kr.genti.presentation.util.AmplitudeManager
+import kr.genti.presentation.util.AmplitudeManager.EVENT_CLICK_BTN
+import kr.genti.presentation.util.AmplitudeManager.PROPERTY_BTN
+import kr.genti.presentation.util.AmplitudeManager.PROPERTY_PAGE
 import kr.genti.presentation.util.downloadImage
 import java.io.File
 import java.io.FileOutputStream
@@ -59,27 +63,47 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
     }
 
     private fun initImageBtnListener() {
-        binding.ivFinishedImage23.setOnSingleClickListener {
-            finishedImageDialog = FinishedImageDialog()
-            finishedImageDialog?.show(supportFragmentManager, DIALOG_IMAGE)
-        }
-        binding.ivFinishedImage32.setOnSingleClickListener {
-            finishedImageDialog = FinishedImageDialog()
-            finishedImageDialog?.show(supportFragmentManager, DIALOG_IMAGE)
+        with(binding) {
+            ivFinishedImage32.setOnSingleClickListener { showImageDialog() }
+            ivFinishedImage23.setOnSingleClickListener { showImageDialog() }
         }
     }
 
+    private fun showImageDialog() {
+        AmplitudeManager.trackEvent("enlarge_picdone_picture")
+        finishedImageDialog = FinishedImageDialog()
+        finishedImageDialog?.show(supportFragmentManager, DIALOG_IMAGE)
+    }
+
     private fun initSaveBtnListener() {
-        binding.btnDownload23.setOnSingleClickListener {
-            downloadImage(viewModel.finishedImage.id, viewModel.finishedImage.url)
+        with(binding) {
+            btnDownload23.setOnSingleClickListener { saveImage() }
+            btnDownload32.setOnSingleClickListener { saveImage() }
         }
-        binding.btnDownload32.setOnSingleClickListener {
-            downloadImage(viewModel.finishedImage.id, viewModel.finishedImage.url)
+    }
+
+    private fun saveImage() {
+        AmplitudeManager.apply {
+            trackEvent(
+                EVENT_CLICK_BTN,
+                mapOf(PROPERTY_PAGE to "picdone"),
+                mapOf(PROPERTY_BTN to "picdownload"),
+            )
+            plusIntProperties("user_picturedownload")
         }
+        downloadImage(viewModel.finishedImage.id, viewModel.finishedImage.url)
     }
 
     private fun initShareBtnListener() {
         binding.btnShare.setOnSingleClickListener {
+            AmplitudeManager.apply {
+                trackEvent(
+                    EVENT_CLICK_BTN,
+                    mapOf(PROPERTY_PAGE to "picdone"),
+                    mapOf(PROPERTY_BTN to "picshare"),
+                )
+                plusIntProperties("user_share")
+            }
             Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_STREAM, getTemporaryUri())
@@ -110,6 +134,11 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
 
     private fun initReturnBtnListener() {
         binding.btnReturnMain.setOnSingleClickListener {
+            AmplitudeManager.trackEvent(
+                EVENT_CLICK_BTN,
+                mapOf(PROPERTY_PAGE to "picdone"),
+                mapOf(PROPERTY_BTN to "gomain"),
+            )
             finishedRatingDialog = FinishedRatingDialog()
             finishedRatingDialog?.show(supportFragmentManager, DIALOG_RATING)
         }

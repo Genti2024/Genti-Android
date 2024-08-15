@@ -19,6 +19,10 @@ import kr.genti.core.extension.setStatusBarColor
 import kr.genti.core.state.UiState
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentCreateBinding
+import kr.genti.presentation.util.AmplitudeManager
+import kr.genti.presentation.util.AmplitudeManager.EVENT_CLICK_BTN
+import kr.genti.presentation.util.AmplitudeManager.PROPERTY_BTN
+import kr.genti.presentation.util.AmplitudeManager.PROPERTY_PAGE
 
 @AndroidEntryPoint
 class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_create) {
@@ -49,11 +53,21 @@ class CreateFragment() : BaseFragment<FragmentCreateBinding>(R.layout.fragment_c
                 R.id.defineFragment -> return@setOnSingleClickListener
 
                 R.id.poseFragment -> {
+                    AmplitudeManager.trackEvent(
+                        EVENT_CLICK_BTN,
+                        mapOf(PROPERTY_PAGE to "create2"),
+                        mapOf(PROPERTY_BTN to "back"),
+                    )
                     navController.popBackStack()
                     viewModel.modCurrentPercent(-33)
                 }
 
                 R.id.selfieFragment -> {
+                    AmplitudeManager.trackEvent(
+                        EVENT_CLICK_BTN,
+                        mapOf(PROPERTY_PAGE to "create3"),
+                        mapOf(PROPERTY_BTN to "back"),
+                    )
                     navController.popBackStack()
                     viewModel.modCurrentPercent(-34)
                 }

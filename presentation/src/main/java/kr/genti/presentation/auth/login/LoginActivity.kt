@@ -26,6 +26,7 @@ import kr.genti.presentation.R
 import kr.genti.presentation.auth.signup.SignupActivity
 import kr.genti.presentation.databinding.ActivityLoginBinding
 import kr.genti.presentation.main.MainActivity
+import kr.genti.presentation.util.AmplitudeManager
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
@@ -74,6 +75,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                         if (state.data == ALREADY_ASSIGNED) {
                             navigateTo<MainActivity>()
                         } else {
+                            AmplitudeManager.trackEvent("sign_in")
                             navigateTo<SignupActivity>()
                         }
                     }

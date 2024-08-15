@@ -24,6 +24,7 @@ import kr.genti.presentation.main.create.CreateFragment
 import kr.genti.presentation.main.feed.FeedFragment
 import kr.genti.presentation.main.profile.ProfileFragment
 import kr.genti.presentation.result.waiting.WaitingActivity
+import kr.genti.presentation.util.AmplitudeManager
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
@@ -57,18 +58,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     }
 
     private fun initBnvItemSelectedListener() {
-        supportFragmentManager.findFragmentById(R.id.fcv_main) ?: navigateTo<FeedFragment>()
+        supportFragmentManager.findFragmentById(R.id.fcv_main) ?: navigateTo<FeedFragment>(null)
 
         binding.bnvMain.setOnItemSelectedListener { menu ->
             if (binding.bnvMain.selectedItemId == menu.itemId) {
                 return@setOnItemSelectedListener false
             }
             when (menu.itemId) {
-                R.id.menu_feed -> navigateTo<FeedFragment>()
+                R.id.menu_feed -> navigateTo<FeedFragment>("click_maintab")
 
-                R.id.menu_create -> navigateTo<CreateFragment>()
+                R.id.menu_create -> navigateTo<CreateFragment>("click_createpictab")
 
-                R.id.menu_profile -> navigateTo<ProfileFragment>()
+                R.id.menu_profile -> navigateTo<ProfileFragment>("click_mypagetab")
 
                 else -> return@setOnItemSelectedListener false
             }
@@ -127,7 +128,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         }.launchIn(lifecycleScope)
     }
 
-    private inline fun <reified T : Fragment> navigateTo() {
+    private inline fun <reified T : Fragment> navigateTo(page: String?) {
+        if (page != null) AmplitudeManager.trackEvent(page)
         supportFragmentManager.commit {
             replace<T>(R.id.fcv_main, T::class.java.canonicalName)
         }

@@ -13,6 +13,7 @@ import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.domain.enums.PictureRatio
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogFinishedImageBinding
+import kr.genti.presentation.util.AmplitudeManager
 import kr.genti.presentation.util.downloadImage
 
 class FinishedImageDialog :
@@ -49,6 +50,10 @@ class FinishedImageDialog :
 
     private fun initDownloadBtnListener() {
         binding.btnDownload.setOnSingleClickListener {
+            AmplitudeManager.apply {
+                trackEvent("download_picdone_enlargedpicture")
+                plusIntProperties("user_picturedownload")
+            }
             requireActivity().downloadImage(viewModel.finishedImage.id, viewModel.finishedImage.url)
         }
     }

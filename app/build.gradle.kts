@@ -39,12 +39,22 @@ android {
                 "BASE_URL",
                 gradleLocalProperties(rootDir).getProperty("test.base.url"),
             )
+            buildConfigField(
+                "String",
+                "AMPLITUDE_KEY",
+                gradleLocalProperties(rootDir).getProperty("amplitude.test.key"),
+            )
         }
         release {
             buildConfigField(
                 "String",
                 "BASE_URL",
                 gradleLocalProperties(rootDir).getProperty("base.url"),
+            )
+            buildConfigField(
+                "String",
+                "AMPLITUDE_KEY",
+                gradleLocalProperties(rootDir).getProperty("amplitude.api.key"),
             )
             isMinifyEnabled = false
             proguardFiles(

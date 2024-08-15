@@ -4,10 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kr.genti.core.state.UiState
 import kr.genti.domain.entity.request.SignupRequestModel
+import kr.genti.domain.entity.response.SignUpUserModel
 import kr.genti.domain.enums.Gender
 import kr.genti.domain.repository.InfoRepository
 import kr.genti.domain.repository.UserRepository
@@ -29,8 +31,8 @@ class SignupViewModel
 
         val isAllSelected = MutableLiveData<Boolean>(false)
 
-        private val _postSignupResult = MutableSharedFlow<Boolean>()
-        val postSignupResult: SharedFlow<Boolean> = _postSignupResult
+        private val _postSignupState = MutableStateFlow<UiState<SignUpUserModel>>(UiState.Empty)
+        val postSignupState: StateFlow<UiState<SignUpUserModel>> = _postSignupState
 
         fun selectGender(gender: Gender) {
             selectedGender.value = gender
@@ -54,6 +56,7 @@ class SignupViewModel
         }
 
         fun postSignupDataToServer() {
+            _postSignupState.value = UiState.Loading
             viewModelScope.launch {
                 infoRepository.postSignupData(
                     SignupRequestModel(
@@ -61,10 +64,10 @@ class SignupViewModel
                         selectedGender.value.toString(),
                     ),
                 ).onSuccess {
-                    _postSignupResult.emit(it)
                     userRepository.setUserRole(ROLE_USER)
+                    _postSignupState.value = UiState.Success(it)
                 }.onFailure {
-                    _postSignupResult.emit(false)
+                    _postSignupState.value = UiState.Failure(it.message.orEmpty())
                 }
             }
         }
