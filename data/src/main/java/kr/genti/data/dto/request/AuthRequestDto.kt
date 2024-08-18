@@ -6,12 +6,10 @@ import kr.genti.domain.entity.request.AuthRequestModel
 
 @Serializable
 data class AuthRequestDto(
-    @SerialName("token")
-    val token: String,
-    @SerialName("oauthPlatform")
-    val oauthPlatform: String,
+    @SerialName("accessToken")
+    val accessToken: String,
 ) {
     companion object {
-        fun AuthRequestModel.toDto() = AuthRequestDto(token, oauthPlatform)
+        fun AuthRequestModel.toDto() = AuthRequestDto(accessToken)
     }
 }

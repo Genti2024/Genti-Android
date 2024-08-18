@@ -14,7 +14,7 @@ interface AuthService {
         @Body request: ReissueRequestDto,
     ): BaseResponse<ReissueTokenDto>
 
-    @POST("auth/v1/login/oauth2/token")
+    @POST("auth/v1/login/oauth2/token/kakao")
     suspend fun postOauthDataToGetToken(
         @Body request: AuthRequestDto,
     ): BaseResponse<AuthTokenDto>

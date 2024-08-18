@@ -19,6 +19,10 @@ object AndroidXDependencies {
     const val legacy = "androidx.legacy:legacy-support-v4:${Versions.legacySupportVersion}"
     const val security = "androidx.security:security-crypto:${Versions.securityVersion}"
 
+    const val navigationFragment =
+        "androidx.navigation:navigation-fragment-ktx:${Versions.navigationVersion}"
+    const val navigationUi = "androidx.navigation:navigation-ui-ktx:${Versions.navigationVersion}"
+
     const val lifeCycleKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleVersion}"
     const val lifecycleJava8 =
         "androidx.lifecycle:lifecycle-common-java8:${Versions.lifecycleVersion}"

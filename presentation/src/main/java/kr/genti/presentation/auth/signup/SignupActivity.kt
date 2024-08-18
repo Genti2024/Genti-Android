@@ -103,7 +103,7 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(R.layout.activity_sig
             updateProperties("user_email", state.data.email)
             updateProperties("user_platform", state.data.lastLoginOauthPlatform)
             updateProperties("user_nickname", state.data.nickname)
-            updateProperties("user_birth_date", state.data.birthDate)
+            updateProperties("user_birth_year", state.data.birthYear)
             updateProperties("user_sex", state.data.sex)
             updateIntProperties("user_share", 0)
             updateIntProperties("user_picturedownload", 0)
