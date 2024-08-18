@@ -62,7 +62,7 @@ class LoginViewModel
 
         private fun changeTokenFromServer(accessToken: String) {
             viewModelScope.launch {
-                authRepository.postOauthDataToGetToken(AuthRequestModel(accessToken, KAKAO))
+                authRepository.postOauthDataToGetToken(AuthRequestModel(accessToken))
                     .onSuccess {
                         with(userRepository) {
                             setTokens(it.accessToken, it.refreshToken)
@@ -74,9 +74,5 @@ class LoginViewModel
                         _changeTokenState.value = UiState.Failure(it.message.toString())
                     }
             }
-        }
-
-        companion object {
-            const val KAKAO = "KAKAO"
         }
     }

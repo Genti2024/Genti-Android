@@ -1,6 +1,5 @@
 package kr.genti.domain.entity.request
 
 data class AuthRequestModel(
-    val token: String,
-    val oauthPlatform: String,
+    val accessToken: String,
 )
