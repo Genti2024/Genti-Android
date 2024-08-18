@@ -51,7 +51,7 @@ class SignupViewModel
             checkAllSelected()
         }
 
-        fun checkAllSelected() {
+        private fun checkAllSelected() {
             isAllSelected.value = isGenderSelected.value == true && isYearSelected.value == true
         }
 

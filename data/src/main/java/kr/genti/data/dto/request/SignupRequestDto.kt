@@ -6,12 +6,12 @@ import kr.genti.domain.entity.request.SignupRequestModel
 
 @Serializable
 data class SignupRequestDto(
-    @SerialName("birthDate")
-    val birthDate: String,
+    @SerialName("birthYear")
+    val birthYear: String,
     @SerialName("sex")
     val sex: String,
 ) {
     companion object {
-        fun SignupRequestModel.toDto() = SignupRequestDto(birthDate, sex)
+        fun SignupRequestModel.toDto() = SignupRequestDto(birthYear, sex)
     }
 }

@@ -12,10 +12,10 @@ data class SignUpUserDto(
     val lastLoginOauthPlatform: String,
     @SerialName("nickname")
     val nickname: String,
-    @SerialName("birthDate")
-    val birthDate: String,
+    @SerialName("birthYear")
+    val birthYear: String,
     @SerialName("sex")
     val sex: String,
 ) {
-    fun toModel() = SignUpUserModel(email, lastLoginOauthPlatform, nickname, birthDate, sex)
+    fun toModel() = SignUpUserModel(email, lastLoginOauthPlatform, nickname, birthYear, sex)
 }

@@ -4,6 +4,6 @@ data class SignUpUserModel(
     val email: String,
     val lastLoginOauthPlatform: String,
     val nickname: String,
-    val birthDate: String,
+    val birthYear: String,
     val sex: String,
 )

@@ -1,6 +1,6 @@
 package kr.genti.domain.entity.request
 
 data class SignupRequestModel(
-    val birthDate: String,
+    val birthYear: String,
     val sex: String,
 )
