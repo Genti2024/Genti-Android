@@ -52,6 +52,8 @@ dependencies {
         implementation(appCompat)
         implementation(constraintLayout)
         implementation(fragment)
+        implementation(navigationFragment)
+        implementation(navigationUi)
         implementation(startup)
         implementation(legacy)
         implementation(security)
@@ -68,9 +70,9 @@ dependencies {
         kapt(hiltWorkManagerCompiler)
     }
 
-    implementation(MaterialDesignDependencies.materialDesign)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
+    MaterialDesignDependencies.run {
+        implementation(materialDesign)
+    }
 
     TestDependencies.run {
         testImplementation(jUnit)
