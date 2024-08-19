@@ -7,7 +7,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColorFromResource
-import kr.genti.presentation.BuildConfig
+import kr.genti.presentation.BuildConfig.VERSION_NAME
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivitySettingBinding
 
@@ -72,12 +72,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(R.layout.activity_s
     }
 
     private fun setAndroidVersion() {
-        binding.tvAndroidVersion.text =
-            getString(
-                R.string.setting_tv_android_version,
-                BuildConfig.VERSION_NAME,
-                BuildConfig.VERSION_CODE,
-            )
+        binding.tvAndroidVersion.text = getString(R.string.setting_tv_android_version, VERSION_NAME)
     }
 
     override fun onDestroy() {
