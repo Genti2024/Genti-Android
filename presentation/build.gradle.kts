@@ -57,17 +57,14 @@ dependencies {
         implementation(startup)
         implementation(legacy)
         implementation(security)
-        implementation(hilt)
         implementation(lifeCycleKtx)
         implementation(lifecycleJava8)
         implementation(splashScreen)
-        implementation(workManager)
-        implementation(hiltWorkManager)
+        implementation(hilt)
     }
 
     KaptDependencies.run {
         kapt(hiltCompiler)
-        kapt(hiltWorkManagerCompiler)
     }
 
     MaterialDesignDependencies.run {
@@ -84,7 +81,6 @@ dependencies {
         implementation(coil)
         implementation(timber)
         implementation(amplitude)
-        implementation(ossLicense)
         implementation(progressView)
         implementation(balloon)
         implementation(lottie)

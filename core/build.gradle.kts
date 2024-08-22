@@ -41,7 +41,7 @@ dependencies {
 
     // Hilt
     implementation(AndroidXDependencies.hilt)
-    kapt(KaptDependencies.hiltAndroidCompiler)
+    kapt(KaptDependencies.hiltCompiler)
 
     // Test Dependency
     testImplementation(TestDependencies.jUnit)

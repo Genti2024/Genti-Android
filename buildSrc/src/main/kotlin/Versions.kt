@@ -39,6 +39,10 @@ object Versions {
     const val espressoVersion = "3.3.0"
     const val androidTestVersion = "1.1.2"
 
+    const val firebaseBomVersion = "33.1.2"
+    const val googleServiceVersion = "4.4.2"
+    const val firebaseCrashlyticsVersion = "2.9.9"
+
     val javaVersion = JavaVersion.VERSION_17
     const val jvmVersion = "17"
 }

@@ -26,12 +26,8 @@ object AndroidXDependencies {
     const val lifeCycleKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleVersion}"
     const val lifecycleJava8 =
         "androidx.lifecycle:lifecycle-common-java8:${Versions.lifecycleVersion}"
-    const val workManager = "androidx.work:work-runtime-ktx:${Versions.workManagerVersion}"
 
-    const val hiltWorkManager = "androidx.hilt:hilt-work:1.0.0"
     const val hilt = "com.google.dagger:hilt-android:${Versions.hiltVersion}"
-    const val ossLicense =
-        "com.google.android.gms:play-services-oss-licenses:${Versions.ossVersion}"
 }
 
 object TestDependencies {
@@ -46,27 +42,23 @@ object MaterialDesignDependencies {
 }
 
 object KaptDependencies {
-    const val hiltAndroidCompiler = "com.google.dagger:hilt-compiler:${Versions.hiltVersion}"
     const val hiltCompiler = "com.google.dagger:hilt-compiler:${Versions.hiltVersion}"
-    const val hiltWorkManagerCompiler = "androidx.hilt:hilt-compiler:1.0.0"
+}
+
+object RetrofitDependencies {
+    const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofitVersion}"
+    const val retrofitJsonConverter =
+        "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:${Versions.kotlinSerializationConverterVersion}"
+
+    const val okHttpBom = "com.squareup.okhttp3:okhttp-bom:${Versions.okHttpVersion}"
+    const val okHttp = "com.squareup.okhttp3:okhttp"
+    const val okHttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor"
 }
 
 object ThirdPartyDependencies {
     const val coil = "io.coil-kt:coil:${Versions.coilVersion}"
-
-    const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofitVersion}"
-    const val retrofitJsonConverter =
-        "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:${Versions.kotlinSerializationConverterVersion}"
-    const val okHttpBom = "com.squareup.okhttp3:okhttp-bom:${Versions.okHttpVersion}"
-    const val okHttp = "com.squareup.okhttp3:okhttp"
-    const val okHttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor"
-
     const val amplitude = "com.amplitude:analytics-android:${Versions.amplitudeVersion}"
     const val timber = "com.jakewharton.timber:timber:${Versions.timberVersion}"
-
-    const val ossLicense =
-        "com.google.android.gms:play-services-oss-licenses:${Versions.ossVersion}"
-
     const val progressView = "com.github.skydoves:progressview:${Versions.progressViewVersion}"
     const val balloon = "com.github.skydoves:balloon:${Versions.balloonVersion}"
     const val lottie = "com.airbnb.android:lottie:${Versions.lottieVersion}"
@@ -88,7 +80,6 @@ object FirebaseDependencies {
     const val messaging = "com.google.firebase:firebase-messaging-ktx"
     const val crashlytics = "com.google.firebase:firebase-crashlytics-ktx"
     const val analytics = "com.google.firebase:firebase-analytics-ktx"
-    const val remoteConfig = "com.google.firebase:firebase-config-ktx"
 }
 
 object KakaoDependencies {
