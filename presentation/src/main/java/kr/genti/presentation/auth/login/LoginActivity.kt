@@ -40,6 +40,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         setStatusBarTransparent()
         setNavigationBarGreen()
         observeAppLoginAvailable()
+        observeGetDeviceTokenResult()
         observeChangeTokenState()
     }
 
@@ -64,6 +65,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     private fun observeAppLoginAvailable() {
         viewModel.isAppLoginAvailable.flowWithLifecycle(lifecycle).onEach { isAvailable ->
             if (!isAvailable) viewModel.startLogInWithKakao(this)
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun observeGetDeviceTokenResult() {
+        viewModel.getDeviceTokenResult.flowWithLifecycle(lifecycle).onEach { isSuccess ->
+            if (!isSuccess) toast(stringOf(R.string.error_msg))
         }.launchIn(lifecycleScope)
     }
 

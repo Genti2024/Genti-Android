@@ -121,13 +121,6 @@ dependencies {
         implementation(timber)
     }
 
-    FirebaseDependencies.run {
-        implementation(platform(firebaseBom))
-        implementation(messaging)
-        implementation(crashlytics)
-        implementation(analytics)
-    }
-
     KakaoDependencies.run {
         implementation(user)
     }
