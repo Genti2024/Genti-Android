@@ -23,6 +23,7 @@ import kr.genti.presentation.databinding.ActivityMainBinding
 import kr.genti.presentation.main.create.CreateFragment
 import kr.genti.presentation.main.feed.FeedFragment
 import kr.genti.presentation.main.profile.ProfileFragment
+import kr.genti.presentation.result.finished.FinishedActivity
 import kr.genti.presentation.result.waiting.WaitingActivity
 import kr.genti.presentation.util.AmplitudeManager
 
@@ -41,12 +42,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         initCreateBtnListener()
         setStatusBarColor()
         observeStatusResult()
+        observeNotificationState()
         observeResetResult()
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.getGenerateStatusFromServer()
+        viewModel.getGenerateStatusFromServer(false)
     }
 
     fun initBnvItemIconTintList() {
@@ -115,6 +117,34 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private fun observeStatusResult() {
         viewModel.getStatusResult.flowWithLifecycle(lifecycle).onEach { result ->
             if (!result) toast(stringOf(R.string.error_msg))
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun observeNotificationState() {
+        viewModel.notificationState.flowWithLifecycle(lifecycle).onEach { status ->
+            when (status) {
+                GenerateStatus.AWAIT_USER_VERIFICATION -> {
+                    if (viewModel.checkNewPictureInitialized()) {
+                        with(viewModel.newPicture.pictureGenerateResponse) {
+                            FinishedActivity.createIntent(
+                                this@MainActivity,
+                                this?.pictureGenerateResponseId ?: -1,
+                                this?.pictureCompleted?.url.orEmpty(),
+                                this?.pictureCompleted?.pictureRatio?.name.orEmpty(),
+                            ).apply { startActivity(this) }
+                        }
+                    } else {
+                        toast(stringOf(R.string.error_msg))
+                    }
+                }
+
+                GenerateStatus.CANCELED -> {
+                    createErrorDialog = CreateErrorDialog()
+                    createErrorDialog?.show(supportFragmentManager, DIALOG_ERROR)
+                }
+
+                else -> return@onEach
+            }
         }.launchIn(lifecycleScope)
     }
 
