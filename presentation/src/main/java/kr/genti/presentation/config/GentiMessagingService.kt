@@ -12,6 +12,7 @@ import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.presentation.R
 import kr.genti.presentation.main.MainActivity
+import timber.log.Timber
 import java.util.Random
 
 @AndroidEntryPoint
@@ -22,6 +23,8 @@ class GentiMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
+
+        Timber.tag("okhttp").d("NOTIFICATION RECEIVED : $message")
 
         message.notification?.let {
             sendNotification(
