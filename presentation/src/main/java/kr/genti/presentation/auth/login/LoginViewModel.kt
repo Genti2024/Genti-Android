@@ -62,7 +62,7 @@ class LoginViewModel
 
         private fun changeTokenFromServer(accessToken: String) {
             viewModelScope.launch {
-                authRepository.postOauthDataToGetToken(AuthRequestModel(accessToken))
+                authRepository.postOauthDataToGetToken(AuthRequestModel(accessToken, ""))
                     .onSuccess {
                         with(userRepository) {
                             setTokens(it.accessToken, it.refreshToken)

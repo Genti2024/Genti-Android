@@ -7,6 +7,7 @@ plugins {
     id("kotlin-parcelize")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -121,7 +122,7 @@ dependencies {
     }
 
     FirebaseDependencies.run {
-        implementation(firebaseBom)
+        implementation(platform(firebaseBom))
         implementation(messaging)
         implementation(crashlytics)
         implementation(analytics)

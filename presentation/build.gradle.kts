@@ -88,6 +88,13 @@ dependencies {
         implementation(circleIndicator)
     }
 
+    FirebaseDependencies.run {
+        implementation(platform(firebaseBom))
+        implementation(messaging)
+        implementation(crashlytics)
+        implementation(analytics)
+    }
+
     KakaoDependencies.run {
         implementation(user)
     }
