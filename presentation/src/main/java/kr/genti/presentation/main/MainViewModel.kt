@@ -54,5 +54,5 @@ class MainViewModel
             }
         }
 
-        fun checkNerPictureInitialized() = ::newPicture.isInitialized
+        fun checkNewPictureInitialized() = ::newPicture.isInitialized
     }

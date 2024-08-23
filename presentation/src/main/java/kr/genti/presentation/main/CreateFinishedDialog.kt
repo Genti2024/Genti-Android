@@ -45,7 +45,7 @@ class CreateFinishedDialog :
 
     private fun initMoveToFinishBtnListener() {
         binding.btnMoveToFinish.setOnSingleClickListener {
-            if (viewModel.checkNerPictureInitialized()) {
+            if (viewModel.checkNewPictureInitialized()) {
                 FinishedActivity.createIntent(
                     requireContext(),
                     viewModel.newPicture.pictureGenerateResponse?.pictureGenerateResponseId ?: -1,
