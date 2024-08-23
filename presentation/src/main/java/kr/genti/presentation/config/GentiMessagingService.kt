@@ -36,9 +36,22 @@ class GentiMessagingService : FirebaseMessagingService() {
         }
     }
 
+    override fun handleIntent(intent: Intent?) {
+        intent?.let {
+            if (intent.getStringExtra(MSG_TITLE).isNullOrEmpty()) return
+            sendNotification(
+                mapOf(
+                    MSG_TITLE to it.getStringExtra(MSG_TITLE).toString(),
+                    MSG_BODY to it.getStringExtra(MSG_BODY).toString(),
+                ),
+            )
+        }
+    }
+
     private fun sendNotification(messageBody: Map<String, String>) {
         val notifyId = Random().nextInt()
-        val intent = Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        val intent =
+            MainActivity.getIntent(this, TYPE_DEFAULT).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent =
             PendingIntent.getActivity(
                 this,
@@ -71,7 +84,9 @@ class GentiMessagingService : FirebaseMessagingService() {
     }
 
     companion object {
-        private const val MSG_TITLE = "MSG_TITLE"
-        private const val MSG_BODY = "MSG_BODY"
+        private const val MSG_TITLE = "title"
+        private const val MSG_BODY = "body"
+
+        const val TYPE_DEFAULT = "TYPE_DEFAULT"
     }
 }

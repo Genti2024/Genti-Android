@@ -1,5 +1,6 @@
 package kr.genti.presentation.main
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -41,6 +42,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         initBnvItemSelectedListener()
         initCreateBtnListener()
         setStatusBarColor()
+        getNotificationIntent()
         observeStatusResult()
         observeNotificationState()
         observeResetResult()
@@ -88,6 +90,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private fun setStatusBarColor() {
         setStatusBarColorFromResource(R.color.background_white)
+    }
+
+    private fun getNotificationIntent() {
+        if (!intent.getStringExtra(EXTRA_TYPE).isNullOrEmpty()) {
+            viewModel.getGenerateStatusFromServer(true)
+        }
     }
 
     private fun navigateByGenerateStatus() {
@@ -174,5 +182,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     companion object {
         private const val DIALOG_FINISHED = "DIALOG_FINISHED"
         private const val DIALOG_ERROR = "DIALOG_ERROR"
+
+        private const val EXTRA_TYPE = "EXTRA_DEFAULT"
+
+        @JvmStatic
+        fun getIntent(
+            context: Context,
+            type: String? = null,
+        ) = Intent(context, MainActivity::class.java).apply {
+            putExtra(EXTRA_TYPE, type)
+        }
     }
 }
