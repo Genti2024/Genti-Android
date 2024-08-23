@@ -11,6 +11,8 @@
     <string name="manager_not_initialized_error_msg">Billing Manager is not initialized</string>
     <string name="view_type_error_msg">Unknown View Type : %d</string>
 
+    <string name="default_notification_channel_id">default_messaging_channel</string>
+
     <string name="btn_next">다음으로</string>
     <string name="btn_done">사진 생성하기</string>
 
