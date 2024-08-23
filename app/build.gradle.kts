@@ -6,7 +6,7 @@ plugins {
     kotlin("kapt")
     id("kotlin-parcelize")
     id("dagger.hilt.android.plugin")
-    id("com.google.android.gms.oss-licenses-plugin")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -118,6 +118,13 @@ dependencies {
 
     ThirdPartyDependencies.run {
         implementation(timber)
+    }
+
+    FirebaseDependencies.run {
+        implementation(firebaseBom)
+        implementation(messaging)
+        implementation(crashlytics)
+        implementation(analytics)
     }
 
     KakaoDependencies.run {
