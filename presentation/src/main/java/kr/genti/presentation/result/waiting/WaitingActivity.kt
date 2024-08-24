@@ -1,8 +1,12 @@
 package kr.genti.presentation.result.waiting
 
+import android.Manifest
 import android.app.Activity
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -51,8 +55,7 @@ class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait
     }
 
     private fun startPushDialogOrFinish() {
-        // 권한 체크
-        if (true) {
+        if (isPermissionNeeded()) {
             pushDialog = PushDialog()
             pushDialog?.show(supportFragmentManager, DIALOG_PUSH)
         } else {
@@ -60,6 +63,16 @@ class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait
             finish()
         }
     }
+
+    private fun isPermissionNeeded(): Boolean =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ContextCompat.checkSelfPermission(
+                this.applicationContext,
+                Manifest.permission.POST_NOTIFICATIONS,
+            ) != PackageManager.PERMISSION_GRANTED
+        } else {
+            false
+        }
 
     private fun setStatusBarTransparent() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
