@@ -134,4 +134,8 @@
     <string name="setting_quit_tv_subtitle">생성한 사진 내역이 모두 사라집니다.\n주의해주세요!</string>
     <string name="setting_quit_btn_quit">탈퇴하기</string>
 
+    <string name="push_tv_title">사진 완성 알림을 받아보세요!</string>
+    <string name="push_tv_subtitle">알림에 동의해 주시면\n사진이 완성되었을 때 알려드릴게요</string>
+    <string name="push_btn_get_alarm">사진 완성 알림 받기</string>
+
 </resources>

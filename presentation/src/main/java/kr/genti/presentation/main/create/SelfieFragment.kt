@@ -69,6 +69,7 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
 
     override fun onResume() {
         super.onResume()
+
         setSavedImages()
     }
 

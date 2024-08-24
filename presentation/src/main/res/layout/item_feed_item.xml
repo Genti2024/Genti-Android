@@ -31,9 +31,9 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/lottie_loading_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingHorizontal="70dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/lottie_loading_image" />

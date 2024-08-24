@@ -1,8 +1,12 @@
 package kr.genti.presentation.result.waiting
 
+import android.Manifest
 import android.app.Activity
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -19,6 +23,8 @@ import kr.genti.presentation.util.AmplitudeManager.PROPERTY_PAGE
 
 @AndroidEntryPoint
 class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait) {
+    private var pushDialog: PushDialog? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,8 +40,7 @@ class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait
                 mapOf(PROPERTY_PAGE to "picwaiting"),
                 mapOf(PROPERTY_BTN to "gomain"),
             )
-            setResult(Activity.RESULT_OK)
-            finish()
+            startPushDialogOrFinish()
         }
     }
 
@@ -43,12 +48,31 @@ class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait
         val onBackPressedCallback =
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    setResult(Activity.RESULT_OK)
-                    finish()
+                    startPushDialogOrFinish()
                 }
             }
         this.onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
+
+    private fun startPushDialogOrFinish() {
+        if (isPermissionNeeded()) {
+            pushDialog = PushDialog()
+            pushDialog?.show(supportFragmentManager, DIALOG_PUSH)
+        } else {
+            setResult(Activity.RESULT_OK)
+            finish()
+        }
+    }
+
+    private fun isPermissionNeeded(): Boolean =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ContextCompat.checkSelfPermission(
+                this.applicationContext,
+                Manifest.permission.POST_NOTIFICATIONS,
+            ) != PackageManager.PERMISSION_GRANTED
+        } else {
+            false
+        }
 
     private fun setStatusBarTransparent() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -56,5 +80,15 @@ class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait
             v.updatePadding(bottom = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom)
             insets
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        pushDialog = null
+    }
+
+    companion object {
+        private const val DIALOG_PUSH = "DIALOG_PUSH"
     }
 }

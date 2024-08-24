@@ -67,8 +67,8 @@
                 app:layout_constraintTop_toBottomOf="@id/iv_finished_ghost" />
 
             <com.airbnb.lottie.LottieAnimationView
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_finished_image_3_2"
                 app:layout_constraintEnd_toEndOf="@id/iv_finished_image_3_2"
                 app:layout_constraintStart_toStartOf="@id/iv_finished_image_3_2"
@@ -155,8 +155,8 @@
                 app:layout_constraintTop_toBottomOf="@id/iv_finished_logo_2_3" />
 
             <com.airbnb.lottie.LottieAnimationView
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_finished_image_2_3"
                 app:layout_constraintEnd_toEndOf="@id/iv_finished_image_2_3"
                 app:layout_constraintStart_toStartOf="@id/iv_finished_image_2_3"
