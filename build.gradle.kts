@@ -5,13 +5,16 @@ buildscript {
     }
 
     dependencies {
-        classpath(ClassPathPlugins.gradle)
-        classpath(ClassPathPlugins.kotlinGradle)
-        classpath(ClassPathPlugins.hilt)
-        classpath(ClassPathPlugins.oss)
+        ClassPathPlugins.run {
+            classpath(gradle)
+            classpath(kotlinGradlePlugin)
+            classpath(hiltGradlePlugin)
+            classpath(googleServices)
+            classpath(crashlyticsGradle)
+        }
     }
 }
 
-tasks.register("clean",Delete::class) {
+tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }

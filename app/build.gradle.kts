@@ -6,7 +6,8 @@ plugins {
     kotlin("kapt")
     id("kotlin-parcelize")
     id("dagger.hilt.android.plugin")
-    id("com.google.android.gms.oss-licenses-plugin")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -96,13 +97,10 @@ dependencies {
         implementation(coreKtx)
         implementation(appCompat)
         implementation(hilt)
-        implementation(workManager)
-        implementation(hiltWorkManager)
     }
 
     KaptDependencies.run {
         kapt(hiltCompiler)
-        kapt(hiltWorkManagerCompiler)
     }
 
     TestDependencies.run {
@@ -111,14 +109,16 @@ dependencies {
         androidTestImplementation(espresso)
     }
 
-    ThirdPartyDependencies.run {
+    RetrofitDependencies.run {
         implementation(platform(okHttpBom))
         implementation(okHttp)
         implementation(okHttpLoggingInterceptor)
         implementation(retrofit)
         implementation(retrofitJsonConverter)
+    }
+
+    ThirdPartyDependencies.run {
         implementation(timber)
-        implementation(ossLicense)
     }
 
     KakaoDependencies.run {

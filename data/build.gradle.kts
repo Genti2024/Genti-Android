@@ -46,12 +46,15 @@ dependencies {
         implementation(dateTime)
     }
 
-    ThirdPartyDependencies.run {
-        implementation(retrofit)
+    RetrofitDependencies.run {
+        implementation(platform(okHttpBom))
         implementation(okHttp)
-        implementation(okHttpBom)
         implementation(okHttpLoggingInterceptor)
+        implementation(retrofit)
         implementation(retrofitJsonConverter)
+    }
+
+    ThirdPartyDependencies.run {
         implementation(timber)
     }
 

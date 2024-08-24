@@ -8,8 +8,10 @@ import kr.genti.domain.entity.request.AuthRequestModel
 data class AuthRequestDto(
     @SerialName("accessToken")
     val accessToken: String,
+    @SerialName("fcmToken")
+    val fcmToken: String,
 ) {
     companion object {
-        fun AuthRequestModel.toDto() = AuthRequestDto(accessToken)
+        fun AuthRequestModel.toDto() = AuthRequestDto(accessToken, fcmToken)
     }
 }

@@ -1,5 +1,6 @@
 package kr.genti.presentation.main
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -23,6 +24,7 @@ import kr.genti.presentation.databinding.ActivityMainBinding
 import kr.genti.presentation.main.create.CreateFragment
 import kr.genti.presentation.main.feed.FeedFragment
 import kr.genti.presentation.main.profile.ProfileFragment
+import kr.genti.presentation.result.finished.FinishedActivity
 import kr.genti.presentation.result.waiting.WaitingActivity
 import kr.genti.presentation.util.AmplitudeManager
 
@@ -40,13 +42,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         initBnvItemSelectedListener()
         initCreateBtnListener()
         setStatusBarColor()
+        getNotificationIntent()
         observeStatusResult()
+        observeNotificationState()
         observeResetResult()
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.getGenerateStatusFromServer()
+        viewModel.getGenerateStatusFromServer(false)
     }
 
     fun initBnvItemIconTintList() {
@@ -88,6 +92,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         setStatusBarColorFromResource(R.color.background_white)
     }
 
+    private fun getNotificationIntent() {
+        if (!intent.getStringExtra(EXTRA_TYPE).isNullOrEmpty()) {
+            viewModel.getGenerateStatusFromServer(true)
+        }
+    }
+
     private fun navigateByGenerateStatus() {
         when (viewModel.currentStatus) {
             GenerateStatus.NEW_REQUEST_AVAILABLE -> {
@@ -118,6 +128,34 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         }.launchIn(lifecycleScope)
     }
 
+    private fun observeNotificationState() {
+        viewModel.notificationState.flowWithLifecycle(lifecycle).onEach { status ->
+            when (status) {
+                GenerateStatus.AWAIT_USER_VERIFICATION -> {
+                    if (viewModel.checkNewPictureInitialized()) {
+                        with(viewModel.newPicture.pictureGenerateResponse) {
+                            FinishedActivity.createIntent(
+                                this@MainActivity,
+                                this?.pictureGenerateResponseId ?: -1,
+                                this?.pictureCompleted?.url.orEmpty(),
+                                this?.pictureCompleted?.pictureRatio?.name.orEmpty(),
+                            ).apply { startActivity(this) }
+                        }
+                    } else {
+                        toast(stringOf(R.string.error_msg))
+                    }
+                }
+
+                GenerateStatus.CANCELED -> {
+                    createErrorDialog = CreateErrorDialog()
+                    createErrorDialog?.show(supportFragmentManager, DIALOG_ERROR)
+                }
+
+                else -> return@onEach
+            }
+        }.launchIn(lifecycleScope)
+    }
+
     private fun observeResetResult() {
         viewModel.postResetResult.flowWithLifecycle(lifecycle).onEach { result ->
             if (!result) {
@@ -144,5 +182,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     companion object {
         private const val DIALOG_FINISHED = "DIALOG_FINISHED"
         private const val DIALOG_ERROR = "DIALOG_ERROR"
+
+        private const val EXTRA_TYPE = "EXTRA_DEFAULT"
+
+        @JvmStatic
+        fun getIntent(
+            context: Context,
+            type: String? = null,
+        ) = Intent(context, MainActivity::class.java).apply {
+            putExtra(EXTRA_TYPE, type)
+        }
     }
 }

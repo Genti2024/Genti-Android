@@ -45,13 +45,15 @@ class CreateFinishedDialog :
 
     private fun initMoveToFinishBtnListener() {
         binding.btnMoveToFinish.setOnSingleClickListener {
-            if (viewModel.checkNerPictureInitialized()) {
-                FinishedActivity.createIntent(
-                    requireContext(),
-                    viewModel.newPicture.pictureGenerateResponse?.pictureGenerateResponseId ?: -1,
-                    viewModel.newPicture.pictureGenerateResponse?.pictureCompleted?.url.orEmpty(),
-                    viewModel.newPicture.pictureGenerateResponse?.pictureCompleted?.pictureRatio?.name.orEmpty(),
-                ).apply { startActivity(this) }
+            if (viewModel.checkNewPictureInitialized()) {
+                with(viewModel.newPicture.pictureGenerateResponse) {
+                    FinishedActivity.createIntent(
+                        requireContext(),
+                        this?.pictureGenerateResponseId ?: -1,
+                        this?.pictureCompleted?.url.orEmpty(),
+                        this?.pictureCompleted?.pictureRatio?.name.orEmpty(),
+                    ).apply { startActivity(this) }
+                }
             } else {
                 toast(stringOf(R.string.error_msg))
             }
