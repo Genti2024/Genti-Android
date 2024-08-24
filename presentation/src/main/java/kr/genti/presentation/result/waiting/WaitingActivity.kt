@@ -19,6 +19,8 @@ import kr.genti.presentation.util.AmplitudeManager.PROPERTY_PAGE
 
 @AndroidEntryPoint
 class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait) {
+    private var pushDialog: PushDialog? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,8 +36,7 @@ class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait
                 mapOf(PROPERTY_PAGE to "picwaiting"),
                 mapOf(PROPERTY_BTN to "gomain"),
             )
-            setResult(Activity.RESULT_OK)
-            finish()
+            startPushDialogOrFinish()
         }
     }
 
@@ -43,11 +44,21 @@ class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait
         val onBackPressedCallback =
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    setResult(Activity.RESULT_OK)
-                    finish()
+                    startPushDialogOrFinish()
                 }
             }
         this.onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
+    private fun startPushDialogOrFinish() {
+        // 권한 체크
+        if (true) {
+            pushDialog = PushDialog()
+            pushDialog?.show(supportFragmentManager, DIALOG_PUSH)
+        } else {
+            setResult(Activity.RESULT_OK)
+            finish()
+        }
     }
 
     private fun setStatusBarTransparent() {
@@ -56,5 +67,15 @@ class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait
             v.updatePadding(bottom = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom)
             insets
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        pushDialog = null
+    }
+
+    companion object {
+        private const val DIALOG_PUSH = "DIALOG_PUSH"
     }
 }
