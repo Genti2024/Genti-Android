@@ -16,7 +16,7 @@ import kr.genti.core.base.BaseDialog
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogPushBinding
-import timber.log.Timber
+import kr.genti.presentation.util.AmplitudeManager
 
 class PushDialog :
     BaseDialog<DialogPushBinding>(R.layout.dialog_push) {
@@ -55,6 +55,11 @@ class PushDialog :
 
     private fun initGetAlarmBtnListener() {
         binding.btnGetAlarm.setOnSingleClickListener {
+            AmplitudeManager.trackEvent(
+                AmplitudeManager.EVENT_CLICK_BTN,
+                mapOf(AmplitudeManager.PROPERTY_PAGE to "alarmagree"),
+                mapOf(AmplitudeManager.PROPERTY_BTN to "goalarm"),
+            )
             requestAlarmPermission()
         }
     }
@@ -62,7 +67,11 @@ class PushDialog :
     private fun setRequestPermissionLauncher() {
         requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-                Timber.d(isGranted.toString())
+                if (isGranted) {
+                    AmplitudeManager.updateBooleanProperties("user_alarm", true)
+                } else {
+                    AmplitudeManager.updateBooleanProperties("user_alarm", false)
+                }
                 dismiss()
             }
     }

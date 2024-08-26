@@ -59,6 +59,7 @@ class WaitingActivity : BaseActivity<ActivityWaitBinding>(R.layout.activity_wait
             pushDialog = PushDialog()
             pushDialog?.show(supportFragmentManager, DIALOG_PUSH)
         } else {
+            AmplitudeManager.updateBooleanProperties("user_alarm", true)
             setResult(Activity.RESULT_OK)
             finish()
         }
