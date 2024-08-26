@@ -55,6 +55,11 @@ class PushDialog :
 
     private fun initGetAlarmBtnListener() {
         binding.btnGetAlarm.setOnSingleClickListener {
+            AmplitudeManager.trackEvent(
+                AmplitudeManager.EVENT_CLICK_BTN,
+                mapOf(AmplitudeManager.PROPERTY_PAGE to "alarmagree"),
+                mapOf(AmplitudeManager.PROPERTY_BTN to "goalarm"),
+            )
             requestAlarmPermission()
         }
     }

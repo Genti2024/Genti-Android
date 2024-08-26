@@ -53,6 +53,7 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initView()
         initImageBtnListener()
         initSaveBtnListener()
         initShareBtnListener()
@@ -60,6 +61,10 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
         initUnwantedBtnListener()
         getIntentInfo()
         setStatusBarTransparent()
+    }
+
+    private fun initView() {
+        AmplitudeManager.trackEvent("view_picdone")
     }
 
     private fun initImageBtnListener() {

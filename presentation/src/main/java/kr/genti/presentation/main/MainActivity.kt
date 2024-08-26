@@ -133,6 +133,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             when (status) {
                 GenerateStatus.AWAIT_USER_VERIFICATION -> {
                     if (viewModel.checkNewPictureInitialized()) {
+                        AmplitudeManager.trackEvent(
+                            "click_push_notification",
+                            mapOf("push_type" to "creating_success"),
+                        )
                         with(viewModel.newPicture.pictureGenerateResponse) {
                             FinishedActivity.createIntent(
                                 this@MainActivity,
@@ -147,6 +151,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 }
 
                 GenerateStatus.CANCELED -> {
+                    AmplitudeManager.trackEvent(
+                        "click_push_notification",
+                        mapOf("push_type" to "creating_fail"),
+                    )
                     createErrorDialog = CreateErrorDialog()
                     createErrorDialog?.show(supportFragmentManager, DIALOG_ERROR)
                 }
