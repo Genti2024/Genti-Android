@@ -100,15 +100,17 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(R.layout.activity_sig
     private fun setAmplitudeUserProperty(state: UiState.Success<SignUpUserModel>) {
         AmplitudeManager.apply {
             trackEvent("complete_infoget")
-            updateProperties("user_email", state.data.email)
-            updateProperties("user_platform", state.data.lastLoginOauthPlatform)
-            updateProperties("user_nickname", state.data.nickname)
-            updateProperties("user_birth_year", state.data.birthYear)
-            updateProperties("user_sex", state.data.sex)
+            updateStringProperties("user_email", state.data.email)
+            updateStringProperties("user_platform", state.data.lastLoginOauthPlatform)
+            updateStringProperties("user_nickname", state.data.nickname)
+            updateStringProperties("user_birth_year", state.data.birthYear)
+            updateStringProperties("user_sex", state.data.sex)
             updateIntProperties("user_share", 0)
             updateIntProperties("user_picturedownload", 0)
             updateIntProperties("user_main_scroll", 0)
             updateIntProperties("user_promptsuggest_refresh", 0)
+            updateIntProperties("user_piccreate", 0)
+            updateBooleanProperties("user_alarm", false)
         }
     }
 }

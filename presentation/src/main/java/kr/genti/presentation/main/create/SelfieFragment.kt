@@ -255,6 +255,7 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
         viewModel.totalGeneratingState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
+                    AmplitudeManager.plusIntProperties("user_piccreate")
                     waitingResult.launch(Intent(requireContext(), WaitingActivity::class.java))
                     with(viewModel) {
                         modCurrentPercent(-67)
