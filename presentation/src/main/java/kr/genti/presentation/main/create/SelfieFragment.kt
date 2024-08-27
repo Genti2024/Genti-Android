@@ -119,7 +119,10 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
                 mapOf(PROPERTY_PAGE to "create3"),
                 mapOf(PROPERTY_BTN to "createpic"),
             )
-            viewModel.getS3PresignedUrls()
+            with(viewModel) {
+                isCompleted.value = false
+                getS3PresignedUrls()
+            }
         }
     }
 
