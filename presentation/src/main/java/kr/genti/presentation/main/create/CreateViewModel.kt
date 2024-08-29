@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -52,7 +54,6 @@ class CreateViewModel
         private val _totalGeneratingState = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
         val totalGeneratingState: StateFlow<UiState<Boolean>> = _totalGeneratingState
 
-        private var uploadCheckList = mutableListOf(false, false, false, true)
         private var plusImageS3Key = KeyRequestModel(null)
         private var imageS3KeyList = listOf<KeyRequestModel>()
 
@@ -84,96 +85,84 @@ class CreateViewModel
                 selectedRatio.value != null && selectedAngle.value != null && selectedCoverage.value != null
         }
 
-        fun getS3PresignedUrls() {
+        fun startSendingImages() {
             _totalGeneratingState.value = UiState.Loading
-            getSingleS3Url()
-            getMultiUrls()
-        }
-
-        private fun getSingleS3Url() {
-            if (plusImage.id != (-1).toLong()) {
-                uploadCheckList[3] = false
-                viewModelScope.launch {
-                    createRepository.getS3SingleUrl(
-                        S3RequestModel(
-                            FileType.USER_UPLOADED_IMAGE,
-                            plusImage.name,
-                        ),
-                    )
-                        .onSuccess { uriModel ->
-                            plusImageS3Key = KeyRequestModel(uriModel.s3Key)
-                            postSingleImage(uriModel)
-                        }.onFailure {
-                            _totalGeneratingState.value = UiState.Failure(it.message.toString())
-                        }
-                }
-            }
-        }
-
-        private fun getMultiUrls() {
             viewModelScope.launch {
-                createRepository.getS3MultiUrl(
-                    listOf(
-                        S3RequestModel(FileType.USER_UPLOADED_IMAGE, imageList[0].name),
-                        S3RequestModel(FileType.USER_UPLOADED_IMAGE, imageList[1].name),
-                        S3RequestModel(FileType.USER_UPLOADED_IMAGE, imageList[2].name),
-                    ),
-                ).onSuccess { uriList ->
-                    imageS3KeyList = uriList.map { KeyRequestModel(it.s3Key) }
-                    postMultiImage(uriList)
+                runCatching {
+                    listOfNotNull(
+                        if (plusImage.id != (-1).toLong()) async { getSingleS3Url() } else null,
+                        async { getMultiS3Urls() },
+                    ).awaitAll()
+                }.onSuccess {
+                    postToGenerateImage()
                 }.onFailure {
                     _totalGeneratingState.value = UiState.Failure(it.message.toString())
                 }
             }
         }
 
-        private fun postSingleImage(s3urlModel: S3PresignedUrlModel) {
+        private suspend fun getSingleS3Url() {
+            createRepository.getS3SingleUrl(
+                S3RequestModel(FileType.USER_UPLOADED_IMAGE, plusImage.name),
+            )
+                .onSuccess { uriModel ->
+                    plusImageS3Key = KeyRequestModel(uriModel.s3Key)
+                    postSingleImage(uriModel)
+                }.onFailure {
+                    _totalGeneratingState.value = UiState.Failure(it.message.toString())
+                }
+        }
+
+        private suspend fun getMultiS3Urls() {
+            createRepository.getS3MultiUrl(
+                listOf(
+                    S3RequestModel(FileType.USER_UPLOADED_IMAGE, imageList[0].name),
+                    S3RequestModel(FileType.USER_UPLOADED_IMAGE, imageList[1].name),
+                    S3RequestModel(FileType.USER_UPLOADED_IMAGE, imageList[2].name),
+                ),
+            ).onSuccess { uriList ->
+                imageS3KeyList = uriList.map { KeyRequestModel(it.s3Key) }
+                postMultiImage(uriList)
+            }.onFailure {
+                _totalGeneratingState.value = UiState.Failure(it.message.toString())
+            }
+        }
+
+        private suspend fun postSingleImage(urlModel: S3PresignedUrlModel) {
+            uploadRepository.uploadImage(urlModel.url, plusImage.url)
+                .onFailure {
+                    _totalGeneratingState.value = UiState.Failure(it.message.toString())
+                }
+        }
+
+        private suspend fun postMultiImage(urlModelList: List<S3PresignedUrlModel>) {
+            urlModelList.mapIndexed { i, urlModel ->
+                viewModelScope.async {
+                    uploadRepository.uploadImage(urlModel.url, imageList[i].url)
+                        .onFailure {
+                            _totalGeneratingState.value = UiState.Failure(it.message.toString())
+                        }
+                }
+            }.awaitAll()
+        }
+
+        private fun postToGenerateImage() {
             viewModelScope.launch {
-                uploadRepository.uploadImage(s3urlModel.url, plusImage.url)
+                createRepository.postToCreate(
+                    CreateRequestModel(
+                        prompt.value ?: return@launch,
+                        plusImageS3Key,
+                        imageS3KeyList,
+                        selectedAngle.value ?: return@launch,
+                        selectedCoverage.value ?: return@launch,
+                        selectedRatio.value ?: return@launch,
+                    ),
+                )
                     .onSuccess {
-                        plusImageS3Key = KeyRequestModel(s3urlModel.s3Key)
-                        uploadCheckList[3] = true
-                        checkAllUploadFinished()
+                        _totalGeneratingState.value = UiState.Success(it)
                     }.onFailure {
                         _totalGeneratingState.value = UiState.Failure(it.message.toString())
                     }
-            }
-        }
-
-        private fun postMultiImage(s3urlList: List<S3PresignedUrlModel>) {
-            viewModelScope.launch {
-                for (i in 0..2) {
-                    uploadRepository.uploadImage(s3urlList[i].url, imageList[i].url)
-                        .onSuccess {
-                            uploadCheckList[i] = true
-                            if (i == 2) checkAllUploadFinished()
-                        }.onFailure {
-                            _totalGeneratingState.value = UiState.Failure(it.message.toString())
-                            return@launch
-                        }
-                }
-            }
-        }
-
-        private fun checkAllUploadFinished() {
-            if (uploadCheckList.all { it }) {
-                viewModelScope.launch {
-                    createRepository.postToCreate(
-                        CreateRequestModel(
-                            prompt.value ?: return@launch,
-                            plusImageS3Key,
-                            imageS3KeyList,
-                            selectedAngle.value ?: return@launch,
-                            selectedCoverage.value ?: return@launch,
-                            selectedRatio.value ?: return@launch,
-                        ),
-                    )
-                        .onSuccess {
-                            _totalGeneratingState.value = UiState.Success(it)
-                        }.onFailure {
-                            _totalGeneratingState.value = UiState.Failure(it.message.toString())
-                        }
-                }
             }
         }
 

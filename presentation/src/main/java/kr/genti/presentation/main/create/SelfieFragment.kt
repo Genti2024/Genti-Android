@@ -121,7 +121,7 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
             )
             with(viewModel) {
                 isCompleted.value = false
-                getS3PresignedUrls()
+                startSendingImages()
             }
         }
     }
