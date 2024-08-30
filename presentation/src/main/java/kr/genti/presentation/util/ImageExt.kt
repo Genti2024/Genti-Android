@@ -22,6 +22,7 @@ import coil.request.ImageRequest
 import coil.request.SuccessResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.presentation.R
 
@@ -60,28 +61,36 @@ fun Activity.downloadImage(
                     .data(imageUrl)
                     .build()
 
-            val bitmap = (imageLoader.execute(request) as SuccessResult).drawable.toBitmap()
+            if (imageLoader.execute(request) is SuccessResult) {
+                val bitmap = imageLoader.execute(request).drawable?.toBitmap()
+                val contentValues =
+                    ContentValues().apply {
+                        put(MediaStore.Images.Media.DISPLAY_NAME, imageFileName)
+                        put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            put(
+                                MediaStore.Images.Media.RELATIVE_PATH,
+                                Environment.DIRECTORY_PICTURES,
+                            )
+                        }
+                    }
 
-            val contentValues =
-                ContentValues().apply {
-                    put(MediaStore.Images.Media.DISPLAY_NAME, imageFileName)
-                    put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                val contentResolver = contentResolver
+                val uri =
+                    contentResolver.insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        contentValues,
+                    )
+
+                uri?.let { imageUri ->
+                    contentResolver.openOutputStream(imageUri)?.use { outputStream ->
+                        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
                     }
                 }
-
-            val contentResolver = contentResolver
-            val uri =
-                contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-
-            uri?.let { imageUri ->
-                contentResolver.openOutputStream(imageUri)?.use { outputStream ->
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-                }
+                toast(getString(R.string.profile_image_download_success))
+            } else {
+                toast(stringOf(R.string.error_msg))
             }
         }
-
-        toast(getString(R.string.profile_image_download_success))
     }
 }

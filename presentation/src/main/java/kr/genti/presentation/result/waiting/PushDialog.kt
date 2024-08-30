@@ -2,6 +2,7 @@ package kr.genti.presentation.result.waiting
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
@@ -33,8 +34,8 @@ class PushDialog :
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
 
         setRequestPermissionLauncher()
     }

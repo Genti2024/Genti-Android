@@ -28,6 +28,8 @@ import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.colorOf
 import kr.genti.core.extension.dpToPx
 import kr.genti.core.extension.setOnSingleClickListener
+import kr.genti.core.extension.stringOf
+import kr.genti.core.extension.toast
 import kr.genti.domain.entity.response.ImageModel
 import kr.genti.domain.enums.PictureRatio.Companion.toPictureRatio
 import kr.genti.domain.enums.PictureType
@@ -101,28 +103,35 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
 
     private fun initShareBtnListener() {
         binding.btnShare.setOnSingleClickListener {
-            AmplitudeManager.apply {
-                trackEvent(
-                    EVENT_CLICK_BTN,
-                    mapOf(PROPERTY_PAGE to "picdone"),
-                    mapOf(PROPERTY_BTN to "picshare"),
-                )
-                plusIntProperties("user_share")
-            }
-            Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_STREAM, getTemporaryUri())
-                type = ProfileImageDialog.IMAGE_TYPE
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                startActivity(Intent.createChooser(this, SHARE_IMAGE_CHOOSER))
+            getTemporaryUri()?.let { uri ->
+                AmplitudeManager.apply {
+                    trackEvent(
+                        EVENT_CLICK_BTN,
+                        mapOf(PROPERTY_PAGE to "picdone"),
+                        mapOf(PROPERTY_BTN to "picshare"),
+                    )
+                    plusIntProperties("user_share")
+                }
+                Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_STREAM, uri)
+                    type = ProfileImageDialog.IMAGE_TYPE
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    startActivity(Intent.createChooser(this, SHARE_IMAGE_CHOOSER))
+                }
+            } ?: run {
+                toast(stringOf(R.string.error_msg))
             }
         }
     }
 
-    private fun getTemporaryUri(): Uri {
+    private fun getTemporaryUri(): Uri? {
         val tempFile = File(cacheDir, ProfileImageDialog.TEMP_FILE_NAME)
         val imageView: ImageView =
             if (viewModel.isRatioGaro) binding.ivFinishedImage32 else binding.ivFinishedImage23
+        if (imageView.drawable == null || imageView.drawable !is BitmapDrawable) {
+            return null
+        }
         FileOutputStream(tempFile).use { out ->
             (imageView.drawable as BitmapDrawable).bitmap.compress(
                 Bitmap.CompressFormat.PNG,

@@ -53,8 +53,12 @@ class PoseFragment() : BaseFragment<FragmentPoseBinding>(R.layout.fragment_pose)
         val onBackPressedCallback =
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    findNavController().popBackStack()
-                    viewModel.modCurrentPercent(-33)
+                    if (isAdded) {
+                        findNavController().popBackStack()
+                        viewModel.modCurrentPercent(-33)
+                    } else {
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                    }
                 }
             }
         requireActivity().onBackPressedDispatcher.addCallback(
