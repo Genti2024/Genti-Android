@@ -81,8 +81,12 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
         val onBackPressedCallback =
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    findNavController().popBackStack()
-                    viewModel.modCurrentPercent(-34)
+                    if (isAdded) {
+                        findNavController().popBackStack()
+                        viewModel.modCurrentPercent(-34)
+                    } else {
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                    }
                 }
             }
         requireActivity().onBackPressedDispatcher.addCallback(
