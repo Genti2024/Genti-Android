@@ -22,7 +22,7 @@ import coil.request.ImageRequest
 import coil.request.SuccessResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kr.genti.core.extension.stringOf
+import kotlinx.coroutines.withContext
 import kr.genti.core.extension.toast
 import kr.genti.presentation.R
 
@@ -61,8 +61,9 @@ fun Activity.downloadImage(
                     .data(imageUrl)
                     .build()
 
-            if (imageLoader.execute(request) is SuccessResult) {
-                val bitmap = imageLoader.execute(request).drawable?.toBitmap()
+            val result = imageLoader.execute(request)
+            if (result is SuccessResult) {
+                val bitmap = result.drawable.toBitmap()
                 val contentValues =
                     ContentValues().apply {
                         put(MediaStore.Images.Media.DISPLAY_NAME, imageFileName)
@@ -84,12 +85,16 @@ fun Activity.downloadImage(
 
                 uri?.let { imageUri ->
                     contentResolver.openOutputStream(imageUri)?.use { outputStream ->
-                        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
                     }
                 }
-                toast(getString(R.string.profile_image_download_success))
+                withContext(Dispatchers.Main) {
+                    toast(getString(R.string.profile_image_download_success))
+                }
             } else {
-                toast(stringOf(R.string.error_msg))
+                withContext(Dispatchers.Main) {
+                    toast(getString(R.string.error_msg))
+                }
             }
         }
     }
