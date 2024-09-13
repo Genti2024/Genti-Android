@@ -25,11 +25,7 @@ class SplashViewModel
         private val _reissueTokenResult = MutableSharedFlow<Boolean>()
         val reissueTokenResult: SharedFlow<Boolean> = _reissueTokenResult
 
-        init {
-            getAutoLoginState()
-        }
-
-        private fun getAutoLoginState() {
+        fun getAutoLoginState() {
             viewModelScope.launch {
                 delay(DELAY_SPLASH)
                 if (userRepository.getUserRole() == ROLE_USER) {

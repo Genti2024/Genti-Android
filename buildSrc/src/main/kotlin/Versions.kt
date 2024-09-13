@@ -41,4 +41,5 @@ object Versions {
     const val firebaseBomVersion = "33.1.2"
     const val googleServicesVersion = "4.4.2"
     const val crashlyticsVersion = "2.9.9"
+    const val appUpdateVersion = "2.1.0"
 }

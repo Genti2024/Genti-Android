@@ -61,6 +61,7 @@ dependencies {
         implementation(lifecycleJava8)
         implementation(splashScreen)
         implementation(hilt)
+        implementation(appUpdate)
     }
 
     KaptDependencies.run {

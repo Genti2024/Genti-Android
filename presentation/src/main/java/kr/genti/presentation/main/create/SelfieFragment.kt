@@ -84,12 +84,10 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
                     if (isAdded) {
                         findNavController().popBackStack()
                         viewModel.modCurrentPercent(-34)
-                    } else {
-                        requireActivity().onBackPressedDispatcher.onBackPressed()
                     }
                 }
             }
-        requireActivity().onBackPressedDispatcher.addCallback(
+        activity?.onBackPressedDispatcher?.addCallback(
             requireActivity(),
             onBackPressedCallback,
         )

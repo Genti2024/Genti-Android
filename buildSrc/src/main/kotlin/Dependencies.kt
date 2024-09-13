@@ -28,6 +28,7 @@ object AndroidXDependencies {
         "androidx.lifecycle:lifecycle-common-java8:${Versions.lifecycleVersion}"
 
     const val hilt = "com.google.dagger:hilt-android:${Versions.hiltVersion}"
+    const val appUpdate = "com.google.android.play:app-update-ktx:${Versions.appUpdateVersion}"
 }
 
 object TestDependencies {
