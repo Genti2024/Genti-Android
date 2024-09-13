@@ -3,6 +3,7 @@ package kr.genti.data.service
 import kr.genti.data.dto.BaseResponse
 import kr.genti.data.dto.request.ReportRequestDto
 import kr.genti.data.dto.response.GenerateStatusDto
+import kr.genti.data.dto.response.OpenchatDto
 import kr.genti.data.dto.response.PicturePagedListDto
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -42,4 +43,7 @@ interface GenerateService {
     suspend fun getCanceledToReset(
         @Path("pictureGenerateRequestId") requestId: String,
     ): BaseResponse<Boolean>
+
+    @GET("api/v1/open-chat")
+    suspend fun getOpenchatData(): BaseResponse<OpenchatDto>
 }

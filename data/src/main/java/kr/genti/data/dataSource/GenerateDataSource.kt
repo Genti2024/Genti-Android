@@ -3,6 +3,7 @@ package kr.genti.data.dataSource
 import kr.genti.data.dto.BaseResponse
 import kr.genti.data.dto.request.ReportRequestDto
 import kr.genti.data.dto.response.GenerateStatusDto
+import kr.genti.data.dto.response.OpenchatDto
 import kr.genti.data.dto.response.PicturePagedListDto
 
 interface GenerateDataSource {
@@ -25,4 +26,6 @@ interface GenerateDataSource {
     suspend fun postVerifyGenerateState(responseId: Int): BaseResponse<Boolean>
 
     suspend fun getCanceledToReset(requestId: String): BaseResponse<Boolean>
+
+    suspend fun getOpenchatData(): BaseResponse<OpenchatDto>
 }
