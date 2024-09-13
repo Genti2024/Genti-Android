@@ -2,6 +2,8 @@ package kr.genti.presentation.result.openchat
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.LinearGradient
+import android.graphics.Shader
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -53,7 +55,21 @@ class OpenchatActivity : BaseActivity<ActivityOpenchatBinding>(R.layout.activity
     }
 
     private fun setTitleTextGradation() {
-        // TODO
+        binding.tvOpenchatTitleUp.apply {
+            paint.shader =
+                LinearGradient(
+                    0f,
+                    0f,
+                    paint.measureText(text.toString()),
+                    textSize,
+                    intArrayOf(
+                        Color.parseColor("#6CEE2A"),
+                        Color.parseColor("#1CF48B"),
+                    ),
+                    null,
+                    Shader.TileMode.CLAMP,
+                )
+        }
     }
 
     private fun observeGetOpenchatState() {
