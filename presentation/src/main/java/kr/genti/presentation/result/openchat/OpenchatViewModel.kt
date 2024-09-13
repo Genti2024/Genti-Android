@@ -22,6 +22,8 @@ class OpenchatViewModel
         private val _getOpenchatState = MutableStateFlow<UiState<OpenchatModel>>(UiState.Empty)
         val getOpenchatState: StateFlow<UiState<OpenchatModel>> = _getOpenchatState
 
+        var isAccessible = true
+
         init {
             getOpenchatData()
         }
@@ -37,5 +39,9 @@ class OpenchatViewModel
                         _getOpenchatState.value = UiState.Failure(it.message.toString())
                     }
             }
+        }
+
+        fun setIsChatAccessible() {
+            userRepository.setIsChatAccessible(isAccessible)
         }
     }
