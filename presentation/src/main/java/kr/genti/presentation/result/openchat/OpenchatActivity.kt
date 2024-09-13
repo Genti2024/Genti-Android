@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -36,11 +37,15 @@ class OpenchatActivity : BaseActivity<ActivityOpenchatBinding>(R.layout.activity
         initExitBtnListener()
         initAccessAgainBtnListener()
         setTitleTextGradation()
+        setBackPressed()
         observeGetOpenchatState()
     }
 
     private fun initExitBtnListener() {
-        binding.btnExit.setOnSingleClickListener { navigateToMain() }
+        binding.btnExit.setOnSingleClickListener {
+            viewModel.setIsChatAccessible()
+            navigateToMain()
+        }
     }
 
     private fun navigateToMain() {
@@ -52,7 +57,7 @@ class OpenchatActivity : BaseActivity<ActivityOpenchatBinding>(R.layout.activity
     }
 
     private fun initAccessAgainBtnListener() {
-        binding.btnAccessAgain.setOnSingleClickListener {
+        binding.btnAccessAgain.setOnClickListener {
             if (viewModel.isAccessible) {
                 viewModel.isAccessible = false
                 binding.ivAccessAgain.load(R.drawable.ic_check_checked)
@@ -83,6 +88,13 @@ class OpenchatActivity : BaseActivity<ActivityOpenchatBinding>(R.layout.activity
         }
     }
 
+    private fun setBackPressed() {
+        onBackPressedDispatcher.addCallback(this) {
+            viewModel.setIsChatAccessible()
+            finish()
+        }
+    }
+
     private fun observeGetOpenchatState() {
         viewModel.getOpenchatState.flowWithLifecycle(lifecycle).distinctUntilChanged()
             .onEach { state ->
@@ -105,7 +117,6 @@ class OpenchatActivity : BaseActivity<ActivityOpenchatBinding>(R.layout.activity
         binding.btnEnterOpenchat.setOnSingleClickListener {
             viewModel.setIsChatAccessible()
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-            navigateToMain()
         }
     }
 
@@ -114,8 +125,8 @@ class OpenchatActivity : BaseActivity<ActivityOpenchatBinding>(R.layout.activity
             SpannableString(getString(R.string.openchat_tv_guide, count)).apply {
                 setSpan(
                     ForegroundColorSpan(Color.parseColor("#49F155")),
-                    4,
-                    8 + count.toString().length,
+                    3,
+                    7 + count.toString().length,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
                 )
             }

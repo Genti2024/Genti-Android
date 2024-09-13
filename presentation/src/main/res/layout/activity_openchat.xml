@@ -107,13 +107,11 @@
             app:layout_constraintStart_toStartOf="parent" />
 
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/btn_access_again"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
-            android:gravity="center"
-            android:orientation="horizontal"
             android:padding="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -125,18 +123,26 @@
                 android:layout_marginTop="1dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:src="@drawable/ic_check_unchecked" />
 
             <TextView
                 android:id="@+id/tv_access_again"
                 style="@style/TextAppearance.Genti.BodyNormal"
                 android:layout_width="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="30dp"
                 android:layout_height="wrap_content"
                 android:text="@string/openchat_btn_access"
                 android:textColor="#990D2D2B"
                 android:textSize="16sp" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
