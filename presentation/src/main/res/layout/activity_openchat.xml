@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:gravity="center"
-            android:text="내가 만든 특별한 사진,"
+            android:text="@string/openchat_tv_title_up"
             android:textColor="@color/green_1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +44,7 @@
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="-3dp"
             android:gravity="center"
-            android:text="다른 사람에게 보여주고 싶다면?"
+            android:text="@string/openchat_tv_title_down"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_openchat_title_up" />
@@ -57,7 +57,7 @@
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:lineSpacingMultiplier="1.0"
-            android:text="젠티 사진 공유방에서 사진을 자랑하고\n다른 사람의 사진도 구경해보세요!"
+            android:text="@string/openchat_tv_subtitle"
             android:textColor="#990D2D2B"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -99,12 +99,12 @@
             android:background="@drawable/shape_green_new_fill_10_rect"
             android:gravity="center"
             android:paddingVertical="14dp"
-            android:text="사진 공유방 참여하기"
+            android:text="@string/openchat_btn_enter"
             android:textColor="#0D2D2B"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@id/btn_access_again"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
         <LinearLayout
@@ -122,16 +122,18 @@
             <ImageView
                 android:id="@+id/iv_access_again"
                 android:layout_width="wrap_content"
+                android:layout_marginTop="1dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:src="@drawable/ic_check_checked" />
+                android:layout_marginEnd="6dp"
+                android:src="@drawable/ic_check_unchecked" />
 
             <TextView
                 android:id="@+id/tv_access_again"
                 style="@style/TextAppearance.Genti.BodyNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="이 페이지 다시 보지 않기"
+                android:text="@string/openchat_btn_access"
+                android:textColor="#990D2D2B"
                 android:textSize="16sp" />
 
         </LinearLayout>

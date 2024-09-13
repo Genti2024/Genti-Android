@@ -137,5 +137,10 @@
     <string name="push_tv_title">사진 완성 알림을 받아보세요!</string>
     <string name="push_tv_subtitle">알림에 동의해 주시면\n사진이 완성되었을 때 알려드릴게요</string>
     <string name="push_btn_get_alarm">사진 완성 알림 받기</string>
+    <string name="openchat_tv_title_up">내가 만든 특별한 사진,</string>
+    <string name="openchat_tv_title_down">다른 사람에게 보여주고 싶다면?</string>
+    <string name="openchat_tv_subtitle">젠티 사진 공유방에서 사진을 자랑하고\n다른 사람의 사진도 구경해보세요!</string>
+    <string name="openchat_btn_enter">사진 공유방 참여하기</string>
+    <string name="openchat_btn_access">이 페이지 다시 보지 않기</string>
 
 </resources>
