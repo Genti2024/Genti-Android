@@ -2,6 +2,7 @@ package kr.genti.domain.repository
 
 import kr.genti.domain.entity.request.ReportRequestModel
 import kr.genti.domain.entity.response.GenerateStatusModel
+import kr.genti.domain.entity.response.OpenchatModel
 import kr.genti.domain.entity.response.PicturePagedListModel
 
 interface GenerateRepository {
@@ -24,4 +25,6 @@ interface GenerateRepository {
     suspend fun postVerifyGenerateState(responseId: Int): Result<Boolean>
 
     suspend fun getCanceledToReset(requestId: String): Result<Boolean>
+
+    suspend fun getOpenchatData(): Result<OpenchatModel>
 }
