@@ -6,6 +6,9 @@ import android.graphics.LinearGradient
 import android.graphics.Shader
 import android.net.Uri
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -101,6 +104,14 @@ class OpenchatActivity : BaseActivity<ActivityOpenchatBinding>(R.layout.activity
     }
 
     private fun setGuideTextInfo(count: Int) {
-        // TODO
+        binding.tvOpenchatGuide.text =
+            SpannableString(getString(R.string.openchat_tv_guide, count)).apply {
+                setSpan(
+                    ForegroundColorSpan(Color.parseColor("#49F155")),
+                    4,
+                    8 + count.toString().length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
+                )
+            }
     }
 }
