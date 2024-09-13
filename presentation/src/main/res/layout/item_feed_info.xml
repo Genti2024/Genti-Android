@@ -53,6 +53,7 @@
             android:gravity="center"
             android:text="@string/feed_tv_genfluencer_guide"
             android:textColor="@color/grey_2"
+            android:textSize="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/iv_feed_gradient" />

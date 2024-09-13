@@ -21,64 +21,80 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/iv_wait_logo"
-            android:layout_width="197dp"
+        <ScrollView
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="84dp"
-            android:adjustViewBounds="true"
-            android:src="@drawable/logo_genti_3d"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/btn_wait_return"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/iv_wait_title"
-            android:layout_width="wrap_content"
-            android:src="@drawable/img_waiting_title"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_wait_logo" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/iv_wait_character"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="58dp"
-            android:layout_marginTop="30dp"
-            android:adjustViewBounds="true"
-            android:src="@drawable/img_wait_character"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_wait_title" />
+                <ImageView
+                    android:id="@+id/iv_wait_logo"
+                    android:layout_width="197dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="84dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/logo_genti_3d"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_wait_time"
-            style="@style/TextAppearance.Genti.BodyNormal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:gravity="center"
-            android:text="@string/wait_tv_time"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_wait_character" />
+                <ImageView
+                    android:id="@+id/iv_wait_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:src="@drawable/img_waiting_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_wait_logo" />
 
-        <TextView
-            android:id="@+id/tv_wait_time_guide"
-            style="@style/TextAppearance.Genti.BodySmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:gravity="center"
-            android:text="@string/wait_tv_time_guide"
-            android:textColor="@color/grey_1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_wait_time" />
+                <ImageView
+                    android:id="@+id/iv_wait_character"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="58dp"
+                    android:layout_marginTop="30dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/img_wait_character"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_wait_title" />
+
+                <TextView
+                    android:id="@+id/tv_wait_time"
+                    style="@style/TextAppearance.Genti.BodyNormal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:text="@string/wait_tv_time"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_wait_character" />
+
+                <TextView
+                    android:id="@+id/tv_wait_time_guide"
+                    style="@style/TextAppearance.Genti.BodySmall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:gravity="center"
+                    android:text="@string/wait_tv_time_guide"
+                    android:textColor="@color/grey_1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_wait_time" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 
         <TextView
             android:id="@+id/btn_wait_return"
