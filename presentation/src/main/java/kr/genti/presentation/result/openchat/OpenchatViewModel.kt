@@ -31,7 +31,7 @@ class OpenchatViewModel
             viewModelScope.launch {
                 generateRepository.getOpenchatData()
                     .onSuccess {
-                        // TODO accessible 저장
+                        userRepository.setIsChatAccessible(it.accessible)
                         _getOpenchatState.value = UiState.Success(it)
                     }.onFailure {
                         _getOpenchatState.value = UiState.Failure(it.message.toString())

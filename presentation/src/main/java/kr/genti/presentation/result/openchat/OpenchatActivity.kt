@@ -45,7 +45,7 @@ class OpenchatActivity : BaseActivity<ActivityOpenchatBinding>(R.layout.activity
                 when (state) {
                     is UiState.Success -> {
                         with(state.data) {
-                            if (accessible) {
+                            if (!accessible) {
                                 // TODO
                             }
                             url?.let { initEnterBtnListener(it) }
