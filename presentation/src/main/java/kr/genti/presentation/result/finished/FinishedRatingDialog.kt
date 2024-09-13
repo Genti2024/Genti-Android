@@ -18,6 +18,7 @@ import kr.genti.core.extension.toast
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogFinishedRatingBinding
 import kr.genti.presentation.main.MainActivity
+import kr.genti.presentation.result.openchat.OpenchatActivity
 import kr.genti.presentation.util.AmplitudeManager
 
 class FinishedRatingDialog :
@@ -70,9 +71,13 @@ class FinishedRatingDialog :
     }
 
     private fun navigateToMain() {
-        Intent(requireActivity(), MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            startActivity(this)
+        if (viewModel.getIsOpenchatAccessible()) {
+            startActivity(Intent(requireActivity(), OpenchatActivity::class.java))
+        } else {
+            Intent(requireActivity(), MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                startActivity(this)
+            }
         }
         dismiss()
     }

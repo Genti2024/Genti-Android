@@ -24,6 +24,7 @@ import kr.genti.core.extension.toast
 import kr.genti.core.state.UiState
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityOpenchatBinding
+import kr.genti.presentation.main.MainActivity
 
 @AndroidEntryPoint
 class OpenchatActivity : BaseActivity<ActivityOpenchatBinding>(R.layout.activity_openchat) {
@@ -39,8 +40,15 @@ class OpenchatActivity : BaseActivity<ActivityOpenchatBinding>(R.layout.activity
     }
 
     private fun initExitBtnListener() {
-        // TODO
-        binding.btnExit.setOnSingleClickListener { }
+        binding.btnExit.setOnSingleClickListener { navigateToMain() }
+    }
+
+    private fun navigateToMain() {
+        Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(this)
+        }
+        finish()
     }
 
     private fun initAccessAgainBtnListener() {
@@ -81,9 +89,7 @@ class OpenchatActivity : BaseActivity<ActivityOpenchatBinding>(R.layout.activity
                 when (state) {
                     is UiState.Success -> {
                         with(state.data) {
-                            if (!accessible) {
-                                // TODO
-                            }
+                            if (!accessible) navigateToMain()
                             url?.let { initEnterBtnListener(it) }
                             count?.let { setGuideTextInfo(it) }
                         }
@@ -97,9 +103,9 @@ class OpenchatActivity : BaseActivity<ActivityOpenchatBinding>(R.layout.activity
 
     private fun initEnterBtnListener(url: String) {
         binding.btnEnterOpenchat.setOnSingleClickListener {
-            // TODO
             viewModel.setIsChatAccessible()
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+            navigateToMain()
         }
     }
 

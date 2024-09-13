@@ -11,6 +11,7 @@ import kr.genti.domain.entity.request.ReportRequestModel
 import kr.genti.domain.entity.response.ImageModel
 import kr.genti.domain.enums.PictureRatio
 import kr.genti.domain.repository.GenerateRepository
+import kr.genti.domain.repository.UserRepository
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,6 +19,7 @@ class FinishedViewModel
     @Inject
     constructor(
         private val generateRepository: GenerateRepository,
+        private val userRepository: UserRepository,
     ) : ViewModel() {
         val errorReport = MutableLiveData<String>()
         val isWritten = MutableLiveData(false)
@@ -93,4 +95,6 @@ class FinishedViewModel
                     }
             }
         }
+
+        fun getIsOpenchatAccessible() = userRepository.getIsChatAccessible()
     }
