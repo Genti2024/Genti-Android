@@ -25,7 +25,7 @@ class GentiMessagingService : FirebaseMessagingService() {
     override fun handleIntent(intent: Intent?) {
         intent?.let {
             if (intent.getStringExtra(MSG_TITLE).isNullOrEmpty()) return
-            val msgType = it.getStringExtra(MSG_TYPE) ?: TYPE_DEFAULT
+            val msgType = it.getStringExtra(MSG_TYPE).orEmpty()
             sendNotification(
                 mapOf(
                     MSG_TITLE to it.getStringExtra(MSG_TITLE).toString(),
@@ -76,8 +76,5 @@ class GentiMessagingService : FirebaseMessagingService() {
         private const val MSG_TITLE = "title"
         private const val MSG_BODY = "body"
         private const val MSG_TYPE = "type"
-
-        const val TYPE_DEFAULT = "TYPE_DEFAULT"
-        const val TYPE_OPENCHAT = "OPENCHAT"
     }
 }

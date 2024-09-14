@@ -37,7 +37,9 @@ class MainViewModel
                     .onSuccess {
                         currentStatus = it.status
                         newPicture = it
-                        if (isNotification) _notificationState.value = it.status
+                        if (isNotification) {
+                            _notificationState.value = it.status
+                        }
                     }
                     .onFailure {
                         _getStatusResult.emit(false)
