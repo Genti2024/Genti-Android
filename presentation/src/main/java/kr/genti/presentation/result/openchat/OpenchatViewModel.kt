@@ -23,6 +23,7 @@ class OpenchatViewModel
         val getOpenchatState: StateFlow<UiState<OpenchatModel>> = _getOpenchatState
 
         var isAccessible = true
+        var isKakaoLaunched = false
 
         init {
             getOpenchatData()

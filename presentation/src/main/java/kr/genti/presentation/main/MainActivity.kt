@@ -20,7 +20,6 @@ import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.domain.enums.GenerateStatus
 import kr.genti.presentation.R
-import kr.genti.presentation.config.GentiMessagingService.Companion.TYPE_OPENCHAT
 import kr.genti.presentation.databinding.ActivityMainBinding
 import kr.genti.presentation.main.create.CreateFragment
 import kr.genti.presentation.main.feed.FeedFragment
@@ -96,9 +95,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private fun getNotificationIntent() {
         when (intent.getStringExtra(EXTRA_TYPE)) {
+            TYPE_SUCCESS -> viewModel.getGenerateStatusFromServer(true)
+            TYPE_CANCELED -> viewModel.getGenerateStatusFromServer(true)
             TYPE_OPENCHAT -> startActivity(Intent(this, OpenchatActivity::class.java))
-            null -> return
-            else -> viewModel.getGenerateStatusFromServer(true)
+            else -> return
         }
     }
 
@@ -123,6 +123,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 createErrorDialog = CreateErrorDialog()
                 createErrorDialog?.show(supportFragmentManager, DIALOG_ERROR)
             }
+
+            GenerateStatus.EMPTY -> return
         }
     }
 
@@ -165,6 +167,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
                 else -> return@onEach
             }
+            viewModel.resetNotificationState()
         }.launchIn(lifecycleScope)
     }
 
@@ -194,6 +197,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     companion object {
         private const val DIALOG_FINISHED = "DIALOG_FINISHED"
         private const val DIALOG_ERROR = "DIALOG_ERROR"
+
+        const val TYPE_SUCCESS = "SUCCESS"
+        const val TYPE_CANCELED = "CANCELED"
+        const val TYPE_OPENCHAT = "OPENCHAT"
 
         private const val EXTRA_TYPE = "EXTRA_DEFAULT"
 

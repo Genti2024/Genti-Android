@@ -80,7 +80,6 @@ class FinishedRatingDialog :
             }
         }
         dismiss()
-        requireActivity().finish()
     }
 
     private fun observeVerifyResult() {

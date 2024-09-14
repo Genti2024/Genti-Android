@@ -61,7 +61,7 @@ class PoseFragment() : BaseFragment<FragmentPoseBinding>(R.layout.fragment_pose)
                     }
                 }
             }
-        requireActivity().onBackPressedDispatcher.addCallback(
+        activity?.onBackPressedDispatcher?.addCallback(
             requireActivity(),
             onBackPressedCallback,
         )
