@@ -20,11 +20,13 @@ import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.domain.enums.GenerateStatus
 import kr.genti.presentation.R
+import kr.genti.presentation.config.GentiMessagingService.Companion.TYPE_OPENCHAT
 import kr.genti.presentation.databinding.ActivityMainBinding
 import kr.genti.presentation.main.create.CreateFragment
 import kr.genti.presentation.main.feed.FeedFragment
 import kr.genti.presentation.main.profile.ProfileFragment
 import kr.genti.presentation.result.finished.FinishedActivity
+import kr.genti.presentation.result.openchat.OpenchatActivity
 import kr.genti.presentation.result.waiting.WaitingActivity
 import kr.genti.presentation.util.AmplitudeManager
 
@@ -93,8 +95,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     }
 
     private fun getNotificationIntent() {
-        if (!intent.getStringExtra(EXTRA_TYPE).isNullOrEmpty()) {
-            viewModel.getGenerateStatusFromServer(true)
+        when (intent.getStringExtra(EXTRA_TYPE)) {
+            TYPE_OPENCHAT -> startActivity(Intent(this, OpenchatActivity::class.java))
+            null -> return
+            else -> viewModel.getGenerateStatusFromServer(true)
         }
     }
 

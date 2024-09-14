@@ -9,6 +9,8 @@ interface UserRepository {
 
     fun getIsGuideNeeded(): Boolean
 
+    fun getIsChatAccessible(): Boolean
+
     fun setTokens(
         accessToken: String,
         refreshToken: String,
@@ -17,6 +19,8 @@ interface UserRepository {
     fun setUserRole(userRole: String)
 
     fun setIsGuideNeeded(isGuideNeeded: Boolean)
+
+    fun setIsChatAccessible(isChatAccessible: Boolean)
 
     fun clearInfo()
 }

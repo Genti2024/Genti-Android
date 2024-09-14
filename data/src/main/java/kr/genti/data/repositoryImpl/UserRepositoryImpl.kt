@@ -17,6 +17,8 @@ class UserRepositoryImpl
 
         override fun getIsGuideNeeded(): Boolean = userSharedPref.isGuideNeeded
 
+        override fun getIsChatAccessible(): Boolean = userSharedPref.isChatAccessible
+
         override fun setTokens(
             accessToken: String,
             refreshToken: String,
@@ -31,6 +33,10 @@ class UserRepositoryImpl
 
         override fun setIsGuideNeeded(isGuideNeeded: Boolean) {
             userSharedPref.isGuideNeeded = isGuideNeeded
+        }
+
+        override fun setIsChatAccessible(isChatAccessible: Boolean) {
+            userSharedPref.isChatAccessible = isChatAccessible
         }
 
         override fun clearInfo() {

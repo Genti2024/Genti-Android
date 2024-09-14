@@ -4,6 +4,7 @@ import kr.genti.data.dataSource.GenerateDataSource
 import kr.genti.data.dto.request.ReportRequestDto.Companion.toDto
 import kr.genti.domain.entity.request.ReportRequestModel
 import kr.genti.domain.entity.response.GenerateStatusModel
+import kr.genti.domain.entity.response.OpenchatModel
 import kr.genti.domain.entity.response.PicturePagedListModel
 import kr.genti.domain.repository.GenerateRepository
 import javax.inject.Inject
@@ -54,5 +55,10 @@ class GenerateRepositoryImpl
         override suspend fun getCanceledToReset(requestId: String): Result<Boolean> =
             runCatching {
                 generateDataSource.getCanceledToReset(requestId).response
+            }
+
+        override suspend fun getOpenchatData(): Result<OpenchatModel> =
+            runCatching {
+                generateDataSource.getOpenchatData().response.toModel()
             }
     }
