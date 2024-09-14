@@ -41,6 +41,12 @@ class OpenchatActivity : BaseActivity<ActivityOpenchatBinding>(R.layout.activity
         observeGetOpenchatState()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if (viewModel.isKakaoLaunched) navigateToMain()
+    }
+
     private fun initExitBtnListener() {
         binding.btnExit.setOnSingleClickListener {
             viewModel.setIsChatAccessible()
@@ -53,7 +59,6 @@ class OpenchatActivity : BaseActivity<ActivityOpenchatBinding>(R.layout.activity
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(this)
         }
-        finish()
     }
 
     private fun initAccessAgainBtnListener() {
@@ -91,7 +96,7 @@ class OpenchatActivity : BaseActivity<ActivityOpenchatBinding>(R.layout.activity
     private fun setBackPressed() {
         onBackPressedDispatcher.addCallback(this) {
             viewModel.setIsChatAccessible()
-            finish()
+            navigateToMain()
         }
     }
 
@@ -115,7 +120,10 @@ class OpenchatActivity : BaseActivity<ActivityOpenchatBinding>(R.layout.activity
 
     private fun initEnterBtnListener(url: String) {
         binding.btnEnterOpenchat.setOnSingleClickListener {
-            viewModel.setIsChatAccessible()
+            with(viewModel) {
+                setIsChatAccessible()
+                isKakaoLaunched = true
+            }
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
         }
     }
