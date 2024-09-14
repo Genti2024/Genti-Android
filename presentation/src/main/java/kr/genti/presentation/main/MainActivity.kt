@@ -123,6 +123,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 createErrorDialog = CreateErrorDialog()
                 createErrorDialog?.show(supportFragmentManager, DIALOG_ERROR)
             }
+
+            GenerateStatus.EMPTY -> return
         }
     }
 
@@ -165,6 +167,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
                 else -> return@onEach
             }
+            viewModel.resetNotificationState()
         }.launchIn(lifecycleScope)
     }
 

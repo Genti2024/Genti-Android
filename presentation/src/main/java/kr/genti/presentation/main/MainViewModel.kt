@@ -25,7 +25,7 @@ class MainViewModel
         private val _postResetResult = MutableSharedFlow<Boolean>()
         val postResetResult: SharedFlow<Boolean> = _postResetResult
 
-        private val _notificationState = MutableStateFlow(GenerateStatus.NEW_REQUEST_AVAILABLE)
+        private val _notificationState = MutableStateFlow(GenerateStatus.EMPTY)
         val notificationState: StateFlow<GenerateStatus> = _notificationState
 
         var currentStatus: GenerateStatus = GenerateStatus.NEW_REQUEST_AVAILABLE
@@ -45,6 +45,10 @@ class MainViewModel
                         _getStatusResult.emit(false)
                     }
             }
+        }
+
+        fun resetNotificationState() {
+            _notificationState.value = GenerateStatus.EMPTY
         }
 
         fun postResetStateToServer() {

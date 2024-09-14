@@ -5,4 +5,5 @@ enum class GenerateStatus {
     AWAIT_USER_VERIFICATION,
     NEW_REQUEST_AVAILABLE,
     CANCELED,
+    EMPTY,
 }
