@@ -100,12 +100,12 @@
                 android:layout_marginBottom="16dp"
                 android:adjustViewBounds="true"
                 android:src="@drawable/ic_verify_tooltip"
-                app:layout_constraintBottom_toTopOf="@id/btn_verify"
+                app:layout_constraintBottom_toTopOf="@id/btn_get_camera_photo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:id="@+id/btn_verify"
+                android:id="@+id/btn_get_camera_photo"
                 style="@style/TextAppearance.Genti.Headline5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

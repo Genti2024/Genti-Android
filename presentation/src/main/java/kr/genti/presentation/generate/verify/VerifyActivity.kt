@@ -4,6 +4,7 @@ import android.os.Bundle
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.setNavigationBarColorFromResource
+import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColorFromResource
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityVerifyBinding
@@ -15,6 +16,19 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
 
         setStatusBarColorFromResource(R.color.verify_bg)
         setNavigationBarColorFromResource(R.color.verify_bg)
+        initExitBtnListener()
+        initVerifyBtnListener()
+    }
+
+    private fun initExitBtnListener() {
+        binding.btnExit.setOnSingleClickListener { finish() }
+    }
+
+    private fun initVerifyBtnListener() {
+        binding.btnGetCameraPhoto.setOnClickListener { getCameraPhoto() }
+    }
+
+    private fun getCameraPhoto() {
     }
 
     override fun onDestroy() {
