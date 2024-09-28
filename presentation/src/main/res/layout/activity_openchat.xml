@@ -106,7 +106,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/btn_access_again"
             android:layout_width="wrap_content"
