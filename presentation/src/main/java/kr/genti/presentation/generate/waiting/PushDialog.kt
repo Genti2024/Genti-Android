@@ -85,7 +85,7 @@ class PushDialog : BaseDialog<DialogPushBinding>(R.layout.dialog_push) {
     private fun requestAlarmPermission() {
         if (isAlreadyRejectedPermission()) {
             Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                data = Uri.parse("package:" + requireActivity().packageName)
+                data = Uri.parse("package:${requireActivity().packageName}")
                 startActivity(this)
             }
         } else {
