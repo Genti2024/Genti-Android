@@ -1,4 +1,4 @@
-package kr.genti.presentation.result.openchat
+package kr.genti.presentation.generate.openchat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -32,7 +32,8 @@ class OpenchatViewModel
         private fun getOpenchatData() {
             _getOpenchatState.value = UiState.Loading
             viewModelScope.launch {
-                generateRepository.getOpenchatData()
+                generateRepository
+                    .getOpenchatData()
                     .onSuccess {
                         userRepository.setIsChatAccessible(it.accessible)
                         _getOpenchatState.value = UiState.Success(it)

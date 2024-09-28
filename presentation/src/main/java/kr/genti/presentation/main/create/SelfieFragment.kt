@@ -33,9 +33,9 @@ import kr.genti.core.state.UiState
 import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentSelfieBinding
+import kr.genti.presentation.generate.waiting.WaitingActivity
 import kr.genti.presentation.main.MainActivity
 import kr.genti.presentation.main.feed.FeedFragment
-import kr.genti.presentation.result.waiting.WaitingActivity
 import kr.genti.presentation.util.AmplitudeManager
 import kr.genti.presentation.util.AmplitudeManager.EVENT_CLICK_BTN
 import kr.genti.presentation.util.AmplitudeManager.PROPERTY_BTN
@@ -43,7 +43,7 @@ import kr.genti.presentation.util.AmplitudeManager.PROPERTY_PAGE
 import kotlin.math.max
 
 @AndroidEntryPoint
-class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_selfie) {
+class SelfieFragment : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_selfie) {
     private val viewModel by activityViewModels<CreateViewModel>()
     private lateinit var photoPickerResult: ActivityResultLauncher<PickVisualMediaRequest>
     private lateinit var galleryPickerResult: ActivityResultLauncher<Intent>
@@ -198,7 +198,8 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
             val imageViews =
                 with(binding) { listOf(ivAddedImage1, ivAddedImage2, ivAddedImage3) }
             imageViews.forEach { it.setImageDrawable(null) }
-            viewModel.imageList.take(3)
+            viewModel.imageList
+                .take(3)
                 .forEachIndexed { index, imageFile -> imageViews[index].load(imageFile.url) }
             binding.layoutAddedImage.isVisible = true
         }
@@ -247,7 +248,9 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
                     ActivityResultContracts.StartActivityForResult(),
                 ) { result ->
                     if (result.resultCode == RESULT_OK) {
-                        requireActivity().supportFragmentManager.beginTransaction()
+                        requireActivity()
+                            .supportFragmentManager
+                            .beginTransaction()
                             .replace(R.id.fcv_main, FeedFragment())
                             .commit()
                         (requireActivity() as? MainActivity)?.initBnvItemIconTintList()
@@ -257,20 +260,22 @@ class SelfieFragment() : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_s
     }
 
     private fun observeGeneratingState() {
-        viewModel.totalGeneratingState.flowWithLifecycle(lifecycle).onEach { state ->
-            when (state) {
-                is UiState.Success -> {
-                    AmplitudeManager.plusIntProperties("user_piccreate")
-                    waitingResult.launch(Intent(requireContext(), WaitingActivity::class.java))
-                    with(viewModel) {
-                        modCurrentPercent(-67)
-                        resetGeneratingState()
+        viewModel.totalGeneratingState
+            .flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        AmplitudeManager.plusIntProperties("user_piccreate")
+                        waitingResult.launch(Intent(requireContext(), WaitingActivity::class.java))
+                        with(viewModel) {
+                            modCurrentPercent(-67)
+                            resetGeneratingState()
+                        }
                     }
-                }
 
-                is UiState.Failure -> toast(stringOf(R.string.error_msg))
-                else -> return@onEach
-            }
-        }.launchIn(lifecycleScope)
+                    is UiState.Failure -> toast(stringOf(R.string.error_msg))
+                    else -> return@onEach
+                }
+            }.launchIn(lifecycleScope)
     }
 }

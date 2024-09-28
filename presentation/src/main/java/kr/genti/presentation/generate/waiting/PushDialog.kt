@@ -1,4 +1,4 @@
-package kr.genti.presentation.result.waiting
+package kr.genti.presentation.generate.waiting
 
 import android.Manifest
 import android.app.Activity
@@ -19,8 +19,7 @@ import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogPushBinding
 import kr.genti.presentation.util.AmplitudeManager
 
-class PushDialog :
-    BaseDialog<DialogPushBinding>(R.layout.dialog_push) {
+class PushDialog : BaseDialog<DialogPushBinding>(R.layout.dialog_push) {
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
     override fun onStart() {

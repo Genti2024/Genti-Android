@@ -21,12 +21,12 @@ import kr.genti.core.extension.toast
 import kr.genti.domain.enums.GenerateStatus
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityMainBinding
+import kr.genti.presentation.generate.finished.FinishedActivity
+import kr.genti.presentation.generate.openchat.OpenchatActivity
+import kr.genti.presentation.generate.waiting.WaitingActivity
 import kr.genti.presentation.main.create.CreateFragment
 import kr.genti.presentation.main.feed.FeedFragment
 import kr.genti.presentation.main.profile.ProfileFragment
-import kr.genti.presentation.result.finished.FinishedActivity
-import kr.genti.presentation.result.openchat.OpenchatActivity
-import kr.genti.presentation.result.waiting.WaitingActivity
 import kr.genti.presentation.util.AmplitudeManager
 
 @AndroidEntryPoint
@@ -129,56 +129,67 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     }
 
     private fun observeStatusResult() {
-        viewModel.getStatusResult.flowWithLifecycle(lifecycle).onEach { result ->
-            if (!result) toast(stringOf(R.string.error_msg))
-        }.launchIn(lifecycleScope)
+        viewModel.getStatusResult
+            .flowWithLifecycle(lifecycle)
+            .onEach { result ->
+                if (!result) toast(stringOf(R.string.error_msg))
+            }.launchIn(lifecycleScope)
     }
 
     private fun observeNotificationState() {
-        viewModel.notificationState.flowWithLifecycle(lifecycle).onEach { status ->
-            when (status) {
-                GenerateStatus.AWAIT_USER_VERIFICATION -> {
-                    if (viewModel.checkNewPictureInitialized()) {
+        viewModel.notificationState
+            .flowWithLifecycle(lifecycle)
+            .onEach { status ->
+                when (status) {
+                    GenerateStatus.AWAIT_USER_VERIFICATION -> {
+                        if (viewModel.checkNewPictureInitialized()) {
+                            AmplitudeManager.trackEvent(
+                                "click_push_notification",
+                                mapOf("push_type" to "creating_success"),
+                            )
+                            with(viewModel.newPicture.pictureGenerateResponse) {
+                                FinishedActivity
+                                    .createIntent(
+                                        this@MainActivity,
+                                        this?.pictureGenerateResponseId ?: -1,
+                                        this?.pictureCompleted?.url.orEmpty(),
+                                        this
+                                            ?.pictureCompleted
+                                            ?.pictureRatio
+                                            ?.name
+                                            .orEmpty(),
+                                    ).apply { startActivity(this) }
+                            }
+                        } else {
+                            toast(stringOf(R.string.error_msg))
+                        }
+                    }
+
+                    GenerateStatus.CANCELED -> {
                         AmplitudeManager.trackEvent(
                             "click_push_notification",
-                            mapOf("push_type" to "creating_success"),
+                            mapOf("push_type" to "creating_fail"),
                         )
-                        with(viewModel.newPicture.pictureGenerateResponse) {
-                            FinishedActivity.createIntent(
-                                this@MainActivity,
-                                this?.pictureGenerateResponseId ?: -1,
-                                this?.pictureCompleted?.url.orEmpty(),
-                                this?.pictureCompleted?.pictureRatio?.name.orEmpty(),
-                            ).apply { startActivity(this) }
-                        }
-                    } else {
-                        toast(stringOf(R.string.error_msg))
+                        createErrorDialog = CreateErrorDialog()
+                        createErrorDialog?.show(supportFragmentManager, DIALOG_ERROR)
                     }
-                }
 
-                GenerateStatus.CANCELED -> {
-                    AmplitudeManager.trackEvent(
-                        "click_push_notification",
-                        mapOf("push_type" to "creating_fail"),
-                    )
-                    createErrorDialog = CreateErrorDialog()
-                    createErrorDialog?.show(supportFragmentManager, DIALOG_ERROR)
+                    else -> return@onEach
                 }
-
-                else -> return@onEach
-            }
-            viewModel.resetNotificationState()
-        }.launchIn(lifecycleScope)
+                viewModel.resetNotificationState()
+            }.launchIn(lifecycleScope)
     }
 
     private fun observeResetResult() {
-        viewModel.postResetResult.flowWithLifecycle(lifecycle).onEach { result ->
-            if (!result) {
-                toast(stringOf(R.string.error_msg))
-            } else {
-                binding.bnvMain.selectedItemId = R.id.menu_create
-            }
-        }.launchIn(lifecycleScope)
+        viewModel.postResetResult
+            .flowWithLifecycle(lifecycle)
+            .onEach { result ->
+                if (!result) {
+                    toast(stringOf(R.string.error_msg))
+                } else {
+                    binding.bnvMain.selectedItemId = R.id.menu_create
+                }
+            }.launchIn(lifecycleScope)
     }
 
     private inline fun <reified T : Fragment> navigateTo(page: String?) {

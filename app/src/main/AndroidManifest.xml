@@ -49,17 +49,22 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="kr.genti.presentation.result.waiting.WaitingActivity"
+            android:name="kr.genti.presentation.generate.waiting.WaitingActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="kr.genti.presentation.result.finished.FinishedActivity"
+            android:name="kr.genti.presentation.generate.finished.FinishedActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="kr.genti.presentation.result.openchat.OpenchatActivity"
+            android:name="kr.genti.presentation.generate.openchat.OpenchatActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="kr.genti.presentation.generate.verify.VerifyActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 

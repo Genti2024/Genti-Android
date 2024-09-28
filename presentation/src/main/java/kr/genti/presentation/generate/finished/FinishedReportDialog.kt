@@ -1,4 +1,4 @@
-package kr.genti.presentation.result.finished
+package kr.genti.presentation.generate.finished
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -21,8 +21,7 @@ import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogFinishedReportBinding
 import kr.genti.presentation.util.AmplitudeManager
 
-class FinishedReportDialog :
-    BaseDialog<DialogFinishedReportBinding>(R.layout.dialog_finished_report) {
+class FinishedReportDialog : BaseDialog<DialogFinishedReportBinding>(R.layout.dialog_finished_report) {
     private val viewModel by activityViewModels<FinishedViewModel>()
 
     override fun onStart() {
@@ -34,7 +33,9 @@ class FinishedReportDialog :
             )
             setBackgroundDrawableResource(R.color.transparent)
         }
-        requireActivity().window.decorView.rootView.setGusianBlur(50f)
+        requireActivity()
+            .window.decorView.rootView
+            .setGusianBlur(50f)
     }
 
     override fun onViewCreated(
@@ -81,26 +82,30 @@ class FinishedReportDialog :
     }
 
     private fun observeReportResult() {
-        viewModel.postReportResult.flowWithLifecycle(lifecycle).onEach { result ->
-            if (result) {
-                AmplitudeManager.trackEvent("reportpic_picdone")
-                requireContext().hideKeyboard(requireView())
-                with(binding) {
-                    layoutErrorInput.isVisible = false
-                    layoutErrorOutput.isVisible = true
-                    viewOutside.setOnSingleClickListener {
-                        dismiss()
-                        requireActivity().finish()
+        viewModel.postReportResult
+            .flowWithLifecycle(lifecycle)
+            .onEach { result ->
+                if (result) {
+                    AmplitudeManager.trackEvent("reportpic_picdone")
+                    requireContext().hideKeyboard(requireView())
+                    with(binding) {
+                        layoutErrorInput.isVisible = false
+                        layoutErrorOutput.isVisible = true
+                        viewOutside.setOnSingleClickListener {
+                            dismiss()
+                            requireActivity().finish()
+                        }
                     }
+                } else {
+                    toast(stringOf(R.string.error_msg))
                 }
-            } else {
-                toast(stringOf(R.string.error_msg))
-            }
-        }.launchIn(lifecycleScope)
+            }.launchIn(lifecycleScope)
     }
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        requireActivity().window.decorView.rootView.setGusianBlur(null)
+        requireActivity()
+            .window.decorView.rootView
+            .setGusianBlur(null)
     }
 }

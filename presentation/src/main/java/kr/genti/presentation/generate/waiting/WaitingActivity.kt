@@ -1,4 +1,4 @@
-package kr.genti.presentation.result.waiting
+package kr.genti.presentation.generate.waiting
 
 import android.Manifest
 import android.app.Activity
