@@ -25,7 +25,6 @@
     <color name="green_3">#C7FACE</color>
     <color name="green_4">#EDF9EE</color>
     <color name="green_5">#2600FF20</color>
-    <color name="green_new">#49F155</color>
 
     <!-- Purple -->
     <color name="genti_purple">#9966FF</color>
@@ -47,5 +46,6 @@
 
     <!-- 임시 -->
     <color name="verify_bg">#030F0F</color>
+    <color name="green_new">#49F155</color>
 
 </resources>

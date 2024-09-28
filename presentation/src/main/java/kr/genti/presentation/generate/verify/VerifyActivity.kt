@@ -34,6 +34,8 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
         setNavigationBarColorFromResource(R.color.verify_bg)
         initExitBtnListener()
         initVerifyBtnListener()
+        initCameraBtnListener()
+        initRetakeBtnListener()
         setRequestPermissionLauncher()
         setCameraLauncher()
     }
@@ -43,7 +45,16 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
     }
 
     private fun initVerifyBtnListener() {
+        // TODO
+        binding.btnVerify.setOnClickListener { }
+    }
+
+    private fun initCameraBtnListener() {
         binding.btnGetCameraPhoto.setOnClickListener { checkCameraPermission() }
+    }
+
+    private fun initRetakeBtnListener() {
+        binding.btnRetakePhoto.setOnClickListener { startCameraLauncher() }
     }
 
     private fun checkCameraPermission() {
