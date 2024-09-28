@@ -3,15 +3,14 @@ package kr.genti.presentation.generate.verify
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.provider.Settings
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
@@ -22,11 +21,17 @@ import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityVerifyBinding
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @AndroidEntryPoint
 class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_verify) {
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
-    private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
+    private lateinit var storagePermission: ActivityResultLauncher<String>
+    private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
+    private var photoUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,15 +103,17 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
 
     private fun setCameraLauncher() {
         cameraLauncher =
-            registerForActivityResult(
-                ActivityResultContracts.StartActivityForResult(),
-            ) {
-                if (it.resultCode == RESULT_OK && it.data != null) {
-                    val bitmap = it.data?.extras?.get("data") as? Bitmap
-                    with(binding) {
-                        layoutBeforeUpload.isVisible = false
-                        layoutAfterUpload.isVisible = true
+            registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
+                if (isSuccess) {
+                    photoUri?.let { uri ->
+                        with(binding) {
+                            ivPhotoTaken.setImageURI(uri)
+                            layoutBeforeUpload.isVisible = false
+                            layoutAfterUpload.isVisible = true
+                        }
                     }
+                } else {
+                    toast(stringOf(R.string.error_msg))
                 }
             }
     }
@@ -121,11 +128,31 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
 
     private fun startCameraLauncher() {
         if (::cameraLauncher.isInitialized) {
-            cameraLauncher.launch(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
+            runCatching {
+                createImageFile()?.let { photoFile ->
+                    photoUri =
+                        FileProvider.getUriForFile(
+                            this,
+                            "${applicationContext.packageName}.fileprovider",
+                            photoFile,
+                        )
+                }
+            }.onSuccess {
+                cameraLauncher.launch(photoUri)
+            }
         } else {
             toast(stringOf(R.string.error_msg))
         }
     }
+
+    private fun createImageFile(): File? =
+        File.createTempFile(
+            "Genti_${getFileDateFormat()}",
+            ".jpg",
+            cacheDir,
+        )
+
+    private fun getFileDateFormat() = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
 
     override fun onDestroy() {
         super.onDestroy()
