@@ -45,4 +45,7 @@
     <color name="transparent_50">#80000000</color>
     <color name="transparent_30">#4D000000</color>
 
+    <!-- 임시 -->
+    <color name="verify_bg">#030F0F</color>
+
 </resources>

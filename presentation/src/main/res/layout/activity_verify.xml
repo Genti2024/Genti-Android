@@ -45,13 +45,13 @@
             <TextView
                 android:id="@+id/tv_before_verify_title"
                 style="@style/TextAppearance.Genti.Headline1"
+                android:lineSpacingMultiplier="1.1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="56dp"
+                android:layout_marginTop="64dp"
                 android:gravity="center"
                 android:text="사진을 만들기 전에\n본인 인증을 진행해주세요."
                 android:textColor="@color/white"
-                android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -65,7 +65,7 @@
                 android:gravity="center"
                 android:text="사진 도용 없는 젠티를 위해 본인 촬영을 진행합니다.\n본인 인증은 1회만 진행되니 얼굴을 명확하게 촬영해주세요."
                 android:textColor="#99FFFFFF"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_before_verify_title" />
@@ -78,7 +78,7 @@
                 android:gravity="center"
                 android:text="(자녀의 사진을 만드는 경우, 자녀의 얼굴을 촬영해주세요.)"
                 android:textColor="#4DFFFFFF"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_before_verify_subtitle" />
@@ -126,7 +126,7 @@
                 style="@style/TextAppearance.Genti.BodySmall"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="36dp"
                 android:gravity="center"
                 android:text="타인의 얼굴을 도용하는 것은 명백한 범죄행위에 해당하며\n시도만으로도 법적인 제재를 받을 수 있습니다."
                 android:textColor="#4DFFFFFF"
