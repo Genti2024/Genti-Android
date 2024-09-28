@@ -113,7 +113,9 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
                         }
                     }
                 } else {
-                    toast(stringOf(R.string.error_msg))
+                    photoUri?.path?.let { path ->
+                        if (File(path).exists()) toast(stringOf(R.string.error_msg))
+                    }
                 }
             }
     }
