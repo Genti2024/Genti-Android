@@ -3,10 +3,13 @@ package kr.genti.presentation.generate.verify
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.provider.Settings
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
@@ -14,12 +17,15 @@ import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.setNavigationBarColorFromResource
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColorFromResource
+import kr.genti.core.extension.stringOf
+import kr.genti.core.extension.toast
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityVerifyBinding
 
 @AndroidEntryPoint
 class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_verify) {
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +34,8 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
         setNavigationBarColorFromResource(R.color.verify_bg)
         initExitBtnListener()
         initVerifyBtnListener()
+        setRequestPermissionLauncher()
+        setCameraLauncher()
     }
 
     private fun initExitBtnListener() {
@@ -42,6 +50,7 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
         if (isPermissionNeeded()) {
             requestCameraPermission()
         } else {
+            startCameraLauncher()
         }
     }
 
@@ -58,7 +67,7 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
                 startActivity(this)
             }
         } else {
-            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+            startPermissionLauncher()
         }
     }
 
@@ -67,6 +76,40 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
             this,
             Manifest.permission.CAMERA,
         )
+
+    private fun setRequestPermissionLauncher() {
+        requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+                if (isGranted) startCameraLauncher()
+            }
+    }
+
+    private fun setCameraLauncher() {
+        cameraLauncher =
+            registerForActivityResult(
+                ActivityResultContracts.StartActivityForResult(),
+            ) {
+                if (it.resultCode == RESULT_OK && it.data != null) {
+                    val bitmap = it.data?.extras?.get("data") as? Bitmap
+                }
+            }
+    }
+
+    private fun startPermissionLauncher() {
+        if (::requestPermissionLauncher.isInitialized) {
+            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+        } else {
+            toast(stringOf(R.string.error_msg))
+        }
+    }
+
+    private fun startCameraLauncher() {
+        if (::cameraLauncher.isInitialized) {
+            cameraLauncher.launch(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
+        } else {
+            toast(stringOf(R.string.error_msg))
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()
