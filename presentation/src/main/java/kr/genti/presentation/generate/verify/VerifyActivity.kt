@@ -12,6 +12,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.setNavigationBarColorFromResource
@@ -102,6 +103,10 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
             ) {
                 if (it.resultCode == RESULT_OK && it.data != null) {
                     val bitmap = it.data?.extras?.get("data") as? Bitmap
+                    with(binding) {
+                        layoutBeforeUpload.isVisible = false
+                        layoutAfterUpload.isVisible = true
+                    }
                 }
             }
     }
