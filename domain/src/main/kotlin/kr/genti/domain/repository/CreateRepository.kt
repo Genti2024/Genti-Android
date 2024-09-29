@@ -10,6 +10,4 @@ interface CreateRepository {
     suspend fun getS3MultiUrl(request: List<S3RequestModel>): Result<List<S3PresignedUrlModel>>
 
     suspend fun postToCreate(request: CreateRequestModel): Result<Boolean>
-
-    suspend fun getIsUserVerified(): Result<Boolean>
 }

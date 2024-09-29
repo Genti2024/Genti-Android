@@ -5,7 +5,6 @@ import kr.genti.data.dto.request.CreateRequestDto
 import kr.genti.data.dto.request.S3RequestDto
 import kr.genti.data.dto.response.S3PresignedUrlDto
 import retrofit2.http.Body
-import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface CreateService {
@@ -23,7 +22,4 @@ interface CreateService {
     suspend fun postToCreate(
         @Body request: CreateRequestDto,
     ): BaseResponse<Boolean>
-
-    @GET("api/v1/user-verification")
-    suspend fun getIsUserVerified(): BaseResponse<Boolean>
 }

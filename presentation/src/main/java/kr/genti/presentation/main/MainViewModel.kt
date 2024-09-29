@@ -33,15 +33,15 @@ class MainViewModel
 
         fun getGenerateStatusFromServer(isNotification: Boolean) {
             viewModelScope.launch {
-                generateRepository.getGenerateStatus()
+                generateRepository
+                    .getGenerateStatus()
                     .onSuccess {
                         currentStatus = it.status
                         newPicture = it
                         if (isNotification) {
                             _notificationState.value = it.status
                         }
-                    }
-                    .onFailure {
+                    }.onFailure {
                         _getStatusResult.emit(false)
                     }
             }
@@ -53,14 +53,13 @@ class MainViewModel
 
         fun postResetStateToServer() {
             viewModelScope.launch {
-                generateRepository.getCanceledToReset(
-                    newPicture.pictureGenerateRequestId.toString(),
-                )
-                    .onSuccess {
+                generateRepository
+                    .getCanceledToReset(
+                        newPicture.pictureGenerateRequestId.toString(),
+                    ).onSuccess {
                         _postResetResult.emit(true)
                         getGenerateStatusFromServer(false)
-                    }
-                    .onFailure {
+                    }.onFailure {
                         _postResetResult.emit(false)
                     }
             }

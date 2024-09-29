@@ -26,12 +26,14 @@ class GenerateRepositoryImpl
             direction: String?,
         ): Result<PicturePagedListModel> =
             runCatching {
-                generateDataSource.getGeneratedPictureList(
-                    page,
-                    size,
-                    sortBy,
-                    direction,
-                ).response.toModel()
+                generateDataSource
+                    .getGeneratedPictureList(
+                        page,
+                        size,
+                        sortBy,
+                        direction,
+                    ).response
+                    .toModel()
             }
 
         override suspend fun postGenerateReport(request: ReportRequestModel): Result<Boolean> =
@@ -60,5 +62,10 @@ class GenerateRepositoryImpl
         override suspend fun getOpenchatData(): Result<OpenchatModel> =
             runCatching {
                 generateDataSource.getOpenchatData().response.toModel()
+            }
+
+        override suspend fun getIsUserVerified(): Result<Boolean> =
+            runCatching {
+                generateDataSource.getIsUserVerified().response
             }
     }

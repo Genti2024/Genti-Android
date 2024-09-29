@@ -27,4 +27,6 @@ interface GenerateRepository {
     suspend fun getCanceledToReset(requestId: String): Result<Boolean>
 
     suspend fun getOpenchatData(): Result<OpenchatModel>
+
+    suspend fun getIsUserVerified(): Result<Boolean>
 }
