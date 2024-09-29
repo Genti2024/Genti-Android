@@ -18,11 +18,13 @@ import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.setStatusBarColorFromResource
 import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
+import kr.genti.core.state.UiState
 import kr.genti.domain.enums.GenerateStatus
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityMainBinding
 import kr.genti.presentation.generate.finished.FinishedActivity
 import kr.genti.presentation.generate.openchat.OpenchatActivity
+import kr.genti.presentation.generate.verify.VerifyActivity
 import kr.genti.presentation.generate.waiting.WaitingActivity
 import kr.genti.presentation.main.create.CreateFragment
 import kr.genti.presentation.main.feed.FeedFragment
@@ -47,6 +49,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         observeStatusResult()
         observeNotificationState()
         observeResetResult()
+        observeUserVerifyState()
     }
 
     override fun onResume() {
@@ -105,7 +108,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private fun navigateByGenerateStatus() {
         when (viewModel.currentStatus) {
             GenerateStatus.NEW_REQUEST_AVAILABLE -> {
-                binding.bnvMain.selectedItemId = R.id.menu_create
+                viewModel.getIsUserVerifiedFromServer()
             }
 
             GenerateStatus.AWAIT_USER_VERIFICATION -> {
@@ -188,6 +191,25 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                     toast(stringOf(R.string.error_msg))
                 } else {
                     binding.bnvMain.selectedItemId = R.id.menu_create
+                }
+            }.launchIn(lifecycleScope)
+    }
+
+    private fun observeUserVerifyState() {
+        viewModel.userVerifyState
+            .flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        if (state.data) {
+                            binding.bnvMain.selectedItemId = R.id.menu_create
+                        } else {
+                            startActivity(Intent(this, VerifyActivity::class.java))
+                        }
+                    }
+
+                    is UiState.Failure -> toast(stringOf(R.string.error_msg))
+                    else -> return@onEach
                 }
             }.launchIn(lifecycleScope)
     }
