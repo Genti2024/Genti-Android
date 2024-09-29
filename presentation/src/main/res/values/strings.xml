@@ -154,6 +154,6 @@
     <string name="verify_after_tv_subtitle">AI가 얼굴을 인식하지 못하면 사진 생성이 제한될 수 있어요.\n얼굴이 가려지지 않도록 주의해주세요.</string>
     <string name="verify_after_tv_guide">해당 사진은 본인 인증에만 활용되며\n사진을 만들 때는 앨범에서 선택할 수 있어요!</string>
     <string name="verify_after_btn_retake">다시 촬영하기</string>
-    <string name="verify_after_btn_verify">본인 인증하기</string>
+    <string name="verify_after_btn_verify">본인 인증 완료하기</string>
 
 </resources>

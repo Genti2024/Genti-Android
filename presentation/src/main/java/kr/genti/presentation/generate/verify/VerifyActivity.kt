@@ -29,7 +29,6 @@ import java.util.Locale
 @AndroidEntryPoint
 class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_verify) {
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
-    private lateinit var storagePermission: ActivityResultLauncher<String>
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private var photoUri: Uri? = null
 
@@ -63,6 +62,13 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
         binding.btnRetakePhoto.setOnClickListener { startCameraLauncher() }
     }
 
+    private fun setRequestPermissionLauncher() {
+        requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+                if (isGranted) startCameraLauncher()
+            }
+    }
+
     private fun checkCameraPermission() {
         if (isPermissionNeeded()) {
             requestCameraPermission()
@@ -93,13 +99,6 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
             this,
             Manifest.permission.CAMERA,
         )
-
-    private fun setRequestPermissionLauncher() {
-        requestPermissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-                if (isGranted) startCameraLauncher()
-            }
-    }
 
     private fun setCameraLauncher() {
         cameraLauncher =
