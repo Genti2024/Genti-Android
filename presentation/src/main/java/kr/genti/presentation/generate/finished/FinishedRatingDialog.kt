@@ -1,4 +1,4 @@
-package kr.genti.presentation.result.finished
+package kr.genti.presentation.generate.finished
 
 import android.content.DialogInterface
 import android.content.Intent
@@ -17,12 +17,11 @@ import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogFinishedRatingBinding
+import kr.genti.presentation.generate.openchat.OpenchatActivity
 import kr.genti.presentation.main.MainActivity
-import kr.genti.presentation.result.openchat.OpenchatActivity
 import kr.genti.presentation.util.AmplitudeManager
 
-class FinishedRatingDialog :
-    BaseDialog<DialogFinishedRatingBinding>(R.layout.dialog_finished_rating) {
+class FinishedRatingDialog : BaseDialog<DialogFinishedRatingBinding>(R.layout.dialog_finished_rating) {
     private val viewModel by activityViewModels<FinishedViewModel>()
 
     override fun onStart() {
@@ -34,7 +33,9 @@ class FinishedRatingDialog :
             )
             setBackgroundDrawableResource(R.color.transparent)
         }
-        requireActivity().window.decorView.rootView.setGusianBlur(50f)
+        requireActivity()
+            .window.decorView.rootView
+            .setGusianBlur(50f)
     }
 
     override fun onViewCreated(
@@ -83,27 +84,33 @@ class FinishedRatingDialog :
     }
 
     private fun observeVerifyResult() {
-        viewModel.postVerifyResult.flowWithLifecycle(lifecycle).onEach { result ->
-            if (result) {
-                navigateToMain()
-            } else {
-                toast(stringOf(R.string.error_msg))
-            }
-        }.launchIn(lifecycleScope)
+        viewModel.postVerifyResult
+            .flowWithLifecycle(lifecycle)
+            .onEach { result ->
+                if (result) {
+                    navigateToMain()
+                } else {
+                    toast(stringOf(R.string.error_msg))
+                }
+            }.launchIn(lifecycleScope)
     }
 
     private fun observeRateResult() {
-        viewModel.postRateResult.flowWithLifecycle(lifecycle).onEach { result ->
-            if (result) {
-                navigateToMain()
-            } else {
-                toast(stringOf(R.string.error_msg))
-            }
-        }.launchIn(lifecycleScope)
+        viewModel.postRateResult
+            .flowWithLifecycle(lifecycle)
+            .onEach { result ->
+                if (result) {
+                    navigateToMain()
+                } else {
+                    toast(stringOf(R.string.error_msg))
+                }
+            }.launchIn(lifecycleScope)
     }
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        requireActivity().window.decorView.rootView.setGusianBlur(null)
+        requireActivity()
+            .window.decorView.rootView
+            .setGusianBlur(null)
     }
 }

@@ -145,4 +145,15 @@
     <string name="openchat_btn_enter">사진 공유방 참여하기</string>
     <string name="openchat_btn_access">이 페이지 다시 보지 않기</string>
 
+    <string name="verify_before_tv_title">사진을 만들기 전에\n본인 인증을 진행해주세요.</string>
+    <string name="verify_before_tv_subtitle">사진 도용 없는 젠티를 위해 본인 촬영을 진행합니다.\n본인 인증은 1회만 진행되니 얼굴을 명확하게 촬영해주세요.</string>
+    <string name="verify_before_tv_baby">(자녀의 사진을 만드는 경우, 자녀의 얼굴을 촬영해주세요.)</string>
+    <string name="verify_before_btn_photo">본인 인증하기</string>
+    <string name="verify_before_tv_warning">타인의 얼굴을 도용하는 것은 명백한 범죄행위에 해당하며\n시도만으로도 법적인 제재를 받을 수 있습니다.</string>
+    <string name="verify_after_tv_title">촬영이 완료되었습니다.</string>
+    <string name="verify_after_tv_subtitle">AI가 얼굴을 인식하지 못하면 사진 생성이 제한될 수 있어요.\n얼굴이 가려지지 않도록 주의해주세요.</string>
+    <string name="verify_after_tv_guide">해당 사진은 본인 인증에만 활용되며\n사진을 만들 때는 앨범에서 선택할 수 있어요!</string>
+    <string name="verify_after_btn_retake">다시 촬영하기</string>
+    <string name="verify_after_btn_verify">본인 인증 완료하기</string>
+
 </resources>

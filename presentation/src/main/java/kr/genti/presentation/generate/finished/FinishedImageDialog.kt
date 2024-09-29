@@ -1,4 +1,4 @@
-package kr.genti.presentation.result.finished
+package kr.genti.presentation.generate.finished
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -16,8 +16,7 @@ import kr.genti.presentation.databinding.DialogFinishedImageBinding
 import kr.genti.presentation.util.AmplitudeManager
 import kr.genti.presentation.util.downloadImage
 
-class FinishedImageDialog :
-    BaseDialog<DialogFinishedImageBinding>(R.layout.dialog_finished_image) {
+class FinishedImageDialog : BaseDialog<DialogFinishedImageBinding>(R.layout.dialog_finished_image) {
     private val viewModel by activityViewModels<FinishedViewModel>()
 
     override fun onStart() {
@@ -29,7 +28,9 @@ class FinishedImageDialog :
             )
             setBackgroundDrawableResource(R.color.transparent)
         }
-        requireActivity().window.decorView.rootView.setGusianBlur(50f)
+        requireActivity()
+            .window.decorView.rootView
+            .setGusianBlur(50f)
     }
 
     override fun onViewCreated(
@@ -71,6 +72,8 @@ class FinishedImageDialog :
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        requireActivity().window.decorView.rootView.setGusianBlur(null)
+        requireActivity()
+            .window.decorView.rootView
+            .setGusianBlur(null)
     }
 }

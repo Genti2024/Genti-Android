@@ -1,4 +1,4 @@
-package kr.genti.presentation.result.finished
+package kr.genti.presentation.generate.finished
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -54,14 +54,13 @@ class FinishedViewModel
 
         fun postGenerateRateToServer(star: Int) {
             viewModelScope.launch {
-                generateRepository.postGenerateRate(
-                    finishedImage.id.toInt(),
-                    star,
-                )
-                    .onSuccess {
+                generateRepository
+                    .postGenerateRate(
+                        finishedImage.id.toInt(),
+                        star,
+                    ).onSuccess {
                         _postRateResult.emit(true)
-                    }
-                    .onFailure {
+                    }.onFailure {
                         _postRateResult.emit(false)
                     }
             }
@@ -69,16 +68,15 @@ class FinishedViewModel
 
         fun postGenerateReportToServer() {
             viewModelScope.launch {
-                generateRepository.postGenerateReport(
-                    ReportRequestModel(
-                        finishedImage.id,
-                        errorReport.value.orEmpty(),
-                    ),
-                )
-                    .onSuccess {
+                generateRepository
+                    .postGenerateReport(
+                        ReportRequestModel(
+                            finishedImage.id,
+                            errorReport.value.orEmpty(),
+                        ),
+                    ).onSuccess {
                         _postReportResult.emit(true)
-                    }
-                    .onFailure {
+                    }.onFailure {
                         _postReportResult.emit(false)
                     }
             }
@@ -86,11 +84,11 @@ class FinishedViewModel
 
         fun postVerifyGenerateStateToServer() {
             viewModelScope.launch {
-                generateRepository.postVerifyGenerateState(finishedImage.id.toInt())
+                generateRepository
+                    .postVerifyGenerateState(finishedImage.id.toInt())
                     .onSuccess {
                         _postVerifyResult.emit(true)
-                    }
-                    .onFailure {
+                    }.onFailure {
                         _postVerifyResult.emit(false)
                     }
             }

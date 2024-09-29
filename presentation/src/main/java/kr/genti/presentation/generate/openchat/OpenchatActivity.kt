@@ -1,4 +1,4 @@
-package kr.genti.presentation.result.openchat
+package kr.genti.presentation.generate.openchat
 
 import android.content.Intent
 import android.graphics.Color
@@ -101,7 +101,9 @@ class OpenchatActivity : BaseActivity<ActivityOpenchatBinding>(R.layout.activity
     }
 
     private fun observeGetOpenchatState() {
-        viewModel.getOpenchatState.flowWithLifecycle(lifecycle).distinctUntilChanged()
+        viewModel.getOpenchatState
+            .flowWithLifecycle(lifecycle)
+            .distinctUntilChanged()
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {

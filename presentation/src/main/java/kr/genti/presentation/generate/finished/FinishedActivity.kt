@@ -1,4 +1,4 @@
-package kr.genti.presentation.result.finished
+package kr.genti.presentation.generate.finished
 
 import android.content.Context
 import android.content.Intent
@@ -219,7 +219,8 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
                     )
                     setSpan(
-                        ResourcesCompat.getFont(context, R.font.font_pretendard_bold)
+                        ResourcesCompat
+                            .getFont(context, R.font.font_pretendard_bold)
                             ?.let { TypefaceSpan(it) },
                         0,
                         11,

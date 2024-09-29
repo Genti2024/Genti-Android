@@ -10,10 +10,9 @@ import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogMainFinishedBinding
-import kr.genti.presentation.result.finished.FinishedActivity
+import kr.genti.presentation.generate.finished.FinishedActivity
 
-class CreateFinishedDialog :
-    BaseDialog<DialogMainFinishedBinding>(R.layout.dialog_main_finished) {
+class CreateFinishedDialog : BaseDialog<DialogMainFinishedBinding>(R.layout.dialog_main_finished) {
     private val viewModel by activityViewModels<MainViewModel>()
 
     override fun onStart() {
@@ -47,12 +46,17 @@ class CreateFinishedDialog :
         binding.btnMoveToFinish.setOnSingleClickListener {
             if (viewModel.checkNewPictureInitialized()) {
                 with(viewModel.newPicture.pictureGenerateResponse) {
-                    FinishedActivity.createIntent(
-                        requireContext(),
-                        this?.pictureGenerateResponseId ?: -1,
-                        this?.pictureCompleted?.url.orEmpty(),
-                        this?.pictureCompleted?.pictureRatio?.name.orEmpty(),
-                    ).apply { startActivity(this) }
+                    FinishedActivity
+                        .createIntent(
+                            requireContext(),
+                            this?.pictureGenerateResponseId ?: -1,
+                            this?.pictureCompleted?.url.orEmpty(),
+                            this
+                                ?.pictureCompleted
+                                ?.pictureRatio
+                                ?.name
+                                .orEmpty(),
+                        ).apply { startActivity(this) }
                 }
             } else {
                 toast(stringOf(R.string.error_msg))
