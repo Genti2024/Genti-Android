@@ -11,4 +11,6 @@ interface CreateDataSource {
     suspend fun getMultiS3Url(request: List<S3RequestDto>): BaseResponse<List<S3PresignedUrlDto>>
 
     suspend fun postToCreate(request: CreateRequestDto): BaseResponse<Boolean>
+
+    suspend fun getIsUserVerified(): BaseResponse<Boolean>
 }

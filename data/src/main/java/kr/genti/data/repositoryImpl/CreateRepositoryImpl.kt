@@ -28,4 +28,9 @@ class CreateRepositoryImpl
             runCatching {
                 createDataSource.postToCreate(request.toDto()).response
             }
+
+        override suspend fun getIsUserVerified(): Result<Boolean> =
+            runCatching {
+                createDataSource.getIsUserVerified().response
+            }
     }

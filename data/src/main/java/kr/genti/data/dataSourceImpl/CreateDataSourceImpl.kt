@@ -19,4 +19,6 @@ data class CreateDataSourceImpl
             createService.getMultiS3Url(request)
 
         override suspend fun postToCreate(request: CreateRequestDto): BaseResponse<Boolean> = createService.postToCreate(request)
+
+        override suspend fun getIsUserVerified(): BaseResponse<Boolean> = createService.getIsUserVerified()
     }
