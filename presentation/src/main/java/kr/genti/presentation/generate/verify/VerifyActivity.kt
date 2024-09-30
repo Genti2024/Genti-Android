@@ -8,17 +8,25 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseActivity
+import kr.genti.core.extension.getFileName
 import kr.genti.core.extension.setNavigationBarColorFromResource
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.setStatusBarColorFromResource
 import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
+import kr.genti.core.state.UiState
+import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityVerifyBinding
 import java.io.File
@@ -28,6 +36,8 @@ import java.util.Locale
 
 @AndroidEntryPoint
 class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_verify) {
+    private val viewModel by viewModels<VerifyViewModel>()
+
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private var photoUri: Uri? = null
@@ -43,6 +53,7 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
         initRetakeBtnListener()
         setRequestPermissionLauncher()
         setCameraLauncher()
+        observeGeneratingState()
     }
 
     private fun initExitBtnListener() {
@@ -50,8 +61,9 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
     }
 
     private fun initVerifyBtnListener() {
-        // TODO
-        binding.btnVerify.setOnClickListener { }
+        binding.btnVerify.setOnClickListener {
+            viewModel.getSingleS3Url()
+        }
     }
 
     private fun initCameraBtnListener() {
@@ -105,6 +117,12 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
             registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
                 if (isSuccess) {
                     photoUri?.let { uri ->
+                        viewModel.userImage =
+                            ImageFileModel(
+                                uri.hashCode().toLong(),
+                                uri.getFileName(this.contentResolver).toString(),
+                                uri.toString(),
+                            )
                         with(binding) {
                             ivPhotoTaken.setImageURI(uri)
                             layoutBeforeUpload.isVisible = false
@@ -154,6 +172,21 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
         )
 
     private fun getFileDateFormat() = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+
+    private fun observeGeneratingState() {
+        viewModel.totalGeneratingState
+            .flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        // TODO
+                    }
+
+                    is UiState.Failure -> toast(stringOf(R.string.error_msg))
+                    else -> return@onEach
+                }
+            }.launchIn(lifecycleScope)
+    }
 
     override fun onDestroy() {
         super.onDestroy()
