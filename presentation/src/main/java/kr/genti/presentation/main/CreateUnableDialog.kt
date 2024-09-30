@@ -37,6 +37,7 @@ class CreateUnableDialog : BaseDialog<DialogCreateUnableBinding>(R.layout.dialog
 
     private fun setBodyText() {
         binding.tvLogoutSubtitle.text = arguments?.getString(ARG_BODY)
+        binding.tvLogoutSubtitle.invalidate()
     }
 
     companion object {
