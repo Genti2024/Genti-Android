@@ -35,6 +35,8 @@ class MainViewModel
         var currentStatus: GenerateStatus = GenerateStatus.NEW_REQUEST_AVAILABLE
         lateinit var newPicture: GenerateStatusModel
 
+        var isUserTryingVerify = false
+
         fun getGenerateStatusFromServer(isNotification: Boolean) {
             viewModelScope.launch {
                 generateRepository

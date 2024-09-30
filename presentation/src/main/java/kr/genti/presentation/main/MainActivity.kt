@@ -54,7 +54,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getGenerateStatusFromServer(false)
+
+        with(viewModel) {
+            getGenerateStatusFromServer(false)
+            if (isUserTryingVerify) getIsUserVerifiedFromServer()
+        }
     }
 
     fun initBnvItemIconTintList() {
@@ -201,10 +205,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
-                        if (state.data) {
-                            binding.bnvMain.selectedItemId = R.id.menu_create
+                        if (!viewModel.isUserTryingVerify) {
+                            if (state.data) {
+                                binding.bnvMain.selectedItemId = R.id.menu_create
+                            } else {
+                                viewModel.isUserTryingVerify = true
+                                startActivity(Intent(this, VerifyActivity::class.java))
+                            }
                         } else {
-                            startActivity(Intent(this, VerifyActivity::class.java))
+                            viewModel.isUserTryingVerify = false
+                            if (state.data) {
+                                binding.bnvMain.selectedItemId = R.id.menu_create
+                            }
                         }
                     }
 
