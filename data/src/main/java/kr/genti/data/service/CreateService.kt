@@ -2,6 +2,7 @@ package kr.genti.data.service
 
 import kr.genti.data.dto.BaseResponse
 import kr.genti.data.dto.request.CreateRequestDto
+import kr.genti.data.dto.request.KeyRequestDto
 import kr.genti.data.dto.request.S3RequestDto
 import kr.genti.data.dto.response.S3PresignedUrlDto
 import retrofit2.http.Body
@@ -21,5 +22,10 @@ interface CreateService {
     @POST("api/v1/users/picture-generate-requests")
     suspend fun postToCreate(
         @Body request: CreateRequestDto,
+    ): BaseResponse<Boolean>
+
+    @POST("api/v1/user-verification")
+    suspend fun postToVerify(
+        @Body request: KeyRequestDto,
     ): BaseResponse<Boolean>
 }
