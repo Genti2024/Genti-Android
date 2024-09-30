@@ -6,6 +6,7 @@ import kr.genti.domain.entity.request.ReportRequestModel
 import kr.genti.domain.entity.response.GenerateStatusModel
 import kr.genti.domain.entity.response.OpenchatModel
 import kr.genti.domain.entity.response.PicturePagedListModel
+import kr.genti.domain.entity.response.ServerAvailableModel
 import kr.genti.domain.repository.GenerateRepository
 import javax.inject.Inject
 
@@ -67,5 +68,10 @@ class GenerateRepositoryImpl
         override suspend fun getIsUserVerified(): Result<Boolean> =
             runCatching {
                 generateDataSource.getIsUserVerified().response
+            }
+
+        override suspend fun getIsServerAvailable(): Result<ServerAvailableModel> =
+            runCatching {
+                generateDataSource.getIsServerAvailable().response.toModel()
             }
     }

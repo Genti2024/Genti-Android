@@ -5,6 +5,7 @@ import kr.genti.data.dto.request.ReportRequestDto
 import kr.genti.data.dto.response.GenerateStatusDto
 import kr.genti.data.dto.response.OpenchatDto
 import kr.genti.data.dto.response.PicturePagedListDto
+import kr.genti.data.dto.response.ServerAvailableDto
 
 interface GenerateDataSource {
     suspend fun getGenerateStatus(): BaseResponse<GenerateStatusDto>
@@ -30,4 +31,6 @@ interface GenerateDataSource {
     suspend fun getOpenchatData(): BaseResponse<OpenchatDto>
 
     suspend fun getIsUserVerified(): BaseResponse<Boolean>
+
+    suspend fun getIsServerAvailable(): BaseResponse<ServerAvailableDto>
 }
