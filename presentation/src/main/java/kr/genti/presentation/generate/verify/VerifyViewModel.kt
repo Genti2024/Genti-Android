@@ -10,9 +10,11 @@ import kr.genti.core.state.UiState
 import kr.genti.domain.entity.request.KeyRequestModel
 import kr.genti.domain.entity.request.S3RequestModel
 import kr.genti.domain.entity.response.ImageFileModel.Companion.emptyImageFileModel
+import kr.genti.domain.entity.response.S3PresignedUrlModel
 import kr.genti.domain.enums.FileType
 import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.repository.UploadRepository
+import kr.genti.presentation.BuildConfig
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,7 +35,10 @@ class VerifyViewModel
             viewModelScope.launch {
                 createRepository
                     .getS3SingleUrl(
-                        S3RequestModel(FileType.USER_UPLOADED_IMAGE, userImage.name),
+                        S3RequestModel(
+                            if (BuildConfig.DEBUG) FileType.DEV_USER_VERIFICATION_IMAGE else FileType.USER_VERIFICATION_IMAGE,
+                            userImage.name,
+                        ),
                     ).onSuccess { uriModel ->
                         imageS3Key = KeyRequestModel(uriModel.s3Key)
                         postSingleImage(uriModel)
@@ -41,5 +46,20 @@ class VerifyViewModel
                         _totalGeneratingState.value = UiState.Failure(it.message.toString())
                     }
             }
+        }
+
+        private fun postSingleImage(urlModel: S3PresignedUrlModel) {
+            viewModelScope.launch {
+                uploadRepository
+                    .uploadImage(urlModel.url, userImage.url)
+                    .onSuccess {
+                        postToVerifyImage()
+                    }.onFailure {
+                        _totalGeneratingState.value = UiState.Failure(it.message.toString())
+                    }
+            }
+        }
+
+        private fun postToVerifyImage() {
         }
     }
