@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kr.genti.core.state.UiState
 import kr.genti.domain.entity.response.GenerateStatusModel
+import kr.genti.domain.entity.response.ServerAvailableModel
 import kr.genti.domain.enums.GenerateStatus
 import kr.genti.domain.repository.GenerateRepository
 import javax.inject.Inject
@@ -28,6 +29,10 @@ class MainViewModel
 
         private val _notificationState = MutableStateFlow(GenerateStatus.EMPTY)
         val notificationState: StateFlow<GenerateStatus> = _notificationState
+
+        private val _serverAvailableState =
+            MutableStateFlow<UiState<ServerAvailableModel>>(UiState.Empty)
+        val serverAvailableState: StateFlow<UiState<ServerAvailableModel>> = _serverAvailableState
 
         private val _userVerifyState = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
         val userVerifyState: StateFlow<UiState<Boolean>> = _userVerifyState
@@ -72,6 +77,19 @@ class MainViewModel
         }
 
         fun checkNewPictureInitialized() = ::newPicture.isInitialized
+
+        fun getIsServerAvailable() {
+            _serverAvailableState.value = UiState.Loading
+            viewModelScope.launch {
+                generateRepository
+                    .getIsServerAvailable()
+                    .onSuccess {
+                        _serverAvailableState.value = UiState.Success(it)
+                    }.onFailure {
+                        _serverAvailableState.value = UiState.Failure(it.message.orEmpty())
+                    }
+            }
+        }
 
         fun getIsUserVerifiedFromServer() {
             _userVerifyState.value = UiState.Loading

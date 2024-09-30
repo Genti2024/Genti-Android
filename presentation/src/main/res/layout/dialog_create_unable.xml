@@ -56,7 +56,8 @@
             android:id="@+id/iv_error_icon"
             android:layout_width="79dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="5dp"
             android:adjustViewBounds="true"
             android:src="@drawable/ic_error_icon"
             app:layout_constraintStart_toStartOf="@id/view_bg_top"
@@ -83,7 +84,7 @@
             android:layout_marginHorizontal="26dp"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            tools:text="mm.dd 09시부터 mm.dd 18시 까지 사진 생성이 불가능해요. 금방 돌아올게요!"
+            tools:text="mm.dd 09시부터 mm.dd 18시까지 사진 생성이 불가능해요. 금방 돌아올게요!"
             app:layout_constraintEnd_toEndOf="@id/view_bg_top"
             app:layout_constraintStart_toStartOf="@id/view_bg_top"
             app:layout_constraintTop_toBottomOf="@id/tv_logout_title" />
