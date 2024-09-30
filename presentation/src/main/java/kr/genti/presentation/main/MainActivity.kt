@@ -37,6 +37,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private var createFinishedDialog: CreateFinishedDialog? = null
     private var createErrorDialog: CreateErrorDialog? = null
+    private var createUnableDialog: CreateUnableDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +50,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         observeStatusResult()
         observeNotificationState()
         observeResetResult()
+        observeServerAvailableState()
         observeUserVerifyState()
     }
 
@@ -112,7 +114,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private fun navigateByGenerateStatus() {
         when (viewModel.currentStatus) {
             GenerateStatus.NEW_REQUEST_AVAILABLE -> {
-                viewModel.getIsUserVerifiedFromServer()
+                viewModel.getIsServerAvailable()
             }
 
             GenerateStatus.AWAIT_USER_VERIFICATION -> {
@@ -199,6 +201,27 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             }.launchIn(lifecycleScope)
     }
 
+    private fun observeServerAvailableState() {
+        viewModel.serverAvailableState
+            .flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        if (state.data.status) {
+                            viewModel.getIsUserVerifiedFromServer()
+                        } else {
+                            createUnableDialog = CreateUnableDialog.newInstance(state.data.message.orEmpty())
+                            createUnableDialog?.show(supportFragmentManager, DIALOG_UNABLE)
+                        }
+                    }
+
+                    is UiState.Failure -> toast(stringOf(R.string.error_msg))
+                    else -> return@onEach
+                }
+                viewModel.resetIsUserVerified()
+            }.launchIn(lifecycleScope)
+    }
+
     private fun observeUserVerifyState() {
         viewModel.userVerifyState
             .flowWithLifecycle(lifecycle)
@@ -236,13 +259,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     override fun onDestroy() {
         super.onDestroy()
+
         createFinishedDialog = null
         createErrorDialog = null
+        createUnableDialog = null
     }
 
     companion object {
         private const val DIALOG_FINISHED = "DIALOG_FINISHED"
         private const val DIALOG_ERROR = "DIALOG_ERROR"
+        private const val DIALOG_UNABLE = "DIALOG_UNABLE"
 
         const val TYPE_SUCCESS = "SUCCESS"
         const val TYPE_CANCELED = "CANCELED"

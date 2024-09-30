@@ -49,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="64dp"
                 android:gravity="center"
+                android:textSize="22dp"
                 android:lineSpacingMultiplier="1.1"
                 android:text="@string/verify_before_tv_title"
                 android:textColor="@color/white"
@@ -65,7 +66,7 @@
                 android:gravity="center"
                 android:text="@string/verify_before_tv_subtitle"
                 android:textColor="#99FFFFFF"
-                android:textSize="13sp"
+                android:textSize="13dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_before_verify_title" />
@@ -78,7 +79,7 @@
                 android:gravity="center"
                 android:text="@string/verify_before_tv_baby"
                 android:textColor="#4DFFFFFF"
-                android:textSize="13sp"
+                android:textSize="13dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_before_verify_subtitle" />
@@ -116,7 +117,7 @@
                 android:paddingVertical="14dp"
                 android:text="@string/verify_before_btn_photo"
                 android:textColor="#0D2D2B"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 app:layout_constraintBottom_toTopOf="@id/tv_before_verify_warning"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -130,7 +131,7 @@
                 android:gravity="center"
                 android:text="@string/verify_before_tv_warning"
                 android:textColor="#4DFFFFFF"
-                android:textSize="12sp"
+                android:textSize="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -153,6 +154,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="64dp"
+                android:textSize="22dp"
                 android:gravity="center"
                 android:lineSpacingMultiplier="1.1"
                 android:text="@string/verify_after_tv_title"
@@ -170,7 +172,7 @@
                 android:gravity="center"
                 android:text="@string/verify_after_tv_subtitle"
                 android:textColor="#99FFFFFF"
-                android:textSize="13sp"
+                android:textSize="13dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_after_verify_title" />
@@ -208,7 +210,7 @@
                 android:gravity="center"
                 android:text="@string/verify_after_tv_guide"
                 android:textColor="@color/green_new"
-                android:textSize="13sp"
+                android:textSize="13dp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_photo_taken"
                 app:layout_constraintEnd_toEndOf="@id/iv_photo_taken"
                 app:layout_constraintStart_toStartOf="@id/iv_photo_taken" />
@@ -225,7 +227,7 @@
                 android:paddingVertical="14dp"
                 android:text="@string/verify_after_btn_retake"
                 android:textColor="#0D2D2B"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 app:layout_constraintBottom_toTopOf="@id/btn_verify"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -242,7 +244,7 @@
                 android:paddingVertical="14dp"
                 android:text="@string/verify_after_btn_verify"
                 android:textColor="#0D2D2B"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

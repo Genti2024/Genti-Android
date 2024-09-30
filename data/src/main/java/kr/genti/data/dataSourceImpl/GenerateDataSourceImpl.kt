@@ -6,6 +6,7 @@ import kr.genti.data.dto.request.ReportRequestDto
 import kr.genti.data.dto.response.GenerateStatusDto
 import kr.genti.data.dto.response.OpenchatDto
 import kr.genti.data.dto.response.PicturePagedListDto
+import kr.genti.data.dto.response.ServerAvailableDto
 import kr.genti.data.service.GenerateService
 import javax.inject.Inject
 
@@ -39,4 +40,6 @@ data class GenerateDataSourceImpl
         override suspend fun getOpenchatData(): BaseResponse<OpenchatDto> = generateService.getOpenchatData()
 
         override suspend fun getIsUserVerified(): BaseResponse<Boolean> = generateService.getIsUserVerified()
+
+        override suspend fun getIsServerAvailable(): BaseResponse<ServerAvailableDto> = generateService.getIsServerAvailable()
     }

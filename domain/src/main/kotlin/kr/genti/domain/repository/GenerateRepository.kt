@@ -4,6 +4,7 @@ import kr.genti.domain.entity.request.ReportRequestModel
 import kr.genti.domain.entity.response.GenerateStatusModel
 import kr.genti.domain.entity.response.OpenchatModel
 import kr.genti.domain.entity.response.PicturePagedListModel
+import kr.genti.domain.entity.response.ServerAvailableModel
 
 interface GenerateRepository {
     suspend fun getGenerateStatus(): Result<GenerateStatusModel>
@@ -29,4 +30,6 @@ interface GenerateRepository {
     suspend fun getOpenchatData(): Result<OpenchatModel>
 
     suspend fun getIsUserVerified(): Result<Boolean>
+
+    suspend fun getIsServerAvailable(): Result<ServerAvailableModel>
 }

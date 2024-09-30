@@ -5,6 +5,7 @@ import kr.genti.data.dto.request.ReportRequestDto
 import kr.genti.data.dto.response.GenerateStatusDto
 import kr.genti.data.dto.response.OpenchatDto
 import kr.genti.data.dto.response.PicturePagedListDto
+import kr.genti.data.dto.response.ServerAvailableDto
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -49,4 +50,7 @@ interface GenerateService {
 
     @GET("api/v1/user-verification")
     suspend fun getIsUserVerified(): BaseResponse<Boolean>
+
+    @GET("api/v1/maintenance")
+    suspend fun getIsServerAvailable(): BaseResponse<ServerAvailableDto>
 }

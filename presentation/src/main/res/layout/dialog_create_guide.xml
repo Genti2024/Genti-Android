@@ -97,10 +97,11 @@
             style="@style/TextAppearance.Genti.BodyNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:layout_marginStart="24dp"
             android:text="@string/create_guide_tv_ex"
             android:textColor="@color/green_1"
-            app:layout_constraintBottom_toTopOf="@id/iv_guide_ex"
+            app:layout_constraintTop_toBottomOf="@id/tv_guide_title_down"
             app:layout_constraintStart_toStartOf="@id/iv_guide_bg" />
 
         <ImageView
@@ -110,7 +111,7 @@
             android:layout_marginHorizontal="20dp"
             android:adjustViewBounds="true"
             android:src="@drawable/img_guide_ex"
-            app:layout_constraintBottom_toBottomOf="@id/iv_guide_bg"
+            app:layout_constraintTop_toBottomOf="@id/tv_guide_ex"
             app:layout_constraintEnd_toEndOf="@id/iv_guide_bg"
             app:layout_constraintStart_toStartOf="@id/iv_guide_bg" />
 

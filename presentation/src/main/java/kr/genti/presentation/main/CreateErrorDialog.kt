@@ -13,9 +13,9 @@ import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.presentation.R
-import kr.genti.presentation.databinding.DialogWaitingErrorBinding
+import kr.genti.presentation.databinding.DialogCreateErrorBinding
 
-class CreateErrorDialog : BaseDialog<DialogWaitingErrorBinding>(R.layout.dialog_waiting_error) {
+class CreateErrorDialog : BaseDialog<DialogCreateErrorBinding>(R.layout.dialog_create_error) {
     private val viewModel by activityViewModels<MainViewModel>()
 
     override fun onStart() {
