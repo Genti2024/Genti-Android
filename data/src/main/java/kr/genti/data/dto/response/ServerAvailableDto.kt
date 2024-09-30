@@ -9,7 +9,7 @@ data class ServerAvailableDto(
     @SerialName("status")
     val status: Boolean,
     @SerialName("message")
-    val message: String,
+    val message: String?,
 ) {
     fun toModel() = ServerAvailableModel(status, message)
 }
