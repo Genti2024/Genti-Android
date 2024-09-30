@@ -83,4 +83,8 @@ class MainViewModel
                     }
             }
         }
+
+        fun resetIsUserVerified() {
+            _userVerifyState.value = UiState.Empty
+        }
     }

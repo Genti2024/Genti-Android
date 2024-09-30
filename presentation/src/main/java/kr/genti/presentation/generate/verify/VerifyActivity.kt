@@ -117,17 +117,17 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
             registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
                 if (isSuccess) {
                     photoUri?.let { uri ->
+                        with(binding) {
+                            ivPhotoTaken.setImageURI(uri)
+                            layoutBeforeUpload.isVisible = false
+                            layoutAfterUpload.isVisible = true
+                        }
                         viewModel.userImage =
                             ImageFileModel(
                                 uri.hashCode().toLong(),
                                 uri.getFileName(this.contentResolver).toString(),
                                 uri.toString(),
                             )
-                        with(binding) {
-                            ivPhotoTaken.setImageURI(uri)
-                            layoutBeforeUpload.isVisible = false
-                            layoutAfterUpload.isVisible = true
-                        }
                     }
                 } else {
                     photoUri?.path?.let { path ->
@@ -166,7 +166,7 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
 
     private fun createImageFile(): File? =
         File.createTempFile(
-            "Genti_${getFileDateFormat()}",
+            "Genti_${getFileDateFormat()}_",
             ".jpg",
             cacheDir,
         )
@@ -179,7 +179,8 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
-                        // TODO
+                        toast(stringOf(R.string.verify_success_toast))
+                        finish()
                     }
 
                     is UiState.Failure -> toast(stringOf(R.string.error_msg))

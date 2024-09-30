@@ -211,6 +211,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                     is UiState.Failure -> toast(stringOf(R.string.error_msg))
                     else -> return@onEach
                 }
+                viewModel.resetIsUserVerified()
             }.launchIn(lifecycleScope)
     }
 

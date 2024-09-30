@@ -61,5 +61,14 @@ class VerifyViewModel
         }
 
         private fun postToVerifyImage() {
+            viewModelScope.launch {
+                createRepository
+                    .postToVerify(imageS3Key)
+                    .onSuccess {
+                        _totalGeneratingState.value = UiState.Success(it)
+                    }.onFailure {
+                        _totalGeneratingState.value = UiState.Failure(it.message.toString())
+                    }
+            }
         }
     }
