@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -43,6 +44,8 @@ import java.util.Locale
 class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_verify) {
     private val viewModel by viewModels<VerifyViewModel>()
 
+    private var verifyExitDialog: VerifyExitDialog? = null
+
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private var photoUri: Uri? = null
@@ -52,6 +55,7 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
 
         initView()
         initExitBtnListener()
+        initBackPressedListener()
         initVerifyBtnListener()
         initCameraBtnListener()
         initRetakeBtnListener()
@@ -67,14 +71,30 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
     }
 
     private fun initExitBtnListener() {
-        binding.btnExit.setOnSingleClickListener {
-            val btnPage = if (viewModel.isUserPictured) "verifyme2" else "verifyme1"
+        binding.btnExit.setOnSingleClickListener { exitVerifying() }
+    }
+
+    private fun initBackPressedListener() {
+        val onBackPressedCallback =
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    exitVerifying()
+                }
+            }
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
+    private fun exitVerifying() {
+        if (!viewModel.isUserPictured) {
             AmplitudeManager.trackEvent(
                 EVENT_CLICK_BTN,
-                mapOf(PROPERTY_PAGE to btnPage),
+                mapOf(PROPERTY_PAGE to "verifyme1"),
                 mapOf(PROPERTY_BTN to "exit"),
             )
             finish()
+        } else {
+            verifyExitDialog = VerifyExitDialog()
+            verifyExitDialog?.show(supportFragmentManager, DIALOG_EXIT)
         }
     }
 
@@ -240,5 +260,10 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
 
         setStatusBarColorFromResource(R.color.white)
         setNavigationBarColorFromResource(R.color.white)
+        verifyExitDialog = null
+    }
+
+    companion object {
+        private const val DIALOG_EXIT = "DIALOG_EXIT"
     }
 }
