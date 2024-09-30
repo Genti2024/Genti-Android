@@ -27,6 +27,8 @@ class VerifyViewModel
         var userImage = emptyImageFileModel()
         private var imageS3Key = KeyRequestModel(null)
 
+        var isUserPictured = false
+
         private val _totalGeneratingState = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
         val totalGeneratingState: StateFlow<UiState<Boolean>> = _totalGeneratingState
 

@@ -29,6 +29,11 @@ import kr.genti.core.state.UiState
 import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityVerifyBinding
+import kr.genti.presentation.util.AmplitudeManager
+import kr.genti.presentation.util.AmplitudeManager.EVENT_CLICK_BTN
+import kr.genti.presentation.util.AmplitudeManager.PROPERTY_BTN
+import kr.genti.presentation.util.AmplitudeManager.PROPERTY_PAGE
+import kr.genti.presentation.util.AmplitudeManager.updateBooleanProperties
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -45,8 +50,7 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setStatusBarColorFromResource(R.color.verify_bg)
-        setNavigationBarColorFromResource(R.color.verify_bg)
+        initView()
         initExitBtnListener()
         initVerifyBtnListener()
         initCameraBtnListener()
@@ -56,22 +60,55 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
         observeGeneratingState()
     }
 
-    private fun initExitBtnListener() {
-        binding.btnExit.setOnSingleClickListener { finish() }
+    private fun initView() {
+        AmplitudeManager.trackEvent("view_verifyme1")
+        setStatusBarColorFromResource(R.color.verify_bg)
+        setNavigationBarColorFromResource(R.color.verify_bg)
     }
 
-    private fun initVerifyBtnListener() {
-        binding.btnVerify.setOnClickListener {
-            viewModel.getSingleS3Url()
+    private fun initExitBtnListener() {
+        binding.btnExit.setOnSingleClickListener {
+            val btnPage = if (viewModel.isUserPictured) "verifyme2" else "verifyme1"
+            AmplitudeManager.trackEvent(
+                EVENT_CLICK_BTN,
+                mapOf(PROPERTY_PAGE to btnPage),
+                mapOf(PROPERTY_BTN to "exit"),
+            )
+            finish()
         }
     }
 
     private fun initCameraBtnListener() {
-        binding.btnGetCameraPhoto.setOnClickListener { checkCameraPermission() }
+        binding.btnGetCameraPhoto.setOnClickListener {
+            AmplitudeManager.trackEvent(
+                EVENT_CLICK_BTN,
+                mapOf(PROPERTY_PAGE to "verifyme1"),
+                mapOf(PROPERTY_BTN to "verifyme"),
+            )
+            checkCameraPermission()
+        }
     }
 
     private fun initRetakeBtnListener() {
-        binding.btnRetakePhoto.setOnClickListener { startCameraLauncher() }
+        binding.btnRetakePhoto.setOnClickListener {
+            AmplitudeManager.trackEvent(
+                EVENT_CLICK_BTN,
+                mapOf(PROPERTY_PAGE to "verifyme2"),
+                mapOf(PROPERTY_BTN to "photoretake"),
+            )
+            startCameraLauncher()
+        }
+    }
+
+    private fun initVerifyBtnListener() {
+        binding.btnVerify.setOnClickListener {
+            AmplitudeManager.trackEvent(
+                EVENT_CLICK_BTN,
+                mapOf(PROPERTY_PAGE to "verifyme2"),
+                mapOf(PROPERTY_BTN to "verifymedone"),
+            )
+            viewModel.getSingleS3Url()
+        }
     }
 
     private fun setRequestPermissionLauncher() {
@@ -122,6 +159,7 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
                             layoutBeforeUpload.isVisible = false
                             layoutAfterUpload.isVisible = true
                         }
+                        viewModel.isUserPictured = true
                         viewModel.userImage =
                             ImageFileModel(
                                 uri.hashCode().toLong(),
@@ -180,6 +218,7 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
                 when (state) {
                     is UiState.Success -> {
                         toast(stringOf(R.string.verify_success_toast))
+                        updateBooleanProperties("user_verified", true)
                         finish()
                     }
 
