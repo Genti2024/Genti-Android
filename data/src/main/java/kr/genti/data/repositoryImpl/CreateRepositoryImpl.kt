@@ -2,8 +2,10 @@ package kr.genti.data.repositoryImpl
 
 import kr.genti.data.dataSource.CreateDataSource
 import kr.genti.data.dto.request.CreateRequestDto.Companion.toDto
+import kr.genti.data.dto.request.KeyRequestDto.Companion.toDto
 import kr.genti.data.dto.request.S3RequestDto.Companion.toDto
 import kr.genti.domain.entity.request.CreateRequestModel
+import kr.genti.domain.entity.request.KeyRequestModel
 import kr.genti.domain.entity.request.S3RequestModel
 import kr.genti.domain.entity.response.S3PresignedUrlModel
 import kr.genti.domain.repository.CreateRepository
@@ -27,5 +29,10 @@ class CreateRepositoryImpl
         override suspend fun postToCreate(request: CreateRequestModel): Result<Boolean> =
             runCatching {
                 createDataSource.postToCreate(request.toDto()).response
+            }
+
+        override suspend fun postToVerify(request: KeyRequestModel): Result<Boolean> =
+            runCatching {
+                createDataSource.postToVerify(request.toDto()).response
             }
     }

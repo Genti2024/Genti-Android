@@ -7,18 +7,40 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/iv_logout_bg"
+            android:id="@+id/view_bg_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/img_logout_bg"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:adjustViewBounds="true"
+            android:src="@drawable/img_dialog_bg_green_top"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/view_bg_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-80dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/img_dialog_bg_green_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_move_to_finish" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_marginTop="-20dp"
+            android:layout_marginHorizontal="0.1dp"
+            android:layout_height="0dp"
+            android:background="@color/background_white"
+            app:layout_constraintBottom_toTopOf="@id/view_bg_bottom"
+            app:layout_constraintEnd_toEndOf="@id/view_bg_bottom"
+            app:layout_constraintStart_toStartOf="@id/view_bg_bottom"
+            app:layout_constraintTop_toBottomOf="@id/view_bg_top" />
 
         <ImageView
             android:id="@+id/btn_close"
@@ -26,7 +48,7 @@
             android:layout_height="wrap_content"
             android:padding="12dp"
             android:src="@drawable/ic_close_dialog"
-            app:layout_constraintEnd_toEndOf="@id/iv_logout_bg"
+            app:layout_constraintEnd_toEndOf="@id/view_bg_top"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
@@ -36,7 +58,7 @@
             android:layout_marginTop="-15dp"
             android:adjustViewBounds="true"
             android:src="@drawable/ic_big_lightning"
-            app:layout_constraintStart_toStartOf="@id/iv_logout_bg"
+            app:layout_constraintStart_toStartOf="@id/view_bg_top"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -48,8 +70,8 @@
             android:layout_marginTop="35dp"
             android:gravity="center"
             android:text="@string/main_dialog_tv_title"
-            app:layout_constraintEnd_toEndOf="@id/iv_logout_bg"
-            app:layout_constraintStart_toStartOf="@id/iv_logout_bg"
+            app:layout_constraintEnd_toEndOf="@id/view_bg_top"
+            app:layout_constraintStart_toStartOf="@id/view_bg_top"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -61,8 +83,8 @@
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="@string/main_dialog_tv_subtitle"
-            app:layout_constraintEnd_toEndOf="@id/iv_logout_bg"
-            app:layout_constraintStart_toStartOf="@id/iv_logout_bg"
+            app:layout_constraintEnd_toEndOf="@id/view_bg_top"
+            app:layout_constraintStart_toStartOf="@id/view_bg_top"
             app:layout_constraintTop_toBottomOf="@id/tv_logout_title" />
 
         <TextView
@@ -78,8 +100,8 @@
             android:text="@string/main_dialog_btn_move_to_finish"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/iv_logout_bg"
-            app:layout_constraintStart_toStartOf="@id/iv_logout_bg"
+            app:layout_constraintEnd_toEndOf="@id/view_bg_top"
+            app:layout_constraintStart_toStartOf="@id/view_bg_top"
             app:layout_constraintTop_toBottomOf="@id/tv_logout_subtitle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

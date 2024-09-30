@@ -28,4 +28,6 @@ interface GenerateDataSource {
     suspend fun getCanceledToReset(requestId: String): BaseResponse<Boolean>
 
     suspend fun getOpenchatData(): BaseResponse<OpenchatDto>
+
+    suspend fun getIsUserVerified(): BaseResponse<Boolean>
 }

@@ -37,4 +37,6 @@ data class GenerateDataSourceImpl
         override suspend fun getCanceledToReset(requestId: String): BaseResponse<Boolean> = generateService.getCanceledToReset(requestId)
 
         override suspend fun getOpenchatData(): BaseResponse<OpenchatDto> = generateService.getOpenchatData()
+
+        override suspend fun getIsUserVerified(): BaseResponse<Boolean> = generateService.getIsUserVerified()
     }

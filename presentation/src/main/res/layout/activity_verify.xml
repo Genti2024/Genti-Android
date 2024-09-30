@@ -189,11 +189,11 @@
 
             <ImageView
                 android:id="@+id/iv_photo_taken"
-                android:scaleType="centerCrop"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="2dp"
                 android:background="@color/grey_1"
+                android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="@id/iv_photo_bg"
                 app:layout_constraintEnd_toEndOf="@id/iv_photo_bg"
                 app:layout_constraintStart_toStartOf="@id/iv_photo_bg"
@@ -246,6 +246,30 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_loading"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/transparent_50"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/lottie_loading" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

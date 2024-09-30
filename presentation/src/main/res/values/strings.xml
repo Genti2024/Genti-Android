@@ -155,5 +155,9 @@
     <string name="verify_after_tv_guide">해당 사진은 본인 인증에만 활용되며\n사진을 만들 때는 앨범에서 선택할 수 있어요!</string>
     <string name="verify_after_btn_retake">다시 촬영하기</string>
     <string name="verify_after_btn_verify">본인 인증 완료하기</string>
+    <string name="verify_success_toast">본인 인증이 완료되었습니다</string>
+    <string name="verify_exit_tv_title">정말 나가시겠어요?</string>
+    <string name="verify_exit_tv_subtitle">메인 화면으로 나가면 \n촬영한 사진은 자동으로 삭제됩니다.</string>
+    <string name="verify_exit_btn_exit">나가기</string>
 
 </resources>

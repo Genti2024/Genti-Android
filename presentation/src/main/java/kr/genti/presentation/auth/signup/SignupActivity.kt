@@ -80,7 +80,9 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(R.layout.activity_sig
     }
 
     private fun observePostSignupState() {
-        viewModel.postSignupState.flowWithLifecycle(lifecycle).distinctUntilChanged()
+        viewModel.postSignupState
+            .flowWithLifecycle(lifecycle)
+            .distinctUntilChanged()
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
@@ -111,6 +113,7 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(R.layout.activity_sig
             updateIntProperties("user_promptsuggest_refresh", 0)
             updateIntProperties("user_piccreate", 0)
             updateBooleanProperties("user_alarm", false)
+            updateBooleanProperties("user_verified", false)
         }
     }
 }

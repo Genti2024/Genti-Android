@@ -46,4 +46,7 @@ interface GenerateService {
 
     @GET("api/v1/open-chat")
     suspend fun getOpenchatData(): BaseResponse<OpenchatDto>
+
+    @GET("api/v1/user-verification")
+    suspend fun getIsUserVerified(): BaseResponse<Boolean>
 }

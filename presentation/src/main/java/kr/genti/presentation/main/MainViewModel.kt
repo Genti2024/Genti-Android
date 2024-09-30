@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kr.genti.core.state.UiState
 import kr.genti.domain.entity.response.GenerateStatusModel
 import kr.genti.domain.enums.GenerateStatus
 import kr.genti.domain.repository.GenerateRepository
@@ -28,20 +29,25 @@ class MainViewModel
         private val _notificationState = MutableStateFlow(GenerateStatus.EMPTY)
         val notificationState: StateFlow<GenerateStatus> = _notificationState
 
+        private val _userVerifyState = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
+        val userVerifyState: StateFlow<UiState<Boolean>> = _userVerifyState
+
         var currentStatus: GenerateStatus = GenerateStatus.NEW_REQUEST_AVAILABLE
         lateinit var newPicture: GenerateStatusModel
 
+        var isUserTryingVerify = false
+
         fun getGenerateStatusFromServer(isNotification: Boolean) {
             viewModelScope.launch {
-                generateRepository.getGenerateStatus()
+                generateRepository
+                    .getGenerateStatus()
                     .onSuccess {
                         currentStatus = it.status
                         newPicture = it
                         if (isNotification) {
                             _notificationState.value = it.status
                         }
-                    }
-                    .onFailure {
+                    }.onFailure {
                         _getStatusResult.emit(false)
                     }
             }
@@ -53,18 +59,34 @@ class MainViewModel
 
         fun postResetStateToServer() {
             viewModelScope.launch {
-                generateRepository.getCanceledToReset(
-                    newPicture.pictureGenerateRequestId.toString(),
-                )
-                    .onSuccess {
+                generateRepository
+                    .getCanceledToReset(
+                        newPicture.pictureGenerateRequestId.toString(),
+                    ).onSuccess {
                         _postResetResult.emit(true)
                         getGenerateStatusFromServer(false)
-                    }
-                    .onFailure {
+                    }.onFailure {
                         _postResetResult.emit(false)
                     }
             }
         }
 
         fun checkNewPictureInitialized() = ::newPicture.isInitialized
+
+        fun getIsUserVerifiedFromServer() {
+            _userVerifyState.value = UiState.Loading
+            viewModelScope.launch {
+                generateRepository
+                    .getIsUserVerified()
+                    .onSuccess {
+                        _userVerifyState.value = UiState.Success(it)
+                    }.onFailure {
+                        _userVerifyState.value = UiState.Failure(it.message.orEmpty())
+                    }
+            }
+        }
+
+        fun resetIsUserVerified() {
+            _userVerifyState.value = UiState.Empty
+        }
     }

@@ -29,7 +29,7 @@
             android:src="@drawable/img_dialog_bg_grey_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_again" />
+            app:layout_constraintTop_toBottomOf="@id/btn_exit" />
 
         <View
             android:layout_width="0dp"
@@ -51,44 +51,34 @@
             app:layout_constraintEnd_toEndOf="@id/view_bg_top"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/iv_error_icon"
-            android:layout_width="79dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:adjustViewBounds="true"
-            android:src="@drawable/ic_error_icon"
-            app:layout_constraintStart_toStartOf="@id/view_bg_top"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
-            android:id="@+id/tv_logout_title"
+            android:id="@+id/tv_verify_title"
             style="@style/TextAppearance.Genti.Headline4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
             android:layout_marginTop="35dp"
             android:gravity="center"
-            android:text="@string/waiting_error_tv_title"
+            android:text="@string/verify_exit_tv_title"
             app:layout_constraintEnd_toEndOf="@id/view_bg_top"
             app:layout_constraintStart_toStartOf="@id/view_bg_top"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_logout_subtitle"
+            android:id="@+id/tv_verify_subtitle"
             style="@style/TextAppearance.Genti.BodySmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            android:text="@string/waiting_error_tv_subtitle"
+            android:text="@string/verify_exit_tv_subtitle"
             app:layout_constraintEnd_toEndOf="@id/view_bg_top"
             app:layout_constraintStart_toStartOf="@id/view_bg_top"
-            app:layout_constraintTop_toBottomOf="@id/tv_logout_title" />
+            app:layout_constraintTop_toBottomOf="@id/tv_verify_title" />
 
         <TextView
-            android:id="@+id/btn_again"
+            android:id="@+id/btn_exit"
             style="@style/TextAppearance.Genti.Headline4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -97,11 +87,11 @@
             android:background="@drawable/sel_btn"
             android:gravity="center"
             android:paddingVertical="8dp"
-            android:text="@string/waiting_error_btn_again"
+            android:text="@string/verify_exit_btn_exit"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="@id/view_bg_top"
             app:layout_constraintStart_toStartOf="@id/view_bg_top"
-            app:layout_constraintTop_toBottomOf="@id/tv_logout_subtitle" />
+            app:layout_constraintTop_toBottomOf="@id/tv_verify_subtitle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

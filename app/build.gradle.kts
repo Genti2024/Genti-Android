@@ -22,6 +22,15 @@ android {
         versionName = Constants.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            "String",
+            "NATIVE_APP_KEY",
+            gradleLocalProperties(rootDir).getProperty("native.app.key"),
+        )
+
+        manifestPlaceholders["NATIVE_APP_KEY"] =
+            gradleLocalProperties(rootDir).getProperty("nativeAppKey")
     }
 
     buildTypes {
@@ -36,14 +45,6 @@ android {
                 "AMPLITUDE_KEY",
                 gradleLocalProperties(rootDir).getProperty("amplitude.test.key"),
             )
-            buildConfigField(
-                "String",
-                "NATIVE_APP_KEY",
-                gradleLocalProperties(rootDir).getProperty("test.native.app.key"),
-            )
-
-            manifestPlaceholders["NATIVE_APP_KEY"] =
-                gradleLocalProperties(rootDir).getProperty("testNativeAppKey")
         }
         release {
             buildConfigField(
@@ -56,14 +57,6 @@ android {
                 "AMPLITUDE_KEY",
                 gradleLocalProperties(rootDir).getProperty("amplitude.api.key"),
             )
-            buildConfigField(
-                "String",
-                "NATIVE_APP_KEY",
-                gradleLocalProperties(rootDir).getProperty("native.app.key"),
-            )
-
-            manifestPlaceholders["NATIVE_APP_KEY"] =
-                gradleLocalProperties(rootDir).getProperty("nativeAppKey")
 
             isMinifyEnabled = false
             proguardFiles(

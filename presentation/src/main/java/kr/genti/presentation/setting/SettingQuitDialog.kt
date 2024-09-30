@@ -22,20 +22,21 @@ import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogSettingQuitBinding
 import kr.genti.presentation.util.AmplitudeManager
 
-class SettingQuitDialog :
-    BaseDialog<DialogSettingQuitBinding>(R.layout.dialog_setting_quit) {
+class SettingQuitDialog : BaseDialog<DialogSettingQuitBinding>(R.layout.dialog_setting_quit) {
     private val viewModel by activityViewModels<SettingViewModel>()
 
     override fun onStart() {
         super.onStart()
         dialog?.window?.apply {
             setLayout(
-                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
             )
             setBackgroundDrawableResource(R.color.transparent)
         }
-        requireActivity().window.decorView.rootView.setGusianBlur(50f)
+        requireActivity()
+            .window.decorView.rootView
+            .setGusianBlur(50f)
     }
 
     override fun onViewCreated(
@@ -45,7 +46,7 @@ class SettingQuitDialog :
         super.onViewCreated(view, savedInstanceState)
 
         initReturnBtnListener()
-        initLogoutBtnListener()
+        initQuitBtnListener()
         observeUserQuitState()
     }
 
@@ -53,14 +54,16 @@ class SettingQuitDialog :
         binding.btnReturn.setOnSingleClickListener { dismiss() }
     }
 
-    private fun initLogoutBtnListener() {
-        binding.btnLogout.setOnSingleClickListener {
+    private fun initQuitBtnListener() {
+        binding.btnQuit.setOnSingleClickListener {
             viewModel.quitFromServer()
         }
     }
 
     private fun observeUserQuitState() {
-        viewModel.userDeleteState.flowWithLifecycle(lifecycle).distinctUntilChanged()
+        viewModel.userDeleteState
+            .flowWithLifecycle(lifecycle)
+            .distinctUntilChanged()
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
@@ -77,6 +80,8 @@ class SettingQuitDialog :
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        requireActivity().window.decorView.rootView.setGusianBlur(null)
+        requireActivity()
+            .window.decorView.rootView
+            .setGusianBlur(null)
     }
 }
