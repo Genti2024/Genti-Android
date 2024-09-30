@@ -15,15 +15,14 @@ import kr.genti.core.extension.toast
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogWaitingErrorBinding
 
-class CreateErrorDialog :
-    BaseDialog<DialogWaitingErrorBinding>(R.layout.dialog_waiting_error) {
+class CreateErrorDialog : BaseDialog<DialogWaitingErrorBinding>(R.layout.dialog_waiting_error) {
     private val viewModel by activityViewModels<MainViewModel>()
 
     override fun onStart() {
         super.onStart()
         dialog?.window?.apply {
             setLayout(
-                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
             )
             setBackgroundDrawableResource(R.color.transparent)
@@ -56,12 +55,14 @@ class CreateErrorDialog :
     }
 
     private fun observeResetResult() {
-        viewModel.postResetResult.flowWithLifecycle(lifecycle).onEach { result ->
-            if (!result) {
-                toast(stringOf(R.string.error_msg))
-            } else {
-                dismiss()
-            }
-        }.launchIn(lifecycleScope)
+        viewModel.postResetResult
+            .flowWithLifecycle(lifecycle)
+            .onEach { result ->
+                if (!result) {
+                    toast(stringOf(R.string.error_msg))
+                } else {
+                    dismiss()
+                }
+            }.launchIn(lifecycleScope)
     }
 }

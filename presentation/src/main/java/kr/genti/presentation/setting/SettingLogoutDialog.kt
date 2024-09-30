@@ -22,20 +22,21 @@ import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogSettingLogoutBinding
 import kr.genti.presentation.util.AmplitudeManager
 
-class SettingLogoutDialog :
-    BaseDialog<DialogSettingLogoutBinding>(R.layout.dialog_setting_logout) {
+class SettingLogoutDialog : BaseDialog<DialogSettingLogoutBinding>(R.layout.dialog_setting_logout) {
     private val viewModel by activityViewModels<SettingViewModel>()
 
     override fun onStart() {
         super.onStart()
         dialog?.window?.apply {
             setLayout(
-                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
             )
             setBackgroundDrawableResource(R.color.transparent)
         }
-        requireActivity().window.decorView.rootView.setGusianBlur(50f)
+        requireActivity()
+            .window.decorView.rootView
+            .setGusianBlur(50f)
     }
 
     override fun onViewCreated(
@@ -60,7 +61,9 @@ class SettingLogoutDialog :
     }
 
     private fun observeUserLogoutState() {
-        viewModel.userLogoutState.flowWithLifecycle(lifecycle).distinctUntilChanged()
+        viewModel.userLogoutState
+            .flowWithLifecycle(lifecycle)
+            .distinctUntilChanged()
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
@@ -77,6 +80,8 @@ class SettingLogoutDialog :
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        requireActivity().window.decorView.rootView.setGusianBlur(null)
+        requireActivity()
+            .window.decorView.rootView
+            .setGusianBlur(null)
     }
 }
