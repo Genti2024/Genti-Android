@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/view_bg_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/img_dialog_bg_grey_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/view_bg_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-80dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/img_dialog_bg_grey_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_return" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="0.1dp"
+            android:layout_marginTop="-20dp"
+            android:background="@color/background_white"
+            app:layout_constraintBottom_toTopOf="@id/view_bg_bottom"
+            app:layout_constraintEnd_toEndOf="@id/view_bg_bottom"
+            app:layout_constraintStart_toStartOf="@id/view_bg_bottom"
+            app:layout_constraintTop_toBottomOf="@id/view_bg_top" />
+
+        <ImageView
+            android:id="@+id/btn_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:src="@drawable/ic_close_dialog"
+            app:layout_constraintEnd_toEndOf="@id/view_bg_top"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_error_icon"
+            android:layout_width="79dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_error_icon"
+            app:layout_constraintStart_toStartOf="@id/view_bg_top"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_logout_title"
+            style="@style/TextAppearance.Genti.Headline4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="35dp"
+            android:gravity="center"
+            android:text="현재 젠티는 점검중이에요!"
+            app:layout_constraintEnd_toEndOf="@id/view_bg_top"
+            app:layout_constraintStart_toStartOf="@id/view_bg_top"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_logout_subtitle"
+            style="@style/TextAppearance.Genti.BodySmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="26dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            tools:text="mm.dd 09시부터 mm.dd 18시 까지 사진 생성이 불가능해요. 금방 돌아올게요!"
+            app:layout_constraintEnd_toEndOf="@id/view_bg_top"
+            app:layout_constraintStart_toStartOf="@id/view_bg_top"
+            app:layout_constraintTop_toBottomOf="@id/tv_logout_title" />
+
+        <TextView
+            android:id="@+id/btn_return"
+            style="@style/TextAppearance.Genti.Headline4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="26dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/sel_btn"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:text="돌아가기"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@id/view_bg_top"
+            app:layout_constraintStart_toStartOf="@id/view_bg_top"
+            app:layout_constraintTop_toBottomOf="@id/tv_logout_subtitle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

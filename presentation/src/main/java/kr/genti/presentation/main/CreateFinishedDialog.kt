@@ -9,10 +9,10 @@ import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.presentation.R
-import kr.genti.presentation.databinding.DialogMainFinishedBinding
+import kr.genti.presentation.databinding.DialogCreateFinishedBinding
 import kr.genti.presentation.generate.finished.FinishedActivity
 
-class CreateFinishedDialog : BaseDialog<DialogMainFinishedBinding>(R.layout.dialog_main_finished) {
+class CreateFinishedDialog : BaseDialog<DialogCreateFinishedBinding>(R.layout.dialog_create_finished) {
     private val viewModel by activityViewModels<MainViewModel>()
 
     override fun onStart() {
