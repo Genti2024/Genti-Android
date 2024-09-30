@@ -217,13 +217,20 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
+                        binding.layoutLoading.isVisible = false
                         toast(stringOf(R.string.verify_success_toast))
                         updateBooleanProperties("user_verified", true)
                         finish()
                     }
 
-                    is UiState.Failure -> toast(stringOf(R.string.error_msg))
-                    else -> return@onEach
+                    is UiState.Failure -> {
+                        binding.layoutLoading.isVisible = false
+                        toast(stringOf(R.string.error_msg))
+                    }
+
+                    is UiState.Loading -> binding.layoutLoading.isVisible = true
+
+                    is UiState.Empty -> return@onEach
                 }
             }.launchIn(lifecycleScope)
     }
