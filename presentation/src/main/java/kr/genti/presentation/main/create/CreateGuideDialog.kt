@@ -8,13 +8,12 @@ import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogCreateGuideBinding
 
-class CreateGuideDialog :
-    BaseDialog<DialogCreateGuideBinding>(R.layout.dialog_create_guide) {
+class CreateGuideDialog : BaseDialog<DialogCreateGuideBinding>(R.layout.dialog_create_guide) {
     override fun onStart() {
         super.onStart()
         dialog?.window?.apply {
             setLayout(
-                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
             )
             setBackgroundDrawableResource(R.color.transparent)

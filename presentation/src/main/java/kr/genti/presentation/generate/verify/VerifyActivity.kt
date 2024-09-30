@@ -79,7 +79,7 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
     }
 
     private fun initCameraBtnListener() {
-        binding.btnGetCameraPhoto.setOnClickListener {
+        binding.btnGetCameraPhoto.setOnSingleClickListener {
             AmplitudeManager.trackEvent(
                 EVENT_CLICK_BTN,
                 mapOf(PROPERTY_PAGE to "verifyme1"),
@@ -90,7 +90,7 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
     }
 
     private fun initRetakeBtnListener() {
-        binding.btnRetakePhoto.setOnClickListener {
+        binding.btnRetakePhoto.setOnSingleClickListener {
             AmplitudeManager.trackEvent(
                 EVENT_CLICK_BTN,
                 mapOf(PROPERTY_PAGE to "verifyme2"),
@@ -101,7 +101,7 @@ class VerifyActivity : BaseActivity<ActivityVerifyBinding>(R.layout.activity_ver
     }
 
     private fun initVerifyBtnListener() {
-        binding.btnVerify.setOnClickListener {
+        binding.btnVerify.setOnSingleClickListener {
             AmplitudeManager.trackEvent(
                 EVENT_CLICK_BTN,
                 mapOf(PROPERTY_PAGE to "verifyme2"),
