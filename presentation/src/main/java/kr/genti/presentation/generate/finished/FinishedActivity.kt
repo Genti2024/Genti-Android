@@ -2,9 +2,6 @@ package kr.genti.presentation.generate.finished
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -21,13 +18,13 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.colorOf
 import kr.genti.core.extension.dpToPx
@@ -40,6 +37,7 @@ import kr.genti.domain.enums.PictureType
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityFinishedBinding
 import kr.genti.presentation.main.profile.ProfileImageDialog.Companion.FILE_PROVIDER_AUTORITY
+import kr.genti.presentation.main.profile.ProfileImageDialog.Companion.IMAGE_TYPE
 import kr.genti.presentation.main.profile.ProfileImageDialog.Companion.TEMP_FILE_NAME
 import kr.genti.presentation.util.AmplitudeManager
 import kr.genti.presentation.util.AmplitudeManager.EVENT_CLICK_BTN
@@ -47,8 +45,6 @@ import kr.genti.presentation.util.AmplitudeManager.PROPERTY_BTN
 import kr.genti.presentation.util.AmplitudeManager.PROPERTY_PAGE
 import kr.genti.presentation.util.downloadImage
 import java.io.File
-import java.io.FileOutputStream
-import java.net.URL
 
 @AndroidEntryPoint
 class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity_finished) {
@@ -57,6 +53,8 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
     private var finishedImageDialog: FinishedImageDialog? = null
     private var finishedReportDialog: FinishedReportDialog? = null
     private var finishedRatingDialog: FinishedRatingDialog? = null
+
+    private lateinit var tempFile: File
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +67,7 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
         initUnwantedBtnListener()
         getIntentInfo()
         setStatusBarTransparent()
+        observeDownloadCacheImage()
     }
 
     private fun initView() {
@@ -117,46 +116,8 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
                 )
                 plusIntProperties("user_share")
             }
-            getTemporaryUri()
-        }
-    }
-
-    private fun getTemporaryUri() {
-        val tempFile = File(cacheDir, TEMP_FILE_NAME)
-
-        lifecycleScope.launch {
-            runCatching {
-                withContext(Dispatchers.IO) {
-                    val url = URL(viewModel.finishedImage.url)
-                    val connection = url.openConnection()
-                    connection.connect()
-                    connection.getInputStream()?.use { inputStream ->
-                        FileOutputStream(tempFile).use { out ->
-                            val bitmap = BitmapFactory.decodeStream(inputStream)
-                            bitmap?.compress(Bitmap.CompressFormat.PNG, 100, out)
-                        }
-                    }
-                }
-                FileProvider.getUriForFile(
-                    this@FinishedActivity,
-                    FILE_PROVIDER_AUTORITY,
-                    tempFile,
-                )
-            }.onSuccess { uri ->
-                shareImage(uri)
-            }.onFailure {
-                toast(stringOf(R.string.error_msg))
-            }
-        }
-    }
-
-    private fun shareImage(uri: Uri) {
-        Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_STREAM, uri)
-            type = IMAGE_TYPE
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            startActivity(Intent.createChooser(this, SHARE_IMAGE_CHOOSER))
+            tempFile = File(cacheDir, TEMP_FILE_NAME)
+            viewModel.downloadImageToCache(tempFile)
         }
     }
 
@@ -183,7 +144,7 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
         viewModel.finishedImage =
             ImageModel(
                 intent.getLongExtra(EXTRA_RESPONSE_ID, -1),
-                intent.getStringExtra(EXTRA_URL) ?: "",
+                intent.getStringExtra(EXTRA_URL).orEmpty(),
                 "",
                 intent.getStringExtra(EXTRA_RATIO)?.toPictureRatio(),
                 PictureType.PictureCompleted,
@@ -204,6 +165,30 @@ class FinishedActivity : BaseActivity<ActivityFinishedBinding>(R.layout.activity
                 tvFinishedTitle23.setEmphasizedText()
             }
         }
+    }
+
+    private fun observeDownloadCacheImage() {
+        viewModel.isImageDownloaded
+            .flowWithLifecycle(lifecycle)
+            .onEach { isDownloaded ->
+                if (isDownloaded) {
+                    Intent().apply {
+                        val uri =
+                            FileProvider.getUriForFile(
+                                this@FinishedActivity,
+                                FILE_PROVIDER_AUTORITY,
+                                tempFile,
+                            )
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_STREAM, uri)
+                        type = IMAGE_TYPE
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        startActivity(Intent.createChooser(this, SHARE_IMAGE_CHOOSER))
+                    }
+                } else {
+                    toast(stringOf(R.string.error_msg))
+                }
+            }.launchIn(lifecycleScope)
     }
 
     private fun ImageView.loadImageToView() {
