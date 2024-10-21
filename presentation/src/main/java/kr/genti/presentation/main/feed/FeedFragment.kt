@@ -115,9 +115,4 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
         super.onDestroyView()
         _adapter = null
     }
-
-    companion object {
-        private const val WEB_GENFLUENCER =
-            "https://stealth-goose-156.notion.site/57a00e1d610b4c1786c6ab1fdb4c4659?pvs=4"
-    }
 }
