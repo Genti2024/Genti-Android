@@ -2,8 +2,6 @@ package kr.genti.presentation.generate.openchat
 
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.LinearGradient
-import android.graphics.Shader
 import android.net.Uri
 import android.os.Bundle
 import android.text.Spannable
@@ -20,6 +18,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseActivity
 import kr.genti.core.extension.colorOf
+import kr.genti.core.extension.setGradientText
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
@@ -77,21 +76,10 @@ class OpenchatActivity : BaseActivity<ActivityOpenchatBinding>(R.layout.activity
     }
 
     private fun setTitleTextGradation() {
-        binding.tvOpenchatTitleUp.apply {
-            paint.shader =
-                LinearGradient(
-                    0f,
-                    0f,
-                    paint.measureText(text.toString()),
-                    textSize,
-                    intArrayOf(
-                        colorOf(R.color.genti_gradation_start),
-                        colorOf(R.color.genti_gradation_end),
-                    ),
-                    null,
-                    Shader.TileMode.CLAMP,
-                )
-        }
+        binding.tvOpenchatTitleUp.setGradientText(
+            colorOf(R.color.genti_gradation_start),
+            colorOf(R.color.genti_gradation_end),
+        )
     }
 
     private fun setBackPressed() {
