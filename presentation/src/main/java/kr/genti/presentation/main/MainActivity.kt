@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
@@ -15,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseActivity
-import kr.genti.core.extension.setStatusBarColorFromResource
+import kr.genti.core.extension.initOnBackPressedListener
 import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.core.state.UiState
@@ -42,10 +41,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initOnBackPressedListener(binding.root)
         initBnvItemIconTintList()
         initBnvItemSelectedListener()
         initCreateBtnListener()
-        setStatusBarColor()
         getNotificationIntent()
         observeStatusResult()
         observeNotificationState()
@@ -63,7 +62,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         }
     }
 
-    fun initBnvItemIconTintList() {
+    private fun initBnvItemIconTintList() {
         with(binding.bnvMain) {
             itemIconTintList = null
             selectedItemId = R.id.menu_feed
@@ -87,7 +86,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
                 else -> return@setOnItemSelectedListener false
             }
-            binding.btnMenuCreate.isVisible = menu.itemId != R.id.menu_create
             true
         }
     }
@@ -96,10 +94,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         binding.btnMenuCreate.setOnClickListener {
             navigateByGenerateStatus()
         }
-    }
-
-    private fun setStatusBarColor() {
-        setStatusBarColorFromResource(R.color.background_white)
     }
 
     private fun getNotificationIntent() {
@@ -123,9 +117,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             }
 
             GenerateStatus.IN_PROGRESS -> {
-                Intent(this, WaitingActivity::class.java).apply {
-                    startActivity(this)
-                }
+                startActivity(Intent(this, WaitingActivity::class.java))
             }
 
             GenerateStatus.CANCELED -> {
@@ -185,7 +177,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             if (!result) {
                 toast(stringOf(R.string.error_msg))
             } else {
-                binding.bnvMain.selectedItemId = R.id.menu_create
+                navigateToCreate()
             }
         }.launchIn(lifecycleScope)
     }
@@ -206,7 +198,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 is UiState.Failure -> toast(stringOf(R.string.error_msg))
                 else -> return@onEach
             }
-            viewModel.resetIsUserVerified()
+            viewModel.resetIsServerAvailable()
         }.launchIn(lifecycleScope)
     }
 

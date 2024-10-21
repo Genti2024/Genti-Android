@@ -253,7 +253,6 @@ class SelfieFragment : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_sel
                             .beginTransaction()
                             .replace(R.id.fcv_main, FeedFragment())
                             .commit()
-                        (requireActivity() as? MainActivity)?.initBnvItemIconTintList()
                     }
                 }
         }
