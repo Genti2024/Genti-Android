@@ -16,10 +16,10 @@
             android:id="@+id/iv_feed_logo"
             android:layout_width="77dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:paddingVertical="10dp"
-            android:adjustViewBounds="true"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:adjustViewBounds="true"
+            android:paddingVertical="10dp"
             android:src="@drawable/logo_genti_2d"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -63,6 +63,27 @@
                 app:lottie_rawRes="@raw/lottie_loading" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/img_gradation_feed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/tv_feed_tooltip"
+            android:layout_width="174dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            android:adjustViewBounds="true"
+            android:paddingBottom="14dp"
+            android:src="@drawable/img_tooltip_feed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

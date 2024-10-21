@@ -51,8 +51,6 @@ class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment
     }
 
     private fun initView() {
-        initOnBackPressedListener(binding.root)
-        setStatusBarColor(R.color.green_3)
         with(viewModel) {
             getGenerateStatusFromServer()
             getPictureListFromServer()

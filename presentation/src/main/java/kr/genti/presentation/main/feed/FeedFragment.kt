@@ -43,6 +43,7 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
         initView()
         initAdapter()
         initUpwardBtnListener()
+        initTooltipCloseBtnListener()
         setScrollAmplitude()
         observeGetExampleItemsState()
     }
@@ -67,6 +68,13 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
         }
     }
 
+    private fun initTooltipCloseBtnListener() {
+        binding.tvFeedTooltip.setOnSingleClickListener {
+            binding.tvFeedTooltip.isVisible = false
+            viewModel.isTooltipClosed = true
+        }
+    }
+
     private fun setScrollAmplitude() {
         binding.rvFeed.addOnScrollListener(
             object : RecyclerView.OnScrollListener() {
@@ -78,6 +86,7 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
                     dy: Int,
                 ) {
                     super.onScrolled(recyclerView, dx, dy)
+                    if (!viewModel.isTooltipClosed && accumScrollY > 250) binding.tvFeedTooltip.isVisible = true
                     accumScrollY += dy
                     if (accumScrollY > 4500 && !viewModel.isAmplitudeScrollTracked) {
                         AmplitudeManager.apply {
