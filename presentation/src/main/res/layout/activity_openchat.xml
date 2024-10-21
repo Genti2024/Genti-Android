@@ -97,7 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="12dp"
-            android:background="@drawable/shape_green_new_fill_10_rect"
+            android:background="@drawable/shape_green_fill_10_rect"
             android:gravity="center"
             android:paddingVertical="14dp"
             android:text="@string/openchat_btn_enter"
