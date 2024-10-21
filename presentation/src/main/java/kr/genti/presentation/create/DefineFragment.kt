@@ -56,7 +56,6 @@ class DefineFragment() : BaseFragment<FragmentDefineBinding>(R.layout.fragment_d
 
     private fun initView() {
         binding.vm = viewModel
-        initOnBackPressedListener(binding.root)
         binding.tvCreateRandomExample.text = viewModel.getRandomPrompt()
     }
 
