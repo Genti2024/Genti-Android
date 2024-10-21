@@ -7,7 +7,7 @@
         <item name="android:windowLightStatusBar">true</item>
 
         <!-- Cursor color. -->
-        <item name="colorControlActivated">@color/grey_2</item>
+        <item name="colorControlActivated">@color/gray</item>
 
     </style>
 
