@@ -1,4 +1,4 @@
-package kr.genti.presentation.main.create
+package kr.genti.presentation.create
 
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
