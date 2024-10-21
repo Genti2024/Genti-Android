@@ -43,11 +43,16 @@
     <!-- System Color -->
     <color name="black">#030F0F</color>
     <color name="gray">#192222</color>
+    <color name="gray_btn">#0D2D2B</color>
     <color name="disabled">#495959</color>
-    <color name="white">#FFFFFF</color>
 
     <!-- Etc. -->
     <color name="kakao_yellow">#FFFEE500</color>
+
+    <!-- White -->
+    <color name="white">#FFFFFF</color>
+    <color name="white_60">#99FFFFFF</color>
+    <color name="white_30">#4DFFFFFF</color>
 
     <!-- Transparent -->
     <color name="transparent">#00000000</color>
