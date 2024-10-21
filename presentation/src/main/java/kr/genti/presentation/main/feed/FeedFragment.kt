@@ -15,14 +15,15 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseFragment
+import kr.genti.core.extension.dpToPx
 import kr.genti.core.extension.initOnBackPressedListener
 import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.core.state.UiState
+import kr.genti.core.util.RvItemLastDecoration
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentFeedBinding
 import kr.genti.presentation.util.AmplitudeManager
-import kotlin.math.max
 
 @AndroidEntryPoint
 class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed) {
@@ -40,7 +41,7 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
 
         initView()
         initAdapter()
-        setLightningVisibility()
+        setScrollAmplitude()
         observeGetExampleItemsState()
     }
 
@@ -58,30 +59,28 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(WEB_GENFLUENCER)))
     }
 
-    private fun setLightningVisibility() {
-        with(binding) {
-            rvFeed.addOnScrollListener(
-                object : RecyclerView.OnScrollListener() {
-                    var accumScrollY = 0
+    private fun setScrollAmplitude() {
+        binding.rvFeed.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                var accumScrollY = 0
 
-                    override fun onScrolled(
-                        recyclerView: RecyclerView,
-                        dx: Int,
-                        dy: Int,
-                    ) {
-                        super.onScrolled(recyclerView, dx, dy)
-                        accumScrollY += dy
-                        if (accumScrollY > 4500 && !viewModel.isAmplitudeScrollTracked) {
-                            AmplitudeManager.apply {
-                                trackEvent("scroll_main_3pic")
-                                plusIntProperties("user_main_scroll")
-                            }
-                            viewModel.isAmplitudeScrollTracked = true
+                override fun onScrolled(
+                    recyclerView: RecyclerView,
+                    dx: Int,
+                    dy: Int,
+                ) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    accumScrollY += dy
+                    if (accumScrollY > 4500 && !viewModel.isAmplitudeScrollTracked) {
+                        AmplitudeManager.apply {
+                            trackEvent("scroll_main_3pic")
+                            plusIntProperties("user_main_scroll")
                         }
+                        viewModel.isAmplitudeScrollTracked = true
                     }
-                },
-            )
-        }
+                }
+            }
+        )
     }
 
     private fun observeGetExampleItemsState() {
@@ -94,6 +93,15 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
                         with(binding) {
                             layoutLoading.isVisible = false
                             rvFeed.isVisible = true
+                            rvFeed.addItemDecoration(
+                                RvItemLastDecoration(
+                                    requireContext(),
+                                    0,
+                                    0,
+                                    0,
+                                    70.dpToPx(requireContext())
+                                )
+                            )
                         }
                     }
 
