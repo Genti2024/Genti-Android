@@ -21,12 +21,12 @@ import kr.genti.core.extension.toast
 import kr.genti.core.state.UiState
 import kr.genti.domain.enums.GenerateStatus
 import kr.genti.presentation.R
+import kr.genti.presentation.create.CreateActivity
 import kr.genti.presentation.databinding.ActivityMainBinding
 import kr.genti.presentation.generate.finished.FinishedActivity
 import kr.genti.presentation.generate.openchat.OpenchatActivity
 import kr.genti.presentation.generate.verify.VerifyActivity
 import kr.genti.presentation.generate.waiting.WaitingActivity
-import kr.genti.presentation.main.create.CreateFragment
 import kr.genti.presentation.main.feed.FeedFragment
 import kr.genti.presentation.main.profile.ProfileFragment
 import kr.genti.presentation.util.AmplitudeManager
@@ -81,7 +81,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             when (menu.itemId) {
                 R.id.menu_feed -> navigateTo<FeedFragment>("click_maintab")
 
-                R.id.menu_create -> navigateTo<CreateFragment>("click_createpictab")
+                R.id.menu_create -> return@setOnItemSelectedListener false
 
                 R.id.menu_profile -> navigateTo<ProfileFragment>("click_mypagetab")
 
@@ -138,116 +138,100 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     }
 
     private fun observeStatusResult() {
-        viewModel.getStatusResult
-            .flowWithLifecycle(lifecycle)
-            .onEach { result ->
-                if (!result) toast(stringOf(R.string.error_msg))
-            }.launchIn(lifecycleScope)
+        viewModel.getStatusResult.flowWithLifecycle(lifecycle).onEach { result ->
+            if (!result) toast(stringOf(R.string.error_msg))
+        }.launchIn(lifecycleScope)
     }
 
     private fun observeNotificationState() {
-        viewModel.notificationState
-            .flowWithLifecycle(lifecycle)
-            .onEach { status ->
-                when (status) {
-                    GenerateStatus.AWAIT_USER_VERIFICATION -> {
-                        if (viewModel.checkNewPictureInitialized()) {
-                            AmplitudeManager.trackEvent(
-                                "click_push_notification",
-                                mapOf("push_type" to "creating_success"),
-                            )
-                            with(viewModel.newPicture.pictureGenerateResponse) {
-                                FinishedActivity
-                                    .createIntent(
-                                        this@MainActivity,
-                                        this?.pictureGenerateResponseId ?: -1,
-                                        this?.pictureCompleted?.url.orEmpty(),
-                                        this
-                                            ?.pictureCompleted
-                                            ?.pictureRatio
-                                            ?.name
-                                            .orEmpty(),
-                                    ).apply { startActivity(this) }
-                            }
-                        } else {
-                            toast(stringOf(R.string.error_msg))
-                        }
-                    }
-
-                    GenerateStatus.CANCELED -> {
+        viewModel.notificationState.flowWithLifecycle(lifecycle).onEach { status ->
+            when (status) {
+                GenerateStatus.AWAIT_USER_VERIFICATION -> {
+                    if (viewModel.checkNewPictureInitialized()) {
                         AmplitudeManager.trackEvent(
                             "click_push_notification",
-                            mapOf("push_type" to "creating_fail"),
+                            mapOf("push_type" to "creating_success"),
                         )
-                        createErrorDialog = CreateErrorDialog()
-                        createErrorDialog?.show(supportFragmentManager, DIALOG_ERROR)
+                        with(viewModel.newPicture.pictureGenerateResponse) {
+                            FinishedActivity.createIntent(
+                                this@MainActivity,
+                                this?.pictureGenerateResponseId ?: -1,
+                                this?.pictureCompleted?.url.orEmpty(),
+                                this?.pictureCompleted?.pictureRatio?.name.orEmpty(),
+                            ).apply { startActivity(this) }
+                        }
+                    } else {
+                        toast(stringOf(R.string.error_msg))
                     }
-
-                    else -> return@onEach
                 }
-                viewModel.resetNotificationState()
-            }.launchIn(lifecycleScope)
+
+                GenerateStatus.CANCELED -> {
+                    AmplitudeManager.trackEvent(
+                        "click_push_notification",
+                        mapOf("push_type" to "creating_fail"),
+                    )
+                    createErrorDialog = CreateErrorDialog()
+                    createErrorDialog?.show(supportFragmentManager, DIALOG_ERROR)
+                }
+
+                else -> return@onEach
+            }
+            viewModel.resetNotificationState()
+        }.launchIn(lifecycleScope)
     }
 
     private fun observeResetResult() {
-        viewModel.postResetResult
-            .flowWithLifecycle(lifecycle)
-            .onEach { result ->
-                if (!result) {
-                    toast(stringOf(R.string.error_msg))
-                } else {
-                    binding.bnvMain.selectedItemId = R.id.menu_create
-                }
-            }.launchIn(lifecycleScope)
+        viewModel.postResetResult.flowWithLifecycle(lifecycle).onEach { result ->
+            if (!result) {
+                toast(stringOf(R.string.error_msg))
+            } else {
+                binding.bnvMain.selectedItemId = R.id.menu_create
+            }
+        }.launchIn(lifecycleScope)
     }
 
     private fun observeServerAvailableState() {
-        viewModel.serverAvailableState
-            .flowWithLifecycle(lifecycle)
-            .onEach { state ->
-                when (state) {
-                    is UiState.Success -> {
-                        if (state.data.status) {
-                            viewModel.getIsUserVerifiedFromServer()
-                        } else {
-                            createUnableDialog = CreateUnableDialog.newInstance(state.data.message.orEmpty())
-                            createUnableDialog?.show(supportFragmentManager, DIALOG_UNABLE)
-                        }
+        viewModel.serverAvailableState.flowWithLifecycle(lifecycle).onEach { state ->
+            when (state) {
+                is UiState.Success -> {
+                    if (state.data.status) {
+                        navigateToCreate()
+                    } else {
+                        createUnableDialog =
+                            CreateUnableDialog.newInstance(state.data.message.orEmpty())
+                        createUnableDialog?.show(supportFragmentManager, DIALOG_UNABLE)
                     }
-
-                    is UiState.Failure -> toast(stringOf(R.string.error_msg))
-                    else -> return@onEach
                 }
-                viewModel.resetIsUserVerified()
-            }.launchIn(lifecycleScope)
+
+                is UiState.Failure -> toast(stringOf(R.string.error_msg))
+                else -> return@onEach
+            }
+            viewModel.resetIsUserVerified()
+        }.launchIn(lifecycleScope)
     }
 
     private fun observeUserVerifyState() {
-        viewModel.userVerifyState
-            .flowWithLifecycle(lifecycle)
-            .onEach { state ->
-                when (state) {
-                    is UiState.Success -> {
-                        if (!viewModel.isUserTryingVerify) {
-                            if (state.data) {
-                                binding.bnvMain.selectedItemId = R.id.menu_create
-                            } else {
-                                viewModel.isUserTryingVerify = true
-                                startActivity(Intent(this, VerifyActivity::class.java))
-                            }
+        viewModel.userVerifyState.flowWithLifecycle(lifecycle).onEach { state ->
+            when (state) {
+                is UiState.Success -> {
+                    if (!viewModel.isUserTryingVerify) {
+                        if (state.data) {
+                            navigateToCreate()
                         } else {
-                            viewModel.isUserTryingVerify = false
-                            if (state.data) {
-                                binding.bnvMain.selectedItemId = R.id.menu_create
-                            }
+                            viewModel.isUserTryingVerify = true
+                            startActivity(Intent(this, VerifyActivity::class.java))
                         }
+                    } else {
+                        viewModel.isUserTryingVerify = false
+                        if (state.data) navigateToCreate()
                     }
-
-                    is UiState.Failure -> toast(stringOf(R.string.error_msg))
-                    else -> return@onEach
                 }
-                viewModel.resetIsUserVerified()
-            }.launchIn(lifecycleScope)
+
+                is UiState.Failure -> toast(stringOf(R.string.error_msg))
+                else -> return@onEach
+            }
+            viewModel.resetIsUserVerified()
+        }.launchIn(lifecycleScope)
     }
 
     private inline fun <reified T : Fragment> navigateTo(page: String?) {
@@ -255,6 +239,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         supportFragmentManager.commit {
             replace<T>(R.id.fcv_main, T::class.java.canonicalName)
         }
+    }
+
+    private fun navigateToCreate() {
+        AmplitudeManager.trackEvent("click_createpictab")
+        startActivity(Intent(this, CreateActivity::class.java))
     }
 
     override fun onDestroy() {

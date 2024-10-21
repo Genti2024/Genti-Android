@@ -243,7 +243,7 @@
                 android:gravity="center"
                 android:paddingVertical="14dp"
                 android:text="@string/verify_after_btn_verify"
-                android:textColor="btn"
+                android:textColor="@color/gray_btn"
                 android:textSize="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
