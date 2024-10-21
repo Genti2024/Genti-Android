@@ -42,7 +42,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initAppColorSetting()
         initBnvItemIconTintList()
         initBnvItemSelectedListener()
         initCreateBtnListener()
@@ -62,12 +61,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             if (isUserTryingVerify) getIsUserVerifiedFromServer()
         }
     }
-
-    private fun initAppColorSetting() {
-        setNavigationBarColorFromResource(R.color.black)
-        setStatusBarColorFromResource(R.color.black)
-    }
-
 
     private fun initBnvItemIconTintList() {
         with(binding.bnvMain) {
