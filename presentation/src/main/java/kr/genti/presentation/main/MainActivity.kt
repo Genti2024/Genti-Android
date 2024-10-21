@@ -14,8 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseActivity
-import kr.genti.core.extension.setNavigationBarColorFromResource
-import kr.genti.core.extension.setStatusBarColorFromResource
+import kr.genti.core.extension.initOnBackPressedListener
 import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.core.state.UiState
@@ -42,6 +41,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initOnBackPressedListener(binding.root)
         initBnvItemIconTintList()
         initBnvItemSelectedListener()
         initCreateBtnListener()
@@ -189,7 +189,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                     if (state.data.status) {
                         navigateToCreate()
                     } else {
-                        createUnableDialog = CreateUnableDialog.newInstance(state.data.message.orEmpty())
+                        createUnableDialog =
+                            CreateUnableDialog.newInstance(state.data.message.orEmpty())
                         createUnableDialog?.show(supportFragmentManager, DIALOG_UNABLE)
                     }
                 }

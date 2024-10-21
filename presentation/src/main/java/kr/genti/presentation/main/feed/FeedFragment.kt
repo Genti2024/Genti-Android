@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseFragment
 import kr.genti.core.extension.dpToPx
 import kr.genti.core.extension.initOnBackPressedListener
+import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.core.state.UiState
@@ -29,7 +30,7 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
     val adapter
         get() = requireNotNull(_adapter) { getString(R.string.adapter_not_initialized_error_msg) }
 
-    var feedInfoBottomSheet: FeedInfoBottomSheet? = null
+    private var feedInfoBottomSheet: FeedInfoBottomSheet? = null
 
     private val viewModel by activityViewModels<FeedViewModel>()
 
@@ -41,12 +42,12 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
 
         initView()
         initAdapter()
+        initUpwardBtnListener()
         setScrollAmplitude()
         observeGetExampleItemsState()
     }
 
     private fun initView() {
-        initOnBackPressedListener(binding.root)
         viewModel.getExamplePromptsFromServer()
     }
 
@@ -58,6 +59,12 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
     private fun initGenBtnListener(x: Boolean) {
         feedInfoBottomSheet = FeedInfoBottomSheet()
         feedInfoBottomSheet?.show(parentFragmentManager, BOTTOM_SHEET_INFO)
+    }
+
+    private fun initUpwardBtnListener() {
+        binding.ivFeedLogo.setOnSingleClickListener {
+            binding.rvFeed.scrollToPosition(0)
+        }
     }
 
     private fun setScrollAmplitude() {
