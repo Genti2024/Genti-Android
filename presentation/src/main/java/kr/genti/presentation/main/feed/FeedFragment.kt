@@ -1,7 +1,5 @@
 package kr.genti.presentation.main.feed
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -31,6 +29,8 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
     val adapter
         get() = requireNotNull(_adapter) { getString(R.string.adapter_not_initialized_error_msg) }
 
+    var feedInfoBottomSheet: FeedInfoBottomSheet? = null
+
     private val viewModel by activityViewModels<FeedViewModel>()
 
     override fun onViewCreated(
@@ -56,7 +56,8 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
     }
 
     private fun initGenBtnListener(x: Boolean) {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(WEB_GENFLUENCER)))
+        feedInfoBottomSheet = FeedInfoBottomSheet()
+        feedInfoBottomSheet?.show(parentFragmentManager, BOTTOM_SHEET_INFO)
     }
 
     private fun setScrollAmplitude() {
@@ -113,6 +114,12 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
 
     override fun onDestroyView() {
         super.onDestroyView()
+
         _adapter = null
+        feedInfoBottomSheet = null
+    }
+
+    companion object {
+        private const val BOTTOM_SHEET_INFO = "BOTTOM_SHEET_INFO"
     }
 }

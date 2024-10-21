@@ -16,7 +16,7 @@
             android:id="@+id/iv_feed_logo"
             android:layout_width="77dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:paddingVertical="10dp"
             android:adjustViewBounds="true"
             android:layout_marginStart="16dp"

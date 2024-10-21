@@ -12,6 +12,9 @@
         <!-- Cursor color. -->
         <item name="colorControlActivated">@color/gray</item>
 
+        <!-- Etc. -->
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+
     </style>
 
     <style name="Theme.Genti" parent="Base.Theme.Genti" />
