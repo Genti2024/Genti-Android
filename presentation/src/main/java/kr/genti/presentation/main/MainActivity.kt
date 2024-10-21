@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
@@ -43,11 +42,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setNavigationBarColorFromResource(R.color.black)
+        initAppColorSetting()
         initBnvItemIconTintList()
         initBnvItemSelectedListener()
         initCreateBtnListener()
-        setStatusBarColor()
         getNotificationIntent()
         observeStatusResult()
         observeNotificationState()
@@ -65,7 +63,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         }
     }
 
-    fun initBnvItemIconTintList() {
+    private fun initAppColorSetting() {
+        setNavigationBarColorFromResource(R.color.black)
+        setStatusBarColorFromResource(R.color.black)
+    }
+
+
+    private fun initBnvItemIconTintList() {
         with(binding.bnvMain) {
             itemIconTintList = null
             selectedItemId = R.id.menu_feed
@@ -89,7 +93,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
                 else -> return@setOnItemSelectedListener false
             }
-            binding.btnMenuCreate.isVisible = menu.itemId != R.id.menu_create
             true
         }
     }
@@ -98,10 +101,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         binding.btnMenuCreate.setOnClickListener {
             navigateByGenerateStatus()
         }
-    }
-
-    private fun setStatusBarColor() {
-        setStatusBarColorFromResource(R.color.background_white)
     }
 
     private fun getNotificationIntent() {
@@ -125,9 +124,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             }
 
             GenerateStatus.IN_PROGRESS -> {
-                Intent(this, WaitingActivity::class.java).apply {
-                    startActivity(this)
-                }
+                startActivity(Intent(this, WaitingActivity::class.java))
             }
 
             GenerateStatus.CANCELED -> {
@@ -187,7 +184,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             if (!result) {
                 toast(stringOf(R.string.error_msg))
             } else {
-                binding.bnvMain.selectedItemId = R.id.menu_create
+                navigateToCreate()
             }
         }.launchIn(lifecycleScope)
     }
