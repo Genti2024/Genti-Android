@@ -189,8 +189,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                     if (state.data.status) {
                         navigateToCreate()
                     } else {
-                        createUnableDialog =
-                            CreateUnableDialog.newInstance(state.data.message.orEmpty())
+                        createUnableDialog = CreateUnableDialog.newInstance(state.data.message.orEmpty())
                         createUnableDialog?.show(supportFragmentManager, DIALOG_UNABLE)
                     }
                 }
@@ -198,7 +197,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 is UiState.Failure -> toast(stringOf(R.string.error_msg))
                 else -> return@onEach
             }
-            viewModel.resetIsUserVerified()
+            viewModel.resetIsServerAvailable()
         }.launchIn(lifecycleScope)
     }
 
