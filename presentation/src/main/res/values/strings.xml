@@ -105,9 +105,9 @@
     <string name="finished_rating_tv_btn_submit">제출하기</string>
     <string name="finished_rating_tv_btn_skip"><u>건너뛰기</u></string>
 
-    <string name="feed_tv_title">젠플루언서들이 만든 사진이에요</string>
+    <string name="feed_tv_title">젠플루언서들이 만든 사진들을 둘러보세요.</string>
     <string name="feed_btn_genfluencer"><u>젠플루언서란?</u></string>
-    <string name="feed_tv_genfluencer_guide">*여러분이 만든 사진은 자동으로 업로드 되지 않아요️</string>
+    <string name="feed_tv_genfluencer_guide">여러분이 만든 사진은 자동으로 업로드되지 않습니다.</string>
     <string name="feed_tv_item_title">사진 설명</string>
 
     <string name="profile_tv_title">마이페이지</string>

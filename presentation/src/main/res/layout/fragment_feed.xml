@@ -10,31 +10,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_white">
+        android:background="@color/black">
 
         <ImageView
             android:id="@+id/iv_feed_logo"
             android:layout_width="77dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
+            android:paddingVertical="10dp"
             android:adjustViewBounds="true"
-            android:paddingBottom="8dp"
+            android:layout_marginStart="16dp"
             android:src="@drawable/logo_genti_2d"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/iv_feed_lightning"
-            android:layout_width="wrap_content"
-            android:layout_height="76dp"
-            android:layout_marginStart="28dp"
-            android:adjustViewBounds="true"
-            android:src="@drawable/img_lightning"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_feed"

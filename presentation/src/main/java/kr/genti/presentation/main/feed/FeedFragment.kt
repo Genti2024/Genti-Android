@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseFragment
 import kr.genti.core.extension.initOnBackPressedListener
-import kr.genti.core.extension.setStatusBarColor
 import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.core.state.UiState
@@ -47,22 +46,16 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
 
     private fun initView() {
         initOnBackPressedListener(binding.root)
-        setStatusBarColor(R.color.background_50)
         viewModel.getExamplePromptsFromServer()
     }
 
     private fun initAdapter() {
-        _adapter =
-            FeedAdapter(
-                genBtnClick = ::initGenBtnListener,
-            )
+        _adapter = FeedAdapter(genBtnClick = ::initGenBtnListener)
         binding.rvFeed.adapter = adapter
     }
 
     private fun initGenBtnListener(x: Boolean) {
-        Intent(Intent.ACTION_VIEW, Uri.parse(WEB_GENFLUENCER)).apply {
-            startActivity(this)
-        }
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(WEB_GENFLUENCER)))
     }
 
     private fun setLightningVisibility() {
@@ -78,8 +71,6 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
                     ) {
                         super.onScrolled(recyclerView, dx, dy)
                         accumScrollY += dy
-                        ivFeedLightning.alpha =
-                            max(0.0, (1 - accumScrollY / 130f).toDouble()).toFloat()
                         if (accumScrollY > 4500 && !viewModel.isAmplitudeScrollTracked) {
                             AmplitudeManager.apply {
                                 trackEvent("scroll_main_3pic")
@@ -100,11 +91,9 @@ class FeedFragment() : BaseFragment<FragmentFeedBinding>(R.layout.fragment_feed)
                     is UiState.Success -> {
                         adapter.setItemList(state.data)
                         delay(500)
-                        setStatusBarColor(R.color.background_white)
                         with(binding) {
                             layoutLoading.isVisible = false
                             rvFeed.isVisible = true
-                            ivFeedLightning.isVisible = true
                         }
                     }
 
