@@ -1,5 +1,5 @@
 plugins {
-    id("kr.genti.androidLibrary")
+    id("kr.genti.androidCompose")
     id("kr.genti.version")
 }
 
@@ -10,14 +10,15 @@ android {
         buildConfigField("String", "VERSION_NAME", "\"${extra["versionName"]}\"")
         buildConfigField("String", "VERSION_CODE", "\"${extra["versionCode"]}\"")
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
     implementation(projects.core)
     implementation(projects.domain)
-
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.bundles.networking)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.bundles.firebase)
