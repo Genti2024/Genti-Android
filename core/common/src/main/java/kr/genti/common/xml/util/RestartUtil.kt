@@ -1,4 +1,4 @@
-package kr.genti.common.util
+package kr.genti.common.xml.util
 
 import android.app.ActivityOptions
 import android.content.Context

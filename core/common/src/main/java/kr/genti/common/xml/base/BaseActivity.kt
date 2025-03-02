@@ -1,4 +1,4 @@
-package kr.genti.common.base
+package kr.genti.common.xml.base
 
 import android.graphics.Rect
 import android.os.Bundle

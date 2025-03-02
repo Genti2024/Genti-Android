@@ -1,4 +1,4 @@
-package kr.genti.common.state
+package kr.genti.common.xml.state
 
 enum class EnumUiState {
     LOADING,

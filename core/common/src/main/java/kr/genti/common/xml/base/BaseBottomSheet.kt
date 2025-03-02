@@ -1,4 +1,4 @@
-package kr.genti.common.base
+package kr.genti.common.xml.base
 
 import android.app.Dialog
 import android.os.Bundle
@@ -8,12 +8,11 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.DialogFragment
-import kr.genti.core.common.R
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-abstract class BaseDialog<T : ViewDataBinding>(
+abstract class BaseBottomSheet<T : ViewDataBinding>(
     @LayoutRes private val layoutRes: Int,
-) : DialogFragment() {
+) : BottomSheetDialogFragment() {
     private var _binding: T? = null
     protected val binding: T
         get() = requireNotNull(_binding) { "binding object is not initialized" }
@@ -30,7 +29,6 @@ abstract class BaseDialog<T : ViewDataBinding>(
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
-            window?.setWindowAnimations(R.style.DialogAnimation)
             window?.setDimAmount(0.8f)
         }
     }

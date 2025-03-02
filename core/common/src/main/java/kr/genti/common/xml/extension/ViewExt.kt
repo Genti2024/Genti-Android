@@ -1,4 +1,4 @@
-package kr.genti.common.extension
+package kr.genti.common.xml.extension
 
 import android.graphics.LinearGradient
 import android.graphics.RenderEffect
