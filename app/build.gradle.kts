@@ -1,3 +1,4 @@
+import kr.genti.convention.extension.implementation
 import java.util.Properties
 
 plugins {
@@ -40,11 +41,15 @@ android {
 }
 
 dependencies {
-    implementation(projects.core)
+    implementation(projects.core.common)
     implementation(projects.data)
     implementation(projects.domain)
     implementation(projects.presentation)
 
     implementation(platform(libs.okhttp.bom))
+    implementation(libs.bundles.okhttp)
+    implementation(platform(libs.retrofit.bom))
+    implementation(libs.bundles.retrofit)
+
     implementation(libs.kakao)
 }

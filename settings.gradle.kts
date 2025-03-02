@@ -31,7 +31,7 @@ dependencyResolutionManagement {
 rootProject.name = "Genti-Android"
 
 include(":app")
-include(":core")
 include(":domain")
 include(":data")
 include(":presentation")
+include(":core:common")
