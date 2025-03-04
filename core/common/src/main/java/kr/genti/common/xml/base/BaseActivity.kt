@@ -8,7 +8,7 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import kr.genti.common.extension.hideKeyboard
+import kr.genti.common.xml.extension.hideKeyboard
 
 abstract class BaseActivity<T : ViewDataBinding>(
     @LayoutRes private val layoutResId: Int,

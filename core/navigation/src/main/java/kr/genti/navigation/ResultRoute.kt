@@ -2,7 +2,7 @@ package kr.genti.navigation
 
 import kotlinx.serialization.Serializable
 
-interface ResultRoute {
+interface ResultRoute : Route {
     @Serializable
     data object Waiting : ResultRoute
 

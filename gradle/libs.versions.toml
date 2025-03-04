@@ -49,7 +49,8 @@ kotlinxCoroutines = "1.9.0"
 javax = "1"
 
 # UI Libraries
-coil = "3.0.4"
+coil = "2.6.0"
+coil-compose = "3.0.4"
 glide = "4.12.0"
 glide-transformations = "4.3.0"
 lottie = "6.0.1"
@@ -149,8 +150,8 @@ lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie"
 circle-indicator = { group = "me.relex", name = "circleindicator", version.ref = "circle-indicator" }
 
 # UI Libraries
-coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
-coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil-compose" }
+coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil-compose" }
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
 
 # Analytics

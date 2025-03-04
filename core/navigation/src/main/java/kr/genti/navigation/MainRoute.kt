@@ -2,7 +2,7 @@ package kr.genti.navigation
 
 import kotlinx.serialization.Serializable
 
-interface MainRoute {
+interface MainRoute : Route {
     @Serializable
     data object Splash : MainRoute
 
