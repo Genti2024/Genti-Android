@@ -1,4 +1,5 @@
 import kr.genti.convention.extension.implementation
+import java.util.Properties
 
 plugins {
     id("kr.genti.androidLibrary")
@@ -6,6 +7,10 @@ plugins {
 
 android {
     namespace = "kr.genti.core.network"
+
+    val properties = Properties().apply {
+        load(rootProject.file("local.properties").inputStream())
+    }
 
     buildTypes {
         debug {

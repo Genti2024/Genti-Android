@@ -7,6 +7,10 @@ plugins {
     id("com.google.firebase.crashlytics")
 }
 
+val properties = Properties().apply {
+    load(rootProject.file("local.properties").inputStream())
+}
+
 android {
     defaultConfig {
         buildConfigField("String", "NATIVE_APP_KEY", properties["native.app.key"].toString())

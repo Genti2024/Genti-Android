@@ -43,17 +43,13 @@ fun GentiTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-
-            WindowCompat.getInsetsController(window, view)
-                .isAppearanceLightStatusBars = true
-            WindowCompat.getInsetsController(window, view)
-                .isAppearanceLightNavigationBars = true
+            WindowCompat.getInsetsController(window, view).apply {
+                isAppearanceLightStatusBars = false
+                isAppearanceLightNavigationBars = false
+            }
         }
     }
-
-    val typography = gentiTypography()
-
-    ProvideGentiTypography(typography) {
+    ProvideGentiTypography(gentiTypography()) {
         MaterialTheme(
             colorScheme = colorScheme,
             content = content
