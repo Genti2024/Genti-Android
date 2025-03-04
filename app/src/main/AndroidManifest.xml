@@ -19,12 +19,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_genti_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Genti.NoSplash"
+        android:theme="@style/Theme.Genti"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
         <activity
-            android:name="kr.genti.presentation.auth.splash.SplashActivity"
+            android:name="kr.genti.main.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -33,52 +33,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name="kr.genti.presentation.auth.login.LoginActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="kr.genti.presentation.auth.signup.SignupActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="kr.genti.presentation.auth.onboarding.OnboardingActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="kr.genti.presentation.main.MainActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="kr.genti.presentation.create.CreateActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
-
-        <activity
-            android:name="kr.genti.presentation.generate.waiting.WaitingActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="kr.genti.presentation.generate.finished.FinishedActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="kr.genti.presentation.generate.verify.VerifyActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="kr.genti.presentation.setting.SettingActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -105,13 +59,13 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name="kr.genti.presentation.config.GentiMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+<!--        <service-->
+<!--            android:name="kr.genti.presentation.config.GentiMessagingService"-->
+<!--            android:exported="false">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
 
         <provider
             android:name="androidx.core.content.FileProvider"
