@@ -1,16 +1,15 @@
 package kr.genti.network
 
 import android.content.Context
-import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import android.widget.Toast
+import com.jakewharton.processphoenix.ProcessPhoenix
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.runBlocking
-import kr.genti.core.extension.toast
 import kr.genti.domain.entity.request.ReissueRequestModel
 import kr.genti.domain.repository.AuthRepository
 import kr.genti.domain.repository.UserRepository
-import kr.genti.presentation.auth.login.LoginActivity
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -24,56 +23,65 @@ constructor(
     private val userRepository: UserRepository,
     @ApplicationContext private val context: Context,
 ) : Interceptor {
+
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
-
-        Timber.tag("okhttp").d("ACCESS TOKEN : ${userRepository.getAccessToken()}")
-
-        val authRequest =
-            if (userRepository.getAccessToken().isNotBlank()) {
-                originalRequest.newBuilder().newAuthBuilder().build()
-            } else {
-                originalRequest
-            }
-
-        val response = chain.proceed(authRequest)
-
+        val authRequest = createAuthRequest(originalRequest)
+        var response = chain.proceed(authRequest)
         if (response.code == CODE_TOKEN_EXPIRED) {
-            try {
-                runBlocking {
-                    authRepository.postReissueTokens(
-                        ReissueRequestModel(
-                            userRepository.getAccessToken(),
-                            userRepository.getRefreshToken(),
-                        ),
-                    )
-                }.onSuccess { data ->
-                    userRepository.setTokens(
-                        data.accessToken,
-                        data.refreshToken,
-                    )
-                    response.close()
-
-                    val newRequest =
-                        authRequest.newBuilder().removeHeader(AUTHORIZATION).newAuthBuilder()
-                            .build()
-                    return chain.proceed(newRequest)
-                }
-            } catch (t: Throwable) {
-                Timber.d(t.message)
-            }
-
-            userRepository.clearInfo()
-
-            Handler(Looper.getMainLooper()).post {
-                context.toast(TOKEN_EXPIRED_ERROR)
-                Intent(context, LoginActivity::class.java).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    context.startActivity(this)
-                }
-            }
+            response = handleTokenExpiration(chain, authRequest) ?: response
         }
         return response
+    }
+
+    private fun createAuthRequest(originalRequest: Request): Request {
+        return if (userRepository.getAccessToken().isNotBlank()) {
+            originalRequest.newBuilder().newAuthBuilder().build()
+        } else {
+            originalRequest
+        }
+    }
+
+    private fun handleTokenExpiration(chain: Interceptor.Chain, authRequest: Request): Response? {
+        reissueTokenAndProceed(chain, authRequest)?.let { return it }
+        userRepository.clearInfo()
+        notifyTokenExpired()
+        return null
+    }
+
+    private fun reissueTokenAndProceed(chain: Interceptor.Chain, authRequest: Request): Response? {
+        return try {
+            runBlocking {
+                authRepository.postReissueTokens(
+                    ReissueRequestModel(
+                        userRepository.getAccessToken(),
+                        userRepository.getRefreshToken()
+                    )
+                )
+            }.onSuccess { data ->
+                userRepository.setTokens(
+                    data.accessToken,
+                    data.refreshToken
+                )
+                chain.call().cancel()
+                val newRequest = authRequest.newBuilder()
+                    .removeHeader(AUTHORIZATION)
+                    .newAuthBuilder()
+                    .build()
+                return chain.proceed(newRequest)
+            }
+            null
+        } catch (t: Throwable) {
+            Timber.d(t.message)
+            null
+        }
+    }
+
+    private fun notifyTokenExpired() {
+        Handler(Looper.getMainLooper()).post {
+            Toast.makeText(context, TOKEN_EXPIRED_ERROR, Toast.LENGTH_LONG).show()
+            ProcessPhoenix.triggerRebirth(context)
+        }
     }
 
     private fun Request.Builder.newAuthBuilder() =

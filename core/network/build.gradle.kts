@@ -28,4 +28,5 @@ dependencies {
     implementation(libs.bundles.okhttp)
     implementation(platform(libs.retrofit.bom))
     implementation(libs.bundles.retrofit)
+    implementation(libs.phoenix)
 }
