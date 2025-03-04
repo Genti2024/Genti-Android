@@ -29,11 +29,9 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", properties["test.base.url"].toString())
             buildConfigField("String", "AMPLITUDE_KEY", properties["amplitude.test.key"].toString())
         }
         release {
-            buildConfigField("String", "BASE_URL", properties["base.url"].toString())
             buildConfigField("String", "AMPLITUDE_KEY", properties["amplitude.api.key"].toString())
             signingConfig = signingConfigs.getByName("release")
         }
@@ -41,15 +39,9 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.common)
     implementation(projects.data)
-    implementation(projects.domain)
-    implementation(projects.presentation)
-
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.bundles.okhttp)
-    implementation(platform(libs.retrofit.bom))
-    implementation(libs.bundles.retrofit)
+    implementation(projects.feature.main)
+    implementation(projects.core.common)
 
     implementation(libs.kakao)
 }
