@@ -1,6 +1,5 @@
 package kr.genti.presentation.main.profile
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -12,11 +11,10 @@ import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import coil.load
 import kr.genti.core.base.BaseDialog
-import kr.genti.core.extension.setGusianBlur
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogProfileImageBinding
-import kr.genti.presentation.util.AmplitudeManager
+import kr.genti.common.manager.AmplitudeManager
 import kr.genti.presentation.util.downloadImage
 import java.io.File
 import java.io.FileOutputStream

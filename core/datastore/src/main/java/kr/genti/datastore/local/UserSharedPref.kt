@@ -1,4 +1,4 @@
-package kr.genti.data.local
+package kr.genti.datastore.local
 
 interface UserSharedPref {
     var accessToken: String

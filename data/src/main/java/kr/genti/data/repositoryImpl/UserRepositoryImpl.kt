@@ -1,6 +1,6 @@
 package kr.genti.data.repositoryImpl
 
-import kr.genti.data.local.UserSharedPref
+import kr.genti.datastore.local.UserSharedPref
 import kr.genti.domain.repository.UserRepository
 import javax.inject.Inject
 

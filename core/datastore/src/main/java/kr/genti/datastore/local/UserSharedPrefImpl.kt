@@ -1,4 +1,4 @@
-package kr.genti.data.local
+package kr.genti.datastore.local
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
@@ -29,6 +29,5 @@ class UserSharedPrefImpl
             private const val ACCESS_TOKEN = "ACCESS_TOKEN"
             private const val REFRESH_TOKEN = "REFRESH_TOKEN"
             private const val USER_ROLE = "USER_ROLE"
-            private const val IS_CHAT_ACCESSIBLE = "IS_CHAT_ACCESSIBLE"
         }
     }

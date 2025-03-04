@@ -1,4 +1,4 @@
-package kr.genti.presentation.util
+package kr.genti.common.manager
 
 import android.content.Context
 import com.amplitude.android.Amplitude

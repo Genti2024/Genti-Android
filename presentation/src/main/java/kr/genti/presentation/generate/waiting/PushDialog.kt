@@ -3,7 +3,6 @@ package kr.genti.presentation.generate.waiting
 import android.Manifest
 import android.app.Activity
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -17,7 +16,7 @@ import kr.genti.core.base.BaseDialog
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogPushBinding
-import kr.genti.presentation.util.AmplitudeManager
+import kr.genti.common.manager.AmplitudeManager
 
 class PushDialog : BaseDialog<DialogPushBinding>(R.layout.dialog_push) {
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>

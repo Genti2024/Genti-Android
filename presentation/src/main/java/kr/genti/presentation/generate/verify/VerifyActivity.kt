@@ -30,11 +30,11 @@ import kr.genti.core.state.UiState
 import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityVerifyBinding
-import kr.genti.presentation.util.AmplitudeManager
-import kr.genti.presentation.util.AmplitudeManager.EVENT_CLICK_BTN
-import kr.genti.presentation.util.AmplitudeManager.PROPERTY_BTN
-import kr.genti.presentation.util.AmplitudeManager.PROPERTY_PAGE
-import kr.genti.presentation.util.AmplitudeManager.updateBooleanProperties
+import kr.genti.common.manager.AmplitudeManager
+import kr.genti.common.manager.AmplitudeManager.EVENT_CLICK_BTN
+import kr.genti.common.manager.AmplitudeManager.PROPERTY_BTN
+import kr.genti.common.manager.AmplitudeManager.PROPERTY_PAGE
+import kr.genti.common.manager.AmplitudeManager.updateBooleanProperties
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date

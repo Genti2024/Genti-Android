@@ -44,10 +44,10 @@ import kr.genti.presentation.create.billing.BillingCallback
 import kr.genti.presentation.create.billing.BillingManager
 import kr.genti.presentation.databinding.FragmentSelfieBinding
 import kr.genti.presentation.generate.waiting.WaitingActivity
-import kr.genti.presentation.util.AmplitudeManager
-import kr.genti.presentation.util.AmplitudeManager.EVENT_CLICK_BTN
-import kr.genti.presentation.util.AmplitudeManager.PROPERTY_BTN
-import kr.genti.presentation.util.AmplitudeManager.PROPERTY_PAGE
+import kr.genti.common.manager.AmplitudeManager
+import kr.genti.common.manager.AmplitudeManager.EVENT_CLICK_BTN
+import kr.genti.common.manager.AmplitudeManager.PROPERTY_BTN
+import kr.genti.common.manager.AmplitudeManager.PROPERTY_PAGE
 
 @AndroidEntryPoint
 class SelfieFragment : BaseFragment<FragmentSelfieBinding>(R.layout.fragment_selfie) {

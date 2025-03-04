@@ -1,14 +1,11 @@
-package kr.genti.android.di
+package kr.genti.network
 
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
-import kr.genti.android.BuildConfig.BASE_URL
-import kr.genti.core.extension.isJsonArray
-import kr.genti.core.extension.isJsonObject
+import kr.genti.core.network.BuildConfig.BASE_URL
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -17,6 +14,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Converter
 import retrofit2.Retrofit
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -36,7 +34,9 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideJsonConverter(json: Json): Converter.Factory = json.asConverterFactory(APPLICATION_JSON.toMediaType())
+    fun provideJsonConverter(json: Json): Converter.Factory = json.asConverterFactory(
+        APPLICATION_JSON.toMediaType()
+    )
 
     @Provides
     @Singleton

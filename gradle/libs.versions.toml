@@ -72,6 +72,7 @@ espressoCore = "3.5.0"
 
 # Timber
 timber = "5.0.1"
+phoenix = "3.0.0"
 
 [libraries]
 # Gradle Plugin
@@ -125,6 +126,7 @@ javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "j
 
 # Third Libraries
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+phoenix = { group = "com.jakewharton", name = "process-phoenix", version.ref = "phoenix" }
 
 # Test
 junit = { group = "junit", name = "junit", version.ref = "junit" }

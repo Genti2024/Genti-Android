@@ -28,7 +28,7 @@ import kr.genti.presentation.generate.verify.VerifyActivity
 import kr.genti.presentation.generate.waiting.WaitingActivity
 import kr.genti.presentation.main.feed.FeedFragment
 import kr.genti.presentation.main.profile.ProfileFragment
-import kr.genti.presentation.util.AmplitudeManager
+import kr.genti.common.manager.AmplitudeManager
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {

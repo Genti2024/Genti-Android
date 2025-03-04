@@ -17,10 +17,10 @@ import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogFinishedReportBinding
-import kr.genti.presentation.util.AmplitudeManager
-import kr.genti.presentation.util.AmplitudeManager.PROPERTY_TYPE
-import kr.genti.presentation.util.AmplitudeManager.TYPE_ORIGINAL
-import kr.genti.presentation.util.AmplitudeManager.TYPE_PARENT
+import kr.genti.common.manager.AmplitudeManager
+import kr.genti.common.manager.AmplitudeManager.PROPERTY_TYPE
+import kr.genti.common.manager.AmplitudeManager.TYPE_ORIGINAL
+import kr.genti.common.manager.AmplitudeManager.TYPE_PARENT
 
 class FinishedReportDialog :
     BaseDialog<DialogFinishedReportBinding>(R.layout.dialog_finished_report) {

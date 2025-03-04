@@ -6,8 +6,7 @@ import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
 import kr.genti.android.BuildConfig.AMPLITUDE_KEY
 import kr.genti.android.BuildConfig.NATIVE_APP_KEY
-import kr.genti.presentation.BuildConfig
-import kr.genti.presentation.util.AmplitudeManager
+import kr.genti.common.manager.AmplitudeManager
 import timber.log.Timber
 
 @HiltAndroidApp

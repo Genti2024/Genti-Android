@@ -23,7 +23,7 @@ import kr.genti.presentation.R
 import kr.genti.presentation.auth.signup.SignupActivity
 import kr.genti.presentation.databinding.ActivityLoginBinding
 import kr.genti.presentation.main.MainActivity
-import kr.genti.presentation.util.AmplitudeManager
+import kr.genti.common.manager.AmplitudeManager
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
