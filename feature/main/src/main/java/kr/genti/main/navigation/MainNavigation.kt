@@ -49,9 +49,8 @@ class MainNavigator(
         }
     }
 
-//    fun navigateToMeasure() = navController.navigateToMeasure()
-//
-//    fun navigateToHome() = navController.navigateToHome()
+    // TODO
+    fun navigateToGenerate() = navController.navigateToFeed()
 }
 
 @Composable

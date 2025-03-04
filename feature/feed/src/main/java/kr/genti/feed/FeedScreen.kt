@@ -1,5 +1,6 @@
 package kr.genti.feed
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import kr.genti.designsystem.theme.GentiTheme
+import kr.genti.designsystem.theme.Gray
 
 @Composable
 internal fun FeedRoute(
@@ -26,7 +28,9 @@ private fun FeedScreen(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .background(Gray),
     ) {
         Text("Feed")
     }
