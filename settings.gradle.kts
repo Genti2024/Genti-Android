@@ -5,7 +5,13 @@ pluginManagement {
     includeBuild("build-logic")
 
     repositories {
-        google()
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
         mavenCentral()
         gradlePluginPortal()
     }
@@ -25,7 +31,17 @@ dependencyResolutionManagement {
 rootProject.name = "Genti-Android"
 
 include(":app")
-include(":core")
 include(":domain")
 include(":data")
 include(":presentation")
+include(":core:common")
+include(":core:datastore")
+include(":core:designsystem")
+include(":core:navigation")
+include(":core:network")
+include(":feature:onboarding")
+include(":feature:feed")
+include(":feature:main")
+include(":feature:profile")
+include(":feature:generate")
+include(":feature:result")

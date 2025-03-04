@@ -6,6 +6,13 @@ import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.DependencyHandlerScope
 
+/**
+ * Gradle 종속성(Dependency) 관리 확장 함수 모음
+ *
+ * - DependencyHandlerScope를 확장하여 Gradle의 의존성 관리 코드를 간결하게 만들기 위한 확장 함수를 제공합니다.
+ * - 기존의 `dependencies { implementation(...) }` 형태를 " "을 제거하고 작성할 수 있습니다.
+ */
+
 fun DependencyHandlerScope.implementation(project: Project) {
     "implementation"(project)
 }
@@ -30,12 +37,12 @@ fun DependencyHandlerScope.releaseImplementation(provider: Provider<*>) {
     "releaseImplementation"(provider)
 }
 
-fun DependencyHandlerScope.kapt(provider: Provider<*>) {
-    "kapt"(provider)
+fun DependencyHandlerScope.ksp(provider: Provider<*>) {
+    "ksp"(provider)
 }
 
-fun DependencyHandlerScope.coreLibraryDesugaring(provider: Provider<*>) {
-    "coreLibraryDesugaring"(provider)
+fun DependencyHandlerScope.kspTest(provider: Provider<*>) {
+    "kspTest"(provider)
 }
 
 fun DependencyHandlerScope.androidTestImplementation(provider: Provider<*>) {

@@ -3,8 +3,8 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 dependencies {
@@ -22,26 +22,38 @@ gradlePlugin {
             id = "kr.genti.androidLibrary"
             implementationClass = "kr.genti.convention.plugin.AndroidLibraryPlugin"
         }
+        register("AndroidComposePlugin") {
+            id = "kr.genti.androidCompose"
+            implementationClass = "kr.genti.convention.plugin.AndroidComposePlugin"
+        }
         register("JavaLibraryPlugin") {
             id = "kr.genti.javaLibrary"
             implementationClass = "kr.genti.convention.plugin.JavaLibraryPlugin"
         }
 
+        register("CommonPlugin") {
+            id = "kr.genti.common"
+            implementationClass = "kr.genti.convention.config.CommonPlugin"
+        }
+        register("ComposePlugin") {
+            id = "kr.genti.compose"
+            implementationClass = "kr.genti.convention.config.ComposePlugin"
+        }
         register("KotlinPlugin") {
             id = "kr.genti.kotlin"
-            implementationClass = "kr.genti.convention.plugin.KotlinPlugin"
+            implementationClass = "kr.genti.convention.config.KotlinPlugin"
         }
         register("HiltPlugin") {
             id = "kr.genti.hilt"
-            implementationClass = "kr.genti.convention.plugin.HiltPlugin"
+            implementationClass = "kr.genti.convention.config.HiltPlugin"
         }
         register("TestPlugin") {
             id = "kr.genti.test"
-            implementationClass = "kr.genti.convention.plugin.TestPlugin"
+            implementationClass = "kr.genti.convention.config.TestPlugin"
         }
         register("versionPlugin") {
             id = "kr.genti.version"
-            implementationClass = "kr.genti.convention.plugin.VersionPlugin"
+            implementationClass = "kr.genti.convention.config.VersionPlugin"
         }
     }
 }
