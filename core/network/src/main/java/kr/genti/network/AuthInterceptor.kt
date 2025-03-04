@@ -1,4 +1,4 @@
-package kr.genti.android.di
+package kr.genti.network
 
 import android.content.Context
 import android.content.Intent

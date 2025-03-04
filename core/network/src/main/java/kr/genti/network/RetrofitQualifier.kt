@@ -1,4 +1,4 @@
-package kr.genti.android.di
+package kr.genti.network
 
 import javax.inject.Qualifier
 
