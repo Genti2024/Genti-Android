@@ -10,6 +10,8 @@ android {
 
 dependencies {
     implementation(projects.domain)
+    implementation(projects.core.network)
+    implementation(projects.core.datastore)
 
     implementation(platform(libs.okhttp.bom))
     implementation(libs.bundles.okhttp)

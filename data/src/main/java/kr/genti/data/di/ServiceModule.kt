@@ -1,4 +1,4 @@
-package kr.genti.android.di
+package kr.genti.data.di
 
 import dagger.Module
 import dagger.Provides
