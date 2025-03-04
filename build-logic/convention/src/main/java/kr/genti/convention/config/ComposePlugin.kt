@@ -35,6 +35,7 @@ class ComposePlugin : Plugin<Project> {
             implementation(platform(libs.getLibrary("androidx-compose-bom")))
             implementation(libs.getBundle("compose"))
             implementation(libs.getBundle("navigation"))
+            implementation(libs.getBundle("ui"))
             debugImplementation(libs.getBundle("androidx-ui-test"))
         }
     }

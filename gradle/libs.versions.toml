@@ -49,7 +49,7 @@ kotlinxCoroutines = "1.9.0"
 javax = "1"
 
 # UI Libraries
-coil = "2.6.0"
+coil = "3.0.4"
 glide = "4.12.0"
 glide-transformations = "4.3.0"
 lottie = "6.0.1"
@@ -142,13 +142,16 @@ androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation
 androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidx-fragment-ktx" }
 androidx-constraint-layout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraint-layout" }
 material-design = { group = "com.google.android.material", name = "material", version.ref = "material-design" }
-
-# UI Libraries
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 glide-transformations = { group = "jp.wasabeef", name = "glide-transformations", version.ref = "glide-transformations" }
 lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie" }
 circle-indicator = { group = "me.relex", name = "circleindicator", version.ref = "circle-indicator" }
+
+# UI Libraries
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
+lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
 
 # Analytics
 amplitude = { group = "com.amplitude", name = "analytics-android", version.ref = "amplitude" }
@@ -241,7 +244,10 @@ ui = [
     "glide",
     "glide-transformations",
     "lottie",
-    "circle-indicator"
+    "circle-indicator",
+    "coil-compose",
+    "coil-network-okhttp",
+    "lottie-compose"
 ]
 
 firebase = [

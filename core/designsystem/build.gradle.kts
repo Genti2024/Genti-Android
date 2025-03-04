@@ -5,3 +5,7 @@ plugins {
 android {
     namespace = "kr.genti.core.designsystem"
 }
+
+dependencies {
+    implementation(projects.core.common)
+}
