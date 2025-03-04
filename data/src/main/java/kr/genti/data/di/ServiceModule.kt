@@ -10,6 +10,7 @@ import kr.genti.data.service.FeedService
 import kr.genti.data.service.GenerateService
 import kr.genti.data.service.InfoService
 import kr.genti.data.service.UploadService
+import kr.genti.network.RetrofitQualifier
 import retrofit2.Retrofit
 import javax.inject.Singleton
 

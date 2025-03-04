@@ -13,7 +13,7 @@ import kr.genti.core.base.BaseDialog
 import kr.genti.presentation.R
 import kr.genti.presentation.create.CreateActivity
 import kr.genti.presentation.databinding.DialogCreateSelectBinding
-import kr.genti.presentation.util.AmplitudeManager
+import kr.genti.common.manager.AmplitudeManager
 
 class CreateSelectDialog : BaseDialog<DialogCreateSelectBinding>(R.layout.dialog_create_select) {
 

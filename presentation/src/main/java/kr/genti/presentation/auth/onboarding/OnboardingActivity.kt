@@ -11,10 +11,10 @@ import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.ActivityOnboardingBinding
 import kr.genti.presentation.main.MainActivity
-import kr.genti.presentation.util.AmplitudeManager
-import kr.genti.presentation.util.AmplitudeManager.EVENT_CLICK_BTN
-import kr.genti.presentation.util.AmplitudeManager.PROPERTY_BTN
-import kr.genti.presentation.util.AmplitudeManager.PROPERTY_PAGE
+import kr.genti.common.manager.AmplitudeManager
+import kr.genti.common.manager.AmplitudeManager.EVENT_CLICK_BTN
+import kr.genti.common.manager.AmplitudeManager.PROPERTY_BTN
+import kr.genti.common.manager.AmplitudeManager.PROPERTY_PAGE
 
 @AndroidEntryPoint
 class OnboardingActivity : BaseActivity<ActivityOnboardingBinding>(R.layout.activity_onboarding) {

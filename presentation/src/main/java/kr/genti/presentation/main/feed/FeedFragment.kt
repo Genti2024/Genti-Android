@@ -21,7 +21,7 @@ import kr.genti.core.state.UiState
 import kr.genti.core.util.RvItemLastDecoration
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.FragmentFeedBinding
-import kr.genti.presentation.util.AmplitudeManager
+import kr.genti.common.manager.AmplitudeManager
 import kotlin.math.max
 
 @AndroidEntryPoint

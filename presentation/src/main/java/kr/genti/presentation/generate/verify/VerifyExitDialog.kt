@@ -7,10 +7,10 @@ import kr.genti.core.base.BaseDialog
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogVerifyExitBinding
-import kr.genti.presentation.util.AmplitudeManager
-import kr.genti.presentation.util.AmplitudeManager.EVENT_CLICK_BTN
-import kr.genti.presentation.util.AmplitudeManager.PROPERTY_BTN
-import kr.genti.presentation.util.AmplitudeManager.PROPERTY_PAGE
+import kr.genti.common.manager.AmplitudeManager
+import kr.genti.common.manager.AmplitudeManager.EVENT_CLICK_BTN
+import kr.genti.common.manager.AmplitudeManager.PROPERTY_BTN
+import kr.genti.common.manager.AmplitudeManager.PROPERTY_PAGE
 
 class VerifyExitDialog : BaseDialog<DialogVerifyExitBinding>(R.layout.dialog_verify_exit) {
     override fun onStart() {
