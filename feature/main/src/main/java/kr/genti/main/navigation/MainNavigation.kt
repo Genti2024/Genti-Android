@@ -8,7 +8,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import kr.genti.feed.navigateToFeed
 import kr.genti.navigation.MainTabRoute
+import kr.genti.profile.navigateToProfile
 
 class MainNavigator(
     val navController: NavHostController,
@@ -40,10 +42,11 @@ class MainNavigator(
             restoreState = true
         }
 
-//        when (tab) {
-//            MainTab.FEED -> navController.navigateToHome(navOptions)
-//            MainTab.PROFILE -> navController.navigateToProfile(navOptions)
-//        }
+        when (tab) {
+            MainTab.FEED -> navController.navigateToFeed(navOptions)
+            MainTab.PROFILE -> navController.navigateToProfile(navOptions)
+            else -> Unit
+        }
     }
 
 //    fun navigateToMeasure() = navController.navigateToMeasure()

@@ -39,7 +39,7 @@ internal fun MainScreen(
 
 @Preview
 @Composable
-fun MainScreenPreview() {
+private fun MainScreenPreview() {
     GentiTheme {
         MainScreen()
     }
