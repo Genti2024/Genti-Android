@@ -78,6 +78,7 @@ private fun MainBottomBarItem(
 ) {
     Column(
         modifier = Modifier
+            .padding(horizontal = 10.dp)
             .selectable(
                 selected = selected,
                 indication = null,
