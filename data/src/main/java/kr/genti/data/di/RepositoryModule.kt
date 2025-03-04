@@ -1,4 +1,4 @@
-package kr.genti.android.di
+package kr.genti.data.di
 
 import dagger.Module
 import dagger.Provides
@@ -10,12 +10,14 @@ import kr.genti.data.repositoryImpl.FeedRepositoryImpl
 import kr.genti.data.repositoryImpl.GenerateRepositoryImpl
 import kr.genti.data.repositoryImpl.InfoRepositoryImpl
 import kr.genti.data.repositoryImpl.UploadRepositoryImpl
+import kr.genti.data.repositoryImpl.UserRepositoryImpl
 import kr.genti.domain.repository.AuthRepository
 import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.repository.FeedRepository
 import kr.genti.domain.repository.GenerateRepository
 import kr.genti.domain.repository.InfoRepository
 import kr.genti.domain.repository.UploadRepository
+import kr.genti.domain.repository.UserRepository
 import javax.inject.Singleton
 
 @Module
@@ -44,4 +46,8 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideGenerateRepository(generateRepositoryImpl: GenerateRepositoryImpl): GenerateRepository = generateRepositoryImpl
+
+    @Provides
+    @Singleton
+    fun provideUserRepository(userRepositoryImpl: UserRepositoryImpl): UserRepository = userRepositoryImpl
 }

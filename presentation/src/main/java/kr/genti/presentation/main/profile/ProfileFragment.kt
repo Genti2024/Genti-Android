@@ -28,7 +28,7 @@ import kr.genti.presentation.main.CreateFinishedDialog
 import kr.genti.presentation.main.CreateSelectDialog
 import kr.genti.presentation.main.CreateUnableDialog
 import kr.genti.presentation.setting.SettingActivity
-import kr.genti.presentation.util.AmplitudeManager
+import kr.genti.common.manager.AmplitudeManager
 
 @AndroidEntryPoint
 class ProfileFragment() : BaseFragment<FragmentProfileBinding>(R.layout.fragment_profile) {

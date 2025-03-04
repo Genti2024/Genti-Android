@@ -25,7 +25,7 @@ import kr.genti.domain.enums.PictureNumber
 import kr.genti.domain.enums.PictureRatio
 import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.repository.UploadRepository
-import kr.genti.presentation.util.AmplitudeManager
+import kr.genti.common.manager.AmplitudeManager
 import javax.inject.Inject
 
 @HiltViewModel

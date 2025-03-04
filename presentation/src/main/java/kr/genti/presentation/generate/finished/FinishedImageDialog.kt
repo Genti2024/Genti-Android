@@ -9,10 +9,10 @@ import kr.genti.core.base.BaseDialog
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogFinishedImageBinding
-import kr.genti.presentation.util.AmplitudeManager
-import kr.genti.presentation.util.AmplitudeManager.PROPERTY_TYPE
-import kr.genti.presentation.util.AmplitudeManager.TYPE_ORIGINAL
-import kr.genti.presentation.util.AmplitudeManager.TYPE_PARENT
+import kr.genti.common.manager.AmplitudeManager
+import kr.genti.common.manager.AmplitudeManager.PROPERTY_TYPE
+import kr.genti.common.manager.AmplitudeManager.TYPE_ORIGINAL
+import kr.genti.common.manager.AmplitudeManager.TYPE_PARENT
 import kr.genti.presentation.util.downloadImage
 
 class FinishedImageDialog : BaseDialog<DialogFinishedImageBinding>(R.layout.dialog_finished_image) {

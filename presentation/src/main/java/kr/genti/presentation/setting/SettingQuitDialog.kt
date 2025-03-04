@@ -1,6 +1,5 @@
 package kr.genti.presentation.setting
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -12,7 +11,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kr.genti.core.base.BaseDialog
-import kr.genti.core.extension.setGusianBlur
 import kr.genti.core.extension.setOnSingleClickListener
 import kr.genti.core.extension.stringOf
 import kr.genti.core.extension.toast
@@ -20,7 +18,7 @@ import kr.genti.core.state.UiState
 import kr.genti.core.util.RestartUtil.restartApp
 import kr.genti.presentation.R
 import kr.genti.presentation.databinding.DialogSettingQuitBinding
-import kr.genti.presentation.util.AmplitudeManager
+import kr.genti.common.manager.AmplitudeManager
 
 class SettingQuitDialog : BaseDialog<DialogSettingQuitBinding>(R.layout.dialog_setting_quit) {
     private val viewModel by activityViewModels<SettingViewModel>()

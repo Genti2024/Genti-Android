@@ -1,4 +1,4 @@
-package kr.genti.android.di
+package kr.genti.datastore.di
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -7,10 +7,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kr.genti.data.local.UserSharedPref
-import kr.genti.data.local.UserSharedPrefImpl
-import kr.genti.data.repositoryImpl.UserRepositoryImpl
-import kr.genti.domain.repository.UserRepository
+import kr.genti.datastore.local.UserSharedPref
+import kr.genti.datastore.local.UserSharedPrefImpl
 import javax.inject.Singleton
 
 @Module
@@ -25,8 +23,4 @@ object SharedPrefModule {
     @Provides
     @Singleton
     fun provideSharedPref(sharedPrefImpl: UserSharedPrefImpl): UserSharedPref = sharedPrefImpl
-
-    @Provides
-    @Singleton
-    fun provideUserRepository(userRepositoryImpl: UserRepositoryImpl): UserRepository = userRepositoryImpl
 }
