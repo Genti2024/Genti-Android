@@ -21,7 +21,7 @@ val PretendardRegular = FontFamily(Font(R.font.pretendard_regular, FontWeight.No
 val PretendardLight = FontFamily(Font(R.font.pretendard_light, FontWeight.Light))
 
 @Stable
-class StempoTypography internal constructor(
+class GentiTypography internal constructor(
     title: TextStyle,
     subtitle1: TextStyle,
     subtitle2: TextStyle,
@@ -53,7 +53,7 @@ class StempoTypography internal constructor(
         body2: TextStyle = this.body2,
         caption1: TextStyle = this.caption1,
         caption2: TextStyle = this.caption2,
-    ): StempoTypography = StempoTypography(
+    ): GentiTypography = GentiTypography(
         title,
         subtitle1,
         subtitle2,
@@ -63,7 +63,7 @@ class StempoTypography internal constructor(
         caption2
     )
 
-    fun update(other: StempoTypography) {
+    fun update(other: GentiTypography) {
         title = other.title
         subtitle1 = other.subtitle1
         subtitle2 = other.subtitle2
@@ -74,7 +74,7 @@ class StempoTypography internal constructor(
     }
 }
 
-fun stempoTextStyle(
+fun gentiTextStyle(
     fontFamily: FontFamily,
     fontSize: TextUnit,
     lineHeight: TextUnit,
@@ -91,39 +91,39 @@ fun stempoTextStyle(
 )
 
 @Composable
-fun stempoTypography(): StempoTypography {
-    return StempoTypography(
-        title = stempoTextStyle(
+fun gentiTypography(): GentiTypography {
+    return GentiTypography(
+        title = gentiTextStyle(
             fontFamily = PretendardBold,
             fontSize = 20.sp,
             lineHeight = 28.sp
         ),
-        subtitle1 = stempoTextStyle(
+        subtitle1 = gentiTextStyle(
             fontFamily = PretendardBold,
             fontSize = 18.sp,
             lineHeight = 26.sp
         ),
-        subtitle2 = stempoTextStyle(
+        subtitle2 = gentiTextStyle(
             fontFamily = PretendardBold,
             fontSize = 16.sp,
             lineHeight = 20.sp
         ),
-        body1 = stempoTextStyle(
+        body1 = gentiTextStyle(
             fontFamily = PretendardBold,
             fontSize = 14.sp,
             lineHeight = 20.sp
         ),
-        body2 = stempoTextStyle(
+        body2 = gentiTextStyle(
             fontFamily = PretendardMedium,
             fontSize = 14.sp,
             lineHeight = 20.sp
         ),
-        caption1 = stempoTextStyle(
+        caption1 = gentiTextStyle(
             fontFamily = PretendardSemiBold,
             fontSize = 12.sp,
             lineHeight = 16.sp
         ),
-        caption2 = stempoTextStyle(
+        caption2 = gentiTextStyle(
             fontFamily = PretendardRegular,
             fontSize = 12.sp,
             lineHeight = 16.sp
