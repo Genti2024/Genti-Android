@@ -29,6 +29,7 @@ constructor(
         when (intent) {
             is FeedIntent.Init -> handleInit()
             is FeedIntent.InfoBtnClick -> handleInfoBtnClick()
+            is FeedIntent.TooltipClick -> handleTooltipClick()
         }
     }
 
@@ -38,6 +39,12 @@ constructor(
 
     private fun handleInfoBtnClick() {
 
+    }
+
+    private fun handleTooltipClick() {
+        _feedState.update {
+            it.copy(isTooltipVisible = false)
+        }
     }
 
     private fun changeLoadingState(isLoading: Boolean) {

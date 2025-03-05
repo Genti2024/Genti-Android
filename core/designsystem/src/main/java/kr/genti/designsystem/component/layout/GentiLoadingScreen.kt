@@ -18,7 +18,7 @@ import kr.genti.core.designsystem.R
 import kr.genti.designsystem.theme.Transparent50
 
 @Composable
-fun StempoLoadingScreen(
+fun GentiLoadingScreen(
     modifier: Modifier = Modifier
 ) {
     val lottieLoading by rememberLottieComposition(
@@ -42,6 +42,6 @@ fun StempoLoadingScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun StempoLoadingScreenPreview() {
-    StempoLoadingScreen()
+fun GentiLoadingScreenPreview() {
+    GentiLoadingScreen()
 }

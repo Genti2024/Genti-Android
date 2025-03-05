@@ -1,11 +1,9 @@
 package kr.genti.feed
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -15,10 +13,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kr.genti.common.xml.extension.toast
 import kr.genti.core.designsystem.R
+import kr.genti.designsystem.component.layout.GentiLoadingScreen
 import kr.genti.designsystem.theme.GentiTheme
-import kr.genti.designsystem.theme.Gray
+import kr.genti.domain.entity.response.FeedItemModel
 
 @Composable
 internal fun FeedRoute(
@@ -44,20 +45,42 @@ internal fun FeedRoute(
     }
 
     FeedScreen(
-        modifier = Modifier.padding(paddingValues)
+        modifier = Modifier,
+        innerPadding = paddingValues,
+        currentPage = feedState.currentPage,
+        itemList = feedState.itemList,
+        isTooltipVisible = feedState.isTooltipVisible,
+        isLoading = feedState.isLoading,
+        onInfoBtnClick = { viewModel.onIntent(FeedIntent.InfoBtnClick) },
+        onTooltipClick = { viewModel.onIntent(FeedIntent.TooltipClick) }
     )
 }
 
 @Composable
 private fun FeedScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    innerPadding: PaddingValues = PaddingValues(),
+    currentPage: Int = 0,
+    itemList: ImmutableList<FeedItemModel> = persistentListOf(),
+    isTooltipVisible: Boolean = true,
+    isLoading: Boolean = false,
+    onInfoBtnClick: () -> Unit = {},
+    onTooltipClick: () -> Unit = {},
 ) {
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Gray),
+        modifier = modifier.fillMaxSize()
     ) {
-        Text("Feed")
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = innerPadding.calculateTopPadding())
+        ) {
+
+        }
+
+        if (isLoading) {
+            GentiLoadingScreen(modifier = Modifier.fillMaxSize())
+        }
     }
 }
 
