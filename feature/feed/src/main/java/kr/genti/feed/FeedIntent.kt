@@ -4,4 +4,5 @@ sealed class FeedIntent {
     data object Init: FeedIntent()
     data object InfoBtnClick: FeedIntent()
     data object TooltipClick: FeedIntent()
+    data object ListScroll: FeedIntent()
 }
