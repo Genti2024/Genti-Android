@@ -1,12 +1,13 @@
 package kr.genti.onboarding.splash
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -14,7 +15,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import kr.genti.common.xml.extension.toast
 import kr.genti.core.designsystem.R
@@ -22,7 +22,9 @@ import kr.genti.designsystem.theme.GentiTheme
 
 @Composable
 internal fun SplashRoute(
-    viewModel: SplashViewModel = hiltViewModel()
+    viewModel: SplashViewModel = hiltViewModel(),
+    navigateToLogin: () -> Unit = {},
+    navigateToFeed: () -> Unit = {},
 ) {
     val feedState by viewModel.splashState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -35,12 +37,9 @@ internal fun SplashRoute(
     LaunchedEffect(viewModel.splashSideEffect, lifecycleOwner) {
         viewModel.splashSideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is SplashSideEffect.ShowErrorToast -> {
-                    context.toast(context.getString(R.string.error_msg))
-                }
-
-                is SplashSideEffect.NavigateToLogin -> {}
-                is SplashSideEffect.NavigateToFeed -> {}
+                is SplashSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
+                is SplashSideEffect.NavigateToLogin -> navigateToLogin()
+                is SplashSideEffect.NavigateToFeed -> navigateToFeed()
             }
         }
     }
@@ -57,14 +56,15 @@ private fun SplashScreen(
     )
 
     Box(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
         LottieAnimation(
             composition = composition,
-            iterations = LottieConstants.IterateForever,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
         )
     }
-
 }
 
 @Preview
