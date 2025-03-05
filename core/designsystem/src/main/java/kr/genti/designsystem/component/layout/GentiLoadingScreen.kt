@@ -1,5 +1,6 @@
 package kr.genti.designsystem.component.layout
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,30 +19,39 @@ import kr.genti.core.designsystem.R
 import kr.genti.designsystem.theme.Transparent50
 
 @Composable
-fun StempoLoadingScreen(
+fun GentiLoadingScreen(
+    isLoading: Boolean,
     modifier: Modifier = Modifier
 ) {
     val lottieLoading by rememberLottieComposition(
         LottieCompositionSpec.RawRes(R.raw.lottie_loading)
     )
 
-    Box(
-        modifier = modifier,
+    AnimatedVisibility(
+        visible = isLoading,
+        modifier = modifier
     ) {
-        LottieAnimation(
-            composition = lottieLoading,
-            iterations = LottieConstants.IterateForever,
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Transparent50)
                 .padding(horizontal = 50.dp)
-                .noRippleClickable { }
-        )
+        ) {
+            LottieAnimation(
+                composition = lottieLoading,
+                iterations = LottieConstants.IterateForever,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .noRippleClickable { }
+            )
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun StempoLoadingScreenPreview() {
-    StempoLoadingScreen()
+fun GentiLoadingScreenPreview() {
+    GentiLoadingScreen(
+        isLoading = true
+    )
 }

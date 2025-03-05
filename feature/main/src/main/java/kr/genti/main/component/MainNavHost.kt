@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import kr.genti.feed.feedNavGraph
+import kr.genti.feed.navigation.feedNavGraph
 import kr.genti.main.navigation.MainNavigator
 import kr.genti.profile.profileNavGraph
 
