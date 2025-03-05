@@ -34,7 +34,7 @@ constructor(
     }
 
     private fun handleInit() {
-        getExamplePromptsFromServer()
+       // getExamplePromptsFromServer()
     }
 
     private fun handleInfoBtnClick() {

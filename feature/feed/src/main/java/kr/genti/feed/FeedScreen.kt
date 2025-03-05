@@ -1,9 +1,11 @@
 package kr.genti.feed
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,8 +20,10 @@ import kotlinx.collections.immutable.persistentListOf
 import kr.genti.common.xml.extension.toast
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.layout.GentiLoadingScreen
+import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.domain.entity.response.FeedItemModel
+import kr.genti.feed.component.FeedHeader
 
 @Composable
 internal fun FeedRoute(
@@ -68,14 +72,22 @@ private fun FeedScreen(
     onTooltipClick: () -> Unit = {},
 ) {
     Box(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize().background(Black)
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding())
         ) {
-
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                item {
+                    FeedHeader(
+                        onInfoBtnClick = onInfoBtnClick
+                    )
+                }
+            }
         }
 
         if (isLoading) {

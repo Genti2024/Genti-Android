@@ -54,7 +54,7 @@ internal fun FeedHeader(
 
             Icon(
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(30.dp)
                     .padding(4.dp)
                     .noRippleClickable { onInfoBtnClick() },
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_info),
@@ -65,7 +65,7 @@ internal fun FeedHeader(
 
         Text(
             text = stringResource(R.string.feed_tv_title),
-            style = GentiTheme.typography.title,
+            style = GentiTheme.typography.subtitle1,
             color = White,
             modifier = Modifier.fillMaxWidth()
         )
