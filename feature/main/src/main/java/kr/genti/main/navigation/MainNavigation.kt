@@ -8,7 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import kr.genti.feed.navigateToFeed
+import kr.genti.feed.navigation.navigateToFeed
 import kr.genti.navigation.MainTabRoute
 import kr.genti.profile.navigateToProfile
 
