@@ -96,25 +96,21 @@ private fun FeedScreen(
             .background(Black)
             .padding(bottom = innerPadding.calculateBottomPadding())
     ) {
-        Box(
+        LazyColumn(
+            state = listState,
             modifier = Modifier.fillMaxSize()
         ) {
-            LazyColumn(
-                state = listState,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                item {
-                    FeedHeader(
-                        onInfoBtnClick = onInfoBtnClick,
-                        modifier = Modifier.padding(top = innerPadding.calculateTopPadding())
-                    )
-                }
-                itemsIndexed(
-                    items = itemList,
-                    key = { _, model -> model.picture.id }
-                ) { _, item ->
-                    FeedItem(item)
-                }
+            item {
+                FeedHeader(
+                    onInfoBtnClick = onInfoBtnClick,
+                    modifier = Modifier.padding(top = innerPadding.calculateTopPadding())
+                )
+            }
+            itemsIndexed(
+                items = itemList,
+                key = { _, model -> model.picture.id }
+            ) { _, item ->
+                FeedItem(item)
             }
         }
 
