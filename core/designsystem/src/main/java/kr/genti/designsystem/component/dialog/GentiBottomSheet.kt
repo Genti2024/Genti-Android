@@ -14,6 +14,7 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.button.GentiGradationButton
 import kr.genti.designsystem.theme.GentiTheme
@@ -38,14 +40,19 @@ fun GentiBottomSheet(
     @StringRes subtitleRes: Int,
     @StringRes btnRes: Int,
     modifier: Modifier = Modifier,
-    sheetState: SheetState = rememberModalBottomSheetState(),
+    sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
     onBtnClick: () -> Unit = {},
     onDismissRequest: () -> Unit = {},
 ) {
+    val scope = rememberCoroutineScope()
+
     ModalBottomSheet(
         modifier = modifier.fillMaxWidth(),
         containerColor = Gray,
-        onDismissRequest = { onDismissRequest() },
+        onDismissRequest = {
+            scope.launch { sheetState.hide() }
+            onDismissRequest()
+        },
         dragHandle = {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -87,7 +94,10 @@ fun GentiBottomSheet(
 
             GentiGradationButton(
                 textRes = btnRes,
-                onClick = onBtnClick,
+                onClick = {
+                    scope.launch { sheetState.hide() }
+                    onBtnClick()
+                },
                 modifier = Modifier.padding(vertical = 33.dp)
             )
         }

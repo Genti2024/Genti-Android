@@ -35,6 +35,8 @@ constructor(
             is FeedIntent.InfoBtnClick -> handleInfoBtnClick()
             is FeedIntent.TooltipClick -> handleTooltipClick()
             is FeedIntent.ListScroll -> handleListScroll()
+            is FeedIntent.BottomSheetDismiss -> handleBottomSheetDismiss()
+            is FeedIntent.MoreBtnClick -> handleMoreBtnClick()
         }
     }
 
@@ -43,7 +45,9 @@ constructor(
     }
 
     private fun handleInfoBtnClick() {
-
+        _feedState.update {
+            it.copy(isBottomSheetVisible = true)
+        }
     }
 
     private fun handleTooltipClick() {
@@ -59,6 +63,21 @@ constructor(
         AmplitudeManager.apply {
             trackEvent("scroll_main_3pic")
             plusIntProperties("user_main_scroll")
+        }
+    }
+
+    private fun handleBottomSheetDismiss() {
+        _feedState.update {
+            it.copy(isBottomSheetVisible = false)
+        }
+    }
+
+    private fun handleMoreBtnClick() {
+        _feedState.update {
+            it.copy(isBottomSheetVisible = false)
+        }
+        viewModelScope.launch {
+            _feedSideEffect.emit(FeedSideEffect.NavigateToWebsite(WEB_GENFLUENCER))
         }
     }
 
@@ -129,5 +148,10 @@ constructor(
             }
             changeLoadingState(false)
         }
+    }
+
+    companion object {
+        private const val WEB_GENFLUENCER =
+            "https://stealth-goose-156.notion.site/57a00e1d610b4c1786c6ab1fdb4c4659?pvs=4"
     }
 }

@@ -8,5 +8,6 @@ data class FeedState(
     val itemList: ImmutableList<FeedItemModel> = persistentListOf(),
     val isTooltipVisible: Boolean = false,
     val isTooltipClosed: Boolean = false,
+    val isBottomSheetVisible: Boolean = false,
     val isLoading: Boolean = false,
 )

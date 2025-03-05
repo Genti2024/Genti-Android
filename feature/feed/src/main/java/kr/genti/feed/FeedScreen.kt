@@ -1,5 +1,7 @@
 package kr.genti.feed
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -24,6 +27,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kr.genti.common.xml.extension.toast
 import kr.genti.core.designsystem.R
+import kr.genti.designsystem.component.dialog.GentiBottomSheet
 import kr.genti.designsystem.component.layout.GentiLoadingScreen
 import kr.genti.designsystem.component.layout.GentiTopBottomShadow
 import kr.genti.designsystem.theme.Black
@@ -35,6 +39,7 @@ import kr.genti.feed.component.FeedBottomTooltip
 import kr.genti.feed.component.FeedHeader
 import kr.genti.feed.component.FeedItem
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun FeedRoute(
     paddingValues: PaddingValues,
@@ -51,7 +56,13 @@ internal fun FeedRoute(
     LaunchedEffect(viewModel.feedSideEffect, lifecycleOwner) {
         viewModel.feedSideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is FeedSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
+                is FeedSideEffect.ShowErrorToast -> {
+                    context.toast(context.getString(R.string.error_msg))
+                }
+
+                is FeedSideEffect.NavigateToWebsite -> {
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url)))
+                }
             }
         }
     }
@@ -67,6 +78,16 @@ internal fun FeedRoute(
         onTooltipClick = { viewModel.onIntent(FeedIntent.TooltipClick) },
         onListScroll = { viewModel.onIntent(FeedIntent.ListScroll) }
     )
+
+    if (feedState.isBottomSheetVisible) {
+        GentiBottomSheet(
+            titleRes = R.string.feed_info_tv_title,
+            subtitleRes = R.string.feed_info_tv_subtitle,
+            btnRes = R.string.feed_info_btn_more,
+            onDismissRequest = { viewModel.onIntent(FeedIntent.BottomSheetDismiss) },
+            onBtnClick = { viewModel.onIntent(FeedIntent.MoreBtnClick) }
+        )
+    }
 }
 
 @Composable
