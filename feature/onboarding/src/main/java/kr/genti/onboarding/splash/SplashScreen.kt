@@ -15,6 +15,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import kr.genti.common.xml.extension.toast
 import kr.genti.core.designsystem.R
@@ -44,23 +45,37 @@ internal fun SplashRoute(
         }
     }
 
-    SplashScreen(modifier = Modifier)
+    SplashScreen(
+        modifier = Modifier,
+        onLottiePlayFinished = { viewModel.onIntent(SplashIntent.LottiePlayFinish) }
+    )
 }
 
 @Composable
 private fun SplashScreen(
     modifier: Modifier = Modifier,
+    onLottiePlayFinished: () -> Unit = {},
 ) {
-    val composition by rememberLottieComposition(
+    val lottieComposition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(R.raw.lottie_splash)
     )
+
+    val lottieProgress by animateLottieCompositionAsState(
+        composition = lottieComposition,
+        iterations = 1
+    )
+
+    LaunchedEffect(lottieProgress) {
+        if (lottieProgress >= 1f) onLottiePlayFinished()
+    }
 
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         LottieAnimation(
-            composition = composition,
+            composition = lottieComposition,
+            progress = { lottieProgress },
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
