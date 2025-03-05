@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kr.genti.common.manager.AmplitudeManager
 import kr.genti.domain.entity.response.FeedItemModel
 import kr.genti.domain.entity.response.ImageModel
 import kr.genti.domain.enums.PictureRatio
@@ -54,6 +55,10 @@ constructor(
     private fun handleListScroll() {
         _feedState.update {
             it.copy(isTooltipVisible = true)
+        }
+        AmplitudeManager.apply {
+            trackEvent("scroll_main_3pic")
+            plusIntProperties("user_main_scroll")
         }
     }
 
