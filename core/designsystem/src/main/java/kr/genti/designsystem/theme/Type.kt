@@ -84,6 +84,7 @@ fun gentiTextStyle(
     fontSize = fontSize,
     lineHeight = lineHeight,
     letterSpacing = letterSpacing,
+    color = White,
     lineHeightStyle = LineHeightStyle(
         alignment = LineHeightStyle.Alignment.Center,
         trim = LineHeightStyle.Trim.None

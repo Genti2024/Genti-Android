@@ -66,7 +66,6 @@ internal fun FeedHeader(
         Text(
             text = stringResource(R.string.feed_tv_title),
             style = GentiTheme.typography.subtitle1,
-            color = White,
             modifier = Modifier.fillMaxWidth()
         )
 
