@@ -4,12 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import kr.genti.feed.navigation.navigateToFeed
-import kr.genti.navigation.MainTabRoute
+import kr.genti.navigation.OnboardingRoute
+import kr.genti.onboarding.navigation.navigateToSplash
 import kr.genti.profile.navigateToProfile
 
 class MainNavigator(
@@ -18,8 +20,7 @@ class MainNavigator(
     private val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
-    // TODO 수정
-    val startDestination = MainTabRoute.Feed
+    val startDestination = OnboardingRoute.Splash
 
     val currentTab: MainTab?
         @Composable get() = MainTab.find { tab ->
@@ -49,8 +50,19 @@ class MainNavigator(
         }
     }
 
+    fun navigateToFeed() = navController.navigateToFeed(
+        navOptions = navOptions { popUpTo(startDestination) { inclusive = true } }
+    )
+
+    fun navigateToProfile() = navController.navigateToProfile()
+
     // TODO
-    fun navigateToGenerate() = navController.navigateToFeed()
+    fun navigateToGenerate() = {}
+
+    fun navigateToSplash() = navController.navigateToSplash()
+
+    // TODO
+    fun navigateToLogin() = {}
 }
 
 @Composable
