@@ -1,5 +1,8 @@
 package kr.genti.onboarding.splash
 
+import android.app.Activity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -17,6 +20,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import kr.genti.common.manager.AppUpdateManager
 import kr.genti.common.xml.extension.toast
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.theme.GentiTheme
@@ -31,6 +35,12 @@ internal fun SplashRoute(
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartIntentSenderForResult()
+    ) { result ->
+        if (result.resultCode != Activity.RESULT_OK) (context as Activity).finishAffinity()
+    }
+
     LaunchedEffect(Unit) {
         viewModel.onIntent(SplashIntent.Init)
     }
@@ -41,6 +51,7 @@ internal fun SplashRoute(
                 is SplashSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
                 is SplashSideEffect.NavigateToLogin -> navigateToLogin()
                 is SplashSideEffect.NavigateToFeed -> navigateToFeed()
+                is SplashSideEffect.StartAppUpdate -> AppUpdateManager.startAppUpdate(launcher)
             }
         }
     }

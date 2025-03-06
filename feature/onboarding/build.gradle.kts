@@ -11,6 +11,4 @@ dependencies {
     implementation(projects.core.common)
     implementation(projects.core.navigation)
     implementation(projects.core.designsystem)
-
-    implementation(libs.app.update)
 }

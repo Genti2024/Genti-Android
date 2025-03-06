@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kr.genti.common.manager.AppUpdateManager
 import kr.genti.domain.repository.AuthRepository
 import kr.genti.domain.repository.UserRepository
 import javax.inject.Inject
@@ -34,12 +35,22 @@ constructor(
     }
 
     private fun handleInit() {
-
+        viewModelScope.launch {
+            if (AppUpdateManager.isAppUpdateAvailable()) {
+                _splashSideEffect.emit(SplashSideEffect.StartAppUpdate)
+            } else {
+                getIsUserSigned()
+            }
+        }
     }
 
     private fun handleLottiePlayFinish() {
         viewModelScope.launch {
             _splashSideEffect.emit(SplashSideEffect.NavigateToFeed)
         }
+    }
+
+    private fun getIsUserSigned() {
+
     }
 }

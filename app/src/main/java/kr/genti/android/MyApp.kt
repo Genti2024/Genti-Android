@@ -7,6 +7,7 @@ import dagger.hilt.android.HiltAndroidApp
 import kr.genti.android.BuildConfig.AMPLITUDE_KEY
 import kr.genti.android.BuildConfig.NATIVE_APP_KEY
 import kr.genti.common.manager.AmplitudeManager
+import kr.genti.common.manager.AppUpdateManager
 import timber.log.Timber
 
 @HiltAndroidApp
@@ -17,6 +18,7 @@ class MyApp : Application() {
         initTimber()
         initKakaoSDK()
         initAmplitude()
+        initAppUpdate()
         setDayMode()
     }
 
@@ -30,6 +32,10 @@ class MyApp : Application() {
 
     private fun initAmplitude() {
         AmplitudeManager.init(this, AMPLITUDE_KEY)
+    }
+
+    private fun initAppUpdate() {
+        AppUpdateManager.init(this)
     }
 
     private fun setDayMode() {
