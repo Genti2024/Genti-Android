@@ -13,5 +13,5 @@ interface OnboardingRoute : Route {
     data object Signup : OnboardingRoute
 
     @Serializable
-    data object Guide : OnboardingRoute
+    data object Tutorial : OnboardingRoute
 }
