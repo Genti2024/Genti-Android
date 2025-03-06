@@ -31,7 +31,7 @@ internal fun SplashRoute(
     navigateToLogin: () -> Unit = {},
     navigateToFeed: () -> Unit = {},
 ) {
-    val feedState by viewModel.splashState.collectAsStateWithLifecycle()
+    val splashState by viewModel.splashState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
