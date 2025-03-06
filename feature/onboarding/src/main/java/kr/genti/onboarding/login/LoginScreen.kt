@@ -24,6 +24,7 @@ import kr.genti.core.designsystem.R
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.designsystem.theme.White80
 import kr.genti.onboarding.component.KakaoLoginButton
+import kr.genti.onboarding.component.MovingBackgroundImage
 
 @Composable
 internal fun LoginRoute(
@@ -64,13 +65,17 @@ private fun LoginScreen(
     onLoginBtnClicked: () -> Unit = {},
 ) {
     Box(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .padding(bottom = paddingValues.calculateBottomPadding())
     ) {
+        MovingBackgroundImage(imageRes = R.drawable.img_login_bg)
+
         Column(
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(horizontal = 27.dp)
-                .padding(top = 125.dp)
+                .padding(top = 100.dp)
                 .padding(top = paddingValues.calculateTopPadding()),
         ) {
             Text(
