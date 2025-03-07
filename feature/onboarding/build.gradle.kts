@@ -12,5 +12,6 @@ dependencies {
     implementation(projects.core.navigation)
     implementation(projects.core.designsystem)
 
+    implementation(libs.kakao)
     implementation(libs.phoenix)
 }

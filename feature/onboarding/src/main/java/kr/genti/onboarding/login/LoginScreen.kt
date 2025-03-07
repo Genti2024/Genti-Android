@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -19,8 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kakao.sdk.user.UserApiClient
 import kr.genti.common.xml.extension.toast
 import kr.genti.core.designsystem.R
+import kr.genti.designsystem.component.layout.GentiLoadingScreen
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.designsystem.theme.White80
 import kr.genti.onboarding.component.KakaoLoginButton
@@ -33,20 +37,38 @@ internal fun LoginRoute(
     navigateToSignup: () -> Unit = {},
     navigateToFeed: () -> Unit = {},
 ) {
+    val loginState by viewModel.loginState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.onIntent(LoginIntent.Init)
+        viewModel.onIntent(
+            LoginIntent.Init(UserApiClient.instance.isKakaoTalkLoginAvailable(context))
+        )
     }
 
     LaunchedEffect(viewModel.loginSideEffect, lifecycleOwner) {
         viewModel.loginSideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is LoginSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
+
                 is LoginSideEffect.NavigateToSignup -> navigateToSignup()
+
                 is LoginSideEffect.NavigateToFeed -> navigateToFeed()
-                is LoginSideEffect.StartKakaoLogin -> {}
+
+                is LoginSideEffect.StartKakaoAppLogin -> {
+                    UserApiClient.instance.loginWithKakaoTalk(
+                        context = context,
+                        callback = sideEffect.appLoginCallback
+                    )
+                }
+
+                is LoginSideEffect.StartKakaoWebLogin -> {
+                    UserApiClient.instance.loginWithKakaoAccount(
+                        context = context,
+                        callback = sideEffect.webLoginCallback
+                    )
+                }
             }
         }
     }
@@ -54,6 +76,7 @@ internal fun LoginRoute(
     LoginScreen(
         modifier = Modifier,
         paddingValues = paddingValues,
+        isLoading = loginState.isLoading,
         onLoginBtnClicked = { viewModel.onIntent(LoginIntent.LoginBtnClick) }
     )
 }
@@ -62,6 +85,7 @@ internal fun LoginRoute(
 private fun LoginScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues(),
+    isLoading: Boolean = false,
     onLoginBtnClicked: () -> Unit = {},
 ) {
     Box(
@@ -102,6 +126,11 @@ private fun LoginScreen(
             onBtnClick = onLoginBtnClicked
         )
     }
+
+    GentiLoadingScreen(
+        isLoading = isLoading,
+        modifier = Modifier.fillMaxSize()
+    )
 }
 
 @Preview

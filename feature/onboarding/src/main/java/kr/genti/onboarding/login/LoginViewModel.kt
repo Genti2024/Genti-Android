@@ -1,13 +1,20 @@
 package kr.genti.onboarding.login
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.model.ClientError
+import com.kakao.sdk.common.model.ClientErrorCause
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kr.genti.domain.repository.AuthRepository
 import kr.genti.domain.repository.UserRepository
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,16 +33,81 @@ constructor(
 
     fun onIntent(intent: LoginIntent) {
         when (intent) {
-            is LoginIntent.Init -> handleInit()
+            is LoginIntent.Init -> handleInit(intent.isAppLoginAvailable)
             is LoginIntent.LoginBtnClick -> handleLoginBtnClick()
         }
     }
 
-    private fun handleInit() {
-
+    private fun handleInit(isAppLoginAvailable: Boolean) {
+        _loginState.update {
+            it.copy(isAppLoginAvailable = isAppLoginAvailable)
+        }
     }
 
     private fun handleLoginBtnClick() {
+        changeLoadingState(true)
+        if (loginState.value.isAppLoginAvailable) {
+            startKakaoAppLogin()
+        } else {
+            startKakaoWebLogin()
+        }
+    }
 
+    private fun changeLoadingState(isLoading: Boolean) {
+        _loginState.update {
+            it.copy(isLoading = isLoading)
+        }
+    }
+
+    private fun emitSideEffect(effect: LoginSideEffect) {
+        viewModelScope.launch {
+            _loginSideEffect.emit(effect)
+            if (effect == LoginSideEffect.ShowErrorToast) changeLoadingState(false)
+        }
+    }
+
+
+    private fun startKakaoAppLogin() {
+        val appLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+            when {
+                error != null -> {
+                    if (!(error is ClientError && error.reason == ClientErrorCause.Cancelled)) {
+                        startKakaoWebLogin()
+                    }
+                }
+
+                token != null -> {
+                    getDeviceToken(token.accessToken)
+                }
+
+                else -> emitSideEffect(LoginSideEffect.ShowErrorToast)
+            }
+        }
+        emitSideEffect(LoginSideEffect.StartKakaoAppLogin(appLoginCallback))
+    }
+
+    private fun startKakaoWebLogin() {
+        val webLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+            if (error == null && token != null) {
+                getDeviceToken(token.accessToken)
+            } else {
+                emitSideEffect(LoginSideEffect.ShowErrorToast)
+            }
+        }
+        emitSideEffect(LoginSideEffect.StartKakaoWebLogin(webLoginCallback))
+    }
+
+
+    private fun getDeviceToken(accessToken: String) {
+        Timber.tag("okhttp").d("KAKAO ACCESS TOKEN : $accessToken")
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            viewModelScope.launch {
+                if (task.isSuccessful) {
+                    changeTokenFromServer(accessToken, task.result)
+                } else {
+                    _getDeviceTokenResult.emit(false)
+                }
+            }
+        }
     }
 }

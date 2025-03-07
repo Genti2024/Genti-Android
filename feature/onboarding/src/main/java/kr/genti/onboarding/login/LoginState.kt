@@ -1,5 +1,6 @@
 package kr.genti.onboarding.login
 
 data class LoginState(
-    val isLottieFinished: Boolean = false,
+    val isAppLoginAvailable: Boolean = false,
+    val isLoading: Boolean = false,
 )

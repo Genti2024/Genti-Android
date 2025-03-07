@@ -61,7 +61,9 @@ class MainNavigator(
 
     fun navigateToSplash() = navController.navigateToSplash()
 
-    fun navigateToLogin() = navController.navigateToLogin()
+    fun navigateToLogin() = navController.navigateToLogin(
+        navOptions = navOptions { popUpTo(startDestination) { inclusive = true } }
+    )
 
     // TODO
     fun navigateToSignup() = {}
