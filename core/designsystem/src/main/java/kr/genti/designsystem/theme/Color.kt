@@ -6,6 +6,9 @@ import androidx.compose.ui.graphics.Color
 val GentiGreen = Color(0xFF49F155)
 val GentiGradationStart = Color(0xFF6CEE2A)
 val GentiGradationEnd = Color(0xFF1CF48B)
+val GentiGradationEnd66 = Color(0x661CF48B)
+val GentiGradationDarkStart = Color(0xFF06261C)
+val GentiGradationDarkEnd = Color(0xFF0E2612)
 
 // System Color
 val Black = Color(0xFF030F0F)
