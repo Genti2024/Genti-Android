@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import kr.genti.feed.navigation.navigateToFeed
 import kr.genti.navigation.OnboardingRoute
+import kr.genti.navigation.Route
 import kr.genti.onboarding.navigation.navigateToLogin
 import kr.genti.onboarding.navigation.navigateToSplash
 import kr.genti.profile.navigateToProfile
@@ -50,8 +51,8 @@ class MainNavigator(
         }
     }
 
-    fun navigateToFeed() = navController.navigateToFeed(
-        navOptions = navOptions { popUpTo(startDestination) { inclusive = true } }
+    fun navigateToFeed(previous: Route) = navController.navigateToFeed(
+        navOptions = navOptions { popUpTo(previous) { inclusive = true } }
     )
 
     fun navigateToProfile() = navController.navigateToProfile()
@@ -61,12 +62,12 @@ class MainNavigator(
 
     fun navigateToSplash() = navController.navigateToSplash()
 
-    fun navigateToLogin() = navController.navigateToLogin(
-        navOptions = navOptions { popUpTo(startDestination) { inclusive = true } }
+    fun navigateToLogin(previous: Route) = navController.navigateToLogin(
+        navOptions = navOptions { popUpTo(previous) { inclusive = true } }
     )
 
     // TODO
-    fun navigateToSignup() = {}
+    fun navigateToSignup(previous: Route) = {}
 }
 
 @Composable

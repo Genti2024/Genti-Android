@@ -24,12 +24,14 @@ import kr.genti.common.manager.AppUpdateManager
 import kr.genti.common.xml.extension.toast
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.theme.GentiTheme
+import kr.genti.navigation.OnboardingRoute
+import kr.genti.navigation.Route
 
 @Composable
 internal fun SplashRoute(
     viewModel: SplashViewModel = hiltViewModel(),
-    navigateToLogin: () -> Unit = {},
-    navigateToFeed: () -> Unit = {},
+    navigateToLogin: (Route) -> Unit = {},
+    navigateToFeed: (Route) -> Unit = {},
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
@@ -53,8 +55,8 @@ internal fun SplashRoute(
         viewModel.splashSideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is SplashSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
-                is SplashSideEffect.NavigateToLogin -> navigateToLogin()
-                is SplashSideEffect.NavigateToFeed -> navigateToFeed()
+                is SplashSideEffect.NavigateToLogin -> navigateToLogin(OnboardingRoute.Splash)
+                is SplashSideEffect.NavigateToFeed -> navigateToFeed(OnboardingRoute.Splash)
                 is SplashSideEffect.StartAppUpdate -> AppUpdateManager.startAppUpdate(launcher)
             }
         }

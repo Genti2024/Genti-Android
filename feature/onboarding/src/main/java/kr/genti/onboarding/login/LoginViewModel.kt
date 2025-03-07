@@ -2,6 +2,7 @@ package kr.genti.onboarding.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.messaging.FirebaseMessaging
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -12,6 +13,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kr.genti.common.manager.AmplitudeManager
+import kr.genti.domain.entity.request.AuthRequestModel
 import kr.genti.domain.repository.AuthRepository
 import kr.genti.domain.repository.UserRepository
 import timber.log.Timber
@@ -77,6 +80,7 @@ constructor(
                 }
 
                 token != null -> {
+                    Timber.tag("okhttp").d("KAKAO ACCESS TOKEN FROM APP : $token")
                     getDeviceToken(token.accessToken)
                 }
 
@@ -89,9 +93,12 @@ constructor(
     private fun startKakaoWebLogin() {
         val webLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error == null && token != null) {
+                Timber.tag("okhttp").d("KAKAO ACCESS TOKEN FROM WEB : $token")
                 getDeviceToken(token.accessToken)
             } else {
-                emitSideEffect(LoginSideEffect.ShowErrorToast)
+                if (!(error is ClientError && error.reason == ClientErrorCause.Cancelled)) {
+                    emitSideEffect(LoginSideEffect.ShowErrorToast)
+                }
             }
         }
         emitSideEffect(LoginSideEffect.StartKakaoWebLogin(webLoginCallback))
@@ -99,15 +106,39 @@ constructor(
 
 
     private fun getDeviceToken(accessToken: String) {
-        Timber.tag("okhttp").d("KAKAO ACCESS TOKEN : $accessToken")
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             viewModelScope.launch {
                 if (task.isSuccessful) {
                     changeTokenFromServer(accessToken, task.result)
                 } else {
-                    _getDeviceTokenResult.emit(false)
+                    emitSideEffect(LoginSideEffect.ShowErrorToast)
                 }
             }
         }
+    }
+
+    private fun changeTokenFromServer(accessToken: String, fcmToken: String) {
+        viewModelScope.launch {
+            authRepository.postOauthDataToGetToken(
+                AuthRequestModel(accessToken, fcmToken)
+            ).onSuccess {
+                with(userRepository) {
+                    setTokens(it.accessToken, it.refreshToken)
+                    setUserRole(it.userRoleString)
+                }
+                if (it.userRoleString == ALREADY_ASSIGNED) {
+                    emitSideEffect(LoginSideEffect.NavigateToFeed)
+                } else {
+                    AmplitudeManager.trackEvent("sign_in")
+                    emitSideEffect(LoginSideEffect.NavigateToSignup)
+                }
+            }.onFailure {
+                emitSideEffect(LoginSideEffect.ShowErrorToast)
+            }
+        }
+    }
+
+    companion object {
+        const val ALREADY_ASSIGNED = "USER"
     }
 }
