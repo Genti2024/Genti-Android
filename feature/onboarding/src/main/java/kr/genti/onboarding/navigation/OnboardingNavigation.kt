@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import kr.genti.navigation.OnboardingRoute
 import kr.genti.navigation.Route
 import kr.genti.onboarding.login.LoginRoute
+import kr.genti.onboarding.signup.SignupRoute
 import kr.genti.onboarding.splash.SplashRoute
 
 fun NavController.navigateToSplash(
@@ -22,11 +23,18 @@ fun NavController.navigateToLogin(
     navigate(OnboardingRoute.Login, navOptions)
 }
 
+fun NavController.navigateToSignup(
+    navOptions: NavOptions? = null
+) {
+    navigate(OnboardingRoute.Signup, navOptions)
+}
+
 fun NavGraphBuilder.onboardingNavGraph(
     paddingValues: PaddingValues,
     navigateToLogin: (Route) -> Unit = {},
     navigateToSignup: (Route) -> Unit = {},
     navigateToFeed: (Route) -> Unit = {},
+    navigateToTutorial: (Route) -> Unit = {},
 ) {
     composable<OnboardingRoute.Splash> {
         SplashRoute(
@@ -39,6 +47,12 @@ fun NavGraphBuilder.onboardingNavGraph(
             paddingValues = paddingValues,
             navigateToSignup = navigateToSignup,
             navigateToFeed = navigateToFeed,
+        )
+    }
+    composable<OnboardingRoute.Signup> {
+        SignupRoute(
+            paddingValues = paddingValues,
+            navigateToTutorial = navigateToTutorial
         )
     }
 }

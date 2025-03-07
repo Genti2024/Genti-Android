@@ -43,7 +43,7 @@ fun GentiButton(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .noRippleClickable { onClick() },
+            .noRippleClickable { if (isActive) onClick() },
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = containerColor),
         elevation = CardDefaults.cardElevation(0.dp)
