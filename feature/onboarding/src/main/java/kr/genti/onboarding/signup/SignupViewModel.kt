@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kr.genti.domain.enums.Gender
 import kr.genti.domain.repository.InfoRepository
 import kr.genti.domain.repository.UserRepository
@@ -26,19 +27,16 @@ constructor(
 
     fun onIntent(intent: SignupIntent) {
         when (intent) {
-            is SignupIntent.Init -> handleInit()
             is SignupIntent.GenderSelect -> handleGenderSelect(intent.gender)
             is SignupIntent.YearInput -> handleYearInput(intent.year)
             is SignupIntent.SignupBtnClick -> handleSignupBtnClick()
         }
     }
 
-    private fun handleInit() {
-
-    }
-
     private fun handleGenderSelect(selectedGender: Gender) {
-
+        _signupState.update {
+            it.copy(selectedGender = selectedGender, isGenderSelected = true)
+        }
     }
 
     private fun handleYearInput(selectedYear: String) {

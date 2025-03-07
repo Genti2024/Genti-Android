@@ -1,7 +1,6 @@
 package kr.genti.designsystem.component.button
 
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -52,7 +51,7 @@ import kr.genti.designsystem.theme.White40
 @Composable
 fun GentiSelectButton(
     @DrawableRes iconRes: Int,
-    @StringRes textRes: Int,
+    text: String,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
     isTintNeeded: Boolean = false,
@@ -117,7 +116,7 @@ fun GentiSelectButton(
                 Spacer(modifier = Modifier.height(14.dp))
 
                 Text(
-                    text = stringResource(textRes),
+                    text = text,
                     style = GentiTheme.typography.body1,
                     textAlign = TextAlign.Center,
                     color = White,
@@ -141,7 +140,7 @@ fun GentiSelectButtonsPreview() {
             item {
                 GentiSelectButton(
                     iconRes = R.drawable.ic_male,
-                    textRes = R.string.signup_tv_gender_male,
+                    text = stringResource(R.string.signup_tv_gender_male),
                     isSelected = false,
                     isTintNeeded = true,
                 )
@@ -149,7 +148,7 @@ fun GentiSelectButtonsPreview() {
             item {
                 GentiSelectButton(
                     iconRes = R.drawable.ic_female,
-                    textRes = R.string.signup_tv_gender_female,
+                    text = stringResource(R.string.signup_tv_gender_female),
                     isSelected = true,
                     isTintNeeded = true,
                 )
@@ -157,7 +156,7 @@ fun GentiSelectButtonsPreview() {
             item {
                 GentiSelectButton(
                     iconRes = R.drawable.img_ratio_2_3,
-                    textRes = R.string.signup_tv_gender_male,
+                    text = stringResource(R.string.signup_tv_gender_male),
                     isSelected = false,
                     isTintNeeded = false,
                 )
@@ -165,7 +164,7 @@ fun GentiSelectButtonsPreview() {
             item {
                 GentiSelectButton(
                     iconRes = R.drawable.img_ratio_3_2,
-                    textRes = R.string.signup_tv_gender_female,
+                    text = stringResource(R.string.signup_tv_gender_female),
                     isSelected = true,
                     isTintNeeded = false,
                 )
