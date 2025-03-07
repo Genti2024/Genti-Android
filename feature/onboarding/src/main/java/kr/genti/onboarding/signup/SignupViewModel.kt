@@ -45,7 +45,6 @@ constructor(
     }
 
     private fun handleGenderSelect(selectedGender: Gender) {
-        Timber.tag("breeze").d("$selectedGender")
         _signupState.update {
             it.copy(
                 selectedGender = selectedGender,
@@ -56,7 +55,6 @@ constructor(
     }
 
     private fun handleYearChange(selectedYear: String) {
-        Timber.tag("breeze").d(selectedYear)
         _signupState.update {
             it.copy(
                 selectedYear = selectedYear,

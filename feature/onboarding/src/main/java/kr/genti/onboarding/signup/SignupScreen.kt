@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -34,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kr.genti.common.extension.noRippleClickable
 import kr.genti.common.xml.extension.toast
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.button.GentiButton
@@ -60,6 +62,7 @@ internal fun SignupRoute(
     val signupState by viewModel.signupState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(Unit) {
         viewModel.onIntent(SignupIntent.Init)
@@ -84,7 +87,8 @@ internal fun SignupRoute(
         isAllSelected = signupState.isAllSelected,
         onGenderClicked = { viewModel.onIntent(SignupIntent.GenderSelect(it)) },
         onSignupBtnClicked = { viewModel.onIntent(SignupIntent.SignupBtnClick) },
-        onYearChanged = { viewModel.onIntent(SignupIntent.YearChange(it)) }
+        onYearChanged = { viewModel.onIntent(SignupIntent.YearChange(it)) },
+        onTextFieldOutsideClicked = { focusManager.clearFocus() }
     )
 }
 
@@ -100,12 +104,14 @@ private fun SignupScreen(
     onGenderClicked: (Gender) -> Unit = {},
     onYearChanged: (String) -> Unit = {},
     onSignupBtnClicked: () -> Unit = {},
+    onTextFieldOutsideClicked: () -> Unit = {}
 ) {
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(Black)
             .padding(paddingValues)
+            .noRippleClickable { onTextFieldOutsideClicked() }
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -125,8 +131,8 @@ private fun SignupScreen(
 
             SignupBirthYearTextField(
                 selectedYear = selectedYear,
+                isYearSelected = isYearSelected,
                 onYearChanged = onYearChanged,
-                isYearSelected = isYearSelected
             )
 
             Spacer(Modifier.height(60.dp))
@@ -223,10 +229,10 @@ private fun SignupGenderSelect(
 
 @Composable
 fun SignupBirthYearTextField(
-    selectedYear: String,
-    onYearChanged: (String) -> Unit,
-    isYearSelected: Boolean,
     modifier: Modifier = Modifier,
+    selectedYear: String = "",
+    isYearSelected: Boolean = false,
+    onYearChanged: (String) -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -270,7 +276,7 @@ fun SignupBirthYearTextField(
             },
             modifier = modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp),
+                .padding(vertical = 8.dp)
         )
 
         Box(
