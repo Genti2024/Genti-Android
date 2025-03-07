@@ -28,7 +28,7 @@ constructor(
     fun onIntent(intent: SignupIntent) {
         when (intent) {
             is SignupIntent.GenderSelect -> handleGenderSelect(intent.gender)
-            is SignupIntent.YearInput -> handleYearInput(intent.year)
+            is SignupIntent.YearChange -> handleYearInput(intent.year)
             is SignupIntent.SignupBtnClick -> handleSignupBtnClick()
         }
     }

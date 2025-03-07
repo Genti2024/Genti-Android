@@ -12,14 +12,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,11 +35,15 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kr.genti.common.xml.extension.toast
 import kr.genti.core.designsystem.R
+import kr.genti.designsystem.component.button.GentiButton
 import kr.genti.designsystem.component.button.GentiSelectButton
 import kr.genti.designsystem.component.layout.GentiLoadingScreen
 import kr.genti.designsystem.theme.Black
+import kr.genti.designsystem.theme.GentiGradationEnd
+import kr.genti.designsystem.theme.GentiGradationStart
 import kr.genti.designsystem.theme.GentiGreen
 import kr.genti.designsystem.theme.GentiTheme
+import kr.genti.designsystem.theme.White40
 import kr.genti.designsystem.theme.White80
 import kr.genti.domain.enums.Gender
 import kr.genti.navigation.OnboardingRoute
@@ -63,8 +73,12 @@ internal fun SignupRoute(
         paddingValues = paddingValues,
         isLoading = signupState.isLoading,
         selectedGender = signupState.selectedGender,
-        onGenderClick = { viewModel.onIntent(SignupIntent.GenderSelect(it)) },
-        onSignupBtnClicked = { viewModel.onIntent(SignupIntent.SignupBtnClick) }
+        selectedYear = signupState.selectedYear,
+        isYearSelected = signupState.isYearSelected,
+        isAllSelected = signupState.isAllSelected,
+        onGenderClicked = { viewModel.onIntent(SignupIntent.GenderSelect(it)) },
+        onSignupBtnClicked = { viewModel.onIntent(SignupIntent.SignupBtnClick) },
+        onYearChanged = { viewModel.onIntent(SignupIntent.YearChange(it)) }
     )
 }
 
@@ -74,7 +88,11 @@ private fun SignupScreen(
     paddingValues: PaddingValues = PaddingValues(),
     isLoading: Boolean = false,
     selectedGender: Gender = Gender.NONE,
-    onGenderClick: (Gender) -> Unit = {},
+    selectedYear: String = "",
+    isYearSelected: Boolean = false,
+    isAllSelected: Boolean = false,
+    onGenderClicked: (Gender) -> Unit = {},
+    onYearChanged: (String) -> Unit = {},
     onSignupBtnClicked: () -> Unit = {},
 ) {
     Box(
@@ -90,13 +108,28 @@ private fun SignupScreen(
         ) {
             SignupTitle()
 
-            Spacer(Modifier.height(40.dp))
+            Spacer(Modifier.height(80.dp))
 
             SignupGenderSelect(
                 selectedGender = selectedGender,
-                onGenderClick = onGenderClick
+                onGenderClick = onGenderClicked
+            )
+
+            SignupBirthYearTextField(
+                selectedYear = selectedYear,
+                onYearChanged = onYearChanged,
+                isYearSelected = isYearSelected
             )
         }
+
+        GentiButton(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(16.dp),
+            textRes = R.string.signup_btn_submit,
+            isActive = isAllSelected,
+            onClick = onSignupBtnClicked
+        )
     }
 
     GentiLoadingScreen(
@@ -175,6 +208,71 @@ private fun SignupGenderSelect(
                 onBtnClick = { onGenderClick(Gender.W) }
             )
         }
+    }
+}
+
+@Composable
+fun SignupBirthYearTextField(
+    selectedYear: String,
+    onYearChanged: (String) -> Unit,
+    isYearSelected: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(40.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(R.string.signup_tv_birth_title),
+            style = GentiTheme.typography.body1,
+            color = GentiGreen,
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        BasicTextField(
+            value = selectedYear,
+            onValueChange = { newValue ->
+                if (newValue.length <= 4 && newValue.all { it.isDigit() }) onYearChanged(newValue)
+            },
+            textStyle = GentiTheme.typography.subtitle2,
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            decorationBox = { innerTextField ->
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (selectedYear.isEmpty()) {
+                        Text(
+                            text = stringResource(id = R.string.signup_tv_birth_hint),
+                            style = GentiTheme.typography.subtitle2,
+                            color = White40
+                        )
+                    }
+                    innerTextField()
+                }
+            },
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(4.dp)
+                .background(
+                    brush = if (isYearSelected) {
+                        Brush.linearGradient(listOf(GentiGradationStart, GentiGradationEnd))
+                    } else {
+                        SolidColor(White40)
+                    },
+                    shape = RoundedCornerShape(10.dp)
+                )
+        )
     }
 }
 
