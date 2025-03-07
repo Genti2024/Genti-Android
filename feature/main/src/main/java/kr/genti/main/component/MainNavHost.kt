@@ -27,6 +27,7 @@ internal fun MainNavHost(
             navigateToLogin = navigator::navigateToLogin,
             navigateToSignup = navigator::navigateToSignup,
             navigateToFeed = navigator::navigateToFeed,
+            navigateToTutorial = navigator::navigateToTutorial,
         )
     }
 }

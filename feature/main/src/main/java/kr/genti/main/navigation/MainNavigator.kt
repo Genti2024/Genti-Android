@@ -12,6 +12,7 @@ import kr.genti.feed.navigation.navigateToFeed
 import kr.genti.navigation.OnboardingRoute
 import kr.genti.navigation.Route
 import kr.genti.onboarding.navigation.navigateToLogin
+import kr.genti.onboarding.navigation.navigateToSignup
 import kr.genti.onboarding.navigation.navigateToSplash
 import kr.genti.profile.navigateToProfile
 
@@ -66,8 +67,11 @@ class MainNavigator(
         navOptions = navOptions { popUpTo(previous) { inclusive = true } }
     )
 
-    // TODO
-    fun navigateToSignup(previous: Route) = {}
+    fun navigateToSignup(previous: Route) = navController.navigateToSignup(
+        navOptions = navOptions { popUpTo(previous) { inclusive = true } }
+    )
+
+    fun navigateToTutorial(previous: Route) = {}
 }
 
 @Composable
