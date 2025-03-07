@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,6 +44,7 @@ import kr.genti.designsystem.theme.GentiGradationEnd
 import kr.genti.designsystem.theme.GentiGradationStart
 import kr.genti.designsystem.theme.GentiGreen
 import kr.genti.designsystem.theme.GentiTheme
+import kr.genti.designsystem.theme.Transparent
 import kr.genti.designsystem.theme.White40
 import kr.genti.designsystem.theme.White80
 import kr.genti.domain.enums.Gender
@@ -58,6 +60,10 @@ internal fun SignupRoute(
     val signupState by viewModel.signupState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.onIntent(SignupIntent.Init)
+    }
 
     LaunchedEffect(viewModel.signupSideEffect, lifecycleOwner) {
         viewModel.signupSideEffect.collect { sideEffect ->
@@ -108,18 +114,22 @@ private fun SignupScreen(
         ) {
             SignupTitle()
 
-            Spacer(Modifier.height(80.dp))
+            Spacer(Modifier.height(40.dp))
 
             SignupGenderSelect(
                 selectedGender = selectedGender,
                 onGenderClick = onGenderClicked
             )
 
+            Spacer(Modifier.height(20.dp))
+
             SignupBirthYearTextField(
                 selectedYear = selectedYear,
                 onYearChanged = onYearChanged,
                 isYearSelected = isYearSelected
             )
+
+            Spacer(Modifier.height(60.dp))
         }
 
         GentiButton(
@@ -221,7 +231,7 @@ fun SignupBirthYearTextField(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(40.dp),
+            .padding(horizontal = 40.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -237,12 +247,15 @@ fun SignupBirthYearTextField(
             onValueChange = { newValue ->
                 if (newValue.length <= 4 && newValue.all { it.isDigit() }) onYearChanged(newValue)
             },
-            textStyle = GentiTheme.typography.subtitle2,
+            textStyle = GentiTheme.typography.subtitle2.copy(textAlign = TextAlign.Center),
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            cursorBrush = SolidColor(Transparent),
             decorationBox = { innerTextField ->
                 Box(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 20.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     if (selectedYear.isEmpty()) {
@@ -264,6 +277,7 @@ fun SignupBirthYearTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(4.dp)
+                .offset(y = -20.dp)
                 .background(
                     brush = if (isYearSelected) {
                         Brush.linearGradient(listOf(GentiGradationStart, GentiGradationEnd))
