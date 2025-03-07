@@ -77,6 +77,13 @@ internal fun SignupRoute(
         }
     }
 
+    LaunchedEffect(signupState.isFocusClearNeeded) {
+        if (signupState.isFocusClearNeeded) {
+            focusManager.clearFocus()
+            viewModel.onIntent(SignupIntent.TextFieldFocused(false))
+        }
+    }
+
     SignupScreen(
         modifier = Modifier,
         paddingValues = paddingValues,
@@ -88,7 +95,7 @@ internal fun SignupRoute(
         onGenderClicked = { viewModel.onIntent(SignupIntent.GenderSelect(it)) },
         onSignupBtnClicked = { viewModel.onIntent(SignupIntent.SignupBtnClick) },
         onYearChanged = { viewModel.onIntent(SignupIntent.YearChange(it)) },
-        onTextFieldOutsideClicked = { focusManager.clearFocus() }
+        onTextFieldOutsideClicked = { viewModel.onIntent(SignupIntent.TextFieldFocused(true)) }
     )
 }
 

@@ -15,7 +15,6 @@ import kr.genti.domain.entity.response.SignUpUserModel
 import kr.genti.domain.enums.Gender
 import kr.genti.domain.repository.InfoRepository
 import kr.genti.domain.repository.UserRepository
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,6 +35,7 @@ constructor(
             is SignupIntent.Init -> handleInit()
             is SignupIntent.GenderSelect -> handleGenderSelect(intent.gender)
             is SignupIntent.YearChange -> handleYearChange(intent.year)
+            is SignupIntent.TextFieldFocused -> handleTextFieldOutsideClick(intent.isFocused)
             is SignupIntent.SignupBtnClick -> handleSignupBtnClick()
         }
     }
@@ -59,8 +59,14 @@ constructor(
             it.copy(
                 selectedYear = selectedYear,
                 isYearSelected = selectedYear.length == 4,
-                isAllSelected = it.isGenderSelected && selectedYear.length == 4
+                isAllSelected = it.isGenderSelected && selectedYear.length == 4,
             )
+        }
+    }
+
+    private fun handleTextFieldOutsideClick(isFocused: Boolean) {
+        _signupState.update {
+            it.copy(isFocusClearNeeded = isFocused)
         }
     }
 

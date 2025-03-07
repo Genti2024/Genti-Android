@@ -8,5 +8,6 @@ data class SignupState(
     val isGenderSelected: Boolean = false,
     val isYearSelected: Boolean = false,
     val isAllSelected: Boolean = false,
+    val isFocusClearNeeded: Boolean = false,
     val isLoading: Boolean = false,
 )
