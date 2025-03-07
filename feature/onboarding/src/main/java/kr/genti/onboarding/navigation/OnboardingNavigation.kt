@@ -6,6 +6,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import kr.genti.navigation.OnboardingRoute
+import kr.genti.navigation.Route
+import kr.genti.onboarding.login.LoginRoute
 import kr.genti.onboarding.splash.SplashRoute
 
 fun NavController.navigateToSplash(
@@ -14,14 +16,28 @@ fun NavController.navigateToSplash(
     navigate(OnboardingRoute.Splash, navOptions)
 }
 
+fun NavController.navigateToLogin(
+    navOptions: NavOptions? = null
+) {
+    navigate(OnboardingRoute.Login, navOptions)
+}
+
 fun NavGraphBuilder.onboardingNavGraph(
     paddingValues: PaddingValues,
-    navigateToLogin: () -> Unit = {},
-    navigateToFeed: () -> Unit = {},
+    navigateToLogin: (Route) -> Unit = {},
+    navigateToSignup: (Route) -> Unit = {},
+    navigateToFeed: (Route) -> Unit = {},
 ) {
     composable<OnboardingRoute.Splash> {
         SplashRoute(
             navigateToLogin = navigateToLogin,
+            navigateToFeed = navigateToFeed,
+        )
+    }
+    composable<OnboardingRoute.Login> {
+        LoginRoute(
+            paddingValues = paddingValues,
+            navigateToSignup = navigateToSignup,
             navigateToFeed = navigateToFeed,
         )
     }

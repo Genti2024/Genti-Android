@@ -25,6 +25,7 @@ internal fun MainNavHost(
         onboardingNavGraph(
             paddingValues = paddingValues,
             navigateToLogin = navigator::navigateToLogin,
+            navigateToSignup = navigator::navigateToSignup,
             navigateToFeed = navigator::navigateToFeed,
         )
     }

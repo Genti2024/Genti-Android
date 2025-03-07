@@ -6,7 +6,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -15,23 +14,24 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.jakewharton.processphoenix.ProcessPhoenix
 import kr.genti.common.manager.AppUpdateManager
 import kr.genti.common.xml.extension.toast
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.theme.GentiTheme
+import kr.genti.navigation.OnboardingRoute
+import kr.genti.navigation.Route
 
 @Composable
 internal fun SplashRoute(
     viewModel: SplashViewModel = hiltViewModel(),
-    navigateToLogin: () -> Unit = {},
-    navigateToFeed: () -> Unit = {},
+    navigateToLogin: (Route) -> Unit = {},
+    navigateToFeed: (Route) -> Unit = {},
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
@@ -39,23 +39,24 @@ internal fun SplashRoute(
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult()
     ) { result ->
-        if (result.resultCode != Activity.RESULT_OK) (context as Activity).finishAffinity()
+        if (result.resultCode == Activity.RESULT_OK) {
+            ProcessPhoenix.triggerRebirth(context)
+        } else {
+            (context as? Activity)?.finishAffinity()
+                ?: context.toast(context.getString(R.string.error_msg))
+        }
     }
 
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) viewModel.onIntent(SplashIntent.Init)
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    LaunchedEffect(Unit) {
+        viewModel.onIntent(SplashIntent.Init)
     }
 
     LaunchedEffect(viewModel.splashSideEffect, lifecycleOwner) {
         viewModel.splashSideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is SplashSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
-                is SplashSideEffect.NavigateToLogin -> navigateToLogin()
-                is SplashSideEffect.NavigateToFeed -> navigateToFeed()
+                is SplashSideEffect.NavigateToLogin -> navigateToLogin(OnboardingRoute.Splash)
+                is SplashSideEffect.NavigateToFeed -> navigateToFeed(OnboardingRoute.Splash)
                 is SplashSideEffect.StartAppUpdate -> AppUpdateManager.startAppUpdate(launcher)
             }
         }

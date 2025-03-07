@@ -11,4 +11,9 @@ dependencies {
     implementation(projects.core.common)
     implementation(projects.core.navigation)
     implementation(projects.core.designsystem)
+
+    implementation(libs.kakao)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.bundles.firebase)
+    implementation(libs.phoenix)
 }
