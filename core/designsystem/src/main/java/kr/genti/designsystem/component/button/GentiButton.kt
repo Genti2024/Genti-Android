@@ -3,8 +3,11 @@ package kr.genti.designsystem.component.button
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -74,11 +77,22 @@ fun GentiButton(
 
 @Preview
 @Composable
-fun GentiButtonPreview() {
+fun GentiButtonsPreview() {
     GentiTheme {
-        GentiButton(
-            textRes = R.string.btn_download,
-            iconRes = R.drawable.ic_download_no_border,
-        )
+        Column {
+            GentiButton(
+                textRes = R.string.btn_download,
+                iconRes = R.drawable.ic_download_no_border,
+                isActive = false,
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            GentiButton(
+                textRes = R.string.btn_download,
+                iconRes = R.drawable.ic_download_no_border,
+                isActive = true,
+            )
+        }
     }
 }
