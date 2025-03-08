@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import kr.genti.feed.navigation.feedNavGraph
 import kr.genti.main.navigation.MainNavigator
 import kr.genti.onboarding.navigation.onboardingNavGraph
-import kr.genti.profile.profileNavGraph
+import kr.genti.profile.navigation.profileNavGraph
 
 @Composable
 internal fun MainNavHost(
@@ -21,7 +21,11 @@ internal fun MainNavHost(
         navController = navigator.navController,
     ) {
         feedNavGraph(paddingValues)
-        profileNavGraph(paddingValues)
+        profileNavGraph(
+            paddingValues = paddingValues,
+            navigateToGenerate = navigator::navigateToGenerate,
+            navigateToSetting = navigator::navigateToSetting
+        )
         onboardingNavGraph(
             paddingValues = paddingValues,
             navigateToLogin = navigator::navigateToLogin,
