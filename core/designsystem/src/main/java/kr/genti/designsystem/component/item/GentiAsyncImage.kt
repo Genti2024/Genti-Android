@@ -3,6 +3,7 @@ package kr.genti.designsystem.component.item
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -29,16 +30,23 @@ import kr.genti.designsystem.theme.GentiTheme
 fun GentiAsyncImage(
     url: String,
     isGaro: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isSquare: Boolean = false
 ) {
     val composition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(R.raw.lottie_loading_image)
     )
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .aspectRatio(if (isGaro) 3f / 2f else 2f / 3f),
+            .aspectRatio(
+                when {
+                    isSquare -> 1F
+                    isGaro -> 3F / 2F
+                    else -> 2F / 3F
+                }
+            ),
         contentAlignment = Alignment.Center
     ) {
         if (LocalInspectionMode.current) {
@@ -47,14 +55,15 @@ fun GentiAsyncImage(
                     if (isGaro) R.drawable.mock_img_2_3 else R.drawable.mock_img_3_2
                 ),
                 contentDescription = null,
-                modifier = modifier.matchParentSize()
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
             )
         } else {
             SubcomposeAsyncImage(
                 model = url,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = modifier.matchParentSize()
+                modifier = Modifier.fillMaxSize()
             ) {
                 val state by painter.state.collectAsState()
 
@@ -65,7 +74,9 @@ fun GentiAsyncImage(
                         modifier = Modifier.size(80.dp)
                     )
                 } else {
-                    SubcomposeAsyncImageContent()
+                    SubcomposeAsyncImageContent(
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
             }
         }
