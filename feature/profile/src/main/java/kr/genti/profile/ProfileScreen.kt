@@ -44,6 +44,8 @@ import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.designsystem.theme.White40
 import kr.genti.domain.entity.response.ImageModel
 import kr.genti.domain.enums.PictureRatio
+import kr.genti.profile.component.ProfileGenerateItem
+import kr.genti.profile.component.ProfileGenerationBanner
 import kr.genti.profile.component.ProfileItem
 
 @Composable
@@ -76,6 +78,7 @@ internal fun ProfileRoute(
         itemList = feedState.itemList,
         isLoading = feedState.isLoading,
         isGenerating = feedState.isGenerating,
+        onGenerateBtnClick = { viewModel.onIntent(ProfileIntent.GenerateBtnClick) },
         onSettingBtnClick = { viewModel.onIntent(ProfileIntent.SettingBtnClick) }
     )
 }
@@ -87,6 +90,7 @@ private fun ProfileScreen(
     itemList: ImmutableList<ImageModel> = persistentListOf(),
     isLoading: Boolean = false,
     isGenerating: Boolean = false,
+    onGenerateBtnClick: () -> Unit = {},
     onSettingBtnClick: () -> Unit = {}
 ) {
     Box(
@@ -106,18 +110,14 @@ private fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (isGenerating) {
-                Image(
-                    painter = painterResource(R.drawable.img_profile_making),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
+            ProfileGenerationBanner(
+                isGenerating = isGenerating
+            )
 
             LazyVerticalGrid(
                 columns = GridCells.Fixed(3),
-                verticalArrangement = Arrangement.spacedBy(2.dp),
-                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 16.dp)
@@ -129,7 +129,10 @@ private fun ProfileScreen(
                     ProfileItem(item = item)
                 }
                 item {
-
+                    ProfileGenerateItem(
+                        isGenerating = isGenerating,
+                        onBtnClick = onGenerateBtnClick
+                    )
                 }
             }
         }

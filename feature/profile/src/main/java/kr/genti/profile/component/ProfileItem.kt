@@ -34,7 +34,7 @@ fun ProfileItemPreview() {
             item = ImageModel(
                 id = 0,
                 url = "",
-                pictureRatio = PictureRatio.RATIO_GARO
+                pictureRatio = PictureRatio.RATIO_SERO
             )
         )
     }

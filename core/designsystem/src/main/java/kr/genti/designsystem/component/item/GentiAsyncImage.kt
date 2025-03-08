@@ -74,9 +74,7 @@ fun GentiAsyncImage(
                         modifier = Modifier.size(80.dp)
                     )
                 } else {
-                    SubcomposeAsyncImageContent(
-                        modifier = Modifier.fillMaxSize()
-                    )
+                    SubcomposeAsyncImageContent()
                 }
             }
         }
