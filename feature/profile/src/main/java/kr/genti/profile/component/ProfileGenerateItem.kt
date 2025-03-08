@@ -11,7 +11,7 @@ import kr.genti.common.extension.noRippleClickable
 import kr.genti.core.designsystem.R
 
 @Composable
-fun ProfileGenerateItem(
+internal fun ProfileGenerateItem(
     modifier: Modifier = Modifier,
     isGenerating: Boolean = false,
     onBtnClick: () -> Unit = {},

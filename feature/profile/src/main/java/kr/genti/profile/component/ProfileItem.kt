@@ -11,7 +11,7 @@ import kr.genti.domain.entity.response.ImageModel
 import kr.genti.domain.enums.PictureRatio
 
 @Composable
-fun ProfileItem(
+internal fun ProfileItem(
     modifier: Modifier = Modifier,
     item: ImageModel
 ) {

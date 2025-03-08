@@ -8,7 +8,7 @@ import androidx.compose.ui.res.painterResource
 import kr.genti.core.designsystem.R
 
 @Composable
-fun ProfileGenerationBanner(
+internal fun ProfileGenerationBanner(
     modifier: Modifier = Modifier,
     isGenerating: Boolean = false
 ) {
