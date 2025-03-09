@@ -23,18 +23,9 @@ constructor(
     override suspend fun getGeneratedPictureList(
         page: Int,
         size: Int,
-        sortBy: String?,
-        direction: String?,
     ): Result<PicturePagedListModel> =
         runCatching {
-            generateDataSource
-                .getGeneratedPictureList(
-                    page,
-                    size,
-                    sortBy,
-                    direction,
-                ).response
-                .toModel()
+            generateDataSource.getGeneratedPictureList(page, size).response.toModel()
         }
 
     override suspend fun postGenerateReport(request: ReportRequestModel): Result<Boolean> =

@@ -12,8 +12,6 @@ interface GenerateRepository {
     suspend fun getGeneratedPictureList(
         page: Int,
         size: Int,
-        sortBy: String?,
-        direction: String?,
     ): Result<PicturePagedListModel>
 
     suspend fun postGenerateReport(request: ReportRequestModel): Result<Boolean>

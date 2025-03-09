@@ -13,8 +13,6 @@ interface GenerateDataSource {
     suspend fun getGeneratedPictureList(
         page: Int,
         size: Int,
-        sortBy: String?,
-        direction: String?,
     ): BaseResponse<PicturePagedListDto>
 
     suspend fun postGenerateReport(request: ReportRequestDto): BaseResponse<Boolean>
