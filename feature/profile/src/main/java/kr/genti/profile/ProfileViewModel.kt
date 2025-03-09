@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.genti.common.manager.AmplitudeManager
+import kr.genti.common.manager.ImageManager
 import kr.genti.domain.entity.response.ImageModel
 import kr.genti.domain.enums.GenerateStatus
 import kr.genti.domain.enums.PictureRatio
@@ -54,6 +55,7 @@ constructor(
     private fun handleImageItemClick(item: ImageModel) {
         _profileState.update {
             it.copy(
+                detailImageId = item.id,
                 detailImageUrl = item.url,
                 isDetailImageGaro = item.pictureRatio == PictureRatio.RATIO_GARO,
                 isDetailDialogShown = true
@@ -81,7 +83,20 @@ constructor(
     }
 
     private fun handleSaveBtnClick() {
-
+        viewModelScope.launch {
+            if (!ImageManager.checkExternalStoragePermission()) {
+                _profileSideEffect.emit(ProfileSideEffect.RequestPermission)
+                return@launch
+            }
+            ImageManager.saveImageToStorage(
+                id = profileState.value.detailImageId,
+                imageUrl = profileState.value.detailImageUrl,
+            ).onSuccess {
+                _profileSideEffect.emit(ProfileSideEffect.ShowDownloadToast)
+            }.onFailure {
+                _profileSideEffect.emit(ProfileSideEffect.ShowErrorToast)
+            }
+        }
     }
 
     private fun handleShareBtnClick() {

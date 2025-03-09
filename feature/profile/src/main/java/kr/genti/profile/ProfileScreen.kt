@@ -1,5 +1,7 @@
 package kr.genti.profile
 
+import android.Manifest
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,8 +54,15 @@ internal fun ProfileRoute(
         viewModel.profileSideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is ProfileSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
+                is ProfileSideEffect.ShowDownloadToast -> context.toast(context.getString(R.string.profile_image_download_success))
                 is ProfileSideEffect.NavigateToGenerate -> navigateToGenerate()
                 is ProfileSideEffect.NavigateToSetting -> navigateToSetting()
+
+                is ProfileSideEffect.RequestPermission -> {
+                    (context as? Activity)?.requestPermissions(
+                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 200
+                    ) ?: context.toast(context.getString(R.string.error_msg))
+                }
             }
         }
     }

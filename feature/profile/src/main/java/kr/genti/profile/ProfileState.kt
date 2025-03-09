@@ -9,6 +9,7 @@ data class ProfileState(
     val totalPage: Int = 0,
     val currentPage: Int = -1,
     val isPagingFinish: Boolean = false,
+    val detailImageId: Long = -1L,
     val detailImageUrl: String = "",
     val isDetailImageGaro: Boolean = false,
     val isDetailDialogShown: Boolean = false,
