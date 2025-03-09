@@ -21,10 +21,8 @@ constructor(
     override suspend fun getGeneratedPictureList(
         page: Int,
         size: Int,
-        sortBy: String?,
-        direction: String?,
     ): BaseResponse<PicturePagedListDto> =
-        generateService.getGeneratedPictureList(page, size, sortBy, direction)
+        generateService.getGeneratedPictureList(page, size, null, null)
 
     override suspend fun postGenerateReport(request: ReportRequestDto): BaseResponse<Boolean> =
         generateService.postGenerateReport(request)
