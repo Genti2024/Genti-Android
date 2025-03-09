@@ -27,7 +27,7 @@ internal fun ProfileTopBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 12.dp),
+            .padding(top = 20.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -42,8 +42,8 @@ internal fun ProfileTopBar(
             tint = White40,
             modifier = Modifier
                 .size(48.dp)
-                .padding(12.dp)
-                .padding(end = 4.dp)
+                .padding(8.dp)
+                .padding(end = 10.dp)
                 .noRippleClickable { onSettingBtnClick() },
         )
     }

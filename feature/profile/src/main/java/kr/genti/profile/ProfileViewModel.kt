@@ -1,11 +1,18 @@
 package kr.genti.profile
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kr.genti.common.manager.AmplitudeManager
+import kr.genti.domain.entity.response.ImageModel
+import kr.genti.domain.enums.GenerateStatus
 import kr.genti.domain.repository.GenerateRepository
 import javax.inject.Inject
 
@@ -24,25 +31,81 @@ constructor(
     fun onIntent(intent: ProfileIntent) {
         when (intent) {
             is ProfileIntent.Init -> handleInit()
-            is ProfileIntent.ImageItemClick -> handleImageItemClick()
+            is ProfileIntent.ImageItemClick -> handleImageItemClick(intent.item)
             is ProfileIntent.GenerateBtnClick -> handleGenerateBtnClick()
             is ProfileIntent.SettingBtnClick -> handleSettingBtnClick()
         }
     }
 
     private fun handleInit() {
+        viewModelScope.launch {
+            changeLoadingState(true)
+            getGenerateStatusFromServer()
+            getPictureListFromServer()
+            changeLoadingState(false)
+        }
 
     }
 
-    private fun handleImageItemClick() {
-
+    private fun handleImageItemClick(item: ImageModel) {
+        _profileState.update {
+            it.copy(
+                detailImageModel = item,
+                isDetailDialogShown = true
+            )
+        }
     }
 
     private fun handleGenerateBtnClick() {
-
+        AmplitudeManager.trackEvent("click_createpictab")
+        viewModelScope.launch {
+            _profileSideEffect.emit(ProfileSideEffect.NavigateToGenerate)
+        }
     }
 
     private fun handleSettingBtnClick() {
-        
+        viewModelScope.launch {
+            _profileSideEffect.emit(ProfileSideEffect.NavigateToSetting)
+        }
+    }
+
+    private fun changeLoadingState(isLoading: Boolean) {
+        _profileState.update {
+            it.copy(isLoading = isLoading)
+        }
+    }
+
+    private suspend fun getGenerateStatusFromServer() {
+        generateRepository.getGenerateStatus()
+            .onSuccess { result ->
+                _profileState.update {
+                    it.copy(isGenerating = result.status == GenerateStatus.IN_PROGRESS)
+                }
+            }
+            .onFailure {
+                _profileSideEffect.emit(ProfileSideEffect.ShowErrorToast)
+            }
+    }
+
+    private suspend fun getPictureListFromServer() {
+        if (profileState.value.isPagingFinish) return
+        generateRepository.getGeneratedPictureList(
+            profileState.value.currentPage + 1,
+            10,
+            null,
+            null,
+        )
+            .onSuccess { result ->
+                _profileState.update {
+                    it.copy(
+                        totalPage = result.totalPages,
+                        currentPage = it.currentPage + 1,
+                        isPagingFinish = result.totalPages == it.currentPage + 1,
+                        itemList = (it.itemList + result.content).toImmutableList(),
+                    )
+                }
+            }.onFailure {
+                _profileSideEffect.emit(ProfileSideEffect.ShowErrorToast)
+            }
     }
 }
