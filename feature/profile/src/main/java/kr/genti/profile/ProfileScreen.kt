@@ -22,6 +22,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kr.genti.common.manager.ImageManager
 import kr.genti.common.xml.extension.toast
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.dialog.GentiImageDetailDialog
@@ -62,6 +63,10 @@ internal fun ProfileRoute(
                     (context as? Activity)?.requestPermissions(
                         arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 200
                     ) ?: context.toast(context.getString(R.string.error_msg))
+                }
+
+                is ProfileSideEffect.NavigateToShare -> {
+                    context.startActivity(ImageManager.getImageChooserIntent(sideEffect.imageUri))
                 }
             }
         }

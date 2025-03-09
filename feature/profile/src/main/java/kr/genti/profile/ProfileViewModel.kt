@@ -83,6 +83,7 @@ constructor(
     }
 
     private fun handleSaveBtnClick() {
+        updateAmplitude("picdownload", "user_picturedownload")
         viewModelScope.launch {
             if (!ImageManager.checkExternalStoragePermission()) {
                 _profileSideEffect.emit(ProfileSideEffect.RequestPermission)
@@ -100,7 +101,17 @@ constructor(
     }
 
     private fun handleShareBtnClick() {
-
+        updateAmplitude("picshare", "user_share")
+        viewModelScope.launch {
+            ImageManager.getCacheImageUri(
+                id = profileState.value.detailImageId,
+                imageUrl = profileState.value.detailImageUrl,
+            ).onSuccess { uri ->
+                _profileSideEffect.emit(ProfileSideEffect.NavigateToShare(uri))
+            }.onFailure {
+                _profileSideEffect.emit(ProfileSideEffect.ShowErrorToast)
+            }
+        }
     }
 
     private fun handleDialogDismiss() {
@@ -142,6 +153,17 @@ constructor(
             }
         }.onFailure {
             _profileSideEffect.emit(ProfileSideEffect.ShowErrorToast)
+        }
+    }
+
+    private fun updateAmplitude(event: String, property: String) {
+        AmplitudeManager.apply {
+            trackEvent(
+                EVENT_CLICK_BTN,
+                mapOf(PROPERTY_PAGE to "mypage"),
+                mapOf(PROPERTY_BTN to event),
+            )
+            plusIntProperties(property)
         }
     }
 }
