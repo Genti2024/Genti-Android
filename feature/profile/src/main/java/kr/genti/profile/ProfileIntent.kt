@@ -8,4 +8,7 @@ sealed class ProfileIntent {
     data object GenerateBtnClick: ProfileIntent()
     data object SettingBtnClick: ProfileIntent()
     data object LastColumnLoaded: ProfileIntent()
+    data object SaveBtnClick: ProfileIntent()
+    data object ShareBtnClick: ProfileIntent()
+    data object DialogDismiss: ProfileIntent()
 }

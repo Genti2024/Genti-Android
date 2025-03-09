@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import kr.genti.common.manager.AmplitudeManager
 import kr.genti.domain.entity.response.ImageModel
 import kr.genti.domain.enums.GenerateStatus
+import kr.genti.domain.enums.PictureRatio
 import kr.genti.domain.repository.GenerateRepository
 import javax.inject.Inject
 
@@ -35,6 +36,9 @@ constructor(
             is ProfileIntent.GenerateBtnClick -> handleGenerateBtnClick()
             is ProfileIntent.SettingBtnClick -> handleSettingBtnClick()
             is ProfileIntent.LastColumnLoaded -> handleLastColumnLoaded()
+            is ProfileIntent.SaveBtnClick -> handleSaveBtnClick()
+            is ProfileIntent.ShareBtnClick -> handleShareBtnClick()
+            is ProfileIntent.DialogDismiss -> handleDialogDismiss()
         }
     }
 
@@ -50,7 +54,8 @@ constructor(
     private fun handleImageItemClick(item: ImageModel) {
         _profileState.update {
             it.copy(
-                detailImageModel = item,
+                detailImageUrl = item.url,
+                isDetailImageGaro = item.pictureRatio == PictureRatio.RATIO_GARO,
                 isDetailDialogShown = true
             )
         }
@@ -72,6 +77,20 @@ constructor(
     private fun handleLastColumnLoaded() {
         viewModelScope.launch {
             getPictureListFromServer()
+        }
+    }
+
+    private fun handleSaveBtnClick() {
+
+    }
+
+    private fun handleShareBtnClick() {
+
+    }
+
+    private fun handleDialogDismiss() {
+        _profileState.update {
+            it.copy(isDetailDialogShown = false)
         }
     }
 

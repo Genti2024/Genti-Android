@@ -1,7 +1,6 @@
 package kr.genti.profile
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,9 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,16 +22,15 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kr.genti.common.xml.extension.toast
 import kr.genti.core.designsystem.R
+import kr.genti.designsystem.component.dialog.GentiImageDetailDialog
 import kr.genti.designsystem.component.layout.GentiLoadingScreen
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.domain.entity.response.ImageModel
 import kr.genti.domain.enums.PictureRatio
 import kr.genti.profile.component.ProfileEmptyScreen
-import kr.genti.profile.component.ProfileGenerateItem
 import kr.genti.profile.component.ProfileGenerationBanner
 import kr.genti.profile.component.ProfileImagesGridScreen
-import kr.genti.profile.component.ProfileItem
 import kr.genti.profile.component.ProfileTopBar
 
 @Composable
@@ -45,7 +40,7 @@ internal fun ProfileRoute(
     navigateToGenerate: () -> Unit = {},
     navigateToSetting: () -> Unit = {}
 ) {
-    val feedState by viewModel.profileState.collectAsStateWithLifecycle()
+    val profileState by viewModel.profileState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
@@ -65,13 +60,25 @@ internal fun ProfileRoute(
 
     ProfileScreen(
         paddingValues = paddingValues,
-        itemList = feedState.itemList,
-        isLoading = feedState.isLoading,
-        isGenerating = feedState.isGenerating,
+        itemList = profileState.itemList,
+        isLoading = profileState.isLoading,
+        isGenerating = profileState.isGenerating,
+        onImageItemClick = { viewModel.onIntent(ProfileIntent.ImageItemClick(it)) },
         onGenerateBtnClick = { viewModel.onIntent(ProfileIntent.GenerateBtnClick) },
         onSettingBtnClick = { viewModel.onIntent(ProfileIntent.SettingBtnClick) },
         onLastColumnLoaded = { viewModel.onIntent(ProfileIntent.LastColumnLoaded) }
     )
+
+    if (profileState.isDetailDialogShown) {
+        GentiImageDetailDialog(
+            imageUrl = profileState.detailImageUrl,
+            isGaro = profileState.isDetailImageGaro,
+            isOneButton = false,
+            onSaveBtnClick = { viewModel.onIntent(ProfileIntent.SaveBtnClick) },
+            onShareBtnClick = { viewModel.onIntent(ProfileIntent.ShareBtnClick) },
+            onDismissRequest = { viewModel.onIntent(ProfileIntent.DialogDismiss) }
+        )
+    }
 }
 
 @Composable
@@ -81,6 +88,7 @@ private fun ProfileScreen(
     itemList: ImmutableList<ImageModel> = persistentListOf(),
     isLoading: Boolean = false,
     isGenerating: Boolean = false,
+    onImageItemClick: (ImageModel) -> Unit = {},
     onGenerateBtnClick: () -> Unit = {},
     onSettingBtnClick: () -> Unit = {},
     onLastColumnLoaded: () -> Unit = {}
@@ -112,6 +120,7 @@ private fun ProfileScreen(
                 ProfileImagesGridScreen(
                     itemList = itemList,
                     isGenerating = isGenerating,
+                    onImageItemClick = onImageItemClick,
                     onGenerateBtnClick = onGenerateBtnClick,
                     onLastColumnLoaded = onLastColumnLoaded
                 )

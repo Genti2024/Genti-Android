@@ -1,6 +1,7 @@
 package kr.genti.profile.component
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -16,6 +17,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kr.genti.common.extension.noRippleClickable
 import kr.genti.domain.entity.response.ImageModel
 
 @Composable
@@ -23,6 +25,7 @@ fun ProfileImagesGridScreen(
     modifier: Modifier = Modifier,
     itemList: ImmutableList<ImageModel> = persistentListOf(),
     isGenerating: Boolean = false,
+    onImageItemClick: (ImageModel) -> Unit = {},
     onGenerateBtnClick: () -> Unit = {},
     onLastColumnLoaded: () -> Unit = {}
 ) {
@@ -44,6 +47,7 @@ fun ProfileImagesGridScreen(
         state = gridState,
         verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
+        contentPadding = PaddingValues(bottom = 16.dp),
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp)
@@ -52,7 +56,9 @@ fun ProfileImagesGridScreen(
             items = itemList,
             key = { _, model -> model.id }
         ) { _, item ->
-            ProfileItem(item = item)
+            ProfileItem(
+                item = item,
+                modifier = Modifier.noRippleClickable { onImageItemClick(item) })
         }
         item {
             ProfileGenerateItem(
