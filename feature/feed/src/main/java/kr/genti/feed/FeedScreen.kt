@@ -37,6 +37,7 @@ import kr.genti.domain.entity.response.ImageModel
 import kr.genti.domain.enums.PictureRatio
 import kr.genti.feed.component.FeedBottomTooltip
 import kr.genti.feed.component.FeedHeader
+import kr.genti.feed.component.FeedImagesListScreen
 import kr.genti.feed.component.FeedItem
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -102,42 +103,18 @@ private fun FeedScreen(
     onTooltipClick: () -> Unit = {},
     onListScroll: () -> Unit = {}
 ) {
-    val listState = rememberLazyListState()
-    val currentTooltipClosed by rememberUpdatedState(newValue = isTooltipClosed)
-
-    LaunchedEffect(listState) {
-        snapshotFlow { listState.firstVisibleItemScrollOffset }.collect { offset ->
-            if (offset > 1000 && !currentTooltipClosed) onListScroll()
-        }
-    }
-
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(Black)
             .padding(bottom = innerPadding.calculateBottomPadding())
     ) {
-        LazyColumn(
-            state = listState,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            item {
-                FeedHeader(
-                    onInfoBtnClick = onInfoBtnClick,
-                    modifier = Modifier.padding(top = innerPadding.calculateTopPadding())
-                )
-            }
-            itemsIndexed(
-                items = itemList,
-                key = { _, model -> model.picture.id }
-            ) { _, item ->
-                FeedItem(item)
-            }
-        }
-
-        GentiTopBottomShadow(
-            listState = listState,
-            modifier = Modifier.fillMaxSize()
+        FeedImagesListScreen(
+            innerPadding = innerPadding,
+            itemList = itemList,
+            isTooltipClosed = isTooltipClosed,
+            onInfoBtnClick = onInfoBtnClick,
+            onListScroll = onListScroll
         )
 
         FeedBottomTooltip(

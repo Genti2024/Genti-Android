@@ -34,6 +34,7 @@ constructor(
             is ProfileIntent.ImageItemClick -> handleImageItemClick(intent.item)
             is ProfileIntent.GenerateBtnClick -> handleGenerateBtnClick()
             is ProfileIntent.SettingBtnClick -> handleSettingBtnClick()
+            is ProfileIntent.LastColumnLoaded -> handleLastColumnLoaded()
         }
     }
 
@@ -44,7 +45,6 @@ constructor(
             getPictureListFromServer()
             changeLoadingState(false)
         }
-
     }
 
     private fun handleImageItemClick(item: ImageModel) {
@@ -69,6 +69,12 @@ constructor(
         }
     }
 
+    private fun handleLastColumnLoaded() {
+        viewModelScope.launch {
+            getPictureListFromServer()
+        }
+    }
+
     private fun changeLoadingState(isLoading: Boolean) {
         _profileState.update {
             it.copy(isLoading = isLoading)
@@ -81,8 +87,7 @@ constructor(
                 _profileState.update {
                     it.copy(isGenerating = result.status == GenerateStatus.IN_PROGRESS)
                 }
-            }
-            .onFailure {
+            }.onFailure {
                 _profileSideEffect.emit(ProfileSideEffect.ShowErrorToast)
             }
     }
@@ -90,22 +95,19 @@ constructor(
     private suspend fun getPictureListFromServer() {
         if (profileState.value.isPagingFinish) return
         generateRepository.getGeneratedPictureList(
-            profileState.value.currentPage + 1,
-            10,
-            null,
-            null,
-        )
-            .onSuccess { result ->
-                _profileState.update {
-                    it.copy(
-                        totalPage = result.totalPages,
-                        currentPage = it.currentPage + 1,
-                        isPagingFinish = result.totalPages == it.currentPage + 1,
-                        itemList = (it.itemList + result.content).toImmutableList(),
-                    )
-                }
-            }.onFailure {
-                _profileSideEffect.emit(ProfileSideEffect.ShowErrorToast)
+            page = profileState.value.currentPage + 1,
+            size = 10,
+        ).onSuccess { result ->
+            _profileState.update {
+                it.copy(
+                    totalPage = result.totalPages,
+                    currentPage = it.currentPage + 1,
+                    isPagingFinish = result.totalPages == it.currentPage + 1,
+                    itemList = (it.itemList + result.content).toImmutableList(),
+                )
             }
+        }.onFailure {
+            _profileSideEffect.emit(ProfileSideEffect.ShowErrorToast)
+        }
     }
 }

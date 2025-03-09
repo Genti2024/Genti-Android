@@ -34,6 +34,7 @@ import kr.genti.domain.enums.PictureRatio
 import kr.genti.profile.component.ProfileEmptyScreen
 import kr.genti.profile.component.ProfileGenerateItem
 import kr.genti.profile.component.ProfileGenerationBanner
+import kr.genti.profile.component.ProfileImagesGridScreen
 import kr.genti.profile.component.ProfileItem
 import kr.genti.profile.component.ProfileTopBar
 
@@ -68,7 +69,8 @@ internal fun ProfileRoute(
         isLoading = feedState.isLoading,
         isGenerating = feedState.isGenerating,
         onGenerateBtnClick = { viewModel.onIntent(ProfileIntent.GenerateBtnClick) },
-        onSettingBtnClick = { viewModel.onIntent(ProfileIntent.SettingBtnClick) }
+        onSettingBtnClick = { viewModel.onIntent(ProfileIntent.SettingBtnClick) },
+        onLastColumnLoaded = { viewModel.onIntent(ProfileIntent.LastColumnLoaded) }
     )
 }
 
@@ -80,7 +82,8 @@ private fun ProfileScreen(
     isLoading: Boolean = false,
     isGenerating: Boolean = false,
     onGenerateBtnClick: () -> Unit = {},
-    onSettingBtnClick: () -> Unit = {}
+    onSettingBtnClick: () -> Unit = {},
+    onLastColumnLoaded: () -> Unit = {}
 ) {
     Box(
         modifier = modifier
@@ -106,27 +109,12 @@ private fun ProfileScreen(
             if (itemList.isEmpty()) {
                 ProfileEmptyScreen()
             } else {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(3),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 16.dp)
-                ) {
-                    itemsIndexed(
-                        items = itemList,
-                        key = { _, model -> model.id }
-                    ) { _, item ->
-                        ProfileItem(item = item)
-                    }
-                    item {
-                        ProfileGenerateItem(
-                            isGenerating = isGenerating,
-                            onBtnClick = onGenerateBtnClick
-                        )
-                    }
-                }
+                ProfileImagesGridScreen(
+                    itemList = itemList,
+                    isGenerating = isGenerating,
+                    onGenerateBtnClick = onGenerateBtnClick,
+                    onLastColumnLoaded = onLastColumnLoaded
+                )
             }
         }
 

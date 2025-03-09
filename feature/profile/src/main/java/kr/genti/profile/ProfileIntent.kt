@@ -7,4 +7,5 @@ sealed class ProfileIntent {
     data class ImageItemClick(val item: ImageModel): ProfileIntent()
     data object GenerateBtnClick: ProfileIntent()
     data object SettingBtnClick: ProfileIntent()
+    data object LastColumnLoaded: ProfileIntent()
 }
