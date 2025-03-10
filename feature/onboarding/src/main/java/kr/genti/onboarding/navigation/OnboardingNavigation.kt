@@ -38,10 +38,10 @@ fun NavController.navigateToTutorial(
 
 fun NavGraphBuilder.onboardingNavGraph(
     paddingValues: PaddingValues,
-    navigateToLogin: (Route) -> Unit = {},
-    navigateToSignup: (Route) -> Unit = {},
-    navigateToFeed: (Route) -> Unit = {},
-    navigateToTutorial: (Route) -> Unit = {},
+    navigateToLogin: () -> Unit = {},
+    navigateToSignup: () -> Unit = {},
+    navigateToFeed: () -> Unit = {},
+    navigateToTutorial: () -> Unit = {},
 ) {
     composable<OnboardingRoute.Splash> {
         SplashRoute(

@@ -57,7 +57,7 @@ import kr.genti.navigation.Route
 internal fun SignupRoute(
     paddingValues: PaddingValues,
     viewModel: SignupViewModel = hiltViewModel(),
-    navigateToTutorial: (Route) -> Unit = {},
+    navigateToTutorial: () -> Unit = {},
 ) {
     val signupState by viewModel.signupState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -72,7 +72,7 @@ internal fun SignupRoute(
         viewModel.signupSideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is SignupSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
-                is SignupSideEffect.NavigateToTutorial -> navigateToTutorial(OnboardingRoute.Signup)
+                is SignupSideEffect.NavigateToTutorial -> navigateToTutorial()
             }
         }
     }
