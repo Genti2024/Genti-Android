@@ -1,16 +1,18 @@
-package kr.genti.presentation.config
+package kr.genti.main.config
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
+import android.system.Os.remove
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
+import com.google.firebase.messaging.Constants
 import com.google.firebase.messaging.FirebaseMessagingService
 import dagger.hilt.android.AndroidEntryPoint
-import kr.genti.presentation.R
-import kr.genti.presentation.main.MainActivity
+import kr.genti.core.designsystem.R
+import kr.genti.main.MainActivity
 import timber.log.Timber
 import java.util.Random
 
@@ -23,6 +25,7 @@ class GentiMessagingService : FirebaseMessagingService() {
     }
 
     override fun handleIntent(intent: Intent?) {
+        Timber.tag("okhttp").d("NEW ALARM")
         intent?.let {
             if (intent.getStringExtra(MSG_TITLE).isNullOrEmpty()) return
             val msgType = it.getStringExtra(MSG_TYPE).orEmpty()
@@ -52,7 +55,7 @@ class GentiMessagingService : FirebaseMessagingService() {
 
         val notificationBuilder =
             NotificationCompat.Builder(this, channelId).apply {
-                setSmallIcon(R.mipmap.ic_genti_launcher)
+                setSmallIcon(R.drawable.ic_genti_launcher)
                 setContentTitle(messageBody[MSG_TITLE])
                 setContentText(messageBody[MSG_BODY])
                 setAutoCancel(true)

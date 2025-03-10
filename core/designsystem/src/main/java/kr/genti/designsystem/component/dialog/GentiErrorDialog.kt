@@ -54,7 +54,6 @@ fun GentiErrorDialog(
             modifier = modifier
                 .fillMaxSize()
                 .background(Transparent50)
-                .noRippleClickable { onDismissRequest() }
                 .padding(16.dp),
             contentAlignment = Alignment.Center
         ) {

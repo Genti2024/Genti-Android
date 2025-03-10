@@ -13,6 +13,7 @@ import kr.genti.common.manager.AmplitudeManager
 import kr.genti.domain.enums.GenerateStatus
 import kr.genti.domain.repository.GenerateRepository
 import kr.genti.main.navigation.MainTab
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,6 +32,7 @@ constructor(
         when (intent) {
             is MainIntent.TabSelect -> handleTabClick(intent.tab)
             is MainIntent.GenerateBtnClick -> handleGenerateBtnClick()
+            is MainIntent.PushAlarmReceived -> handlePushAlarmReceived(intent.type)
             is MainIntent.DialogDismiss -> handleDialogDismiss()
             is MainIntent.RegenerateDialogBtnClick -> handleRegenerateDialogBtnClick()
             is MainIntent.FinishedDialogBtnClick -> handleFinishedDialogBtnClick()
@@ -51,6 +53,11 @@ constructor(
         }
     }
 
+    private fun handlePushAlarmReceived(type: String?) {
+        Timber.tag("okhttp").d("NEW ALARM RECEIVED (type : $type)")
+        if (type == TYPE_SUCCESS || type == TYPE_CANCELED) handleGenerateBtnClick()
+    }
+
     private fun handleDialogDismiss() {
         viewModelScope.launch {
             _mainState.update {
@@ -60,6 +67,9 @@ constructor(
                     isFinishedDialogVisible = false,
                     isSelectDialogVisible = false
                 )
+            }
+            if (mainState.value.currentGenerateStatus == GenerateStatus.CANCELED) {
+                postToResetGenerateStatus()
             }
         }
     }
@@ -126,7 +136,6 @@ constructor(
                 _mainState.update {
                     it.copy(isErrorDialogVisible = true)
                 }
-                postToResetGenerateStatus()
             }
 
             GenerateStatus.EMPTY -> return
@@ -182,5 +191,10 @@ constructor(
             }.onFailure {
                 _mainSideEffect.emit(MainSideEffect.ShowErrorToast)
             }
+    }
+
+    companion object {
+        const val TYPE_SUCCESS = "SUCCESS"
+        const val TYPE_CANCELED = "CANCELED"
     }
 }

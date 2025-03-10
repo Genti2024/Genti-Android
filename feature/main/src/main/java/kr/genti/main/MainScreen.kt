@@ -40,6 +40,7 @@ import kr.genti.main.navigation.rememberMainNavigator
 @Composable
 internal fun MainRoute(
     navigator: MainNavigator = rememberMainNavigator(),
+    intentData: String? = null,
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val mainState by viewModel.mainState.collectAsStateWithLifecycle()
@@ -58,6 +59,10 @@ internal fun MainRoute(
                 is MainSideEffect.NavigateToFinished -> navigator.navigateToFinished()
             }
         }
+    }
+
+    LaunchedEffect(intentData) {
+        viewModel.onIntent(MainIntent.PushAlarmReceived(intentData))
     }
 
     MainScreen(
