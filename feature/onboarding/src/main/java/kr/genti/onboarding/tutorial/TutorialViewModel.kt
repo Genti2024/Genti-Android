@@ -10,10 +10,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.genti.onboarding.model.TutorialStage
+import javax.inject.Inject
 
 
 @HiltViewModel
-class TutorialViewModel : ViewModel() {
+class TutorialViewModel @Inject constructor() : ViewModel() {
     private val _tutorialState = MutableStateFlow(TutorialState())
     val tutorialState = _tutorialState.asStateFlow()
 
@@ -23,6 +24,7 @@ class TutorialViewModel : ViewModel() {
     fun onIntent(intent: TutorialIntent) {
         when (intent) {
             is TutorialIntent.NextBtnClick -> handleNextBtnClick()
+            is TutorialIntent.CloseBtnClick -> handleCloseBtnClick()
         }
     }
 
@@ -41,6 +43,12 @@ class TutorialViewModel : ViewModel() {
                     _tutorialSideEffect.emit(TutorialSideEffect.NavigateToFeed)
                 }
             }
+        }
+    }
+
+    private fun handleCloseBtnClick() {
+        viewModelScope.launch {
+            _tutorialSideEffect.emit(TutorialSideEffect.NavigateToFeed)
         }
     }
 }

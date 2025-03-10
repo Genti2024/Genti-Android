@@ -39,7 +39,7 @@
     <string name="signup_tv_phone_hint">010XXXXXXXX</string>
     <string name="signup_btn_submit">완료</string>
 
-    <string name="onboarding_btn_next">다음으로</string>
+    <string name="onboarding_btn_next">다음</string>
     <string name="onboarding_btn_finish">젠티하러 가기</string>
     <string name="onboarding_tv_title">젠티, 어떻게 사용하나요?</string>
     <string name="onboarding_tv_first_subtitle">원하는 사진을 자유롭게 설명해요.</string>
