@@ -290,7 +290,7 @@ fun SignupBirthYearTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(4.dp)
-                .offset(y = -20.dp)
+                .offset(y = (-20).dp)
                 .background(
                     brush = if (isYearSelected) {
                         Brush.linearGradient(listOf(GentiGradationStart, GentiGradationEnd))
