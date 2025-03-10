@@ -19,6 +19,8 @@
     <string name="btn_share">공유하기</string>
     <string name="btn_download">저장하기</string>
     <string name="btn_return">취소</string>
+    <string name="btn_close">닫기</string>
+    <string name="btn_dismiss">다음에</string>
 
     <string name="menu_feed">피드</string>
     <string name="menu_create">생성</string>
@@ -120,7 +122,6 @@
 
     <string name="waiting_error_tv_title">사진 생성에 실패했습니다.</string>
     <string name="waiting_error_tv_subtitle">죄송합니다. 서버에 오류가 발생하였습니다.\n사진 생성을 다시 시도할까요? </string>
-    <string name="waiting_error_btn_exit">닫기</string>
     <string name="waiting_error_btn_again">사진 다시 생성</string>
 
     <string name="main_dialog_tv_title">사진이 완성되었어요!</string>
@@ -183,7 +184,6 @@
 
     <string name="push_tv_title">사진 완성 알림을 받아보세요!</string>
     <string name="push_tv_subtitle">알림에 동의해 주시면\n사진이 완성되었을 때 알려드릴게요.</string>
-    <string name="push_btn_close">다음에</string>
     <string name="push_btn_get_alarm">알림 받기</string>
 
     <string name="openchat_tv_title_up">내가 만든 특별한 사진,</string>
@@ -210,7 +210,6 @@
 
     <string name="unable_tv_title">현재 점검 중입니다!</string>
     <string name="unable_tv_subtitle">09.30 22시까지 사진 생성이 불가능합니다.\n금방 돌아오겠습니다.</string>
-    <string name="unable_btn_close">확인</string>
 
     <string name="pay_error_dialog_title">결제 오류</string>
     <string name="pay_error_dialog_msg">오류로 인해 상품이 지급되지 않았어요. 고객센터로 문의 주시면 해결을 도와드리겠습니다.</string>

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -34,14 +33,14 @@ import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.designsystem.theme.Red
 import kr.genti.designsystem.theme.Transparent50
 import kr.genti.designsystem.theme.White
+import kr.genti.designsystem.theme.White80
 
 @Composable
-fun GentiWarningDialog(
+fun GentiErrorDialog(
     @StringRes titleRes: Int,
     @StringRes subtitleRes: Int,
     @StringRes btnTextRes: Int,
     modifier: Modifier = Modifier,
-    isOneButton: Boolean = false,
     onBtnClick: () -> Unit = {},
     onDismissRequest: () -> Unit = {},
 ) {
@@ -63,12 +62,12 @@ fun GentiWarningDialog(
                 modifier = modifier
                     .fillMaxWidth()
                     .background(color = Black, shape = RoundedCornerShape(16.dp))
-                    .padding(16.dp)
+                    .padding(horizontal = 16.dp)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.img_alert_triangle),
+                    painter = painterResource(id = R.drawable.img_alert_circle),
                     contentDescription = null,
-                    modifier = Modifier.offset(y = (-16).dp)
+                    modifier = Modifier.offset(y = (-8).dp)
                 )
 
                 Text(
@@ -76,45 +75,35 @@ fun GentiWarningDialog(
                     style = GentiTheme.typography.title,
                     color = White,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.offset(y = (-8).dp)
+                    modifier = Modifier.offset(y = (-12).dp)
                 )
-
-                Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
                     text = stringResource(subtitleRes),
                     style = GentiTheme.typography.body2,
-                    color = White,
-                    textAlign = TextAlign.Center
+                    color = White80,
+                    textAlign = TextAlign.Center,
                 )
 
-                Spacer(modifier = Modifier.height(24.dp))
-
-                Box {
-                    if (isOneButton) {
-                        GentiButton(
-                            textRes = R.string.unable_btn_close,
-                            btnColor = White,
-                            onClick = onDismissRequest,
-                        )
-                    } else {
-                        Row {
-                            GentiButton(
-                                textRes = btnTextRes,
-                                btnColor = Red,
-                                textColor = White,
-                                onClick = onBtnClick,
-                                modifier = Modifier.weight(1f)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            GentiButton(
-                                textRes = R.string.btn_return,
-                                onClick = onDismissRequest,
-                                btnColor = White,
-                                modifier = Modifier.weight(1f)
-                            )
-                        }
-                    }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                ) {
+                    GentiButton(
+                        textRes = R.string.btn_close,
+                        onClick = onDismissRequest,
+                        btnColor = White,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    GentiButton(
+                        textRes = btnTextRes,
+                        btnColor = Red,
+                        textColor = White,
+                        onClick = onBtnClick,
+                        modifier = Modifier.weight(1f)
+                    )
                 }
             }
         }
@@ -123,25 +112,12 @@ fun GentiWarningDialog(
 
 @Preview(showBackground = true)
 @Composable
-private fun GentiDialogPreviewOne() {
+private fun GentiErrorDialogPreview() {
     GentiTheme {
-        GentiWarningDialog(
-            titleRes = R.string.unable_tv_title,
-            subtitleRes = R.string.unable_tv_subtitle,
-            btnTextRes = R.string.unable_btn_close,
-            isOneButton = true,
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun GentiDialogPreviewTwo() {
-    GentiTheme {
-        GentiWarningDialog(
-            titleRes = R.string.setting_quit_tv_title,
-            subtitleRes = R.string.setting_quit_tv_subtitle,
-            btnTextRes = R.string.setting_quit_btn_quit,
+        GentiErrorDialog(
+            titleRes = R.string.waiting_error_tv_title,
+            subtitleRes = R.string.waiting_error_tv_subtitle,
+            btnTextRes = R.string.waiting_error_btn_again,
         )
     }
 }

@@ -69,7 +69,7 @@ private fun MainScreen(
         Scaffold(
             bottomBar = {
                 MainBottomBar(
-                    visible = if (LocalInspectionMode.current) true else navigator.shouldShowBottomBar(),
+                    visible = LocalInspectionMode.current || navigator.shouldShowBottomBar(),
                     tabs = MainTab.entries.toImmutableList(),
                     currentTab = navigator.currentTab,
                     onTabSelected = onTabSelected
@@ -93,7 +93,7 @@ private fun MainScreen(
         )
 
         MainBottomBtn(
-            visible = if (LocalInspectionMode.current) true else navigator.shouldShowBottomBar(),
+            visible = LocalInspectionMode.current || navigator.shouldShowBottomBar(),
             onButtonClick = onGenerateBtnClicked,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
