@@ -142,7 +142,8 @@ private fun MainScreen(
                     MainNavHost(
                         paddingValues = paddingValues,
                         navigator = navigator,
-                        modifier = Modifier.background(Black)
+                        modifier = Modifier.background(Black),
+                        startNavigateToGenerate = onGenerateBtnClicked
                     )
                 }
             }
