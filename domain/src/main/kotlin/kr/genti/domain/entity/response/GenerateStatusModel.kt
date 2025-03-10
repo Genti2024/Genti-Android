@@ -12,4 +12,13 @@ data class GenerateStatusModel(
         val responseId: Long,
         val picture: ImageModel?,
     )
+
+    companion object {
+        fun emptyGenerateStatusModel() = GenerateStatusModel(
+            requestId = null,
+            status = GenerateStatus.EMPTY,
+            response = null,
+            paid = null,
+        )
+    }
 }

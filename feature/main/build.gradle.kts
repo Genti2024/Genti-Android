@@ -17,4 +17,7 @@ dependencies {
     implementation(projects.feature.generate)
     implementation(projects.feature.result)
     implementation(projects.feature.setting)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.bundles.firebase)
 }

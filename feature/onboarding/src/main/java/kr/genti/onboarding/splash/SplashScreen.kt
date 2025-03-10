@@ -30,8 +30,8 @@ import kr.genti.navigation.Route
 @Composable
 internal fun SplashRoute(
     viewModel: SplashViewModel = hiltViewModel(),
-    navigateToLogin: (Route) -> Unit = {},
-    navigateToFeed: (Route) -> Unit = {},
+    navigateToLogin: () -> Unit = {},
+    navigateToFeed: () -> Unit = {},
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
@@ -55,8 +55,8 @@ internal fun SplashRoute(
         viewModel.splashSideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is SplashSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
-                is SplashSideEffect.NavigateToLogin -> navigateToLogin(OnboardingRoute.Splash)
-                is SplashSideEffect.NavigateToFeed -> navigateToFeed(OnboardingRoute.Splash)
+                is SplashSideEffect.NavigateToLogin -> navigateToLogin()
+                is SplashSideEffect.NavigateToFeed -> navigateToFeed()
                 is SplashSideEffect.StartAppUpdate -> AppUpdateManager.startAppUpdate(launcher)
             }
         }

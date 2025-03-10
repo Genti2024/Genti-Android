@@ -109,6 +109,7 @@ constructor(
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             viewModelScope.launch {
                 if (task.isSuccessful) {
+                    Timber.tag("okhttp").d("FCM TOKEN : ${task.result}")
                     changeTokenFromServer(accessToken, task.result)
                 } else {
                     emitSideEffect(LoginSideEffect.ShowErrorToast)

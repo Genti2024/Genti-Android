@@ -9,8 +9,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import kr.genti.feed.navigation.navigateToFeed
+import kr.genti.navigation.MainTabRoute
 import kr.genti.navigation.OnboardingRoute
-import kr.genti.navigation.Route
 import kr.genti.onboarding.navigation.navigateToLogin
 import kr.genti.onboarding.navigation.navigateToSignup
 import kr.genti.onboarding.navigation.navigateToSplash
@@ -20,11 +20,24 @@ import kr.genti.setting.navigation.navigateToSetting
 
 class MainNavigator(
     val navController: NavHostController,
+    val isFromNotification: Boolean = false,
 ) {
     private val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
-    val startDestination = OnboardingRoute.Splash
+    val startDestination = if (isFromNotification) MainTabRoute.Feed else OnboardingRoute.Splash
+
+    private val inclusiveNavOptions
+        get() = navOptions {
+            navController.currentDestination?.route?.let { route ->
+                popUpTo(route) {
+                    saveState = true
+                    inclusive = true
+                }
+            }
+            launchSingleTop = true
+            restoreState = true
+        }
 
     val currentTab: MainTab?
         @Composable get() = MainTab.find { tab ->
@@ -37,54 +50,51 @@ class MainNavigator(
     }
 
     fun navigate(tab: MainTab) {
-        val navOptions = navOptions {
-            navController.currentDestination?.route?.let {
-                popUpTo(startDestination) {
-                    saveState = true
-                }
-            }
-            launchSingleTop = true
-            restoreState = true
-        }
-
         when (tab) {
-            MainTab.FEED -> navController.navigateToFeed(navOptions)
-            MainTab.PROFILE -> navController.navigateToProfile(navOptions)
+            MainTab.FEED -> navController.navigateToFeed(inclusiveNavOptions)
+            MainTab.PROFILE -> navController.navigateToProfile(inclusiveNavOptions)
             else -> Unit
         }
     }
 
     fun navigatePopBackStack() = navController.popBackStack()
 
-    fun navigateToFeed(previous: Route) = navController.navigateToFeed(
-        navOptions = navOptions { popUpTo(previous) { inclusive = true } }
-    )
+    fun navigateToFeed() = navController.navigateToFeed(inclusiveNavOptions)
 
     fun navigateToProfile() = navController.navigateToProfile()
 
     fun navigateToSetting() = navController.navigateToSetting()
 
     // TODO
-    fun navigateToGenerate() = {}
+    fun navigateToGenerate() {
+
+    }
+
+    fun navigateToVerify() {
+
+    }
+
+    fun navigateToWaiting() {
+
+    }
+
+    fun navigateToFinished() {
+
+    }
 
     fun navigateToSplash() = navController.navigateToSplash()
 
-    fun navigateToLogin(previous: Route) = navController.navigateToLogin(
-        navOptions = navOptions { popUpTo(previous) { inclusive = true } }
-    )
+    fun navigateToLogin() = navController.navigateToLogin(inclusiveNavOptions)
 
-    fun navigateToSignup(previous: Route) = navController.navigateToSignup(
-        navOptions = navOptions { popUpTo(previous) { inclusive = true } }
-    )
+    fun navigateToSignup() = navController.navigateToSignup(inclusiveNavOptions)
 
-    fun navigateToTutorial(previous: Route) = navController.navigateToTutorial(
-        navOptions = navOptions { popUpTo(previous) { inclusive = true } }
-    )
+    fun navigateToTutorial() = navController.navigateToTutorial(inclusiveNavOptions)
 }
 
 @Composable
 internal fun rememberMainNavigator(
     navController: NavHostController = rememberNavController(),
+    isFromNotification: Boolean = false,
 ): MainNavigator = remember(navController) {
-    MainNavigator(navController)
+    MainNavigator(navController, isFromNotification)
 }

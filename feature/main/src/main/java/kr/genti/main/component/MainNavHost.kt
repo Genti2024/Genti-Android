@@ -15,6 +15,7 @@ internal fun MainNavHost(
     paddingValues: PaddingValues,
     navigator: MainNavigator,
     modifier: Modifier = Modifier,
+    startNavigateToGenerate: () -> Unit = {},
 ) {
     NavHost(
         modifier = modifier,
@@ -26,7 +27,7 @@ internal fun MainNavHost(
         )
         profileNavGraph(
             paddingValues = paddingValues,
-            navigateToGenerate = navigator::navigateToGenerate,
+            navigateToGenerate = startNavigateToGenerate,
             navigateToSetting = navigator::navigateToSetting
         )
         onboardingNavGraph(

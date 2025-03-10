@@ -38,7 +38,7 @@ import kr.genti.onboarding.model.TutorialStage.Companion.getTutorialList
 internal fun TutorialRoute(
     paddingValues: PaddingValues,
     viewModel: TutorialViewModel = hiltViewModel(),
-    navigateToFeed: (Route) -> Unit = {},
+    navigateToFeed: () -> Unit = {},
 ) {
     val tutorialState by viewModel.tutorialState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -46,7 +46,7 @@ internal fun TutorialRoute(
     LaunchedEffect(viewModel.tutorialSideEffect, lifecycleOwner) {
         viewModel.tutorialSideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is TutorialSideEffect.NavigateToFeed -> navigateToFeed(OnboardingRoute.Tutorial)
+                is TutorialSideEffect.NavigateToFeed -> navigateToFeed()
             }
         }
     }

@@ -36,8 +36,8 @@ import kr.genti.onboarding.component.MovingBackgroundImage
 internal fun LoginRoute(
     paddingValues: PaddingValues,
     viewModel: LoginViewModel = hiltViewModel(),
-    navigateToSignup: (Route) -> Unit = {},
-    navigateToFeed: (Route) -> Unit = {},
+    navigateToSignup: () -> Unit = {},
+    navigateToFeed: () -> Unit = {},
 ) {
     val loginState by viewModel.loginState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -54,9 +54,9 @@ internal fun LoginRoute(
             when (sideEffect) {
                 is LoginSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
 
-                is LoginSideEffect.NavigateToSignup -> navigateToSignup(OnboardingRoute.Login)
+                is LoginSideEffect.NavigateToSignup -> navigateToSignup()
 
-                is LoginSideEffect.NavigateToFeed -> navigateToFeed(OnboardingRoute.Login)
+                is LoginSideEffect.NavigateToFeed -> navigateToFeed()
 
                 is LoginSideEffect.StartKakaoAppLogin -> {
                     UserApiClient.instance.loginWithKakaoTalk(
