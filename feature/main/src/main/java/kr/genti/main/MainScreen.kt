@@ -5,11 +5,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
+import kr.genti.common.extension.toast
+import kr.genti.core.designsystem.R
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.main.component.MainBottomBar
@@ -20,11 +28,42 @@ import kr.genti.main.navigation.MainTab
 import kr.genti.main.navigation.rememberMainNavigator
 
 @Composable
-internal fun MainScreen(
+internal fun MainRoute(
     navigator: MainNavigator = rememberMainNavigator(),
+    viewModel: MainViewModel = hiltViewModel()
+) {
+    val mainState by viewModel.mainState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.onIntent(MainIntent.Init)
+    }
+
+    LaunchedEffect(viewModel.mainSideEffect, lifecycleOwner) {
+        viewModel.mainSideEffect.collect { sideEffect ->
+            when (sideEffect) {
+                is MainSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
+                is MainSideEffect.NavigateToTab -> navigator.navigate(sideEffect.tab)
+                is MainSideEffect.NavigateToGenerate -> navigator.navigateToGenerate()
+            }
+        }
+    }
+
+    MainScreen(
+        navigator = navigator
+    )
+}
+
+@Composable
+private fun MainScreen(
+    modifier: Modifier = Modifier,
+    navigator: MainNavigator = rememberMainNavigator(),
+    onTabSelected: (MainTab) -> Unit = {},
+    onGenerateBtnClicked: () -> Unit = {}
 ) {
     Box(
-        Modifier.fillMaxSize()
+        modifier.fillMaxSize()
     ) {
         Scaffold(
             bottomBar = {
@@ -32,7 +71,7 @@ internal fun MainScreen(
                     visible = if (LocalInspectionMode.current) true else navigator.shouldShowBottomBar(),
                     tabs = MainTab.entries.toImmutableList(),
                     currentTab = navigator.currentTab,
-                    onTabSelected = navigator::navigate
+                    onTabSelected = onTabSelected
                 )
             },
             content = { paddingValues ->
@@ -54,7 +93,7 @@ internal fun MainScreen(
 
         MainBottomBtn(
             visible = if (LocalInspectionMode.current) true else navigator.shouldShowBottomBar(),
-            onButtonClick = navigator::navigateToGenerate,
+            onButtonClick = onGenerateBtnClicked,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
     }

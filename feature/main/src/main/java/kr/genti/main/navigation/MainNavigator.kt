@@ -64,7 +64,9 @@ class MainNavigator(
     fun navigateToSetting() = navController.navigateToSetting()
 
     // TODO
-    fun navigateToGenerate() = {}
+    fun navigateToGenerate() {
+
+    }
 
     fun navigateToSplash() = navController.navigateToSplash()
 

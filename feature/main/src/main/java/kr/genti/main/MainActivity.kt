@@ -18,9 +18,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val navigator = rememberMainNavigator()
-
             GentiTheme {
-                MainScreen(navigator)
+                MainRoute(navigator = navigator)
             }
         }
     }
