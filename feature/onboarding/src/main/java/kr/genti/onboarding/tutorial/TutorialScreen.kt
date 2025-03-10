@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,7 +30,9 @@ import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.designsystem.theme.White
 import kr.genti.navigation.OnboardingRoute
 import kr.genti.navigation.Route
+import kr.genti.onboarding.component.TutorialItem
 import kr.genti.onboarding.model.TutorialStage
+import kr.genti.onboarding.model.TutorialStage.Companion.getTutorialList
 
 @Composable
 internal fun TutorialRoute(
@@ -65,12 +69,33 @@ private fun TutorialScreen(
     onNextBtnClicked: () -> Unit = {},
     onCloseBtnClicked: () -> Unit = {},
 ) {
+    val pagerState = rememberPagerState(
+        initialPage = getTutorialList().indexOf(currentStage),
+        pageCount = { getTutorialList().size }
+    )
+
+    LaunchedEffect(currentStage) {
+        val targetPage = getTutorialList().indexOf(currentStage)
+        pagerState.animateScrollToPage(targetPage)
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(Black)
             .padding(bottom = paddingValues.calculateBottomPadding())
     ) {
+
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier
+                .fillMaxSize()
+                .align(Alignment.Center)
+                .padding(horizontal = 16.dp)
+        ) { page ->
+            TutorialItem(currentStage = getTutorialList()[page])
+        }
+
         Icon(
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_close),
             contentDescription = null,
@@ -81,6 +106,7 @@ private fun TutorialScreen(
                 .align(Alignment.TopEnd)
                 .noRippleClickable { onCloseBtnClicked() }
         )
+
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -97,8 +123,24 @@ private fun TutorialScreen(
 
 @Preview
 @Composable
-fun TutorialScreenPreview() {
+fun TutorialScreenPreviewFirst() {
     GentiTheme {
-        TutorialScreen()
+        TutorialScreen(currentStage = TutorialStage.FIRST)
+    }
+}
+
+@Preview
+@Composable
+fun TutorialScreenPreviewSecond() {
+    GentiTheme {
+        TutorialScreen(currentStage = TutorialStage.SECOND)
+    }
+}
+
+@Preview
+@Composable
+fun TutorialScreenPreviewThird() {
+    GentiTheme {
+        TutorialScreen(currentStage = TutorialStage.THIRD)
     }
 }
