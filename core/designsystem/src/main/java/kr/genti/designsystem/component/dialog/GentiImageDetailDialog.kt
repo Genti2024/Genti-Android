@@ -87,7 +87,7 @@ fun GentiImageDetailDialog(
                         GentiButton(
                             textRes = R.string.btn_download,
                             onClick = onSaveBtnClick,
-                            isWhite = true,
+                            btnColor = White,
                             modifier = Modifier.weight(1f)
                         )
                     }

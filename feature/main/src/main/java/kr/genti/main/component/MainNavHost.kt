@@ -8,6 +8,7 @@ import kr.genti.feed.navigation.feedNavGraph
 import kr.genti.main.navigation.MainNavigator
 import kr.genti.onboarding.navigation.onboardingNavGraph
 import kr.genti.profile.navigation.profileNavGraph
+import kr.genti.setting.navigation.settingNavGraph
 
 @Composable
 internal fun MainNavHost(
@@ -20,7 +21,9 @@ internal fun MainNavHost(
         startDestination = navigator.startDestination,
         navController = navigator.navController,
     ) {
-        feedNavGraph(paddingValues)
+        feedNavGraph(
+            paddingValues = paddingValues
+        )
         profileNavGraph(
             paddingValues = paddingValues,
             navigateToGenerate = navigator::navigateToGenerate,
@@ -32,6 +35,10 @@ internal fun MainNavHost(
             navigateToSignup = navigator::navigateToSignup,
             navigateToFeed = navigator::navigateToFeed,
             navigateToTutorial = navigator::navigateToTutorial,
+        )
+        settingNavGraph(
+            paddingValues = paddingValues,
+            navigateToBack = navigator::navigatePopBackStack
         )
     }
 }

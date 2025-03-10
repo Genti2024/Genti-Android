@@ -18,6 +18,7 @@
 
     <string name="btn_share">공유하기</string>
     <string name="btn_download">저장하기</string>
+    <string name="btn_return">취소</string>
 
     <string name="menu_feed">피드</string>
     <string name="menu_create">생성</string>
@@ -169,8 +170,7 @@
     <string name="setting_btn_quit">회원 탈퇴</string>
 
     <string name="setting_logout_tv_title">정말 로그아웃 하시겠어요?</string>
-    <string name="setting_logout_subtitle">사진 생성 중에 로그아웃 하시면\n오류가 발생할 수 있으니 주의해주세요.</string>
-    <string name="setting_logout_btn_return">취소</string>
+    <string name="setting_logout_tv_subtitle">사진 생성 중에 로그아웃 하시면\n오류가 발생할 수 있으니 주의해주세요.</string>
     <string name="setting_logout_btn_logout">로그아웃</string>
 
     <string name="setting_quit_tv_title">정말 탈퇴하시겠어요?</string>
@@ -205,6 +205,7 @@
     <string name="verify_exit_btn_exit">나가기</string>
 
     <string name="unable_tv_title">현재 점검 중입니다!</string>
+    <string name="unable_tv_subtitle">09.30 22시까지 사진 생성이 불가능합니다.\n금방 돌아오겠습니다.</string>
     <string name="unable_btn_close">확인</string>
 
     <string name="pay_error_dialog_title">결제 오류</string>

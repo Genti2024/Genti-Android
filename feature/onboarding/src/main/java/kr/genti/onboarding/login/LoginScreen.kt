@@ -22,7 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakao.sdk.user.UserApiClient
-import kr.genti.common.xml.extension.toast
+import kr.genti.common.extension.toast
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.layout.GentiLoadingScreen
 import kr.genti.designsystem.theme.GentiTheme

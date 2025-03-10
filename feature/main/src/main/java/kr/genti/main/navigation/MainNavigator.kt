@@ -15,6 +15,7 @@ import kr.genti.onboarding.navigation.navigateToLogin
 import kr.genti.onboarding.navigation.navigateToSignup
 import kr.genti.onboarding.navigation.navigateToSplash
 import kr.genti.profile.navigation.navigateToProfile
+import kr.genti.setting.navigation.navigateToSetting
 
 class MainNavigator(
     val navController: NavHostController,
@@ -52,11 +53,15 @@ class MainNavigator(
         }
     }
 
+    fun navigatePopBackStack() = navController.popBackStack()
+
     fun navigateToFeed(previous: Route) = navController.navigateToFeed(
         navOptions = navOptions { popUpTo(previous) { inclusive = true } }
     )
 
     fun navigateToProfile() = navController.navigateToProfile()
+
+    fun navigateToSetting() = navController.navigateToSetting()
 
     // TODO
     fun navigateToGenerate() = {}
@@ -72,9 +77,6 @@ class MainNavigator(
     )
 
     fun navigateToTutorial(previous: Route) = {}
-
-    // TODO
-    fun navigateToSetting() = {}
 }
 
 @Composable
