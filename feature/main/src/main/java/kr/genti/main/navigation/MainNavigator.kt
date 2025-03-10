@@ -9,6 +9,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import kr.genti.feed.navigation.navigateToFeed
+import kr.genti.navigation.MainTabRoute
 import kr.genti.navigation.OnboardingRoute
 import kr.genti.onboarding.navigation.navigateToLogin
 import kr.genti.onboarding.navigation.navigateToSignup
@@ -19,11 +20,12 @@ import kr.genti.setting.navigation.navigateToSetting
 
 class MainNavigator(
     val navController: NavHostController,
+    val isFromNotification: Boolean = false,
 ) {
     private val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
-    val startDestination = OnboardingRoute.Splash
+    val startDestination = if (isFromNotification) MainTabRoute.Feed else OnboardingRoute.Splash
 
     private val inclusiveNavOptions
         get() = navOptions {
@@ -92,6 +94,7 @@ class MainNavigator(
 @Composable
 internal fun rememberMainNavigator(
     navController: NavHostController = rememberNavController(),
+    isFromNotification: Boolean = false,
 ): MainNavigator = remember(navController) {
-    MainNavigator(navController)
+    MainNavigator(navController, isFromNotification)
 }

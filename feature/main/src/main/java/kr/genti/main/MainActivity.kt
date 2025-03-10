@@ -6,30 +6,24 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import dagger.hilt.android.AndroidEntryPoint
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.main.navigation.rememberMainNavigator
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
 
+        val intentData = intent.getStringExtra(EXTRA_TYPE)
+        val isFromNotification = intentData != null
+
         setContent {
             GentiTheme {
-                val navigator = rememberMainNavigator()
-                MainRoute(navigator = navigator)
+                val navigator = rememberMainNavigator(isFromNotification = isFromNotification)
+                MainRoute(navigator = navigator, intentData = intentData)
             }
         }
     }
