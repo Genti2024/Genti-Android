@@ -33,8 +33,10 @@ constructor(
             is SettingIntent.PrivacyButtonClick -> handleSettingButtonClick(WEB_PRIVACY_POLICY)
             is SettingIntent.CompanyButtonClick -> handleSettingButtonClick(WEB_COMPANY_INFO)
             is SettingIntent.QuestionButtonClick -> handleSettingButtonClick(WEB_QUESTION)
-            is SettingIntent.LogoutButtonClick -> handleLogoutButtonClick()
-            is SettingIntent.QuitButtonClick -> handleQuitButtonClick()
+            is SettingIntent.LogoutButtonClick -> handleLogoutDialog(true)
+            is SettingIntent.QuitButtonClick -> handleQuitDialog(true)
+            is SettingIntent.LogoutDialogDismiss -> handleLogoutDialog(false)
+            is SettingIntent.QuitDialogDismiss -> handleQuitDialog(false)
             is SettingIntent.LogoutRequest -> handleLogoutRequest()
             is SettingIntent.QuitRequest -> handleQuitRequest()
         }
@@ -52,15 +54,15 @@ constructor(
         }
     }
 
-    private fun handleLogoutButtonClick() {
+    private fun handleLogoutDialog(isVisible: Boolean) {
         _settingState.update {
-            it.copy(isLogoutDialogVisible = true)
+            it.copy(isLogoutDialogVisible = isVisible)
         }
     }
 
-    private fun handleQuitButtonClick() {
+    private fun handleQuitDialog(isVisible: Boolean) {
         _settingState.update {
-            it.copy(isQuitDialogVisible = true)
+            it.copy(isQuitDialogVisible = isVisible)
         }
     }
 

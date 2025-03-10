@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -29,19 +30,19 @@ import kr.genti.designsystem.theme.Disabled
 import kr.genti.designsystem.theme.GentiGreen
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.designsystem.theme.GrayBtn
-import kr.genti.designsystem.theme.White
 
 @Composable
 fun GentiButton(
     modifier: Modifier = Modifier,
     @StringRes textRes: Int = R.string.app_name,
     @DrawableRes iconRes: Int? = null,
+    btnColor: Color = GentiGreen,
+    textColor: Color = GrayBtn,
     isActive: Boolean = true,
-    isWhite: Boolean = false,
     onClick: () -> Unit = {}
 ) {
-    val containerColor = if (isWhite) White else if (isActive) GentiGreen else Disabled
-    val textColor = if (isActive) GrayBtn else Black
+    val containerColor = if (isActive) btnColor else Disabled
+    val contentColor = if (isActive) textColor else Black
 
     Card(
         modifier = modifier
@@ -62,14 +63,14 @@ fun GentiButton(
                 Icon(
                     imageVector = ImageVector.vectorResource(id = iconRes),
                     contentDescription = null,
-                    tint = textColor,
+                    tint = contentColor,
                     modifier = Modifier.padding(end = 8.dp)
                 )
             }
             Text(
                 text = stringResource(textRes),
                 style = GentiTheme.typography.subtitle2,
-                color = textColor,
+                color = contentColor,
             )
         }
     }

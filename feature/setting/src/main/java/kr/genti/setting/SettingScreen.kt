@@ -24,6 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jakewharton.processphoenix.ProcessPhoenix
 import kr.genti.common.extension.toast
 import kr.genti.core.designsystem.R
+import kr.genti.designsystem.component.dialog.GentiWarningDialog
 import kr.genti.designsystem.component.layout.GentiTopBar
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiGreen
@@ -64,8 +65,6 @@ internal fun SettingRoute(
     SettingScreen(
         modifier = Modifier,
         paddingValues = paddingValues,
-        isLogoutDialogVisible = settingState.isLogoutDialogVisible,
-        isQuitDialogVisible = settingState.isQuitDialogVisible,
         versionText = "v" + BuildConfig.VERSION_NAME,
         onBackButtonClick = { viewModel.onIntent(SettingIntent.BackButtonClick) },
         onTermButtonClick = { viewModel.onIntent(SettingIntent.TermButtonClick) },
@@ -75,14 +74,32 @@ internal fun SettingRoute(
         onLogoutButtonClick = { viewModel.onIntent(SettingIntent.LogoutButtonClick) },
         onQuitButtonClick = { viewModel.onIntent(SettingIntent.QuitButtonClick) },
     )
+
+    if (settingState.isLogoutDialogVisible) {
+        GentiWarningDialog(
+            titleRes = R.string.setting_logout_tv_title,
+            subtitleRes = R.string.setting_logout_tv_subtitle,
+            btnTextRes = R.string.setting_logout_btn_logout,
+            onBtnClick = { viewModel.onIntent(SettingIntent.LogoutRequest) },
+            onDismissRequest = { viewModel.onIntent(SettingIntent.LogoutDialogDismiss) },
+        )
+    }
+
+    if (settingState.isQuitDialogVisible) {
+        GentiWarningDialog(
+            titleRes = R.string.setting_quit_tv_title,
+            subtitleRes = R.string.setting_quit_tv_subtitle,
+            btnTextRes = R.string.setting_quit_btn_quit,
+            onBtnClick = { viewModel.onIntent(SettingIntent.QuitRequest) },
+            onDismissRequest = { viewModel.onIntent(SettingIntent.QuitDialogDismiss) },
+        )
+    }
 }
 
 @Composable
 private fun SettingScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues(),
-    isLogoutDialogVisible: Boolean = false,
-    isQuitDialogVisible: Boolean = false,
     versionText: String = "",
     onBackButtonClick: () -> Unit = {},
     onTermButtonClick: () -> Unit = {},
