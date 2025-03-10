@@ -18,6 +18,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
 import kr.genti.common.extension.toast
 import kr.genti.core.designsystem.R
+import kr.genti.designsystem.component.dialog.GentiErrorDialog
+import kr.genti.designsystem.component.dialog.GentiNotiDialog
+import kr.genti.designsystem.component.dialog.GentiWarningDialog
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.main.component.MainBottomBar
@@ -45,6 +48,7 @@ internal fun MainRoute(
                 is MainSideEffect.NavigateToGenerate -> navigator.navigateToGenerate()
                 is MainSideEffect.NavigateToVerify -> navigator.navigateToVerify()
                 is MainSideEffect.NavigateToWaiting -> navigator.navigateToWaiting()
+                is MainSideEffect.NavigateToFinished -> navigator.navigateToFinished()
             }
         }
     }
@@ -54,6 +58,42 @@ internal fun MainRoute(
         onTabSelected = { tab -> viewModel.onIntent(MainIntent.TabSelect(tab)) },
         onGenerateBtnClicked = { viewModel.onIntent(MainIntent.GenerateBtnClick) }
     )
+
+    if (mainState.isUnableDialogVisible) {
+        GentiWarningDialog(
+            titleRes = R.string.unable_tv_title,
+            subtitleRes = R.string.unable_tv_subtitle,
+            errorMessage = mainState.serverUnableMessage,
+            btnTextRes = R.string.btn_close,
+            isOneButton = true,
+            onDismissRequest = { viewModel.onIntent(MainIntent.DialogDismiss) }
+        )
+    }
+
+    if (mainState.isErrorDialogVisible) {
+        GentiErrorDialog(
+            titleRes = R.string.waiting_error_tv_title,
+            subtitleRes = R.string.waiting_error_tv_subtitle,
+            btnTextRes = R.string.waiting_error_btn_again,
+            onBtnClick = { viewModel.onIntent(MainIntent.RegenerateDialogBtnClick) },
+            onDismissRequest = { viewModel.onIntent(MainIntent.DialogDismiss) }
+        )
+    }
+
+    if (mainState.isFinishedDialogVisible) {
+        GentiNotiDialog(
+            iconRes = R.drawable.img_shine,
+            titleRes = R.string.main_dialog_tv_title,
+            subtitleRes = R.string.main_dialog_tv_subtitle,
+            btnTextRes = R.string.main_dialog_btn_move_to_finish,
+            onBtnClick = { viewModel.onIntent(MainIntent.FinishedDialogBtnClick) },
+            onDismissRequest = { viewModel.onIntent(MainIntent.DialogDismiss) }
+        )
+    }
+
+    if (mainState.isSelectDialogVisible) {
+        // TODO
+    }
 }
 
 @Composable

@@ -6,6 +6,7 @@ import kr.genti.domain.enums.GenerateStatus
 
 data class MainState(
     val isNotificationReceived: Boolean = false,
+    val serverUnableMessage: String = "",
     val generatedImage: GenerateStatusModel = emptyGenerateStatusModel(),
     val isFinishedDialogVisible: Boolean = false,
     val isErrorDialogVisible: Boolean = false,

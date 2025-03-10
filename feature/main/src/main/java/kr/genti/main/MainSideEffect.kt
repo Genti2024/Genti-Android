@@ -9,4 +9,5 @@ sealed class MainSideEffect {
     data object NavigateToGenerate : MainSideEffect()
     data object NavigateToVerify : MainSideEffect()
     data object NavigateToWaiting : MainSideEffect()
+    data object NavigateToFinished: MainSideEffect()
 }

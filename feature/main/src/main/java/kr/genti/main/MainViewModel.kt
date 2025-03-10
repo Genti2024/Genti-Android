@@ -31,6 +31,10 @@ constructor(
         when (intent) {
             is MainIntent.TabSelect -> handleTabClick(intent.tab)
             is MainIntent.GenerateBtnClick -> handleGenerateBtnClick()
+            is MainIntent.DialogDismiss -> handleDialogDismiss()
+            is MainIntent.RegenerateDialogBtnClick -> handleRegenerateDialogBtnClick()
+            is MainIntent.FinishedDialogBtnClick -> handleFinishedDialogBtnClick()
+            is MainIntent.SelectDialogBtnClick -> handleSelectDialogBtnClick()
         }
     }
 
@@ -43,6 +47,40 @@ constructor(
     private fun handleGenerateBtnClick() {
         viewModelScope.launch {
             getGenerateStatus()
+        }
+    }
+
+    private fun handleDialogDismiss() {
+        viewModelScope.launch {
+            _mainState.update {
+                it.copy(
+                    isErrorDialogVisible = false,
+                    isUnableDialogVisible = false,
+                    isFinishedDialogVisible = false,
+                    isSelectDialogVisible = false
+                )
+            }
+        }
+    }
+
+    private fun handleRegenerateDialogBtnClick() {
+        handleDialogDismiss()
+        viewModelScope.launch {
+            getGenerateStatus()
+        }
+    }
+
+    private fun handleFinishedDialogBtnClick() {
+        handleDialogDismiss()
+        viewModelScope.launch {
+            _mainSideEffect.emit(MainSideEffect.NavigateToFinished)
+        }
+    }
+
+    private fun handleSelectDialogBtnClick() {
+        handleDialogDismiss()
+        viewModelScope.launch {
+            _mainSideEffect.emit(MainSideEffect.NavigateToGenerate)
         }
     }
 
@@ -92,7 +130,10 @@ constructor(
                     getIsUserVerified()
                 } else {
                     _mainState.update {
-                        it.copy(isUnableDialogVisible = true)
+                        it.copy(
+                            isUnableDialogVisible = true,
+                            serverUnableMessage = result.message.toString()
+                        )
                     }
                 }
             }.onFailure {

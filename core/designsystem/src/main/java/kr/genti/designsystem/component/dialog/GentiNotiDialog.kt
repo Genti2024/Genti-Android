@@ -32,6 +32,8 @@ import kr.genti.designsystem.component.button.GentiButton
 import kr.genti.designsystem.component.button.GentiGradationButton
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
+import kr.genti.designsystem.theme.Gray
+import kr.genti.designsystem.theme.Transparent30
 import kr.genti.designsystem.theme.Transparent50
 import kr.genti.designsystem.theme.White
 import kr.genti.designsystem.theme.White80
@@ -63,7 +65,7 @@ fun GentiNotiDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier
                     .fillMaxWidth()
-                    .background(color = Black, shape = RoundedCornerShape(16.dp))
+                    .background(color = Gray, shape = RoundedCornerShape(16.dp))
                     .padding(horizontal = 16.dp)
             ) {
                 Image(

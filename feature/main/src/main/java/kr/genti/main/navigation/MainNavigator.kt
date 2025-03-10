@@ -76,6 +76,10 @@ class MainNavigator(
 
     }
 
+    fun navigateToFinished() {
+
+    }
+
     fun navigateToSplash() = navController.navigateToSplash()
 
     fun navigateToLogin() = navController.navigateToLogin(inclusiveNavOptions)

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -31,7 +30,9 @@ import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.button.GentiButton
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
+import kr.genti.designsystem.theme.Gray
 import kr.genti.designsystem.theme.Red
+import kr.genti.designsystem.theme.Transparent30
 import kr.genti.designsystem.theme.Transparent50
 import kr.genti.designsystem.theme.White
 import kr.genti.designsystem.theme.White80
@@ -43,6 +44,7 @@ fun GentiWarningDialog(
     @StringRes btnTextRes: Int,
     modifier: Modifier = Modifier,
     isOneButton: Boolean = false,
+    errorMessage: String? = null,
     onBtnClick: () -> Unit = {},
     onDismissRequest: () -> Unit = {},
 ) {
@@ -63,7 +65,7 @@ fun GentiWarningDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier
                     .fillMaxWidth()
-                    .background(color = Black, shape = RoundedCornerShape(16.dp))
+                    .background(color = Gray, shape = RoundedCornerShape(16.dp))
                     .padding(horizontal = 16.dp)
             ) {
                 Image(
@@ -81,7 +83,7 @@ fun GentiWarningDialog(
                 )
 
                 Text(
-                    text = stringResource(subtitleRes),
+                    text = errorMessage ?: stringResource(subtitleRes),
                     style = GentiTheme.typography.body2,
                     color = White80,
                     textAlign = TextAlign.Center,
