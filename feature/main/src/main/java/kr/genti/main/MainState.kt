@@ -5,6 +5,7 @@ import kr.genti.domain.entity.response.GenerateStatusModel.Companion.emptyGenera
 import kr.genti.domain.enums.GenerateStatus
 
 data class MainState(
+    val currentGenerateStatus: GenerateStatus = GenerateStatus.EMPTY,
     val isNotificationReceived: Boolean = false,
     val serverUnableMessage: String = "",
     val generatedImage: GenerateStatusModel = emptyGenerateStatusModel(),

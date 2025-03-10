@@ -35,6 +35,7 @@ constructor(
             is MainIntent.RegenerateDialogBtnClick -> handleRegenerateDialogBtnClick()
             is MainIntent.FinishedDialogBtnClick -> handleFinishedDialogBtnClick()
             is MainIntent.SelectDialogBtnClick -> handleSelectDialogBtnClick()
+            is MainIntent.DebugPatchBtnClick -> handleDebugPatchBtnClick()
         }
     }
 
@@ -84,11 +85,20 @@ constructor(
         }
     }
 
+    private fun handleDebugPatchBtnClick() {
+        viewModelScope.launch {
+            patchStatusInDevelop()
+        }
+    }
+
     private suspend fun getGenerateStatus() {
         generateRepository.getGenerateStatus()
             .onSuccess { result ->
                 _mainState.update {
-                    it.copy(generatedImage = result)
+                    it.copy(
+                        generatedImage = result,
+                        currentGenerateStatus = result.status
+                    )
                 }
                 showDialogWithStatus(result.status)
             }.onFailure {

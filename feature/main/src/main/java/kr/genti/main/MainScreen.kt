@@ -1,8 +1,10 @@
 package kr.genti.main
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,18 +13,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
+import kr.genti.common.extension.noRippleClickable
 import kr.genti.common.extension.toast
+import kr.genti.core.common.BuildConfig
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.dialog.GentiErrorDialog
 import kr.genti.designsystem.component.dialog.GentiNotiDialog
 import kr.genti.designsystem.component.dialog.GentiWarningDialog
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
+import kr.genti.domain.enums.GenerateStatus
 import kr.genti.main.component.MainBottomBar
 import kr.genti.main.component.MainBottomBtn
 import kr.genti.main.component.MainNavHost
@@ -55,8 +62,10 @@ internal fun MainRoute(
 
     MainScreen(
         navigator = navigator,
+        currentGenerateStatus = mainState.currentGenerateStatus,
         onTabSelected = { tab -> viewModel.onIntent(MainIntent.TabSelect(tab)) },
-        onGenerateBtnClicked = { viewModel.onIntent(MainIntent.GenerateBtnClick) }
+        onGenerateBtnClicked = { viewModel.onIntent(MainIntent.GenerateBtnClick) },
+        onDebugPatchBtnClicked = { viewModel.onIntent(MainIntent.DebugPatchBtnClick) }
     )
 
     if (mainState.isUnableDialogVisible) {
@@ -87,7 +96,7 @@ internal fun MainRoute(
             subtitleRes = R.string.main_dialog_tv_subtitle,
             btnTextRes = R.string.main_dialog_btn_move_to_finish,
             onBtnClick = { viewModel.onIntent(MainIntent.FinishedDialogBtnClick) },
-            onDismissRequest = { viewModel.onIntent(MainIntent.DialogDismiss) }
+            onDismissRequest = { viewModel.onIntent(MainIntent.DialogDismiss) },
         )
     }
 
@@ -100,8 +109,10 @@ internal fun MainRoute(
 private fun MainScreen(
     modifier: Modifier = Modifier,
     navigator: MainNavigator = rememberMainNavigator(),
+    currentGenerateStatus: GenerateStatus = GenerateStatus.EMPTY,
     onTabSelected: (MainTab) -> Unit = {},
-    onGenerateBtnClicked: () -> Unit = {}
+    onGenerateBtnClicked: () -> Unit = {},
+    onDebugPatchBtnClicked: () -> Unit = {}
 ) {
     Box(
         modifier.fillMaxSize()
@@ -131,6 +142,17 @@ private fun MainScreen(
                 }
             }
         )
+
+        if (currentGenerateStatus == GenerateStatus.IN_PROGRESS && BuildConfig.DEBUG) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_download),
+                contentDescription = null,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .noRippleClickable { onDebugPatchBtnClicked() }
+                    .padding(70.dp)
+            )
+        }
 
         MainBottomBtn(
             visible = LocalInspectionMode.current || navigator.shouldShowBottomBar(),

@@ -9,4 +9,5 @@ sealed class MainIntent {
     data object RegenerateDialogBtnClick: MainIntent()
     data object FinishedDialogBtnClick: MainIntent()
     data object SelectDialogBtnClick: MainIntent()
+    data object DebugPatchBtnClick: MainIntent()
 }
