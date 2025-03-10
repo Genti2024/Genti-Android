@@ -4,33 +4,33 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kr.genti.common.extension.noRippleClickable
 import kr.genti.core.designsystem.R
+import kr.genti.designsystem.component.button.CloseButton
 import kr.genti.designsystem.component.button.GentiButton
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
-import kr.genti.designsystem.theme.White
 import kr.genti.navigation.OnboardingRoute
 import kr.genti.navigation.Route
+import kr.genti.onboarding.component.TutorialFadeInBackground
 import kr.genti.onboarding.component.TutorialItem
+import kr.genti.onboarding.component.TutorialPageIndicator
 import kr.genti.onboarding.model.TutorialStage
 import kr.genti.onboarding.model.TutorialStage.Companion.getTutorialList
 
@@ -42,7 +42,6 @@ internal fun TutorialRoute(
 ) {
     val tutorialState by viewModel.tutorialState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
-    val context = LocalContext.current
 
     LaunchedEffect(viewModel.tutorialSideEffect, lifecycleOwner) {
         viewModel.tutorialSideEffect.collect { sideEffect ->
@@ -83,29 +82,23 @@ private fun TutorialScreen(
         modifier = modifier
             .fillMaxSize()
             .background(Black)
-            .padding(bottom = paddingValues.calculateBottomPadding())
+            .padding(paddingValues)
     ) {
+        TutorialFadeInBackground(
+            currentStage = currentStage,
+            modifier = Modifier.align(Alignment.Center)
+        )
 
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
                 .fillMaxSize()
                 .align(Alignment.Center)
-                .padding(horizontal = 16.dp)
         ) { page ->
             TutorialItem(currentStage = getTutorialList()[page])
         }
 
-        Icon(
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_close),
-            contentDescription = null,
-            tint = White,
-            modifier = Modifier
-                .padding(16.dp)
-                .padding(top = 16.dp)
-                .align(Alignment.TopEnd)
-                .noRippleClickable { onCloseBtnClicked() }
-        )
+        CloseButton(onCloseBtnClicked = onCloseBtnClicked)
 
         Column(
             modifier = Modifier
@@ -113,6 +106,10 @@ private fun TutorialScreen(
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 20.dp)
         ) {
+            TutorialPageIndicator(pagerState = pagerState)
+
+            Spacer(modifier = Modifier.height(40.dp))
+
             GentiButton(
                 textRes = if (currentStage != TutorialStage.THIRD) R.string.onboarding_btn_next else R.string.onboarding_btn_finish,
                 onClick = onNextBtnClicked,

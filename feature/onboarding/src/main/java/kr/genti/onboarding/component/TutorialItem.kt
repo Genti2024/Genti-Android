@@ -28,9 +28,7 @@ fun TutorialItem(
     currentStage: TutorialStage = TutorialStage.FIRST,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Black),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(100.dp))
@@ -86,7 +84,7 @@ fun TutorialItem(
     }
 }
 
-@Preview
+@Preview(backgroundColor = 0xFF030F0F, showBackground = true)
 @Composable
 fun TutorialItemPreview() {
     GentiTheme {
