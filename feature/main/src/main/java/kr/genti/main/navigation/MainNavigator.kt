@@ -68,6 +68,14 @@ class MainNavigator(
 
     }
 
+    fun navigateToVerify() {
+
+    }
+
+    fun navigateToWaiting() {
+
+    }
+
     fun navigateToSplash() = navController.navigateToSplash()
 
     fun navigateToLogin() = navController.navigateToLogin(inclusiveNavOptions)

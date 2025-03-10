@@ -217,5 +217,6 @@
     <string name="pay_error_dialog_btn">확인</string>
 
     <string name="toast_service_finished">서비스가 종료되어 생성이 불가능해요.</string>
+    <string name="toast_state_changed">사진 강제 생성이 요청되었어요.</string>
 
 </resources>

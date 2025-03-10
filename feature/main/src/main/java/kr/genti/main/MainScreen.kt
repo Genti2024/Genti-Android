@@ -44,8 +44,11 @@ internal fun MainRoute(
         viewModel.mainSideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is MainSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
+                is MainSideEffect.ShowStatusChangedToast -> context.toast(context.getString(R.string.toast_state_changed))
                 is MainSideEffect.NavigateToTab -> navigator.navigate(sideEffect.tab)
                 is MainSideEffect.NavigateToGenerate -> navigator.navigateToGenerate()
+                is MainSideEffect.NavigateToVerify -> navigator.navigateToVerify()
+                is MainSideEffect.NavigateToWaiting -> navigator.navigateToWaiting()
             }
         }
     }

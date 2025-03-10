@@ -8,4 +8,8 @@ data class MainState(
     val currentStatus: GenerateStatus = GenerateStatus.EMPTY,
     val isNotificationReceived: Boolean = false,
     val generatedImage: GenerateStatusModel = emptyGenerateStatusModel(),
+    val isFinishedDialogVisible: Boolean = false,
+    val isErrorDialogVisible: Boolean = false,
+    val isUnableDialogVisible: Boolean = false,
+    val isSelectDialogVisible: Boolean = false,
 )
