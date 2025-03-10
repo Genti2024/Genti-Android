@@ -6,13 +6,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kr.genti.common.extension.toast
 import kr.genti.core.designsystem.R
-import kr.genti.designsystem.theme.GentiTheme
 
 @Composable
 internal fun VerifyRoute(
@@ -33,24 +31,17 @@ internal fun VerifyRoute(
         }
     }
 
-    VerifyScreen(
-        modifier = Modifier,
-        paddingValues = paddingValues,
-    )
-}
-
-@Composable
-private fun VerifyScreen(
-    modifier: Modifier = Modifier,
-    paddingValues: PaddingValues = PaddingValues(),
-) {
-
-}
-
-@Preview
-@Composable
-fun VerifyScreenPreview() {
-    GentiTheme {
-        VerifyScreen()
+    if (!verifyState.isPhotoTaken) {
+        VerifyBeforeScreen(
+            modifier = Modifier,
+            paddingValues = paddingValues,
+            onBackButtonClicked = { viewModel.onIntent(VerifyIntent.BackButtonClick) },
+            onVerifyButtonClicked = { viewModel.onIntent(VerifyIntent.VerifyButtonClick) }
+        )
+    } else {
+        VerifyAfterScreen(
+            modifier = Modifier,
+            paddingValues = paddingValues,
+        )
     }
 }
