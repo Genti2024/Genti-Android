@@ -29,15 +29,8 @@ constructor(
 
     fun onIntent(intent: MainIntent) {
         when (intent) {
-            is MainIntent.Init -> handleInit()
             is MainIntent.TabSelect -> handleTabClick(intent.tab)
             is MainIntent.GenerateBtnClick -> handleGenerateBtnClick()
-        }
-    }
-
-    private fun handleInit() {
-        viewModelScope.launch {
-            getGenerateStatus()
         }
     }
 
@@ -49,29 +42,7 @@ constructor(
 
     private fun handleGenerateBtnClick() {
         viewModelScope.launch {
-            when (mainState.value.currentStatus) {
-                GenerateStatus.NEW_REQUEST_AVAILABLE -> {
-                    getIsServerAvailable()
-                }
-
-                GenerateStatus.AWAIT_USER_VERIFICATION -> {
-                    _mainState.update {
-                        it.copy(isFinishedDialogVisible = true)
-                    }
-                }
-
-                GenerateStatus.IN_PROGRESS -> {
-                    _mainSideEffect.emit(MainSideEffect.NavigateToWaiting)
-                }
-
-                GenerateStatus.CANCELED -> {
-                    _mainState.update {
-                        it.copy(isErrorDialogVisible = true)
-                    }
-                }
-
-                GenerateStatus.EMPTY -> return@launch
-            }
+            getGenerateStatus()
         }
     }
 
@@ -79,21 +50,38 @@ constructor(
         generateRepository.getGenerateStatus()
             .onSuccess { result ->
                 _mainState.update {
-                    it.copy(
-                        currentStatus = result.status,
-                        generatedImage = result
-                    )
+                    it.copy(generatedImage = result)
                 }
+                showDialogWithStatus(result.status)
+            }.onFailure {
+                _mainSideEffect.emit(MainSideEffect.ShowErrorToast)
             }
     }
 
-    private suspend fun postToResetGenerateStatus() {
-        generateRepository.getCanceledToReset(
-            mainState.value.generatedImage.requestId.toString()
-        ).onSuccess {
-            getGenerateStatus()
-        }.onFailure {
-            _mainSideEffect.emit(MainSideEffect.ShowErrorToast)
+    private suspend fun showDialogWithStatus(status: GenerateStatus) {
+        when (status) {
+            GenerateStatus.NEW_REQUEST_AVAILABLE -> {
+                getIsServerAvailable()
+            }
+
+            GenerateStatus.AWAIT_USER_VERIFICATION -> {
+                _mainState.update {
+                    it.copy(isFinishedDialogVisible = true)
+                }
+            }
+
+            GenerateStatus.IN_PROGRESS -> {
+                _mainSideEffect.emit(MainSideEffect.NavigateToWaiting)
+            }
+
+            GenerateStatus.CANCELED -> {
+                _mainState.update {
+                    it.copy(isErrorDialogVisible = true)
+                }
+                postToResetGenerateStatus()
+            }
+
+            GenerateStatus.EMPTY -> return
         }
     }
 
@@ -126,6 +114,14 @@ constructor(
             }.onFailure {
                 _mainSideEffect.emit(MainSideEffect.ShowErrorToast)
             }
+    }
+
+    private suspend fun postToResetGenerateStatus() {
+        generateRepository.getCanceledToReset(
+            mainState.value.generatedImage.requestId.toString()
+        ).onFailure {
+            _mainSideEffect.emit(MainSideEffect.ShowErrorToast)
+        }
     }
 
     private suspend fun patchStatusInDevelop() {

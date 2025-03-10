@@ -36,10 +36,6 @@ internal fun MainRoute(
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
-    LaunchedEffect(Unit) {
-        viewModel.onIntent(MainIntent.Init)
-    }
-
     LaunchedEffect(viewModel.mainSideEffect, lifecycleOwner) {
         viewModel.mainSideEffect.collect { sideEffect ->
             when (sideEffect) {
@@ -54,7 +50,9 @@ internal fun MainRoute(
     }
 
     MainScreen(
-        navigator = navigator
+        navigator = navigator,
+        onTabSelected = { tab -> viewModel.onIntent(MainIntent.TabSelect(tab)) },
+        onGenerateBtnClicked = { viewModel.onIntent(MainIntent.GenerateBtnClick) }
     )
 }
 
