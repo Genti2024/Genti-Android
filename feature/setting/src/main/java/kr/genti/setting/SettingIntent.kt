@@ -1,7 +1,6 @@
 package kr.genti.setting
 
 sealed class SettingIntent {
-    data object Init : SettingIntent()
     data object BackButtonClick : SettingIntent()
     data object TermButtonClick : SettingIntent()
     data object PrivacyButtonClick : SettingIntent()
@@ -9,4 +8,6 @@ sealed class SettingIntent {
     data object QuestionButtonClick : SettingIntent()
     data object LogoutButtonClick : SettingIntent()
     data object QuitButtonClick : SettingIntent()
+    data object LogoutRequest : SettingIntent()
+    data object QuitRequest : SettingIntent()
 }

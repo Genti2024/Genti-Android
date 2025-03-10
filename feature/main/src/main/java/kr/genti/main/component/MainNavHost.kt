@@ -37,7 +37,8 @@ internal fun MainNavHost(
             navigateToTutorial = navigator::navigateToTutorial,
         )
         settingNavGraph(
-            paddingValues = paddingValues
+            paddingValues = paddingValues,
+            navigateToBack = navigator::navigatePopBackStack
         )
     }
 }

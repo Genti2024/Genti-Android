@@ -1,11 +1,14 @@
 package kr.genti.setting
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kr.genti.domain.repository.InfoRepository
 import kr.genti.domain.repository.UserRepository
 import javax.inject.Inject
@@ -25,7 +28,6 @@ constructor(
 
     fun onIntent(intent: SettingIntent) {
         when (intent) {
-            is SettingIntent.Init -> handleInit()
             is SettingIntent.BackButtonClick -> handleBackButtonClick()
             is SettingIntent.TermButtonClick -> handleSettingButtonClick(WEB_TERMS_OF_SERVICE)
             is SettingIntent.PrivacyButtonClick -> handleSettingButtonClick(WEB_PRIVACY_POLICY)
@@ -33,27 +35,71 @@ constructor(
             is SettingIntent.QuestionButtonClick -> handleSettingButtonClick(WEB_QUESTION)
             is SettingIntent.LogoutButtonClick -> handleLogoutButtonClick()
             is SettingIntent.QuitButtonClick -> handleQuitButtonClick()
+            is SettingIntent.LogoutRequest -> handleLogoutRequest()
+            is SettingIntent.QuitRequest -> handleQuitRequest()
         }
     }
 
-    private fun handleInit() {
-
-    }
-
     private fun handleBackButtonClick() {
-        
+        viewModelScope.launch {
+            _settingSideEffect.emit(SettingSideEffect.NavigateToBack)
+        }
     }
 
     private fun handleSettingButtonClick(url: String) {
-
+        viewModelScope.launch {
+            _settingSideEffect.emit(SettingSideEffect.NavigateToWeb(url))
+        }
     }
 
     private fun handleLogoutButtonClick() {
-
+        _settingState.update {
+            it.copy(isLogoutDialogVisible = true)
+        }
     }
 
     private fun handleQuitButtonClick() {
+        _settingState.update {
+            it.copy(isQuitDialogVisible = true)
+        }
+    }
 
+    private fun handleLogoutRequest() {
+        viewModelScope.launch {
+            logoutFromServer()
+        }
+    }
+
+    private fun handleQuitRequest() {
+        viewModelScope.launch {
+            quitFromServer()
+        }
+    }
+
+    private suspend fun logoutFromServer() {
+        infoRepository.postUserLogout()
+            .onSuccess {
+                userRepository.clearInfo()
+                _settingSideEffect.emit(SettingSideEffect.RestartApp)
+            }.onFailure {
+                _settingState.update {
+                    it.copy(isLogoutDialogVisible = false)
+                }
+                _settingSideEffect.emit(SettingSideEffect.ShowErrorToast)
+            }
+    }
+
+    private suspend fun quitFromServer() {
+        infoRepository.deleteUser()
+            .onSuccess {
+                userRepository.clearInfo()
+                _settingSideEffect.emit(SettingSideEffect.RestartApp)
+            }.onFailure {
+                _settingState.update {
+                    it.copy(isQuitDialogVisible = false)
+                }
+                _settingSideEffect.emit(SettingSideEffect.ShowErrorToast)
+            }
     }
 
     companion object {

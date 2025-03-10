@@ -16,10 +16,12 @@ fun NavController.navigateToSetting(
 
 fun NavGraphBuilder.settingNavGraph(
     paddingValues: PaddingValues,
+    navigateToBack: () -> Unit = {}
 ) {
     composable<SettingRoute.Setting> {
         SettingRoute(
-            paddingValues = paddingValues
+            paddingValues = paddingValues,
+            navigateToBack = navigateToBack
         )
     }
 }

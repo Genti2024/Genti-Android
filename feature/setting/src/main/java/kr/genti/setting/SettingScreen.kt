@@ -1,5 +1,7 @@
 package kr.genti.setting
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.jakewharton.processphoenix.ProcessPhoenix
 import kr.genti.common.extension.toast
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.layout.GentiTopBar
@@ -34,21 +37,26 @@ import kr.genti.setting.component.SettingItem
 internal fun SettingRoute(
     paddingValues: PaddingValues,
     viewModel: SettingViewModel = hiltViewModel(),
+    navigateToBack: () -> Unit = {},
 ) {
     val settingState by viewModel.settingState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
-    LaunchedEffect(Unit) {
-        viewModel.onIntent(SettingIntent.Init)
-    }
-
     LaunchedEffect(viewModel.settingSideEffect, lifecycleOwner) {
         viewModel.settingSideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is SettingSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
-                is SettingSideEffect.NavigateToWeb -> {}
-                is SettingSideEffect.RestartApp -> {}
+
+                is SettingSideEffect.NavigateToBack -> navigateToBack()
+
+                is SettingSideEffect.NavigateToWeb -> {
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url)))
+                }
+
+                is SettingSideEffect.RestartApp -> {
+                    ProcessPhoenix.triggerRebirth(context)
+                }
             }
         }
     }

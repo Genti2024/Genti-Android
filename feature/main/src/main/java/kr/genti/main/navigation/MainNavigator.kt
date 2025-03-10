@@ -53,6 +53,8 @@ class MainNavigator(
         }
     }
 
+    fun navigatePopBackStack() = navController.popBackStack()
+
     fun navigateToFeed(previous: Route) = navController.navigateToFeed(
         navOptions = navOptions { popUpTo(previous) { inclusive = true } }
     )
