@@ -10,6 +10,7 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
+import kr.genti.common.extension.toast
 
 fun Activity.setStatusBarColorFromResource(colorResId: Int) {
     val statusBarColor = ContextCompat.getColor(this, colorResId)

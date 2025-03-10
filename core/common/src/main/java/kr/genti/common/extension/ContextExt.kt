@@ -1,4 +1,4 @@
-package kr.genti.common.xml.extension
+package kr.genti.common.extension
 
 import android.app.Activity
 import android.content.Context
@@ -10,6 +10,21 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
+
+fun Context.toast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+fun Context.longToast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+}
+
+fun Context.snackBar(
+    anchorView: View,
+    message: () -> String,
+) {
+    Snackbar.make(anchorView, message(), Snackbar.LENGTH_SHORT).show()
+}
 
 fun Context.stringOf(
     @StringRes resId: Int,

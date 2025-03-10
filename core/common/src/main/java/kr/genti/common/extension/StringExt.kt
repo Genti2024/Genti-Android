@@ -1,10 +1,6 @@
-package kr.genti.common.xml.extension
+package kr.genti.common.extension
 
 import java.text.BreakIterator
-
-fun String?.isJsonObject(): Boolean = this?.startsWith("{") == true && this.endsWith("}")
-
-fun String?.isJsonArray(): Boolean = this?.startsWith("[") == true && this.endsWith("]")
 
 fun String.getGraphemeLength(): Int {
     val breakIterator: BreakIterator = BreakIterator.getCharacterInstance()

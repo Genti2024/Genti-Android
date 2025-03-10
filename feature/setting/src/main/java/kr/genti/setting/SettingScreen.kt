@@ -1,24 +1,34 @@
 package kr.genti.setting
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kr.genti.common.xml.extension.toast
+import kr.genti.common.extension.toast
 import kr.genti.core.designsystem.R
+import kr.genti.designsystem.component.layout.GentiTopBar
 import kr.genti.designsystem.theme.Black
+import kr.genti.designsystem.theme.GentiGreen
 import kr.genti.designsystem.theme.GentiTheme
+import kr.genti.designsystem.theme.White20
+import kr.genti.designsystem.theme.White60
+import kr.genti.feature.setting.BuildConfig
+import kr.genti.setting.component.SettingItem
 
 @Composable
 internal fun SettingRoute(
@@ -28,7 +38,6 @@ internal fun SettingRoute(
     val settingState by viewModel.settingState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
-    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(Unit) {
         viewModel.onIntent(SettingIntent.Init)
@@ -49,6 +58,7 @@ internal fun SettingRoute(
         paddingValues = paddingValues,
         isLogoutDialogVisible = settingState.isLogoutDialogVisible,
         isQuitDialogVisible = settingState.isQuitDialogVisible,
+        versionText = "v" + BuildConfig.VERSION_NAME,
         onBackButtonClick = { viewModel.onIntent(SettingIntent.BackButtonClick) },
         onTermButtonClick = { viewModel.onIntent(SettingIntent.TermButtonClick) },
         onPrivacyButtonClick = { viewModel.onIntent(SettingIntent.PrivacyButtonClick) },
@@ -65,6 +75,7 @@ private fun SettingScreen(
     paddingValues: PaddingValues = PaddingValues(),
     isLogoutDialogVisible: Boolean = false,
     isQuitDialogVisible: Boolean = false,
+    versionText: String = "",
     onBackButtonClick: () -> Unit = {},
     onTermButtonClick: () -> Unit = {},
     onPrivacyButtonClick: () -> Unit = {},
@@ -73,13 +84,59 @@ private fun SettingScreen(
     onLogoutButtonClick: () -> Unit = {},
     onQuitButtonClick: () -> Unit = {},
 ) {
-    Box(
+    Column(
         modifier = modifier
             .fillMaxSize()
             .background(Black)
             .padding(paddingValues)
     ) {
-        
+        GentiTopBar(
+            titleText = stringResource(R.string.setting_tv_title),
+            onBackButtonClick = onBackButtonClick,
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        SettingItem(
+            text = stringResource(R.string.setting_btn_terms_of_service),
+            onItemClick = onTermButtonClick,
+        )
+        SettingItem(
+            text = stringResource(R.string.setting_btn_privacy_policy),
+            onItemClick = onPrivacyButtonClick,
+        )
+        SettingItem(
+            text = stringResource(R.string.setting_btn_company_info),
+            onItemClick = onCompanyButtonClick,
+        )
+        SettingItem(
+            text = stringResource(R.string.setting_btn_question),
+            onItemClick = onQuestionButtonClick,
+        )
+        SettingItem(
+            text = stringResource(R.string.setting_btn_android_version),
+            versionText = versionText,
+            isArrowVisible = false,
+        )
+
+        HorizontalDivider(
+            modifier = Modifier.padding(16.dp),
+            thickness = 2.dp,
+            color = White20
+        )
+
+        SettingItem(
+            text = stringResource(R.string.setting_btn_logout),
+            textColor = GentiGreen,
+            isArrowVisible = false,
+            onItemClick = onLogoutButtonClick,
+        )
+        SettingItem(
+            text = stringResource(R.string.setting_btn_quit),
+            textColor = White60,
+            isArrowVisible = false,
+            onItemClick = onQuitButtonClick,
+        )
     }
 }
 
@@ -87,6 +144,8 @@ private fun SettingScreen(
 @Composable
 fun SettingScreenPreview() {
     GentiTheme {
-        SettingScreen()
+        SettingScreen(
+            versionText = "v3.0.0",
+        )
     }
 }

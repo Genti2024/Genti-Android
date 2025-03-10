@@ -21,7 +21,7 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.jakewharton.processphoenix.ProcessPhoenix
 import kr.genti.common.manager.AppUpdateManager
-import kr.genti.common.xml.extension.toast
+import kr.genti.common.extension.toast
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.navigation.OnboardingRoute
