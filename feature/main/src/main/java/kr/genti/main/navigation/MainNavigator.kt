@@ -16,6 +16,7 @@ import kr.genti.onboarding.navigation.navigateToSignup
 import kr.genti.onboarding.navigation.navigateToSplash
 import kr.genti.onboarding.navigation.navigateToTutorial
 import kr.genti.profile.navigation.navigateToProfile
+import kr.genti.result.navigation.navigateToVerify
 import kr.genti.setting.navigation.navigateToSetting
 
 class MainNavigator(
@@ -70,9 +71,7 @@ class MainNavigator(
 
     }
 
-    fun navigateToVerify() {
-
-    }
+    fun navigateToVerify() = navController.navigateToVerify()
 
     fun navigateToWaiting() {
 

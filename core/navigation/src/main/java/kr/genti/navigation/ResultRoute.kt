@@ -4,6 +4,9 @@ import kotlinx.serialization.Serializable
 
 interface ResultRoute : Route {
     @Serializable
+    data object Verify : ResultRoute
+    
+    @Serializable
     data object Waiting : ResultRoute
 
     @Serializable
