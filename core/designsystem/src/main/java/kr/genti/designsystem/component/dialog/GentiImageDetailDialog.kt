@@ -7,18 +7,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import kr.genti.common.extension.noRippleClickable
 import kr.genti.core.designsystem.R
+import kr.genti.designsystem.component.button.CloseButton
 import kr.genti.designsystem.component.button.GentiButton
 import kr.genti.designsystem.component.button.GentiGradationButton
 import kr.genti.designsystem.component.item.GentiAsyncImage
@@ -46,14 +44,8 @@ fun GentiImageDetailDialog(
                 .background(Transparent70)
                 .noRippleClickable { onDismissRequest() }
         ) {
-            Icon(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_close),
-                contentDescription = null,
-                tint = White,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .padding(top = 16.dp)
-                    .align(Alignment.TopEnd)
+            CloseButton(
+                onCloseBtnClicked = onDismissRequest
             )
 
             GentiAsyncImage(

@@ -10,6 +10,7 @@ import kr.genti.navigation.Route
 import kr.genti.onboarding.login.LoginRoute
 import kr.genti.onboarding.signup.SignupRoute
 import kr.genti.onboarding.splash.SplashRoute
+import kr.genti.onboarding.tutorial.TutorialRoute
 
 fun NavController.navigateToSplash(
     navOptions: NavOptions? = null
@@ -27,6 +28,12 @@ fun NavController.navigateToSignup(
     navOptions: NavOptions? = null
 ) {
     navigate(OnboardingRoute.Signup, navOptions)
+}
+
+fun NavController.navigateToTutorial(
+    navOptions: NavOptions? = null
+) {
+    navigate(OnboardingRoute.Tutorial, navOptions)
 }
 
 fun NavGraphBuilder.onboardingNavGraph(
@@ -53,6 +60,12 @@ fun NavGraphBuilder.onboardingNavGraph(
         SignupRoute(
             paddingValues = paddingValues,
             navigateToTutorial = navigateToTutorial
+        )
+    }
+    composable<OnboardingRoute.Tutorial> {
+        TutorialRoute(
+            paddingValues = paddingValues,
+            navigateToFeed = navigateToFeed,
         )
     }
 }

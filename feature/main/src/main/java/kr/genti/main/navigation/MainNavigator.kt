@@ -14,6 +14,7 @@ import kr.genti.navigation.Route
 import kr.genti.onboarding.navigation.navigateToLogin
 import kr.genti.onboarding.navigation.navigateToSignup
 import kr.genti.onboarding.navigation.navigateToSplash
+import kr.genti.onboarding.navigation.navigateToTutorial
 import kr.genti.profile.navigation.navigateToProfile
 import kr.genti.setting.navigation.navigateToSetting
 
@@ -76,7 +77,9 @@ class MainNavigator(
         navOptions = navOptions { popUpTo(previous) { inclusive = true } }
     )
 
-    fun navigateToTutorial(previous: Route) = {}
+    fun navigateToTutorial(previous: Route) = navController.navigateToTutorial(
+        navOptions = navOptions { popUpTo(previous) { inclusive = true } }
+    )
 }
 
 @Composable

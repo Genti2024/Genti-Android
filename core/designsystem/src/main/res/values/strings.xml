@@ -39,11 +39,15 @@
     <string name="signup_tv_phone_hint">010XXXXXXXX</string>
     <string name="signup_btn_submit">완료</string>
 
-    <string name="onboarding_btn_next">다음으로</string>
+    <string name="onboarding_btn_next">다음</string>
     <string name="onboarding_btn_finish">젠티하러 가기</string>
     <string name="onboarding_tv_title">젠티, 어떻게 사용하나요?</string>
     <string name="onboarding_tv_first_subtitle">원하는 사진을 자유롭게 설명해요.</string>
     <string name="onboarding_tv_first_body">의상, 배경 등 어떤 사진을 만들고 싶은지 입력해주세요.</string>
+    <string name="onboarding_tv_second_subtitle">얼굴 사진 3장만 골라요.</string>
+    <string name="onboarding_tv_second_body">사진 생성에 이용할 본인 사진 3장을 골라주세요.</string>
+    <string name="onboarding_tv_third_subtitle">나만의 특별한 사진 완성!</string>
+    <string name="onboarding_tv_third_body">지금 젠티하러 가볼까요?</string>
 
     <string name="create_select_tv_default_title">내 사진 만들기</string>
     <string name="create_select_tv_default_subtitle">찍고 싶은 내 사진을 AI로 마음껏 만들어 보세요!</string>
