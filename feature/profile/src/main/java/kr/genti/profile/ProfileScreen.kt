@@ -1,7 +1,8 @@
 package kr.genti.profile
 
 import android.Manifest
-import android.app.Activity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,8 +23,8 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kr.genti.common.manager.ImageManager
 import kr.genti.common.extension.toast
+import kr.genti.common.manager.ImageManager
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.dialog.GentiImageDetailDialog
 import kr.genti.designsystem.component.layout.GentiLoadingScreen
@@ -47,6 +48,12 @@ internal fun ProfileRoute(
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
+    val writePermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) viewModel.onIntent(ProfileIntent.SaveBtnClick)
+    }
+
     LaunchedEffect(Unit) {
         viewModel.onIntent(ProfileIntent.Init)
     }
@@ -60,9 +67,7 @@ internal fun ProfileRoute(
                 is ProfileSideEffect.NavigateToSetting -> navigateToSetting()
 
                 is ProfileSideEffect.RequestPermission -> {
-                    (context as? Activity)?.requestPermissions(
-                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 200
-                    ) ?: context.toast(context.getString(R.string.error_msg))
+                    writePermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 }
 
                 is ProfileSideEffect.NavigateToShare -> {

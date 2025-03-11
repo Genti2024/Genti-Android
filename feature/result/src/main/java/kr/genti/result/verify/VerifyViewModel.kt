@@ -9,6 +9,10 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kr.genti.common.manager.AmplitudeManager
+import kr.genti.common.manager.AmplitudeManager.EVENT_CLICK_BTN
+import kr.genti.common.manager.AmplitudeManager.PROPERTY_BTN
+import kr.genti.common.manager.AmplitudeManager.PROPERTY_PAGE
 import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.repository.UploadRepository
 import javax.inject.Inject
@@ -30,6 +34,7 @@ constructor(
     fun onIntent(intent: VerifyIntent) {
         when (intent) {
             is VerifyIntent.VerifyButtonClick -> handleVerifyButtonClick()
+            is VerifyIntent.CameraPermissionGrant -> handleCameraPermissionGrant()
             is VerifyIntent.RetakeButtonClick -> handleRetakeButtonClick()
             is VerifyIntent.FinishButtonClick -> handleFinishButtonClick()
             is VerifyIntent.BackButtonClick -> handleExitDialog(true)
@@ -39,18 +44,28 @@ constructor(
     }
 
     private fun handleVerifyButtonClick() {
+        trackAmplitude("verifyme")
+        viewModelScope.launch {
+            _verifySideEffect.emit(VerifySideEffect.StartPermissionLauncher)
+        }
+    }
 
+    private fun handleCameraPermissionGrant() {
+        viewModelScope.launch {
+            _verifySideEffect.emit(VerifySideEffect.StartCameraLauncher)
+        }
     }
 
     private fun handleRetakeButtonClick() {
-
+        trackAmplitude("photoretake")
     }
 
     private fun handleFinishButtonClick() {
-
+        trackAmplitude("verifymedone")
     }
 
     private fun handleExitButtonClick() {
+        trackAmplitude("exit")
         viewModelScope.launch {
             _verifySideEffect.emit(VerifySideEffect.NavigateToBack)
         }
@@ -60,5 +75,14 @@ constructor(
         _verifyState.update {
             it.copy(isExitDialogVisible = isVisible)
         }
+    }
+
+    private fun trackAmplitude(btnName: String) {
+        val pageName = if (verifyState.value.isPhotoTaken) "verifyme2" else "verifyme1"
+        AmplitudeManager.trackEvent(
+            EVENT_CLICK_BTN,
+            mapOf(PROPERTY_PAGE to pageName),
+            mapOf(PROPERTY_BTN to btnName),
+        )
     }
 }

@@ -2,6 +2,7 @@ package kr.genti.result.verify
 
 sealed class VerifyIntent {
     data object VerifyButtonClick : VerifyIntent()
+    data object CameraPermissionGrant : VerifyIntent()
     data object RetakeButtonClick : VerifyIntent()
     data object FinishButtonClick : VerifyIntent()
     data object BackButtonClick : VerifyIntent()
