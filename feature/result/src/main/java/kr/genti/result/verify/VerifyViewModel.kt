@@ -1,11 +1,14 @@
 package kr.genti.result.verify
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.repository.UploadRepository
 import javax.inject.Inject
@@ -48,10 +51,14 @@ constructor(
     }
 
     private fun handleExitButtonClick() {
-        
+        viewModelScope.launch {
+            _verifySideEffect.emit(VerifySideEffect.NavigateToBack)
+        }
     }
 
     private fun handleExitDialog(isVisible: Boolean) {
-
+        _verifyState.update {
+            it.copy(isExitDialogVisible = isVisible)
+        }
     }
 }

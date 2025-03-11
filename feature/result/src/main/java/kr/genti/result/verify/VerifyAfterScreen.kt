@@ -26,6 +26,7 @@ import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.button.CloseButton
 import kr.genti.designsystem.component.button.GentiButton
 import kr.genti.designsystem.component.item.GentiAsyncUriImage
+import kr.genti.designsystem.component.layout.GentiLoadingScreen
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiGreen
 import kr.genti.designsystem.theme.GentiTheme
@@ -38,6 +39,7 @@ internal fun VerifyAfterScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues(),
     imageUri: Uri? = null,
+    isLoading: Boolean = false,
     onBackButtonClicked: () -> Unit = {},
     onRetakeButtonClicked: () -> Unit = {},
     onFinishButtonClicked: () -> Unit = {}
@@ -122,6 +124,11 @@ internal fun VerifyAfterScreen(
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
+
+    GentiLoadingScreen(
+        isLoading = isLoading,
+        modifier = Modifier.fillMaxSize()
+    )
 }
 
 @Preview
