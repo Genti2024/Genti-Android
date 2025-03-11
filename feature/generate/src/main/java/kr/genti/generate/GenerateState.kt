@@ -6,7 +6,7 @@ import kr.genti.domain.enums.PictureRatio
 import kr.genti.generate.model.GenerateStage
 
 data class GenerateState(
-    val currentStage: GenerateStage = GenerateStage.PROMPT_INPUT,
+    val currentStage: GenerateStage = GenerateStage.INIT,
     val currentStep: Int = 0,
     val isParentPic: Boolean = false,
     val pictureNumber: PictureNumber = PictureNumber.NONE,

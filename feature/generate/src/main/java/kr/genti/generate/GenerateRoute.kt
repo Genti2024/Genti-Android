@@ -1,5 +1,6 @@
 package kr.genti.generate
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -30,6 +31,7 @@ import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiGreen
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.designsystem.theme.White20
+import kr.genti.domain.enums.PictureNumber
 import kr.genti.generate.model.GenerateStage
 
 @Composable
@@ -59,13 +61,20 @@ internal fun GenerateRoute(
         }
     }
 
+    BackHandler {
+        viewModel.onIntent(GenerateIntent.BackBtnClick)
+    }
+
     GenerateScreen(
         modifier = Modifier,
         paddingValues = paddingValues,
         isParentPic = generateState.isParentPic,
         currentStage = generateState.currentStage,
         currentStep = generateState.currentStep,
-        progress = generateState.progress
+        progress = generateState.progress,
+        pictureNumber = generateState.pictureNumber,
+        onPictureNumberClick = { viewModel.onIntent(GenerateIntent.NumberSelect(it)) },
+        onNextBtnClick = { viewModel.onIntent(GenerateIntent.NextBtnClick) }
     )
 }
 
@@ -74,9 +83,13 @@ private fun GenerateScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues(),
     isParentPic: Boolean = false,
-    currentStage: GenerateStage = GenerateStage.PROMPT_INPUT,
+    currentStage: GenerateStage = GenerateStage.INIT,
     currentStep: Int = 1,
     progress: Float = 0f,
+    pictureNumber: PictureNumber = PictureNumber.NONE,
+    onPictureNumberClick: (PictureNumber) -> Unit = {},
+    onNextBtnClick: () -> Unit = {},
+    onBackBtnClick: () -> Unit = {},
 ) {
     val animatedProgress by animateFloatAsState(
         targetValue = progress,
@@ -94,7 +107,8 @@ private fun GenerateScreen(
             titleText = stringResource(if (!isParentPic) R.string.create_tv_title else R.string.create_parent_tv_title),
             isGenerate = true,
             currentStep = currentStep,
-            totalStep = if (!isParentPic) 3 else 4
+            totalStep = if (!isParentPic) 3 else 4,
+            onBackButtonClick = onBackBtnClick
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -110,7 +124,11 @@ private fun GenerateScreen(
 
         when (currentStage) {
             GenerateStage.NUMBER_SELECT -> {
-                NumberSelectScreen()
+                NumberSelectScreen(
+                    pictureNumber = pictureNumber,
+                    onPictureNumberClick = onPictureNumberClick,
+                    onNextBtnClick = onNextBtnClick
+                )
             }
 
             GenerateStage.PROMPT_INPUT -> {
@@ -124,6 +142,8 @@ private fun GenerateScreen(
             GenerateStage.IMAGE_SELECT -> {
                 ImageSelectScreen()
             }
+
+            else -> {}
         }
     }
 }
