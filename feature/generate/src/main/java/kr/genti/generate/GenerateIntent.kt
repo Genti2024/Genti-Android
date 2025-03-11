@@ -9,7 +9,7 @@ sealed class GenerateIntent {
     data object NextBtnClick : GenerateIntent()
     data class NumberSelect(val pictureNumber: PictureNumber) : GenerateIntent()
     data object PromptExampleSwipe : GenerateIntent()
-    data class PromptChange(val year: String) : GenerateIntent()
+    data class PromptChange(val prompt: String) : GenerateIntent()
     data class RatioSelect(val pictureRatio: PictureRatio) : GenerateIntent()
     data class TextFieldFocused(val isFocused: Boolean) : GenerateIntent()
 }

@@ -63,6 +63,13 @@ internal fun GenerateRoute(
         viewModel.onIntent(GenerateIntent.BackBtnClick)
     }
 
+    LaunchedEffect(generateState.isFocusClearNeeded) {
+        if (generateState.isFocusClearNeeded) {
+            focusManager.clearFocus()
+            viewModel.onIntent(GenerateIntent.TextFieldFocused(false))
+        }
+    }
+
     GenerateScreen(
         modifier = Modifier,
         isParentPic = generateState.isParentPic,
@@ -72,8 +79,11 @@ internal fun GenerateRoute(
         pictureNumber = generateState.pictureNumber,
         pictureRatio = generateState.pictureRatio,
         exampleList = generateState.exampleList,
+        prompt = generateState.prompt,
         onPictureNumberClick = { viewModel.onIntent(GenerateIntent.NumberSelect(it)) },
         onExamplePageSwipe = { viewModel.onIntent(GenerateIntent.PromptExampleSwipe) },
+        onPromptChanged = { viewModel.onIntent(GenerateIntent.PromptChange(it)) },
+        onTextFieldOutsideClicked = { viewModel.onIntent(GenerateIntent.TextFieldFocused(true)) },
         onPictureRatioClick = { viewModel.onIntent(GenerateIntent.RatioSelect(it)) },
         onBackBtnClick = { viewModel.onIntent(GenerateIntent.BackBtnClick) },
         onNextBtnClick = { viewModel.onIntent(GenerateIntent.NextBtnClick) }
@@ -90,8 +100,11 @@ private fun GenerateScreen(
     pictureNumber: PictureNumber = PictureNumber.NONE,
     pictureRatio: PictureRatio = PictureRatio.NONE,
     exampleList: ImmutableList<PromptExampleModel> = persistentListOf(),
+    prompt: String = "",
     onPictureNumberClick: (PictureNumber) -> Unit = {},
     onExamplePageSwipe: () -> Unit = {},
+    onPromptChanged: (String) -> Unit = {},
+    onTextFieldOutsideClicked: () -> Unit = {},
     onPictureRatioClick: (PictureRatio) -> Unit = {},
     onNextBtnClick: () -> Unit = {},
     onBackBtnClick: () -> Unit = {},
@@ -128,7 +141,10 @@ private fun GenerateScreen(
                 PromptInputScreen(
                     isParentPic = isParentPic,
                     exampleList = exampleList,
+                    prompt = prompt,
                     onExamplePageSwipe = onExamplePageSwipe,
+                    onPromptChanged = onPromptChanged,
+                    onTextFieldOutsideClicked = onTextFieldOutsideClicked,
                     onNextBtnClick = onNextBtnClick
                 )
             }

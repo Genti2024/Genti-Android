@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kr.genti.common.extension.noRippleClickable
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.button.GentiGradationIconButton
 import kr.genti.designsystem.component.item.GentiCheckedText
@@ -39,13 +40,16 @@ fun PromptInputScreen(
     modifier: Modifier = Modifier,
     isParentPic: Boolean = false,
     exampleList: ImmutableList<PromptExampleModel> = persistentListOf(),
-    onExamplePageSwipe: () -> Unit = {},
     prompt: String = "",
+    onExamplePageSwipe: () -> Unit = {},
     onPromptChanged: (String) -> Unit = {},
+    onTextFieldOutsideClicked: () -> Unit = {},
     onNextBtnClick: () -> Unit = {},
 ) {
     Box(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .noRippleClickable { onTextFieldOutsideClicked() }
     ) {
         Column(
             modifier = Modifier
@@ -106,6 +110,7 @@ fun PromptInputScreen(
                     .fillMaxWidth()
                     .background(color = Black, shape = RoundedCornerShape(10.dp))
                     .padding(8.dp),
+                verticalAlignment = Alignment.Bottom
             ) {
                 BasicTextField(
                     value = prompt,
@@ -133,7 +138,8 @@ fun PromptInputScreen(
                 GentiGradationIconButton(
                     iconRes = R.drawable.ic_play,
                     isActivate = prompt.isNotEmpty(),
-                    onBtnClick = onNextBtnClick
+                    onBtnClick = onNextBtnClick,
+                    modifier = Modifier
                 )
             }
         }

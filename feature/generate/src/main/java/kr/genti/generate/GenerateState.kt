@@ -15,6 +15,7 @@ data class GenerateState(
     val pictureNumber: PictureNumber = PictureNumber.NONE,
     val exampleList: ImmutableList<PromptExampleModel> = persistentListOf(),
     val prompt: String = "",
+    val isFocusClearNeeded: Boolean = false,
     val pictureRatio: PictureRatio = PictureRatio.NONE,
     val selectedGender: Gender = Gender.NONE,
 ) {

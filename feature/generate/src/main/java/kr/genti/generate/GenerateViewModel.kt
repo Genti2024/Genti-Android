@@ -38,7 +38,7 @@ constructor(
             is GenerateIntent.NextBtnClick -> handleNextBtnClick()
             is GenerateIntent.NumberSelect -> handleNumberSelect(intent.pictureNumber)
             is GenerateIntent.PromptExampleSwipe -> handlePromptExampleSwipe()
-            is GenerateIntent.PromptChange -> handlePromptChange()
+            is GenerateIntent.PromptChange -> handlePromptChange(intent.prompt)
             is GenerateIntent.TextFieldFocused -> handleTextFieldOutsideClick(intent.isFocused)
             is GenerateIntent.RatioSelect -> handleRatioSelect(intent.pictureRatio)
         }
@@ -93,12 +93,16 @@ constructor(
         // TODO : 앰플리튜드 작업
     }
 
-    private fun handlePromptChange() {
-
+    private fun handlePromptChange(prompt: String) {
+        _generateState.update {
+            it.copy(prompt = prompt)
+        }
     }
 
-    private fun handleTextFieldOutsideClick(isFocused: Boolean) {
-
+    private fun handleTextFieldOutsideClick(isFocusClearNeeded: Boolean) {
+        _generateState.update {
+            it.copy(isFocusClearNeeded = isFocusClearNeeded)
+        }
     }
 
     private fun handleRatioSelect(pictureRatio: PictureRatio) {
