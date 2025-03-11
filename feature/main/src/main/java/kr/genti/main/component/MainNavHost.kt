@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import kr.genti.feed.navigation.feedNavGraph
+import kr.genti.generate.navigation.generateNavGraph
 import kr.genti.main.navigation.MainNavigator
 import kr.genti.onboarding.navigation.onboardingNavGraph
 import kr.genti.profile.navigation.profileNavGraph
@@ -40,6 +41,11 @@ internal fun MainNavHost(
         )
         settingNavGraph(
             paddingValues = paddingValues,
+            navigateToBack = navigator::navigatePopBackStack
+        )
+        generateNavGraph(
+            paddingValues = paddingValues,
+            navigateToWaiting = navigator::navigateToWaiting,
             navigateToBack = navigator::navigatePopBackStack
         )
         resultNavGraph(
