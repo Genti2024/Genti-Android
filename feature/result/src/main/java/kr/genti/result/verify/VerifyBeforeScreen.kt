@@ -55,74 +55,79 @@ internal fun VerifyBeforeScreen(
             modifier = Modifier.align(Alignment.Center)
         )
 
-        CloseButton(onCloseBtnClicked = onBackButtonClicked)
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .align(Alignment.TopCenter),
-            horizontalAlignment = Alignment.CenterHorizontally
+        Box(
+            modifier = Modifier.padding(top = paddingValues.calculateTopPadding())
         ) {
-            Spacer(modifier = Modifier.height(80.dp))
 
-            Text(
-                text = stringResource(R.string.verify_before_tv_title),
-                style = GentiTheme.typography.title,
-                textAlign = TextAlign.Center,
-                fontSize = 24.sp,
-                lineHeight = 30.sp
-            )
+            CloseButton(onCloseBtnClicked = onBackButtonClicked)
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .align(Alignment.TopCenter),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.height(80.dp))
 
-            Text(
-                text = stringResource(R.string.verify_before_tv_subtitle),
-                style = GentiTheme.typography.body2,
-                textAlign = TextAlign.Center,
-                color = White60
-            )
+                Text(
+                    text = stringResource(R.string.verify_before_tv_title),
+                    style = GentiTheme.typography.title,
+                    textAlign = TextAlign.Center,
+                    fontSize = 24.sp,
+                    lineHeight = 30.sp
+                )
 
-            Spacer(modifier = Modifier.height(2.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            Text(
-                text = stringResource(R.string.verify_before_tv_baby),
-                style = GentiTheme.typography.body2,
-                textAlign = TextAlign.Center,
-                color = White30
-            )
-        }
+                Text(
+                    text = stringResource(R.string.verify_before_tv_subtitle),
+                    style = GentiTheme.typography.body2,
+                    textAlign = TextAlign.Center,
+                    color = White60
+                )
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .align(Alignment.BottomCenter),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.img_tooltip_verify),
-                contentDescription = null,
-                modifier = Modifier.height(48.dp)
-            )
+                Spacer(modifier = Modifier.height(2.dp))
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = stringResource(R.string.verify_before_tv_baby),
+                    style = GentiTheme.typography.body2,
+                    textAlign = TextAlign.Center,
+                    color = White30
+                )
+            }
 
-            GentiGradationButton(
-                textRes = R.string.verify_before_btn_photo,
-                onClick = onVerifyButtonClicked
-            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .align(Alignment.BottomCenter),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.img_tooltip_verify),
+                    contentDescription = null,
+                    modifier = Modifier.height(48.dp)
+                )
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            Text(
-                text = stringResource(R.string.verify_before_tv_warning),
-                style = GentiTheme.typography.caption2,
-                textAlign = TextAlign.Center,
-                color = White30
-            )
+                GentiGradationButton(
+                    textRes = R.string.verify_before_btn_photo,
+                    onClick = onVerifyButtonClicked
+                )
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = stringResource(R.string.verify_before_tv_warning),
+                    style = GentiTheme.typography.caption2,
+                    textAlign = TextAlign.Center,
+                    color = White30
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+            }
         }
     }
 }
