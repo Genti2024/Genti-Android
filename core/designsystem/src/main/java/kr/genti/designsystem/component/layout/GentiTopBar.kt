@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kr.genti.common.extension.noRippleClickable
 import kr.genti.core.designsystem.R
+import kr.genti.designsystem.theme.GentiGreen
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.designsystem.theme.White
 
@@ -21,6 +22,9 @@ import kr.genti.designsystem.theme.White
 fun GentiTopBar(
     modifier: Modifier = Modifier,
     titleText: String = "",
+    isGenerate: Boolean = false,
+    currentStep: Int = 1,
+    totalStep: Int = 3,
     onBackButtonClick: () -> Unit = {},
 ) {
     Box(
@@ -39,11 +43,23 @@ fun GentiTopBar(
                 .padding(start = 6.dp)
                 .padding(top = 3.dp)
         )
+
         Text(
             text = titleText,
             style = GentiTheme.typography.subtitle1,
             modifier = Modifier.align(Alignment.Center),
         )
+
+        if (isGenerate) {
+            Text(
+                text = "$currentStep/$totalStep",
+                style = GentiTheme.typography.subtitle1,
+                color = GentiGreen,
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 16.dp),
+            )
+        }
     }
 }
 

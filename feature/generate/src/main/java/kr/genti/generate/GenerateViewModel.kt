@@ -36,7 +36,7 @@ constructor(
 
     private fun handleInit(isParentPic: Boolean) {
         _generateState.update {
-            it.copy(isParentPic = isParentPic)
+            it.copy(isParentPic = isParentPic, currentStep = 1)
         }
     }
 
