@@ -82,7 +82,7 @@ class MainNavigator(
 
     fun navigateToSetting() = navController.navigateToSetting()
 
-    fun navigateToGenerate() = navController.navigateToGenerate()
+    fun navigateToGenerate(isParentPic: Boolean) = navController.navigateToGenerate(isParentPic)
 
     fun navigateToVerify() = navController.navigateToVerify()
 

@@ -60,7 +60,7 @@ internal fun MainRoute(
                 is MainSideEffect.NavigateToVerify -> navigator.navigateToVerify()
                 is MainSideEffect.NavigateToWaiting -> navigator.navigateToWaiting()
                 is MainSideEffect.NavigateToFinished -> navigator.navigateToFinished()
-                is MainSideEffect.NavigateToGenerate -> navigator.navigateToGenerate()
+                is MainSideEffect.NavigateToGenerate -> navigator.navigateToGenerate(sideEffect.isParentPic)
             }
         }
     }

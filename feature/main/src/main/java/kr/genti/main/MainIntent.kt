@@ -9,6 +9,6 @@ sealed class MainIntent {
     data object DialogDismiss : MainIntent()
     data object RegenerateDialogBtnClick : MainIntent()
     data object FinishedDialogBtnClick : MainIntent()
-    data class SelectDialogBtnClick(val isCreatingParentPic: Boolean) : MainIntent()
+    data class SelectDialogBtnClick(val isParentPic: Boolean) : MainIntent()
     data object DebugPatchBtnClick : MainIntent()
 }

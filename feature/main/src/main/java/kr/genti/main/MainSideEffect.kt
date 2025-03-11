@@ -6,7 +6,7 @@ sealed class MainSideEffect {
     data object ShowErrorToast : MainSideEffect()
     data object ShowStatusChangedToast : MainSideEffect()
     data class NavigateToTab(val tab: MainTab) : MainSideEffect()
-    data object NavigateToGenerate : MainSideEffect()
+    data class NavigateToGenerate(val isParentPic: Boolean) : MainSideEffect()
     data object NavigateToVerify : MainSideEffect()
     data object NavigateToWaiting : MainSideEffect()
     data object NavigateToFinished: MainSideEffect()

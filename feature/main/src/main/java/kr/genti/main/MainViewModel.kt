@@ -36,7 +36,7 @@ constructor(
             is MainIntent.DialogDismiss -> handleDialogDismiss()
             is MainIntent.RegenerateDialogBtnClick -> handleRegenerateDialogBtnClick()
             is MainIntent.FinishedDialogBtnClick -> handleFinishedDialogBtnClick()
-            is MainIntent.SelectDialogBtnClick -> handleSelectDialogBtnClick()
+            is MainIntent.SelectDialogBtnClick -> handleSelectDialogBtnClick(intent.isParentPic)
             is MainIntent.DebugPatchBtnClick -> handleDebugPatchBtnClick()
         }
     }
@@ -88,10 +88,11 @@ constructor(
         }
     }
 
-    private fun handleSelectDialogBtnClick() {
+    private fun handleSelectDialogBtnClick(isParentPic: Boolean) {
         handleDialogDismiss()
+        AmplitudeManager.trackEvent(if (isParentPic) "click_parentpicture" else "click_mypicture")
         viewModelScope.launch {
-            _mainSideEffect.emit(MainSideEffect.NavigateToGenerate)
+            _mainSideEffect.emit(MainSideEffect.NavigateToGenerate(isParentPic))
         }
     }
 

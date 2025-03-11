@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.repository.UploadRepository
 import javax.inject.Inject
@@ -25,7 +26,7 @@ constructor(
 
     fun onIntent(intent: GenerateIntent) {
         when (intent) {
-            is GenerateIntent.Init -> handleInit()
+            is GenerateIntent.Init -> handleInit(intent.isParentPic)
             is GenerateIntent.PromptChange -> handlePromptChange()
             is GenerateIntent.TextFieldFocused -> handleTextFieldOutsideClick(intent.isFocused)
             is GenerateIntent.BackBtnClick -> handleBackBtnClick()
@@ -33,8 +34,10 @@ constructor(
         }
     }
 
-    private fun handleInit() {
-
+    private fun handleInit(isParentPic: Boolean) {
+        _generateState.update {
+            it.copy(isParentPic = isParentPic)
+        }
     }
 
     private fun handlePromptChange() {
@@ -50,6 +53,6 @@ constructor(
     }
 
     private fun handleNextBtnClick() {
-        
+
     }
 }

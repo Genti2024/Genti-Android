@@ -18,6 +18,7 @@ import kr.genti.generate.model.GenerateStage
 internal fun GenerateRoute(
     paddingValues: PaddingValues,
     viewModel: GenerateViewModel = hiltViewModel(),
+    isParentPic: Boolean = false,
     navigateToWaiting: () -> Unit = {},
     navigateToBack: () -> Unit = {},
 ) {
@@ -27,7 +28,7 @@ internal fun GenerateRoute(
     val focusManager = LocalFocusManager.current
 
     LaunchedEffect(Unit) {
-        viewModel.onIntent(GenerateIntent.Init)
+        viewModel.onIntent(GenerateIntent.Init(isParentPic))
     }
 
     LaunchedEffect(viewModel.generateSideEffect, lifecycleOwner) {

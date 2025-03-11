@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 interface GenerateRoute : Route {
     @Serializable
-    data object Generate : GenerateRoute
+    data class Generate(val isParentPic: Boolean) : GenerateRoute
 }
