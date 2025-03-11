@@ -6,7 +6,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import kr.genti.designsystem.theme.GentiTheme
 
 @Composable
-fun ImageSelectScreen(
+fun NumberSelectScreen(
     modifier: Modifier = Modifier,
     onBackBtnClick: () -> Unit = {},
     onNextBtnClick: () -> Unit = {},
@@ -16,8 +16,8 @@ fun ImageSelectScreen(
 
 @Preview
 @Composable
-private fun ImageSelectScreenPreview() {
+private fun NumberSelectScreenPreview() {
     GentiTheme {
-        ImageSelectScreen()
+        NumberSelectScreen()
     }
 }

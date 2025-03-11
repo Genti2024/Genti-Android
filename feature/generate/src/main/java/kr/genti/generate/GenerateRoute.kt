@@ -98,7 +98,7 @@ private fun GenerateScreen(
         )
 
         Spacer(modifier = Modifier.height(8.dp))
-        
+
         LinearProgressIndicator(
             progress = { animatedProgress },
             modifier = Modifier.fillMaxWidth(),
@@ -107,6 +107,24 @@ private fun GenerateScreen(
             gapSize = 0.dp,
             drawStopIndicator = { }
         )
+
+        when (currentStage) {
+            GenerateStage.NUMBER_SELECT -> {
+                NumberSelectScreen()
+            }
+
+            GenerateStage.PROMPT_INPUT -> {
+                PromptInputScreen()
+            }
+
+            GenerateStage.RATIO_SELECT -> {
+                RatioSelectScreen()
+            }
+
+            GenerateStage.IMAGE_SELECT -> {
+                ImageSelectScreen()
+            }
+        }
     }
 }
 
