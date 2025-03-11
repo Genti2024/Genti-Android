@@ -2,6 +2,8 @@ package kr.genti.result.verify
 
 import android.Manifest.permission.CAMERA
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,7 +18,6 @@ import kr.genti.common.manager.AmplitudeManager
 import kr.genti.common.manager.PermissionManager
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.dialog.GentiWarningDialog
-import timber.log.Timber
 
 @Composable
 internal fun VerifyRoute(
@@ -30,6 +31,12 @@ internal fun VerifyRoute(
 
     val cameraPermissionLauncher = PermissionManager.rememberPermissionLauncher {
         viewModel.onIntent(VerifyIntent.CameraPermissionGrant)
+    }
+
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { isSuccess ->
+        if (isSuccess) viewModel.onIntent(VerifyIntent.CameraResultSuccess)
     }
 
     LaunchedEffect(viewModel.verifySideEffect, lifecycleOwner) {
@@ -55,7 +62,12 @@ internal fun VerifyRoute(
                 }
 
                 is VerifySideEffect.StartCameraLauncher -> {
-                    Timber.tag("breeze").d("@@")
+                    verifyState.imageUri?.let { cameraLauncher.launch(it) }
+                }
+
+                is VerifySideEffect.VerifySuccess -> {
+                    context.toast(context.getString(R.string.verify_success_toast))
+                    navigateToBack()
                 }
             }
         }
@@ -75,7 +87,7 @@ internal fun VerifyRoute(
             modifier = Modifier,
             paddingValues = paddingValues,
             onBackButtonClicked = { viewModel.onIntent(VerifyIntent.ExitButtonClick) },
-            onVerifyButtonClicked = { viewModel.onIntent(VerifyIntent.VerifyButtonClick) }
+            onVerifyButtonClicked = { viewModel.onIntent(VerifyIntent.CameraButtonClick(true)) }
         )
     } else {
         AmplitudeManager.trackEvent("view_verifyme2")
@@ -85,7 +97,7 @@ internal fun VerifyRoute(
             imageUri = verifyState.imageUri,
             isLoading = verifyState.isLoading,
             onBackButtonClicked = { viewModel.onIntent(VerifyIntent.BackButtonClick) },
-            onRetakeButtonClicked = { viewModel.onIntent(VerifyIntent.RetakeButtonClick) },
+            onRetakeButtonClicked = { viewModel.onIntent(VerifyIntent.CameraButtonClick(false)) },
             onFinishButtonClicked = { viewModel.onIntent(VerifyIntent.FinishButtonClick) }
         )
     }

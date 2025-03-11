@@ -13,6 +13,13 @@ import kr.genti.common.manager.AmplitudeManager
 import kr.genti.common.manager.AmplitudeManager.EVENT_CLICK_BTN
 import kr.genti.common.manager.AmplitudeManager.PROPERTY_BTN
 import kr.genti.common.manager.AmplitudeManager.PROPERTY_PAGE
+import kr.genti.common.manager.AmplitudeManager.updateBooleanProperties
+import kr.genti.common.manager.ImageManager
+import kr.genti.core.common.BuildConfig
+import kr.genti.domain.entity.request.KeyRequestModel
+import kr.genti.domain.entity.request.S3RequestModel
+import kr.genti.domain.entity.response.S3PresignedUrlModel
+import kr.genti.domain.enums.FileType
 import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.repository.UploadRepository
 import javax.inject.Inject
@@ -33,9 +40,9 @@ constructor(
 
     fun onIntent(intent: VerifyIntent) {
         when (intent) {
-            is VerifyIntent.VerifyButtonClick -> handleVerifyButtonClick()
+            is VerifyIntent.CameraButtonClick -> handleCameraButtonClick(intent.isFirst)
             is VerifyIntent.CameraPermissionGrant -> handleCameraPermissionGrant()
-            is VerifyIntent.RetakeButtonClick -> handleRetakeButtonClick()
+            is VerifyIntent.CameraResultSuccess -> handleCameraResultSuccess()
             is VerifyIntent.FinishButtonClick -> handleFinishButtonClick()
             is VerifyIntent.BackButtonClick -> handleExitDialog(true)
             is VerifyIntent.ExitButtonClick -> handleExitButtonClick()
@@ -43,8 +50,8 @@ constructor(
         }
     }
 
-    private fun handleVerifyButtonClick() {
-        trackAmplitude("verifyme")
+    private fun handleCameraButtonClick(isFirst: Boolean) {
+        trackAmplitude(if (isFirst) "verifyme" else "photoretake")
         viewModelScope.launch {
             _verifySideEffect.emit(VerifySideEffect.StartPermissionLauncher)
         }
@@ -52,16 +59,31 @@ constructor(
 
     private fun handleCameraPermissionGrant() {
         viewModelScope.launch {
-            _verifySideEffect.emit(VerifySideEffect.StartCameraLauncher)
+            ImageManager.getTempImageFile()
+                .onSuccess { file ->
+                    _verifyState.update {
+                        it.copy(imageUri = file.uri, imageName = file.fileName)
+                    }
+                    _verifySideEffect.emit(VerifySideEffect.StartCameraLauncher)
+                }.onFailure {
+                    _verifySideEffect.emit(VerifySideEffect.ShowErrorToast)
+                }
         }
     }
 
-    private fun handleRetakeButtonClick() {
-        trackAmplitude("photoretake")
+    private fun handleCameraResultSuccess() {
+        _verifyState.update {
+            it.copy(isPhotoTaken = true)
+        }
     }
 
     private fun handleFinishButtonClick() {
         trackAmplitude("verifymedone")
+        viewModelScope.launch {
+            changeLoadingState(true)
+            sendVerifyImageToServer()
+            changeLoadingState(false)
+        }
     }
 
     private fun handleExitButtonClick() {
@@ -75,6 +97,41 @@ constructor(
         _verifyState.update {
             it.copy(isExitDialogVisible = isVisible)
         }
+    }
+
+    private fun changeLoadingState(isLoading: Boolean) {
+        _verifyState.update {
+            it.copy(isLoading = isLoading)
+        }
+    }
+
+    private suspend fun sendVerifyImageToServer() {
+        runCatching {
+            val s3UrlModel = getSingleS3UrlModel()
+            postSingleImage(s3UrlModel.url)
+            postToVerifyImage(KeyRequestModel(s3UrlModel.s3Key))
+        }.onSuccess {
+            updateBooleanProperties("user_verified", true)
+            _verifySideEffect.emit(VerifySideEffect.VerifySuccess)
+        }.onFailure {
+            _verifySideEffect.emit(VerifySideEffect.ShowErrorToast)
+        }
+    }
+
+    private suspend fun getSingleS3UrlModel(): S3PresignedUrlModel =
+        createRepository.getS3SingleUrl(
+            S3RequestModel(
+                if (BuildConfig.DEBUG) FileType.DEV_USER_VERIFICATION_IMAGE else FileType.USER_VERIFICATION_IMAGE,
+                verifyState.value.imageName.toString(),
+            ),
+        ).getOrThrow()
+
+    private suspend fun postSingleImage(s3Url: String) {
+        uploadRepository.uploadImage(s3Url, verifyState.value.imageUri.toString()).getOrThrow()
+    }
+
+    private suspend fun postToVerifyImage(imageS3Key: KeyRequestModel) {
+        createRepository.postToVerify(imageS3Key).getOrThrow()
     }
 
     private fun trackAmplitude(btnName: String) {

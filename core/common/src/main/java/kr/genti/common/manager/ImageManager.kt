@@ -26,6 +26,9 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 object ImageManager {
     private lateinit var appContext: Context
@@ -84,7 +87,21 @@ object ImageManager {
             }
         }
 
-     /**
+    suspend fun getTempImageFile(): Result<TempImageFile> =
+        runCatching {
+            withContext(Dispatchers.IO) {
+                val fileDateFormat =
+                    SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+                val tempFile: File =
+                    File.createTempFile("Genti_${fileDateFormat}_", ".jpg", appContext.cacheDir)
+                val uri = FileProvider.getUriForFile(
+                    appContext, "kr.genti.android.fileprovider", tempFile
+                )
+                TempImageFile(uri, tempFile.name)
+            }
+        }
+
+    /**
      * 주어진 이미지 URI를 사용하여 이미지 공유를 위한 인텐트를 생성하는 함수
      *
      * Intent.ACTION_SEND 액션을 설정하고, 이미지 URI를 EXTRA_STREAM에 추가하며, 읽기 권한을 부여한 후, 사용자에게 공유할 앱을 선택할 수 있도록 chooser 인텐트를 생성
@@ -134,4 +151,9 @@ object ImageManager {
             resolver.update(uri, values, null, null)
         }
     }
+
+    data class TempImageFile(
+        val uri: Uri,
+        val fileName: String
+    )
 }

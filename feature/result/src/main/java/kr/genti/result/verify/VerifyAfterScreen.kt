@@ -1,6 +1,7 @@
 package kr.genti.result.verify
 
 import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -82,13 +84,22 @@ internal fun VerifyAfterScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 30.dp)
+                .padding(top = 16.dp)
+                .padding(horizontal = 40.dp)
                 .aspectRatio(3F / 4F)
                 .background(Gray)
                 .border(2.dp, GentiGreen, RectangleShape)
                 .align(Alignment.Center)
         ) {
             GentiAsyncUriImage(imageUri = imageUri)
+            
+            Image(
+                painter = painterResource(id = R.drawable.img_gradation_image_bottom),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+            )
 
             Text(
                 text = stringResource(R.string.verify_after_tv_guide),
