@@ -127,7 +127,7 @@ fun GentiSelectButton(
                 if (description != null) {
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = text,
+                        text = description,
                         style = GentiTheme.typography.body2,
                         textAlign = TextAlign.Center,
                         color = White60,

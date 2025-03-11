@@ -1,19 +1,13 @@
 package kr.genti.generate
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,10 +24,10 @@ import kr.genti.common.extension.toast
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.layout.GentiTopBar
 import kr.genti.designsystem.theme.Black
-import kr.genti.designsystem.theme.GentiGreen
 import kr.genti.designsystem.theme.GentiTheme
-import kr.genti.designsystem.theme.White20
 import kr.genti.domain.enums.PictureNumber
+import kr.genti.domain.enums.PictureRatio
+import kr.genti.generate.component.GenerateProgressBar
 import kr.genti.generate.model.GenerateStage
 
 @Composable
@@ -73,7 +67,10 @@ internal fun GenerateRoute(
         currentStep = generateState.currentStep,
         progress = generateState.progress,
         pictureNumber = generateState.pictureNumber,
+        pictureRatio = generateState.pictureRatio,
         onPictureNumberClick = { viewModel.onIntent(GenerateIntent.NumberSelect(it)) },
+        onPictureRatioClick = { viewModel.onIntent(GenerateIntent.RatioSelect(it)) },
+        onBackBtnClick = { viewModel.onIntent(GenerateIntent.BackBtnClick) },
         onNextBtnClick = { viewModel.onIntent(GenerateIntent.NextBtnClick) }
     )
 }
@@ -86,16 +83,12 @@ private fun GenerateScreen(
     currentStep: Int = 1,
     progress: Float = 0f,
     pictureNumber: PictureNumber = PictureNumber.NONE,
+    pictureRatio: PictureRatio = PictureRatio.NONE,
     onPictureNumberClick: (PictureNumber) -> Unit = {},
+    onPictureRatioClick: (PictureRatio) -> Unit = {},
     onNextBtnClick: () -> Unit = {},
     onBackBtnClick: () -> Unit = {},
 ) {
-    val animatedProgress by animateFloatAsState(
-        targetValue = progress,
-        animationSpec = tween(durationMillis = 300),
-        label = ""
-    )
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -113,14 +106,7 @@ private fun GenerateScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        LinearProgressIndicator(
-            progress = { animatedProgress },
-            modifier = Modifier.fillMaxWidth(),
-            color = GentiGreen,
-            trackColor = White20,
-            gapSize = 0.dp,
-            drawStopIndicator = { }
-        )
+        GenerateProgressBar(progress = progress)
 
         when (currentStage) {
             GenerateStage.NUMBER_SELECT -> {
@@ -136,7 +122,11 @@ private fun GenerateScreen(
             }
 
             GenerateStage.RATIO_SELECT -> {
-                RatioSelectScreen()
+                RatioSelectScreen(
+                    pictureRatio = pictureRatio,
+                    onPictureRatioClick = onPictureRatioClick,
+                    onNextBtnClick = onNextBtnClick
+                )
             }
 
             GenerateStage.IMAGE_SELECT -> {

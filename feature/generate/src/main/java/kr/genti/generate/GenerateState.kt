@@ -11,7 +11,7 @@ data class GenerateState(
     val isParentPic: Boolean = false,
     val pictureNumber: PictureNumber = PictureNumber.NONE,
     val prompt: String = "",
-    val selectedRatio: PictureRatio = PictureRatio.NONE,
+    val pictureRatio: PictureRatio = PictureRatio.NONE,
     val selectedGender: Gender = Gender.NONE,
 ) {
     val progress: Float

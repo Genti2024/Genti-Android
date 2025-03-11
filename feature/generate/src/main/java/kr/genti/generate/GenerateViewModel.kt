@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.genti.domain.enums.PictureNumber
+import kr.genti.domain.enums.PictureRatio
 import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.repository.UploadRepository
 import kr.genti.generate.model.GenerateStage
@@ -36,6 +37,7 @@ constructor(
             is GenerateIntent.NumberSelect -> handleNumberSelect(intent.pictureNumber)
             is GenerateIntent.PromptChange -> handlePromptChange()
             is GenerateIntent.TextFieldFocused -> handleTextFieldOutsideClick(intent.isFocused)
+            is GenerateIntent.RatioSelect -> handleRatioSelect(intent.pictureRatio)
         }
     }
 
@@ -87,6 +89,12 @@ constructor(
 
     private fun handleTextFieldOutsideClick(isFocused: Boolean) {
 
+    }
+
+    private fun handleRatioSelect(pictureRatio: PictureRatio) {
+        _generateState.update {
+            it.copy(pictureRatio = pictureRatio)
+        }
     }
 
     private suspend fun sendImagesToGenerate() {
