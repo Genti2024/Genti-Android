@@ -13,6 +13,10 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -31,6 +35,8 @@ fun GenerateSelectDialog(
     onBtnClick: (Boolean) -> Unit = {},
     onDismissRequest: () -> Unit = {},
 ) {
+    var pressedItem: Boolean? by remember { mutableStateOf(null) }
+
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(usePlatformDefaultWidth = false)
@@ -61,6 +67,9 @@ fun GenerateSelectDialog(
                     bodyRes = R.string.create_select_tv_default_body,
                     captionRes = R.string.create_select_tv_default_caption,
                     onClick = { onBtnClick(false) },
+                    onPressChange = { isDown -> pressedItem = if (isDown) false else null },
+                    isPressed = pressedItem == false,
+                    isDimmed = pressedItem != null && pressedItem != false,
                     modifier = Modifier.offset(y = (-16).dp),
                 )
 
@@ -72,6 +81,9 @@ fun GenerateSelectDialog(
                     bodyRes = R.string.create_select_tv_parent_body,
                     captionRes = R.string.create_select_tv_parent_caption,
                     onClick = { onBtnClick(true) },
+                    onPressChange = { isDown -> pressedItem = if (isDown) true else null },
+                    isPressed = pressedItem == true,
+                    isDimmed = pressedItem != null && pressedItem != true,
                     modifier = Modifier.offset(y = (-16).dp)
                 )
             }

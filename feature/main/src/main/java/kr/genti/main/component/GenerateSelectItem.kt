@@ -1,7 +1,9 @@
 package kr.genti.main.component
 
+import android.view.MotionEvent
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,17 +12,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kr.genti.common.extension.noRippleClickable
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.theme.GentiGreen
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.designsystem.theme.Gray
 import kr.genti.designsystem.theme.White60
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun GenerateSelectItem(
     @StringRes titleRes: Int,
@@ -28,14 +33,45 @@ fun GenerateSelectItem(
     @StringRes bodyRes: Int,
     @StringRes captionRes: Int,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {},
+    isPressed: Boolean = false,
+    isDimmed: Boolean = false,
+    onPressChange: (Boolean) -> Unit = {},
+    onClick: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
-            .background(Gray, RoundedCornerShape(6.dp))
             .fillMaxWidth()
+            .background(Gray, RoundedCornerShape(6.dp))
+            .then(
+                if (isPressed) {
+                    Modifier.border(2.dp, GentiGreen, RoundedCornerShape(6.dp))
+                } else {
+                    Modifier
+                }
+            )
+            .then(if (isDimmed && !isPressed) Modifier.alpha(0.4f) else Modifier)
+            .pointerInteropFilter { event ->
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        onPressChange(true)
+                        true
+                    }
+
+                    MotionEvent.ACTION_UP -> {
+                        onPressChange(false)
+                        onClick()
+                        true
+                    }
+
+                    MotionEvent.ACTION_CANCEL -> {
+                        onPressChange(false)
+                        true
+                    }
+
+                    else -> false
+                }
+            }
             .padding(20.dp)
-            .noRippleClickable { onClick() }
     ) {
         Text(
             text = stringResource(titleRes),
