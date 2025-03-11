@@ -14,15 +14,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.item.GentiCheckedText
 import kr.genti.designsystem.theme.GentiGreen
 import kr.genti.designsystem.theme.GentiTheme
+import kr.genti.domain.entity.response.PromptExampleModel
+import kr.genti.generate.component.PromptExamplePager
 
 @Composable
 fun PromptInputScreen(
     modifier: Modifier = Modifier,
     isParentPic: Boolean = false,
+    exampleList: ImmutableList<PromptExampleModel> = persistentListOf(),
+    onExamplePageSwipe: () -> Unit = {},
     onNextBtnClick: () -> Unit = {},
 ) {
     Box(
@@ -53,14 +59,23 @@ fun PromptInputScreen(
                 GentiCheckedText(text = stringResource(R.string.create_tv_script_subtitle_2))
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            if (exampleList.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(32.dp))
 
-            Text(
-                text = stringResource(R.string.create_tv_random_title),
-                style = GentiTheme.typography.body1,
-                color = GentiGreen,
-                textAlign = TextAlign.Center
-            )
+                Text(
+                    text = stringResource(R.string.create_tv_random_title),
+                    style = GentiTheme.typography.body1,
+                    color = GentiGreen,
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                PromptExamplePager(
+                    exampleList = exampleList,
+                    onExamplePageSwipe = onExamplePageSwipe
+                )
+            }
         }
     }
 }
@@ -69,6 +84,21 @@ fun PromptInputScreen(
 @Composable
 private fun PromptInputScreenPreview() {
     GentiTheme {
-        PromptInputScreen()
+        PromptInputScreen(
+            exampleList = persistentListOf(
+                PromptExampleModel(
+                    url = "",
+                    prompt = stringResource(R.string.create_tv_example_1)
+                ),
+                PromptExampleModel(
+                    url = "",
+                    prompt = stringResource(R.string.create_tv_example_1)
+                ),
+                PromptExampleModel(
+                    url = "",
+                    prompt = stringResource(R.string.create_tv_example_1)
+                )
+            )
+        )
     }
 }

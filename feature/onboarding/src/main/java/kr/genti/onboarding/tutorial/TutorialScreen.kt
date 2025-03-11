@@ -24,11 +24,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.button.CloseButton
 import kr.genti.designsystem.component.button.GentiButton
+import kr.genti.designsystem.component.item.GentiPageIndicator
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.onboarding.component.TutorialFadeInBackground
 import kr.genti.onboarding.component.TutorialItem
-import kr.genti.onboarding.component.TutorialPageIndicator
 import kr.genti.onboarding.model.TutorialStage
 import kr.genti.onboarding.model.TutorialStage.Companion.getTutorialList
 
@@ -87,9 +87,10 @@ private fun TutorialScreen(
 
         HorizontalPager(
             state = pagerState,
+            userScrollEnabled = false,
             modifier = Modifier
                 .fillMaxSize()
-                .align(Alignment.Center)
+                .align(Alignment.Center),
         ) { page ->
             TutorialItem(currentStage = getTutorialList()[page])
         }
@@ -102,9 +103,9 @@ private fun TutorialScreen(
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 20.dp)
         ) {
-            TutorialPageIndicator(pagerState = pagerState)
+            GentiPageIndicator(pagerState = pagerState)
 
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(48.dp))
 
             GentiButton(
                 textRes = if (currentStage != TutorialStage.THIRD) R.string.onboarding_btn_next else R.string.onboarding_btn_finish,

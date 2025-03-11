@@ -20,11 +20,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kr.genti.common.extension.toast
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.layout.GentiTopBar
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
+import kr.genti.domain.entity.response.PromptExampleModel
 import kr.genti.domain.enums.PictureNumber
 import kr.genti.domain.enums.PictureRatio
 import kr.genti.generate.component.GenerateProgressBar
@@ -68,7 +71,9 @@ internal fun GenerateRoute(
         progress = generateState.progress,
         pictureNumber = generateState.pictureNumber,
         pictureRatio = generateState.pictureRatio,
+        exampleList = generateState.exampleList,
         onPictureNumberClick = { viewModel.onIntent(GenerateIntent.NumberSelect(it)) },
+        onExamplePageSwipe = { viewModel.onIntent(GenerateIntent.PromptExampleSwipe) },
         onPictureRatioClick = { viewModel.onIntent(GenerateIntent.RatioSelect(it)) },
         onBackBtnClick = { viewModel.onIntent(GenerateIntent.BackBtnClick) },
         onNextBtnClick = { viewModel.onIntent(GenerateIntent.NextBtnClick) }
@@ -84,7 +89,9 @@ private fun GenerateScreen(
     progress: Float = 0f,
     pictureNumber: PictureNumber = PictureNumber.NONE,
     pictureRatio: PictureRatio = PictureRatio.NONE,
+    exampleList: ImmutableList<PromptExampleModel> = persistentListOf(),
     onPictureNumberClick: (PictureNumber) -> Unit = {},
+    onExamplePageSwipe: () -> Unit = {},
     onPictureRatioClick: (PictureRatio) -> Unit = {},
     onNextBtnClick: () -> Unit = {},
     onBackBtnClick: () -> Unit = {},
@@ -118,7 +125,12 @@ private fun GenerateScreen(
             }
 
             GenerateStage.PROMPT_INPUT -> {
-                PromptInputScreen()
+                PromptInputScreen(
+                    isParentPic = isParentPic,
+                    exampleList = exampleList,
+                    onExamplePageSwipe = onExamplePageSwipe,
+                    onNextBtnClick = onNextBtnClick
+                )
             }
 
             GenerateStage.RATIO_SELECT -> {

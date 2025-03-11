@@ -3,6 +3,7 @@ package kr.genti.generate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -14,6 +15,7 @@ import kr.genti.domain.enums.PictureRatio
 import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.repository.UploadRepository
 import kr.genti.generate.model.GenerateStage
+import kr.genti.generate.model.GenerateType.Companion.getGenerateType
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,6 +37,7 @@ constructor(
             is GenerateIntent.BackBtnClick -> handleBackBtnClick()
             is GenerateIntent.NextBtnClick -> handleNextBtnClick()
             is GenerateIntent.NumberSelect -> handleNumberSelect(intent.pictureNumber)
+            is GenerateIntent.PromptExampleSwipe -> handlePromptExampleSwipe()
             is GenerateIntent.PromptChange -> handlePromptChange()
             is GenerateIntent.TextFieldFocused -> handleTextFieldOutsideClick(intent.isFocused)
             is GenerateIntent.RatioSelect -> handleRatioSelect(intent.pictureRatio)
@@ -48,6 +51,9 @@ constructor(
                 currentStep = 1,
                 currentStage = if (isParentPic) GenerateStage.NUMBER_SELECT else GenerateStage.PROMPT_INPUT
             )
+        }
+        viewModelScope.launch {
+            getExamplePrompt()
         }
     }
 
@@ -83,6 +89,10 @@ constructor(
         }
     }
 
+    private fun handlePromptExampleSwipe() {
+        // TODO : 앰플리튜드 작업
+    }
+
     private fun handlePromptChange() {
 
     }
@@ -94,6 +104,19 @@ constructor(
     private fun handleRatioSelect(pictureRatio: PictureRatio) {
         _generateState.update {
             it.copy(pictureRatio = pictureRatio)
+        }
+    }
+
+    private suspend fun getExamplePrompt() {
+        createRepository.getPromptExample(
+            getGenerateType(
+                generateState.value.isParentPic,
+                generateState.value.pictureNumber
+            ).name
+        ).onSuccess { result ->
+            _generateState.update {
+                it.copy(exampleList = result.toImmutableList())
+            }
         }
     }
 

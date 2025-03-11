@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.requiredSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -30,7 +29,7 @@ import kr.genti.designsystem.theme.GentiTheme
 @Composable
 fun GentiAsyncImage(
     url: String,
-    isGaro: Boolean,
+    isGaro: Boolean = false,
     modifier: Modifier = Modifier,
     isSquare: Boolean = false
 ) {
@@ -69,7 +68,9 @@ fun GentiAsyncImage(
                 val state by painter.state.collectAsState()
 
                 if (state is AsyncImagePainter.State.Loading) {
-                    Box(modifier = Modifier.requiredSize(80.dp)) {
+                    Box(
+                        modifier = Modifier.requiredSize(if (isSquare) 50.dp else 80.dp)
+                    ) {
                         LottieAnimation(
                             composition = composition,
                             iterations = LottieConstants.IterateForever,
