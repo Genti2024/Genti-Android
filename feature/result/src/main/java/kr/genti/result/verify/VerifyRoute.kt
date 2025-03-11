@@ -23,7 +23,7 @@ import kr.genti.designsystem.component.dialog.GentiWarningDialog
 internal fun VerifyRoute(
     paddingValues: PaddingValues,
     viewModel: VerifyViewModel = hiltViewModel(),
-    navigateToBack: () -> Unit = {},
+    navigateToBack: (Boolean) -> Unit = {},
 ) {
     val verifyState by viewModel.verifyState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -44,7 +44,7 @@ internal fun VerifyRoute(
             when (sideEffect) {
                 is VerifySideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
 
-                is VerifySideEffect.NavigateToBack -> navigateToBack()
+                is VerifySideEffect.NavigateToBack -> navigateToBack(false)
 
                 is VerifySideEffect.StartPermissionLauncher -> {
                     PermissionManager.checkPermissionAndLaunch(
@@ -67,7 +67,7 @@ internal fun VerifyRoute(
 
                 is VerifySideEffect.VerifySuccess -> {
                     context.toast(context.getString(R.string.verify_success_toast))
-                    navigateToBack()
+                    navigateToBack(true)
                 }
             }
         }

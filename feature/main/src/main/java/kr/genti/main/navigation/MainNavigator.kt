@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import kotlinx.coroutines.flow.MutableStateFlow
 import kr.genti.feed.navigation.navigateToFeed
 import kr.genti.navigation.MainTabRoute
 import kr.genti.navigation.OnboardingRoute
@@ -40,6 +41,12 @@ class MainNavigator(
             restoreState = true
         }
 
+    val verifyResultFlow
+        get() = navController.currentBackStackEntry
+            ?.savedStateHandle
+            ?.getStateFlow<Boolean?>(IS_SUCCESS, null)
+            ?: MutableStateFlow(null)
+
     val currentTab: MainTab?
         @Composable get() = MainTab.find { tab ->
             currentDestination?.hasRoute(tab::class) == true
@@ -59,6 +66,14 @@ class MainNavigator(
     }
 
     fun navigatePopBackStack() = navController.popBackStack()
+
+    fun navigateBackWithBoolean(isSuccess: Boolean) {
+        navController.previousBackStackEntry?.savedStateHandle?.set(IS_SUCCESS, isSuccess)
+        navController.popBackStack()
+    }
+
+    fun removeBackStackEntry() =
+        navController.currentBackStackEntry?.savedStateHandle?.remove<Boolean>(IS_SUCCESS)
 
     fun navigateToFeed() = navController.navigateToFeed(inclusiveNavOptions)
 
@@ -88,6 +103,10 @@ class MainNavigator(
     fun navigateToSignup() = navController.navigateToSignup(inclusiveNavOptions)
 
     fun navigateToTutorial() = navController.navigateToTutorial(inclusiveNavOptions)
+
+    companion object {
+        const val IS_SUCCESS = "IS_SUCCESS"
+    }
 }
 
 @Composable

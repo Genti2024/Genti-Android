@@ -44,7 +44,7 @@ internal fun MainNavHost(
         )
         resultNavGraph(
             paddingValues = paddingValues,
-            navigateToBack = navigator::navigatePopBackStack
+            navigateToBack = navigator::navigateBackWithBoolean
         )
     }
 }

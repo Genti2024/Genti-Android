@@ -62,7 +62,11 @@ constructor(
             ImageManager.getTempImageFile()
                 .onSuccess { file ->
                     _verifyState.update {
-                        it.copy(imageUri = file.uri, imageName = file.fileName)
+                        it.copy(
+                            imageUri = file.uri,
+                            imageName = file.fileName,
+                            isPhotoTaken = false
+                        )
                     }
                     _verifySideEffect.emit(VerifySideEffect.StartCameraLauncher)
                 }.onFailure {

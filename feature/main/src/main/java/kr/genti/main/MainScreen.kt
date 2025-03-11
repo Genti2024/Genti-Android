@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,22 +48,31 @@ internal fun MainRoute(
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
+    val verifyResult by navigator.verifyResultFlow.collectAsState()
+
     LaunchedEffect(viewModel.mainSideEffect, lifecycleOwner) {
         viewModel.mainSideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is MainSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
                 is MainSideEffect.ShowStatusChangedToast -> context.toast(context.getString(R.string.toast_state_changed))
                 is MainSideEffect.NavigateToTab -> navigator.navigate(sideEffect.tab)
-                is MainSideEffect.NavigateToGenerate -> navigator.navigateToGenerate()
                 is MainSideEffect.NavigateToVerify -> navigator.navigateToVerify()
                 is MainSideEffect.NavigateToWaiting -> navigator.navigateToWaiting()
                 is MainSideEffect.NavigateToFinished -> navigator.navigateToFinished()
+                is MainSideEffect.NavigateToGenerate -> navigator.navigateToGenerate()
             }
         }
     }
 
     LaunchedEffect(intentData) {
         viewModel.onIntent(MainIntent.PushAlarmReceived(intentData))
+    }
+
+    LaunchedEffect(verifyResult) {
+        if (verifyResult == true) {
+            viewModel.onIntent(MainIntent.GenerateBtnClick)
+            navigator.removeBackStackEntry()
+        }
     }
 
     MainScreen(
