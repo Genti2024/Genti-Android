@@ -8,6 +8,7 @@ import kr.genti.feed.navigation.feedNavGraph
 import kr.genti.main.navigation.MainNavigator
 import kr.genti.onboarding.navigation.onboardingNavGraph
 import kr.genti.profile.navigation.profileNavGraph
+import kr.genti.result.navigation.resultNavGraph
 import kr.genti.setting.navigation.settingNavGraph
 
 @Composable
@@ -40,6 +41,10 @@ internal fun MainNavHost(
         settingNavGraph(
             paddingValues = paddingValues,
             navigateToBack = navigator::navigatePopBackStack
+        )
+        resultNavGraph(
+            paddingValues = paddingValues,
+            navigateToBack = navigator::navigateBackWithBoolean
         )
     }
 }

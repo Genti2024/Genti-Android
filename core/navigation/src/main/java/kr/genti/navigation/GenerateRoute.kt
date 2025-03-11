@@ -4,9 +4,6 @@ import kotlinx.serialization.Serializable
 
 interface GenerateRoute : Route {
     @Serializable
-    data object Verify : GenerateRoute
-
-    @Serializable
     data object PromptInput : GenerateRoute
 
     @Serializable

@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import kotlinx.coroutines.flow.MutableStateFlow
 import kr.genti.feed.navigation.navigateToFeed
 import kr.genti.navigation.MainTabRoute
 import kr.genti.navigation.OnboardingRoute
@@ -16,6 +17,7 @@ import kr.genti.onboarding.navigation.navigateToSignup
 import kr.genti.onboarding.navigation.navigateToSplash
 import kr.genti.onboarding.navigation.navigateToTutorial
 import kr.genti.profile.navigation.navigateToProfile
+import kr.genti.result.navigation.navigateToVerify
 import kr.genti.setting.navigation.navigateToSetting
 
 class MainNavigator(
@@ -39,6 +41,12 @@ class MainNavigator(
             restoreState = true
         }
 
+    val verifyResultFlow
+        get() = navController.currentBackStackEntry
+            ?.savedStateHandle
+            ?.getStateFlow<Boolean?>(IS_SUCCESS, null)
+            ?: MutableStateFlow(null)
+
     val currentTab: MainTab?
         @Composable get() = MainTab.find { tab ->
             currentDestination?.hasRoute(tab::class) == true
@@ -59,6 +67,14 @@ class MainNavigator(
 
     fun navigatePopBackStack() = navController.popBackStack()
 
+    fun navigateBackWithBoolean(isSuccess: Boolean) {
+        navController.previousBackStackEntry?.savedStateHandle?.set(IS_SUCCESS, isSuccess)
+        navController.popBackStack()
+    }
+
+    fun removeBackStackEntry() =
+        navController.currentBackStackEntry?.savedStateHandle?.remove<Boolean>(IS_SUCCESS)
+
     fun navigateToFeed() = navController.navigateToFeed(inclusiveNavOptions)
 
     fun navigateToProfile() = navController.navigateToProfile()
@@ -70,9 +86,7 @@ class MainNavigator(
 
     }
 
-    fun navigateToVerify() {
-
-    }
+    fun navigateToVerify() = navController.navigateToVerify()
 
     fun navigateToWaiting() {
 
@@ -89,6 +103,10 @@ class MainNavigator(
     fun navigateToSignup() = navController.navigateToSignup(inclusiveNavOptions)
 
     fun navigateToTutorial() = navController.navigateToTutorial(inclusiveNavOptions)
+
+    companion object {
+        const val IS_SUCCESS = "IS_SUCCESS"
+    }
 }
 
 @Composable

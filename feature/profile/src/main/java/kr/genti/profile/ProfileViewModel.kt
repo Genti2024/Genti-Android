@@ -86,7 +86,7 @@ constructor(
         updateAmplitude("picdownload", "user_picturedownload")
         viewModelScope.launch {
             if (!ImageManager.checkExternalStoragePermission()) {
-                _profileSideEffect.emit(ProfileSideEffect.RequestPermission)
+                _profileSideEffect.emit(ProfileSideEffect.StartPermissionLauncher)
                 return@launch
             }
             ImageManager.saveImageToStorage(

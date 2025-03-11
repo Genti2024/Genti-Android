@@ -9,6 +9,7 @@ import kr.genti.android.BuildConfig.NATIVE_APP_KEY
 import kr.genti.common.manager.AmplitudeManager
 import kr.genti.common.manager.AppUpdateManager
 import kr.genti.common.manager.ImageManager
+import kr.genti.common.manager.PermissionManager
 import timber.log.Timber
 
 @HiltAndroidApp

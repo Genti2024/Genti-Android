@@ -1,7 +1,6 @@
 package kr.genti.profile
 
-import android.Manifest
-import android.app.Activity
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,8 +21,9 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kr.genti.common.manager.ImageManager
 import kr.genti.common.extension.toast
+import kr.genti.common.manager.ImageManager
+import kr.genti.common.manager.PermissionManager
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.dialog.GentiImageDetailDialog
 import kr.genti.designsystem.component.layout.GentiLoadingScreen
@@ -47,6 +47,10 @@ internal fun ProfileRoute(
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
+    val writePermissionLauncher = PermissionManager.rememberPermissionLauncher {
+        viewModel.onIntent(ProfileIntent.SaveBtnClick)
+    }
+
     LaunchedEffect(Unit) {
         viewModel.onIntent(ProfileIntent.Init)
     }
@@ -59,10 +63,19 @@ internal fun ProfileRoute(
                 is ProfileSideEffect.NavigateToGenerate -> navigateToGenerate()
                 is ProfileSideEffect.NavigateToSetting -> navigateToSetting()
 
-                is ProfileSideEffect.RequestPermission -> {
-                    (context as? Activity)?.requestPermissions(
-                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 200
-                    ) ?: context.toast(context.getString(R.string.error_msg))
+                is ProfileSideEffect.StartPermissionLauncher -> {
+                    PermissionManager.checkPermissionAndLaunch(
+                        permission = WRITE_EXTERNAL_STORAGE,
+                        context = context,
+                        onPermissionGranted = { viewModel.onIntent(ProfileIntent.SaveBtnClick) },
+                        onPermissionNotGranted = {
+                            writePermissionLauncher.launch(WRITE_EXTERNAL_STORAGE)
+                        },
+                        onPermissionAlreadyDenied = { intentToSetting ->
+                            context.toast(context.getString(R.string.permission_to_setting))
+                            context.startActivity(intentToSetting)
+                        }
+                    )
                 }
 
                 is ProfileSideEffect.NavigateToShare -> {

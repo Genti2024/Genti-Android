@@ -6,6 +6,7 @@
 
     <string name="token_expire_error_msg">로그인 상태를 확인해주세요!</string>
     <string name="error_msg">오류가 발생했습니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="permission_to_setting">설정에서 권한에 동의해주세요.</string>
     <string name="kakao_connection_error_msg">카카오톡 연동에 문제가 발생했습니다.</string>
     <string name="adapter_not_initialized_error_msg">Adapter is not initialized</string>
     <string name="manager_not_initialized_error_msg">Billing Manager is not initialized</string>
