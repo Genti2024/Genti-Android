@@ -1,16 +1,68 @@
 package kr.genti.generate
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import kr.genti.core.designsystem.R
+import kr.genti.designsystem.component.item.GentiCheckedText
+import kr.genti.designsystem.theme.GentiGreen
 import kr.genti.designsystem.theme.GentiTheme
 
 @Composable
 fun PromptInputScreen(
     modifier: Modifier = Modifier,
+    isParentPic: Boolean = false,
     onNextBtnClick: () -> Unit = {},
 ) {
+    Box(
+        modifier = modifier.fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 80.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(R.string.create_tv_script_title),
+                style = GentiTheme.typography.title,
+                textAlign = TextAlign.Center
+            )
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            GentiCheckedText(text = stringResource(R.string.create_tv_script_subtitle_1))
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            if (isParentPic) {
+                GentiCheckedText(text = stringResource(R.string.create_tv_script_subtitle_2_parent))
+            } else {
+                GentiCheckedText(text = stringResource(R.string.create_tv_script_subtitle_2))
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Text(
+                text = stringResource(R.string.create_tv_random_title),
+                style = GentiTheme.typography.body1,
+                color = GentiGreen,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFF030F0F)
