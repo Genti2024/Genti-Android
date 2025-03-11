@@ -2,7 +2,7 @@ package kr.genti.feed.component
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -21,7 +21,6 @@ import kr.genti.domain.entity.response.FeedItemModel
 @Composable
 fun FeedImagesListScreen(
     modifier: Modifier = Modifier,
-    innerPadding: PaddingValues = PaddingValues(),
     itemList: ImmutableList<FeedItemModel> = persistentListOf(),
     isTooltipClosed: Boolean = false,
     onInfoBtnClick: () -> Unit = {},
@@ -44,7 +43,7 @@ fun FeedImagesListScreen(
         item {
             FeedHeader(
                 onInfoBtnClick = onInfoBtnClick,
-                modifier = Modifier.padding(top = innerPadding.calculateTopPadding())
+                modifier = Modifier.statusBarsPadding()
             )
         }
         itemsIndexed(

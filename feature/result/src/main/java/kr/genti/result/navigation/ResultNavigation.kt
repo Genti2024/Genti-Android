@@ -16,12 +16,10 @@ fun NavController.navigateToVerify(
 }
 
 fun NavGraphBuilder.resultNavGraph(
-    paddingValues: PaddingValues,
     navigateToBack: (Boolean) -> Unit = {}
 ) {
     composable<ResultRoute.Verify> {
         VerifyRoute(
-            paddingValues = paddingValues,
             navigateToBack = navigateToBack
         )
     }

@@ -1,6 +1,5 @@
 package kr.genti.generate.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -17,14 +16,12 @@ fun NavController.navigateToGenerate(
 }
 
 fun NavGraphBuilder.generateNavGraph(
-    paddingValues: PaddingValues,
     navigateToWaiting: () -> Unit = {},
     navigateToBack: () -> Unit = {},
 ) {
     composable<GenerateRoute.Generate> { backStackEntry ->
         val items = backStackEntry.toRoute<GenerateRoute.Generate>()
         GenerateRoute(
-            paddingValues = paddingValues,
             isParentPic = items.isParentPic,
             navigateToWaiting = navigateToWaiting,
             navigateToBack = navigateToBack

@@ -1,5 +1,7 @@
 package kr.genti.main.component
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,6 +25,10 @@ internal fun MainNavHost(
         modifier = modifier,
         startDestination = navigator.startDestination,
         navController = navigator.navController,
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None },
+        popEnterTransition = { EnterTransition.None },
+        popExitTransition = { ExitTransition.None }
     ) {
         feedNavGraph(
             paddingValues = paddingValues
@@ -33,23 +39,19 @@ internal fun MainNavHost(
             navigateToSetting = navigator::navigateToSetting
         )
         onboardingNavGraph(
-            paddingValues = paddingValues,
             navigateToLogin = navigator::navigateToLogin,
             navigateToSignup = navigator::navigateToSignup,
             navigateToFeed = navigator::navigateToFeed,
             navigateToTutorial = navigator::navigateToTutorial,
         )
         settingNavGraph(
-            paddingValues = paddingValues,
             navigateToBack = navigator::navigatePopBackStack
         )
         generateNavGraph(
-            paddingValues = paddingValues,
             navigateToWaiting = navigator::navigateToWaiting,
             navigateToBack = navigator::navigatePopBackStack
         )
         resultNavGraph(
-            paddingValues = paddingValues,
             navigateToBack = navigator::navigateBackWithBoolean
         )
     }

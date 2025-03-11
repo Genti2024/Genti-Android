@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,7 +38,6 @@ import kr.genti.generate.model.GenerateStage
 
 @Composable
 internal fun GenerateRoute(
-    paddingValues: PaddingValues,
     viewModel: GenerateViewModel = hiltViewModel(),
     isParentPic: Boolean = false,
     navigateToWaiting: () -> Unit = {},
@@ -67,7 +68,6 @@ internal fun GenerateRoute(
 
     GenerateScreen(
         modifier = Modifier,
-        paddingValues = paddingValues,
         isParentPic = generateState.isParentPic,
         currentStage = generateState.currentStage,
         currentStep = generateState.currentStep,
@@ -81,7 +81,6 @@ internal fun GenerateRoute(
 @Composable
 private fun GenerateScreen(
     modifier: Modifier = Modifier,
-    paddingValues: PaddingValues = PaddingValues(),
     isParentPic: Boolean = false,
     currentStage: GenerateStage = GenerateStage.INIT,
     currentStep: Int = 1,
@@ -101,7 +100,8 @@ private fun GenerateScreen(
         modifier = modifier
             .fillMaxSize()
             .background(Black)
-            .padding(paddingValues)
+            .statusBarsPadding()
+            .navigationBarsPadding()
     ) {
         GentiTopBar(
             titleText = stringResource(if (!isParentPic) R.string.create_tv_title else R.string.create_parent_tv_title),

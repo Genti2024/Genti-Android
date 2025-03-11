@@ -4,11 +4,12 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,7 +37,6 @@ import kr.genti.setting.component.SettingItem
 
 @Composable
 internal fun SettingRoute(
-    paddingValues: PaddingValues,
     viewModel: SettingViewModel = hiltViewModel(),
     navigateToBack: () -> Unit = {},
 ) {
@@ -64,7 +64,6 @@ internal fun SettingRoute(
 
     SettingScreen(
         modifier = Modifier,
-        paddingValues = paddingValues,
         versionText = "v" + BuildConfig.VERSION_NAME,
         onBackButtonClick = { viewModel.onIntent(SettingIntent.BackButtonClick) },
         onTermButtonClick = { viewModel.onIntent(SettingIntent.TermButtonClick) },
@@ -99,7 +98,6 @@ internal fun SettingRoute(
 @Composable
 private fun SettingScreen(
     modifier: Modifier = Modifier,
-    paddingValues: PaddingValues = PaddingValues(),
     versionText: String = "",
     onBackButtonClick: () -> Unit = {},
     onTermButtonClick: () -> Unit = {},
@@ -113,7 +111,8 @@ private fun SettingScreen(
         modifier = modifier
             .fillMaxSize()
             .background(Black)
-            .padding(paddingValues)
+            .statusBarsPadding()
+            .navigationBarsPadding()
     ) {
         GentiTopBar(
             titleText = stringResource(R.string.setting_tv_title),

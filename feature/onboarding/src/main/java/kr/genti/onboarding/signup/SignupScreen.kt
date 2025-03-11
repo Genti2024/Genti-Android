@@ -4,14 +4,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -50,12 +51,9 @@ import kr.genti.designsystem.theme.Transparent
 import kr.genti.designsystem.theme.White40
 import kr.genti.designsystem.theme.White80
 import kr.genti.domain.enums.Gender
-import kr.genti.navigation.OnboardingRoute
-import kr.genti.navigation.Route
 
 @Composable
 internal fun SignupRoute(
-    paddingValues: PaddingValues,
     viewModel: SignupViewModel = hiltViewModel(),
     navigateToTutorial: () -> Unit = {},
 ) {
@@ -86,7 +84,6 @@ internal fun SignupRoute(
 
     SignupScreen(
         modifier = Modifier,
-        paddingValues = paddingValues,
         isLoading = signupState.isLoading,
         selectedGender = signupState.selectedGender,
         selectedYear = signupState.selectedYear,
@@ -102,7 +99,6 @@ internal fun SignupRoute(
 @Composable
 private fun SignupScreen(
     modifier: Modifier = Modifier,
-    paddingValues: PaddingValues = PaddingValues(),
     isLoading: Boolean = false,
     selectedGender: Gender = Gender.NONE,
     selectedYear: String = "",
@@ -117,7 +113,8 @@ private fun SignupScreen(
         modifier = modifier
             .fillMaxSize()
             .background(Black)
-            .padding(paddingValues)
+            .statusBarsPadding()
+            .navigationBarsPadding()
             .noRippleClickable { onTextFieldOutsideClicked() }
     ) {
         Column(

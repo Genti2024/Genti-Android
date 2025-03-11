@@ -4,12 +4,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,7 +33,6 @@ import kr.genti.designsystem.theme.White60
 @Composable
 internal fun VerifyBeforeScreen(
     modifier: Modifier = Modifier,
-    paddingValues: PaddingValues = PaddingValues(),
     onBackButtonClicked: () -> Unit = {},
     onVerifyButtonClicked: () -> Unit = {}
 ) {
@@ -40,7 +40,7 @@ internal fun VerifyBeforeScreen(
         modifier = modifier
             .fillMaxSize()
             .background(Black)
-            .padding(bottom = paddingValues.calculateBottomPadding())
+            .navigationBarsPadding()
     ) {
         Image(
             painter = painterResource(id = R.drawable.img_verify_bg),
@@ -58,7 +58,7 @@ internal fun VerifyBeforeScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = paddingValues.calculateTopPadding())
+                .statusBarsPadding()
         ) {
 
             CloseButton(onCloseBtnClicked = onBackButtonClicked)
