@@ -12,7 +12,7 @@ import kr.genti.result.verify.VerifyRoute
 fun NavController.navigateToVerify(
     navOptions: NavOptions? = null
 ) {
-    navigate(SettingRoute.Setting, navOptions)
+    navigate(ResultRoute.Verify, navOptions)
 }
 
 fun NavGraphBuilder.resultNavGraph(

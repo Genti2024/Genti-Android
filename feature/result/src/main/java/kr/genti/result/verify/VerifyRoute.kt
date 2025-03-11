@@ -1,24 +1,22 @@
 package kr.genti.result.verify
 
-import android.Manifest
-import android.content.pm.PackageManager
+import android.Manifest.permission.CAMERA
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kr.genti.common.extension.toast
 import kr.genti.common.manager.AmplitudeManager
+import kr.genti.common.manager.PermissionManager
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.dialog.GentiWarningDialog
+import timber.log.Timber
 
 @Composable
 internal fun VerifyRoute(
@@ -30,10 +28,8 @@ internal fun VerifyRoute(
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
-    val cameraPermissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) viewModel.onIntent(VerifyIntent.CameraPermissionGrant)
+    val cameraPermissionLauncher = PermissionManager.rememberPermissionLauncher {
+        viewModel.onIntent(VerifyIntent.CameraPermissionGrant)
     }
 
     LaunchedEffect(viewModel.verifySideEffect, lifecycleOwner) {
@@ -44,19 +40,22 @@ internal fun VerifyRoute(
                 is VerifySideEffect.NavigateToBack -> navigateToBack()
 
                 is VerifySideEffect.StartPermissionLauncher -> {
-                    val hasCameraPermission = ContextCompat.checkSelfPermission(
-                        context, Manifest.permission.CAMERA
-                    ) == PackageManager.PERMISSION_GRANTED
-
-                    if (hasCameraPermission) {
-                        viewModel.onIntent(VerifyIntent.CameraPermissionGrant)
-                    } else {
-                        cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
-                    }
+                    PermissionManager.checkPermissionAndLaunch(
+                        permission = CAMERA,
+                        context = context,
+                        onPermissionGranted = { viewModel.onIntent(VerifyIntent.CameraPermissionGrant) },
+                        onPermissionNotGranted = {
+                            cameraPermissionLauncher.launch(CAMERA)
+                        },
+                        onPermissionAlreadyDenied = { intentToSetting ->
+                            context.toast(context.getString(R.string.permission_to_setting))
+                            context.startActivity(intentToSetting)
+                        }
+                    )
                 }
 
                 is VerifySideEffect.StartCameraLauncher -> {
-
+                    Timber.tag("breeze").d("@@")
                 }
             }
         }

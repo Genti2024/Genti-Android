@@ -7,6 +7,6 @@ sealed class ProfileSideEffect {
     data object ShowDownloadToast : ProfileSideEffect()
     data object NavigateToGenerate : ProfileSideEffect()
     data object NavigateToSetting : ProfileSideEffect()
-    data object RequestPermission : ProfileSideEffect()
+    data object StartPermissionLauncher : ProfileSideEffect()
     data class NavigateToShare(val imageUri: Uri) : ProfileSideEffect()
 }

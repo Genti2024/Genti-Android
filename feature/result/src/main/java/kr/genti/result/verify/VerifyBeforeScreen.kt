@@ -56,7 +56,9 @@ internal fun VerifyBeforeScreen(
         )
 
         Box(
-            modifier = Modifier.padding(top = paddingValues.calculateTopPadding())
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = paddingValues.calculateTopPadding())
         ) {
 
             CloseButton(onCloseBtnClicked = onBackButtonClicked)
