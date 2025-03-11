@@ -8,13 +8,12 @@ import kr.genti.designsystem.theme.GentiTheme
 @Composable
 fun ImageSelectScreen(
     modifier: Modifier = Modifier,
-    onBackBtnClick: () -> Unit = {},
     onNextBtnClick: () -> Unit = {},
 ) {
 
 }
 
-@Preview
+@Preview(showBackground = true, backgroundColor = 0xFF030F0F)
 @Composable
 private fun ImageSelectScreenPreview() {
     GentiTheme {

@@ -132,7 +132,11 @@ private fun GenerateScreen(
 @Composable
 private fun GenerateScreenPreview() {
     GentiTheme {
-        GenerateScreen(progress = 0.33F)
+        GenerateScreen(
+            progress = 0.33F,
+            isParentPic = false,
+            currentStage = GenerateStage.PROMPT_INPUT
+        )
     }
 }
 
@@ -140,6 +144,10 @@ private fun GenerateScreenPreview() {
 @Composable
 private fun GenerateParentScreenPreview() {
     GentiTheme {
-        GenerateScreen(progress = 0.25F, isParentPic = true)
+        GenerateScreen(
+            progress = 0.25F,
+            isParentPic = true,
+            currentStage = GenerateStage.NUMBER_SELECT
+        )
     }
 }
