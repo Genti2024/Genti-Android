@@ -105,12 +105,13 @@ constructor(
         } else {
             amplitudeTrackStartCreate()
             viewModelScope.launch {
-                if (generateState.value.isParentPic) {
-                    changeBillingLoadingState(true)
-                    _generateSideEffect.emit(GenerateSideEffect.StartPurchaseProduct)
-                } else {
-                    requestGenerate()
-                }
+                /** 현재 구글 플레이 콘솔에서 결제 진행이 불가능 */
+//                if (generateState.value.isParentPic) {
+//                    changeBillingLoadingState(true)
+//                    _generateSideEffect.emit(GenerateSideEffect.StartPurchaseProduct)
+//                } else {
+                requestGenerate()
+//                }
             }
         }
     }
