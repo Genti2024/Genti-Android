@@ -2,6 +2,7 @@ package kr.genti.designsystem.component.item
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -28,7 +29,7 @@ fun GentiCheckedText(
     textColor: Color = White60
 ) {
     Row(
-        modifier = modifier
+        modifier = modifier.padding(bottom = 4.dp)
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_check),

@@ -70,8 +70,6 @@ fun PromptInputScreen(
 
             GentiCheckedText(text = stringResource(R.string.create_tv_script_subtitle_1))
 
-            Spacer(modifier = Modifier.height(4.dp))
-
             if (isParentPic) {
                 GentiCheckedText(text = stringResource(R.string.create_tv_script_subtitle_2_parent))
             } else {
@@ -79,7 +77,7 @@ fun PromptInputScreen(
             }
 
             if (exampleList.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
                 Text(
                     text = stringResource(R.string.create_tv_random_title),

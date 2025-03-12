@@ -157,8 +157,12 @@ private fun GenerateScreen(
                 )
             }
 
-            GenerateStage.IMAGE_SELECT -> {
-                ImageSelectScreen()
+            GenerateStage.IMAGE_THREE_SELECT -> {
+                ImageThreeSelectScreen()
+            }
+
+            GenerateStage.IMAGE_SIX_SELECT -> {
+                ImageSixSelectScreen()
             }
 
             else -> {}

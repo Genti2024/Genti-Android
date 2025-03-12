@@ -58,7 +58,8 @@ constructor(
     }
 
     private fun handleBackBtnClick() {
-        val prevStage = generateState.value.currentStage.prevStage(generateState.value.isParentPic)
+        val prevStage =
+            generateState.value.currentStage.prevStage(generateState.value.isParentPic)
         if (prevStage != GenerateStage.INIT) {
             _generateState.update {
                 it.copy(currentStage = prevStage, currentStep = it.currentStep - 1)
@@ -71,7 +72,8 @@ constructor(
     }
 
     private fun handleNextBtnClick() {
-        val nextStage = generateState.value.currentStage.nextStage()
+        val nextStage =
+            generateState.value.currentStage.nextStage(generateState.value.pictureNumber)
         if (nextStage != GenerateStage.RESULT) {
             _generateState.update {
                 it.copy(currentStage = nextStage, currentStep = it.currentStep + 1)
