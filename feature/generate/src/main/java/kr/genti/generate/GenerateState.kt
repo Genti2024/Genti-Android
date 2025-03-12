@@ -12,11 +12,13 @@ data class GenerateState(
     val currentStage: GenerateStage = GenerateStage.INIT,
     val currentStep: Int = 0,
     val isParentPic: Boolean = false,
+    val isLoading: Boolean = false,
     val pictureNumber: PictureNumber = PictureNumber.NONE,
     val exampleList: ImmutableList<PromptExampleModel> = persistentListOf(),
     val prompt: String = "",
     val isFocusClearNeeded: Boolean = false,
     val pictureRatio: PictureRatio = PictureRatio.NONE,
+    val isSelectingExtra: Boolean = false,
     val imageList: List<ImageFileModel> = listOf(),
     val extraImageList: List<ImageFileModel> = listOf(),
 ) {

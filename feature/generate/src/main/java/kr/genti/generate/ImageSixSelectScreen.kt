@@ -15,12 +15,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kr.genti.core.designsystem.R
+import kr.genti.designsystem.component.button.GentiButton
 import kr.genti.designsystem.component.item.GentiCheckedText
 import kr.genti.designsystem.theme.GentiTheme
+import kr.genti.domain.entity.response.ImageFileModel
+import kr.genti.generate.component.ImagePersonItem
 
 @Composable
 fun ImageSixSelectScreen(
     modifier: Modifier = Modifier,
+    imageList: List<ImageFileModel> = listOf(),
+    extraImageList: List<ImageFileModel> = listOf(),
+    onImageSelectBtnClick: () -> Unit = {},
+    onExtraImageSelectBtnClick: () -> Unit = {},
     onNextBtnClick: () -> Unit = {},
 ) {
     Box(
@@ -43,7 +50,32 @@ fun ImageSixSelectScreen(
 
             GentiCheckedText(text = stringResource(R.string.selfie_tv_guide_1))
             GentiCheckedText(text = stringResource(R.string.selfie_tv_guide_parent))
+
+            Spacer(modifier = Modifier.height(30.dp))
+
+            ImagePersonItem(
+                title = stringResource(R.string.selfie_tv_first_parent),
+                imageList = imageList,
+                onBtnClick = onImageSelectBtnClick
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            ImagePersonItem(
+                title = stringResource(R.string.selfie_tv_second_parent),
+                imageList = extraImageList,
+                onBtnClick = onExtraImageSelectBtnClick
+            )
         }
+
+        GentiButton(
+            textRes = R.string.selfie_btn_create,
+            isActive = imageList.size == 3 && extraImageList.size == 3,
+            onClick = onNextBtnClick,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(16.dp)
+        )
     }
 }
 

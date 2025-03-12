@@ -93,7 +93,11 @@ constructor(
                 it.copy(currentStage = nextStage, currentStep = it.currentStep + 1)
             }
         } else {
-            requestGenerate()
+            viewModelScope.launch {
+                changeLoadingState(true)
+                requestGenerate()
+                changeLoadingState(false)
+            }
         }
     }
 
@@ -126,17 +130,31 @@ constructor(
     }
 
     private fun handleImageSelectBtnClick(isExtra: Boolean) {
+        _generateState.update {
+            it.copy(isSelectingExtra = isExtra)
+        }
         viewModelScope.launch {
-            _generateSideEffect.emit(GenerateSideEffect.StartImageSelect(isExtra))
+            _generateSideEffect.emit(GenerateSideEffect.StartImageSelect)
         }
     }
 
     private fun handleImageSelect(uriList: List<Uri>) {
+        val selectedImageList = uriList.map { uri ->
+            val uriInfo = uri.getImageInfo()
+            ImageFileModel(uriInfo.first, uriInfo.second, uriInfo.third)
+        }
         _generateState.update {
-            it.copy(imageList = uriList.map { uri ->
-                val uriInfo = uri.getImageInfo()
-                ImageFileModel(uriInfo.first, uriInfo.second, uriInfo.third)
-            })
+            if (!it.isSelectingExtra) {
+                it.copy(imageList = selectedImageList)
+            } else {
+                it.copy(extraImageList = selectedImageList)
+            }
+        }
+    }
+
+    private fun changeLoadingState(isLoading: Boolean) {
+        _generateState.update {
+            it.copy(isLoading = isLoading)
         }
     }
 
@@ -156,19 +174,17 @@ constructor(
 
     /** 이미지 생성 요청 관련*/
 
-    private fun requestGenerate() {
-        viewModelScope.launch {
-            runCatching {
-                if (generateState.value.pictureNumber != PictureNumber.TWO) {
-                    postThreeImageToGenerate()
-                } else {
-                    postSixImageToGenerate()
-                }
-            }.onSuccess {
-                _generateSideEffect.emit(GenerateSideEffect.NavigateToWaiting)
-            }.onFailure {
-                _generateSideEffect.emit(GenerateSideEffect.ShowErrorToast)
+    private suspend fun requestGenerate() {
+        runCatching {
+            if (generateState.value.pictureNumber != PictureNumber.TWO) {
+                postThreeImageToGenerate()
+            } else {
+                postSixImageToGenerate()
             }
+        }.onSuccess {
+            _generateSideEffect.emit(GenerateSideEffect.NavigateToWaiting)
+        }.onFailure {
+            _generateSideEffect.emit(GenerateSideEffect.ShowErrorToast)
         }
     }
 
@@ -195,7 +211,7 @@ constructor(
         createRepository.postToCreateTwo(request).getOrThrow()
     }
 
-    /** 이미지 3장 업로드 관련*/
+    /** 이미지 3장 AWS S3 업로드 관련*/
 
     private suspend fun uploadThreeImage(selectedImageList: List<ImageFileModel>): List<KeyRequestModel> {
         val imageBucketList = getThreeImageBucket(selectedImageList)

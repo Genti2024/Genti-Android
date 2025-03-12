@@ -32,6 +32,7 @@ import kr.genti.common.manager.LauncherManager.getMultipleGalleryPickerIntent
 import kr.genti.common.manager.LauncherManager.rememberGalleryPickerLauncher
 import kr.genti.common.manager.LauncherManager.rememberPhotoPickerLauncher
 import kr.genti.core.designsystem.R
+import kr.genti.designsystem.component.layout.GentiLoadingScreen
 import kr.genti.designsystem.component.layout.GentiTopBar
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
@@ -98,10 +99,11 @@ internal fun GenerateRoute(
 
     GenerateScreen(
         modifier = Modifier,
-        isParentPic = generateState.isParentPic,
         currentStage = generateState.currentStage,
         currentStep = generateState.currentStep,
         progress = generateState.progress,
+        isParentPic = generateState.isParentPic,
+        isLoading = generateState.isLoading,
         pictureNumber = generateState.pictureNumber,
         pictureRatio = generateState.pictureRatio,
         exampleList = generateState.exampleList,
@@ -123,10 +125,11 @@ internal fun GenerateRoute(
 @Composable
 private fun GenerateScreen(
     modifier: Modifier = Modifier,
-    isParentPic: Boolean = false,
     currentStage: GenerateStage = GenerateStage.INIT,
     currentStep: Int = 1,
     progress: Float = 0f,
+    isParentPic: Boolean = false,
+    isLoading: Boolean = false,
     pictureNumber: PictureNumber = PictureNumber.NONE,
     pictureRatio: PictureRatio = PictureRatio.NONE,
     exampleList: ImmutableList<PromptExampleModel> = persistentListOf(),
@@ -201,12 +204,24 @@ private fun GenerateScreen(
             }
 
             GenerateStage.IMAGE_SIX_SELECT -> {
-                ImageSixSelectScreen()
+                ImageSixSelectScreen(
+                    imageList = imageList,
+                    extraImageList = extraImageList,
+                    onImageSelectBtnClick = onImageSelectBtnClick,
+                    onExtraImageSelectBtnClick = onExtraImageSelectBtnClick,
+                    onNextBtnClick = onNextBtnClick
+                )
             }
 
             else -> {}
         }
     }
+
+    GentiLoadingScreen(
+        isLoading = isLoading,
+        rawRes = R.raw.lottie_loading_create,
+        modifier = Modifier.fillMaxSize()
+    )
 }
 
 @Preview

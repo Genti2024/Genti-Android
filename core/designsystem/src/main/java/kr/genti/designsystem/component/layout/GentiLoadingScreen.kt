@@ -21,10 +21,11 @@ import kr.genti.designsystem.theme.Transparent50
 @Composable
 fun GentiLoadingScreen(
     isLoading: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    rawRes: Int = R.raw.lottie_loading
 ) {
     val lottieLoading by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(R.raw.lottie_loading)
+        LottieCompositionSpec.RawRes(rawRes)
     )
 
     AnimatedVisibility(
@@ -52,6 +53,6 @@ fun GentiLoadingScreen(
 @Composable
 fun GentiLoadingScreenPreview() {
     GentiLoadingScreen(
-        isLoading = true
+        isLoading = true,
     )
 }
