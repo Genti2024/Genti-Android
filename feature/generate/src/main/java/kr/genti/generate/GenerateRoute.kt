@@ -75,11 +75,11 @@ internal fun GenerateRoute(
             activity = context as Activity,
             callback = object : kr.genti.generate.billing.BillingCallback {
                 override fun onBillingSuccess(purchase: Purchase) {
-                    viewModel.checkPurchaseValidToServer(purchase)
+                    viewModel.onIntent(GenerateIntent.PurchaseSuccess(purchase))
                 }
 
                 override fun onBillingFailure(responseCode: Int) {
-                    viewModel.resetValidProcessLoading()
+                    viewModel.onIntent(GenerateIntent.PurchaseFailure)
                     if (responseCode != USER_CANCELED) context.toast(context.getString(R.string.error_msg))
                 }
             },
@@ -87,9 +87,7 @@ internal fun GenerateRoute(
     }
 
     DisposableEffect(billingManager) {
-        onDispose {
-            billingManager.endConnection()
-        }
+        onDispose { billingManager.endConnection() }
     }
 
     LaunchedEffect(Unit) {
@@ -110,6 +108,8 @@ internal fun GenerateRoute(
                         galleryPickerLauncher.launch(getMultipleGalleryPickerIntent())
                     }
                 }
+
+                is GenerateSideEffect.StartPurchaseProduct -> billingManager.purchaseProduct()
             }
         }
     }

@@ -3,6 +3,7 @@ package kr.genti.generate
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.billingclient.api.Purchase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
@@ -23,6 +24,7 @@ import kr.genti.domain.entity.request.CreateRequestModel
 import kr.genti.domain.entity.request.CreateTwoRequestModel
 import kr.genti.domain.entity.request.ImageBucketRequestModel
 import kr.genti.domain.entity.request.KeyRequestModel
+import kr.genti.domain.entity.request.PurchaseValidRequestModel
 import kr.genti.domain.entity.response.ImageBucketModel
 import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.domain.enums.FileType
@@ -60,6 +62,8 @@ constructor(
             is GenerateIntent.RatioSelect -> handleRatioSelect(intent.pictureRatio)
             is GenerateIntent.ImageSelectBtnClick -> handleImageSelectBtnClick(intent.isExtra)
             is GenerateIntent.ImageSelect -> handleImageSelect(intent.uriList)
+            is GenerateIntent.PurchaseSuccess -> handlePurchaseSuccess(intent.purchase)
+            is GenerateIntent.PurchaseFailure -> handlePurchaseFailure()
         }
     }
 
@@ -101,9 +105,12 @@ constructor(
         } else {
             amplitudeTrackStartCreate()
             viewModelScope.launch {
-                changeRequestLoadingState(true)
-                requestGenerate()
-                changeRequestLoadingState(false)
+                if (generateState.value.isParentPic) {
+                    changeBillingLoadingState(true)
+                    _generateSideEffect.emit(GenerateSideEffect.StartPurchaseProduct)
+                } else {
+                    requestGenerate()
+                }
             }
         }
     }
@@ -160,6 +167,21 @@ constructor(
         }
     }
 
+    private fun handlePurchaseSuccess(purchase: Purchase) {
+        viewModelScope.launch {
+            val isPurchaseValid = checkPurchaseValidToServer(purchase)
+            changeBillingLoadingState(false)
+            if (isPurchaseValid) {
+                amplitudeTrackPurchaseValid()
+                requestGenerate()
+            }
+        }
+    }
+
+    private fun handlePurchaseFailure() {
+        changeBillingLoadingState(false)
+    }
+
     private fun changeBillingLoadingState(isLoading: Boolean) {
         _generateState.update {
             it.copy(isBillingLoading = isLoading)
@@ -189,6 +211,7 @@ constructor(
     /** 이미지 생성 요청 관련*/
 
     private suspend fun requestGenerate() {
+        changeRequestLoadingState(true)
         runCatching {
             if (generateState.value.pictureNumber != PictureNumber.TWO) {
                 postThreeImageToGenerate()
@@ -201,6 +224,7 @@ constructor(
         }.onFailure {
             _generateSideEffect.emit(GenerateSideEffect.ShowErrorToast)
         }
+        changeRequestLoadingState(false)
     }
 
     private suspend fun postThreeImageToGenerate() {
@@ -253,6 +277,19 @@ constructor(
             }
         }.awaitAll()
     }
+
+    /** 결제 관련 */
+    private suspend fun checkPurchaseValidToServer(purchase: Purchase): Boolean =
+        createRepository.postToValidatePurchase(
+            PurchaseValidRequestModel(
+                purchase.packageName,
+                purchase.products.first(),
+                purchase.purchaseToken
+            )
+        ).fold(
+            onSuccess = { isValidSuccess -> isValidSuccess },
+            onFailure = { false }
+        )
 
     /** 앰플리튜드 관련*/
 
@@ -318,5 +355,12 @@ constructor(
             PictureNumber.TWO -> AmplitudeManager.trackEvent("complete_twoparents")
         }
         AmplitudeManager.plusIntProperties("user_piccreate_total")
+    }
+
+    private fun amplitudeTrackPurchaseValid() {
+        AmplitudeManager.trackEvent(
+            "complete_payment",
+            mapOf("picture_type" to if (generateState.value.pictureNumber != PictureNumber.TWO) "oneparent" else "twoparents")
+        )
     }
 }
