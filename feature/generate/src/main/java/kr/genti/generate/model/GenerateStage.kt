@@ -17,7 +17,7 @@ enum class GenerateStage {
     fun nextStage(pictureNumber: PictureNumber): GenerateStage = when (this) {
         NUMBER_SELECT -> PROMPT_INPUT
         PROMPT_INPUT -> RATIO_SELECT
-        RATIO_SELECT -> if (pictureNumber == PictureNumber.ONE) IMAGE_THREE_SELECT else IMAGE_SIX_SELECT
+        RATIO_SELECT -> if (pictureNumber != PictureNumber.TWO) IMAGE_THREE_SELECT else IMAGE_SIX_SELECT
         else -> RESULT
     }
 }

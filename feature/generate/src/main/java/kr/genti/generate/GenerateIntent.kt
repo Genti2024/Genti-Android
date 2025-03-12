@@ -1,5 +1,6 @@
 package kr.genti.generate
 
+import android.net.Uri
 import kr.genti.domain.enums.PictureNumber
 import kr.genti.domain.enums.PictureRatio
 
@@ -12,5 +13,6 @@ sealed class GenerateIntent {
     data class PromptChange(val prompt: String) : GenerateIntent()
     data class RatioSelect(val pictureRatio: PictureRatio) : GenerateIntent()
     data class TextFieldFocused(val isFocused: Boolean) : GenerateIntent()
-    data object ImageSelectBtnClick : GenerateIntent()
+    data class ImageSelectBtnClick(val isExtra: Boolean) : GenerateIntent()
+    data class ImageSelect(val uriList: List<Uri>) : GenerateIntent()
 }

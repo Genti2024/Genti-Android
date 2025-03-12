@@ -1,6 +1,10 @@
 package kr.genti.generate
 
+import android.os.Build
 import androidx.activity.compose.BackHandler
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.Companion.isPhotoPickerAvailable
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.ImageOnly
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,7 +26,11 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kr.genti.common.extension.stringOf
 import kr.genti.common.extension.toast
+import kr.genti.common.manager.LauncherManager.getMultipleGalleryPickerIntent
+import kr.genti.common.manager.LauncherManager.rememberGalleryPickerLauncher
+import kr.genti.common.manager.LauncherManager.rememberPhotoPickerLauncher
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.layout.GentiTopBar
 import kr.genti.designsystem.theme.Black
@@ -46,6 +54,15 @@ internal fun GenerateRoute(
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
+    val photoPickerLauncher = rememberPhotoPickerLauncher(maxItems = 3) { uriList ->
+        viewModel.onIntent(GenerateIntent.ImageSelect(uriList))
+    }
+
+    val galleryPickerLauncher = rememberGalleryPickerLauncher { uriList ->
+        if (uriList.size > 3) context.toast(context.stringOf(R.string.selfie_toast_old_picker_limit))
+        viewModel.onIntent(GenerateIntent.ImageSelect(uriList.take(3)))
+    }
+
     LaunchedEffect(Unit) {
         viewModel.onIntent(GenerateIntent.Init(isParentPic))
     }
@@ -56,6 +73,14 @@ internal fun GenerateRoute(
                 is GenerateSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
                 is GenerateSideEffect.NavigateToWaiting -> navigateToWaiting()
                 is GenerateSideEffect.NavigateToBack -> navigateToBack()
+
+                is GenerateSideEffect.StartImageSelect -> {
+                    if (isPhotoPickerAvailable(context) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        photoPickerLauncher.launch(PickVisualMediaRequest(ImageOnly))
+                    } else {
+                        galleryPickerLauncher.launch(getMultipleGalleryPickerIntent())
+                    }
+                }
             }
         }
     }
@@ -88,7 +113,8 @@ internal fun GenerateRoute(
         onPromptChanged = { viewModel.onIntent(GenerateIntent.PromptChange(it)) },
         onTextFieldOutsideClicked = { viewModel.onIntent(GenerateIntent.TextFieldFocused(true)) },
         onPictureRatioClick = { viewModel.onIntent(GenerateIntent.RatioSelect(it)) },
-        onImageSelectBtnClick = { viewModel.onIntent(GenerateIntent.ImageSelectBtnClick) },
+        onImageSelectBtnClick = { viewModel.onIntent(GenerateIntent.ImageSelectBtnClick(false)) },
+        onExtraImageSelectBtnClick = { viewModel.onIntent(GenerateIntent.ImageSelectBtnClick(true)) },
         onBackBtnClick = { viewModel.onIntent(GenerateIntent.BackBtnClick) },
         onNextBtnClick = { viewModel.onIntent(GenerateIntent.NextBtnClick) }
     )
@@ -113,6 +139,7 @@ private fun GenerateScreen(
     onTextFieldOutsideClicked: () -> Unit = {},
     onPictureRatioClick: (PictureRatio) -> Unit = {},
     onImageSelectBtnClick: () -> Unit = {},
+    onExtraImageSelectBtnClick: () -> Unit = {},
     onNextBtnClick: () -> Unit = {},
     onBackBtnClick: () -> Unit = {},
 ) {

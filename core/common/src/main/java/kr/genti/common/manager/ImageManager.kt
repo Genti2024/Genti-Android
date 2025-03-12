@@ -23,6 +23,7 @@ import coil3.request.ImageRequest
 import coil3.toBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kr.genti.common.xml.extension.getFileName
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -117,6 +118,17 @@ object ImageManager {
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             createChooser(this, "SHARE_IMAGE_CHOOSER")
         }
+
+    /**
+    •	Uri 객체의 Id(해시코드), 파일 이름, Uri 문자열을 추출하는 확장 함수
+     */
+    fun Uri.getImageInfo(): Triple<Long, String, String> {
+        return Triple(
+            hashCode().toLong(),
+            getFileName(resolver).toString(),
+            toString()
+        )
+    }
 
     private suspend fun downloadBitmap(imageUrl: String): Bitmap? =
         imageLoader.execute(

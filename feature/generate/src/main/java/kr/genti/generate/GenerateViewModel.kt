@@ -1,5 +1,6 @@
 package kr.genti.generate
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,6 +11,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kr.genti.common.manager.ImageManager.getImageInfo
+import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.domain.enums.PictureNumber
 import kr.genti.domain.enums.PictureRatio
 import kr.genti.domain.repository.CreateRepository
@@ -41,7 +44,8 @@ constructor(
             is GenerateIntent.PromptChange -> handlePromptChange(intent.prompt)
             is GenerateIntent.TextFieldFocused -> handleTextFieldOutsideClick(intent.isFocused)
             is GenerateIntent.RatioSelect -> handleRatioSelect(intent.pictureRatio)
-            is GenerateIntent.ImageSelectBtnClick -> handleImageSelectBtnClick()
+            is GenerateIntent.ImageSelectBtnClick -> handleImageSelectBtnClick(intent.isExtra)
+            is GenerateIntent.ImageSelect -> handleImageSelect(intent.uriList)
         }
     }
 
@@ -114,8 +118,19 @@ constructor(
         }
     }
 
-    private fun handleImageSelectBtnClick() {
+    private fun handleImageSelectBtnClick(isExtra: Boolean) {
+        viewModelScope.launch {
+            _generateSideEffect.emit(GenerateSideEffect.StartImageSelect(isExtra))
+        }
+    }
 
+    private fun handleImageSelect(uriList: List<Uri>) {
+        _generateState.update {
+            it.copy(imageList = uriList.map { uri ->
+                val uriInfo = uri.getImageInfo()
+                ImageFileModel(uriInfo.first, uriInfo.second, uriInfo.third)
+            })
+        }
     }
 
     private suspend fun getExamplePrompt() {
