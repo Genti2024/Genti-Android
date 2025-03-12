@@ -18,6 +18,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kr.genti.common.extension.noRippleClickable
+import kr.genti.designsystem.component.item.GentiAsyncImage
 import kr.genti.domain.entity.response.ImageModel
 
 @Composable
@@ -56,8 +57,8 @@ fun ProfileImagesGridScreen(
             items = itemList,
             key = { _, model -> model.id }
         ) { _, item ->
-            ProfileItem(
-                item = item,
+            GentiAsyncImage(
+                url = item.url,
                 modifier = Modifier.noRippleClickable { onImageItemClick(item) })
         }
         item {

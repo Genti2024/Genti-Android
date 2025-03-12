@@ -1,4 +1,4 @@
-package kr.genti.onboarding.component
+package kr.genti.designsystem.component.item
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,15 +19,14 @@ import kr.genti.designsystem.theme.GentiGreen
 import kr.genti.designsystem.theme.White30
 
 @Composable
-fun TutorialPageIndicator(
+fun GentiPageIndicator(
     pagerState: PagerState,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier
             .wrapContentHeight()
-            .fillMaxWidth()
-            .padding(bottom = 8.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {

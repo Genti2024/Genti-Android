@@ -47,12 +47,14 @@ import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.designsystem.theme.Gray
 import kr.genti.designsystem.theme.White
 import kr.genti.designsystem.theme.White40
+import kr.genti.designsystem.theme.White60
 
 @Composable
 fun GentiSelectButton(
     @DrawableRes iconRes: Int,
-    text: String,
     modifier: Modifier = Modifier,
+    text: String = "",
+    description: String? = null,
     isSelected: Boolean = false,
     isTintNeeded: Boolean = false,
     onBtnClick: () -> Unit = {},
@@ -121,6 +123,16 @@ fun GentiSelectButton(
                     textAlign = TextAlign.Center,
                     color = White,
                 )
+
+                if (description != null) {
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = description,
+                        style = GentiTheme.typography.body2,
+                        textAlign = TextAlign.Center,
+                        color = White60,
+                    )
+                }
             }
         }
     }
@@ -156,7 +168,8 @@ fun GentiSelectButtonsPreview() {
             item {
                 GentiSelectButton(
                     iconRes = R.drawable.img_ratio_2_3,
-                    text = stringResource(R.string.signup_tv_gender_male),
+                    text = stringResource(R.string.pose_btn_garo_title),
+                    description = stringResource(R.string.pose_btn_garo_subtitle),
                     isSelected = false,
                     isTintNeeded = false,
                 )
@@ -164,7 +177,8 @@ fun GentiSelectButtonsPreview() {
             item {
                 GentiSelectButton(
                     iconRes = R.drawable.img_ratio_3_2,
-                    text = stringResource(R.string.signup_tv_gender_female),
+                    text = stringResource(R.string.pose_btn_sero_title),
+                    description = stringResource(R.string.pose_btn_sero_subtitle),
                     isSelected = true,
                     isTintNeeded = false,
                 )

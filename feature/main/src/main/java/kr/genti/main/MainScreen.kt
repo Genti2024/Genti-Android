@@ -31,6 +31,7 @@ import kr.genti.designsystem.component.dialog.GentiWarningDialog
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.domain.enums.GenerateStatus
+import kr.genti.main.component.GenerateSelectDialog
 import kr.genti.main.component.MainBottomBar
 import kr.genti.main.component.MainBottomBtn
 import kr.genti.main.component.MainNavHost
@@ -59,7 +60,7 @@ internal fun MainRoute(
                 is MainSideEffect.NavigateToVerify -> navigator.navigateToVerify()
                 is MainSideEffect.NavigateToWaiting -> navigator.navigateToWaiting()
                 is MainSideEffect.NavigateToFinished -> navigator.navigateToFinished()
-                is MainSideEffect.NavigateToGenerate -> navigator.navigateToGenerate()
+                is MainSideEffect.NavigateToGenerate -> navigator.navigateToGenerate(sideEffect.isParentPic)
             }
         }
     }
@@ -116,7 +117,10 @@ internal fun MainRoute(
     }
 
     if (mainState.isSelectDialogVisible) {
-        // TODO
+        GenerateSelectDialog(
+            onBtnClick = { viewModel.onIntent(MainIntent.SelectDialogBtnClick(it)) },
+            onDismissRequest = { viewModel.onIntent(MainIntent.DialogDismiss) },
+        )
     }
 }
 

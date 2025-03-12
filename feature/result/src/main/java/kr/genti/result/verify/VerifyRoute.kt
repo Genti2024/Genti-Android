@@ -4,11 +4,9 @@ import android.Manifest.permission.CAMERA
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -21,7 +19,6 @@ import kr.genti.designsystem.component.dialog.GentiWarningDialog
 
 @Composable
 internal fun VerifyRoute(
-    paddingValues: PaddingValues,
     viewModel: VerifyViewModel = hiltViewModel(),
     navigateToBack: (Boolean) -> Unit = {},
 ) {
@@ -84,16 +81,12 @@ internal fun VerifyRoute(
     if (!verifyState.isPhotoTaken) {
         AmplitudeManager.trackEvent("view_verifyme1")
         VerifyBeforeScreen(
-            modifier = Modifier,
-            paddingValues = paddingValues,
             onBackButtonClicked = { viewModel.onIntent(VerifyIntent.ExitButtonClick) },
             onVerifyButtonClicked = { viewModel.onIntent(VerifyIntent.CameraButtonClick(true)) }
         )
     } else {
         AmplitudeManager.trackEvent("view_verifyme2")
         VerifyAfterScreen(
-            modifier = Modifier,
-            paddingValues = paddingValues,
             imageUri = verifyState.imageUri,
             isLoading = verifyState.isLoading,
             onBackButtonClicked = { viewModel.onIntent(VerifyIntent.BackButtonClick) },

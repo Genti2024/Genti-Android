@@ -37,7 +37,6 @@ fun NavController.navigateToTutorial(
 }
 
 fun NavGraphBuilder.onboardingNavGraph(
-    paddingValues: PaddingValues,
     navigateToLogin: () -> Unit = {},
     navigateToSignup: () -> Unit = {},
     navigateToFeed: () -> Unit = {},
@@ -51,20 +50,17 @@ fun NavGraphBuilder.onboardingNavGraph(
     }
     composable<OnboardingRoute.Login> {
         LoginRoute(
-            paddingValues = paddingValues,
             navigateToSignup = navigateToSignup,
             navigateToFeed = navigateToFeed,
         )
     }
     composable<OnboardingRoute.Signup> {
         SignupRoute(
-            paddingValues = paddingValues,
             navigateToTutorial = navigateToTutorial
         )
     }
     composable<OnboardingRoute.Tutorial> {
         TutorialRoute(
-            paddingValues = paddingValues,
             navigateToFeed = navigateToFeed,
         )
     }

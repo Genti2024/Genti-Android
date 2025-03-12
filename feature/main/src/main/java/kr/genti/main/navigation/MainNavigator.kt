@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import kotlinx.coroutines.flow.MutableStateFlow
 import kr.genti.feed.navigation.navigateToFeed
+import kr.genti.generate.navigation.navigateToGenerate
 import kr.genti.navigation.MainTabRoute
 import kr.genti.navigation.OnboardingRoute
 import kr.genti.onboarding.navigation.navigateToLogin
@@ -81,10 +82,7 @@ class MainNavigator(
 
     fun navigateToSetting() = navController.navigateToSetting()
 
-    // TODO
-    fun navigateToGenerate() {
-
-    }
+    fun navigateToGenerate(isParentPic: Boolean) = navController.navigateToGenerate(isParentPic)
 
     fun navigateToVerify() = navController.navigateToVerify()
 

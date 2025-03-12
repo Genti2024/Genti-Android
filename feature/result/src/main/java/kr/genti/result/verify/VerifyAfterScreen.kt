@@ -6,13 +6,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -39,7 +40,6 @@ import kr.genti.designsystem.theme.White60
 @Composable
 internal fun VerifyAfterScreen(
     modifier: Modifier = Modifier,
-    paddingValues: PaddingValues = PaddingValues(),
     imageUri: Uri? = null,
     isLoading: Boolean = false,
     onBackButtonClicked: () -> Unit = {},
@@ -50,7 +50,8 @@ internal fun VerifyAfterScreen(
         modifier = modifier
             .fillMaxSize()
             .background(Black)
-            .padding(paddingValues)
+            .statusBarsPadding()
+            .navigationBarsPadding()
     ) {
         CloseButton(onCloseBtnClicked = onBackButtonClicked)
 
@@ -92,7 +93,7 @@ internal fun VerifyAfterScreen(
                 .align(Alignment.Center)
         ) {
             GentiAsyncUriImage(imageUri = imageUri)
-            
+
             Image(
                 painter = painterResource(id = R.drawable.img_gradation_image_bottom),
                 contentDescription = null,

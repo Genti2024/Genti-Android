@@ -62,7 +62,7 @@ internal fun FeedRoute(
 
     FeedScreen(
         modifier = Modifier,
-        innerPadding = paddingValues,
+        paddingValues = paddingValues,
         itemList = feedState.itemList,
         isTooltipVisible = feedState.isTooltipVisible,
         isTooltipClosed = feedState.isTooltipClosed,
@@ -86,7 +86,7 @@ internal fun FeedRoute(
 @Composable
 private fun FeedScreen(
     modifier: Modifier = Modifier,
-    innerPadding: PaddingValues = PaddingValues(),
+    paddingValues: PaddingValues = PaddingValues(),
     itemList: ImmutableList<FeedItemModel> = persistentListOf(),
     isTooltipVisible: Boolean = false,
     isTooltipClosed: Boolean = false,
@@ -99,10 +99,9 @@ private fun FeedScreen(
         modifier = modifier
             .fillMaxSize()
             .background(Black)
-            .padding(bottom = innerPadding.calculateBottomPadding())
+            .padding(bottom = paddingValues.calculateBottomPadding())
     ) {
         FeedImagesListScreen(
-            innerPadding = innerPadding,
             itemList = itemList,
             isTooltipClosed = isTooltipClosed,
             onInfoBtnClick = onInfoBtnClick,

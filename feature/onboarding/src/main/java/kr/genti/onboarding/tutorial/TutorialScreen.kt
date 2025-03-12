@@ -3,11 +3,12 @@ package kr.genti.onboarding.tutorial
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -15,7 +16,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,19 +24,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.button.CloseButton
 import kr.genti.designsystem.component.button.GentiButton
+import kr.genti.designsystem.component.item.GentiPageIndicator
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
-import kr.genti.navigation.OnboardingRoute
-import kr.genti.navigation.Route
 import kr.genti.onboarding.component.TutorialFadeInBackground
 import kr.genti.onboarding.component.TutorialItem
-import kr.genti.onboarding.component.TutorialPageIndicator
 import kr.genti.onboarding.model.TutorialStage
 import kr.genti.onboarding.model.TutorialStage.Companion.getTutorialList
 
 @Composable
 internal fun TutorialRoute(
-    paddingValues: PaddingValues,
     viewModel: TutorialViewModel = hiltViewModel(),
     navigateToFeed: () -> Unit = {},
 ) {
@@ -53,7 +50,6 @@ internal fun TutorialRoute(
 
     TutorialScreen(
         modifier = Modifier,
-        paddingValues = paddingValues,
         currentStage = tutorialState.currentStage,
         onNextBtnClicked = { viewModel.onIntent(TutorialIntent.NextBtnClick) },
         onCloseBtnClicked = { viewModel.onIntent(TutorialIntent.CloseBtnClick) }
@@ -63,7 +59,6 @@ internal fun TutorialRoute(
 @Composable
 private fun TutorialScreen(
     modifier: Modifier = Modifier,
-    paddingValues: PaddingValues = PaddingValues(),
     currentStage: TutorialStage = TutorialStage.FIRST,
     onNextBtnClicked: () -> Unit = {},
     onCloseBtnClicked: () -> Unit = {},
@@ -82,7 +77,8 @@ private fun TutorialScreen(
         modifier = modifier
             .fillMaxSize()
             .background(Black)
-            .padding(paddingValues)
+            .statusBarsPadding()
+            .navigationBarsPadding()
     ) {
         TutorialFadeInBackground(
             currentStage = currentStage,
@@ -91,9 +87,10 @@ private fun TutorialScreen(
 
         HorizontalPager(
             state = pagerState,
+            userScrollEnabled = false,
             modifier = Modifier
                 .fillMaxSize()
-                .align(Alignment.Center)
+                .align(Alignment.Center),
         ) { page ->
             TutorialItem(currentStage = getTutorialList()[page])
         }
@@ -106,9 +103,9 @@ private fun TutorialScreen(
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 20.dp)
         ) {
-            TutorialPageIndicator(pagerState = pagerState)
+            GentiPageIndicator(pagerState = pagerState)
 
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(48.dp))
 
             GentiButton(
                 textRes = if (currentStage != TutorialStage.THIRD) R.string.onboarding_btn_next else R.string.onboarding_btn_finish,

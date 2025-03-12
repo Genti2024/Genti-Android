@@ -58,7 +58,7 @@
     <string name="create_select_tv_default_caption">내 사진 세 장만 있으면 만들 수 있어요.</string>
     <string name="create_select_tv_parent_title">부모님 사진 만들기</string>
     <string name="create_select_tv_parent_subtitle">사랑하는 부모님의 사진을 만들어 보세요!</string>
-    <string name="create_select_tv_parent_body">부모님의 독사진, 부모님과 함께 찍은 사진을 만들 수 있어요.</string>
+    <string name="create_select_tv_parent_body">부모님의 독사진 또는 함께 찍은 사진을 만들 수 있어요.</string>
     <string name="create_select_tv_parent_caption">흑백 사진이거나 화질이 안좋은 사진도 괜찮아요.</string>
 
     <string name="create_tv_title">사진 만들기</string>

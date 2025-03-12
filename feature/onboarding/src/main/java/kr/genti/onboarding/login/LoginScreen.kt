@@ -2,11 +2,12 @@ package kr.genti.onboarding.login
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,14 +28,11 @@ import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.layout.GentiLoadingScreen
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.designsystem.theme.White80
-import kr.genti.navigation.OnboardingRoute
-import kr.genti.navigation.Route
 import kr.genti.onboarding.component.KakaoLoginButton
 import kr.genti.onboarding.component.MovingBackgroundImage
 
 @Composable
 internal fun LoginRoute(
-    paddingValues: PaddingValues,
     viewModel: LoginViewModel = hiltViewModel(),
     navigateToSignup: () -> Unit = {},
     navigateToFeed: () -> Unit = {},
@@ -77,7 +75,6 @@ internal fun LoginRoute(
 
     LoginScreen(
         modifier = Modifier,
-        paddingValues = paddingValues,
         isLoading = loginState.isLoading,
         onLoginBtnClicked = { viewModel.onIntent(LoginIntent.LoginBtnClick) }
     )
@@ -86,14 +83,13 @@ internal fun LoginRoute(
 @Composable
 private fun LoginScreen(
     modifier: Modifier = Modifier,
-    paddingValues: PaddingValues = PaddingValues(),
     isLoading: Boolean = false,
     onLoginBtnClicked: () -> Unit = {},
 ) {
     Box(
         modifier = modifier
             .fillMaxSize()
-            .padding(bottom = paddingValues.calculateBottomPadding())
+            .navigationBarsPadding()
     ) {
         MovingBackgroundImage(imageRes = R.drawable.img_login_bg)
 
@@ -102,7 +98,7 @@ private fun LoginScreen(
                 .align(Alignment.TopStart)
                 .padding(horizontal = 27.dp)
                 .padding(top = 100.dp)
-                .padding(top = paddingValues.calculateTopPadding()),
+                .statusBarsPadding()
         ) {
             Text(
                 text = stringResource(R.string.login_tv_title),
