@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -14,7 +15,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.genti.common.manager.ImageManager.getImageInfo
+import kr.genti.domain.entity.request.CreateRequestModel
 import kr.genti.domain.entity.request.ImageBucketRequestModel
+import kr.genti.domain.entity.request.KeyRequestModel
 import kr.genti.domain.entity.response.ImageBucketModel
 import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.domain.enums.FileType
@@ -90,7 +93,7 @@ constructor(
             }
         } else {
             viewModelScope.launch {
-                sendImagesToGenerate()
+                sendThreeImagesToGenerate()
             }
         }
     }
@@ -138,6 +141,8 @@ constructor(
         }
     }
 
+    /** 프롬프트뷰 예시 이미지 리스트 관련*/
+
     private suspend fun getExamplePrompt() {
         createRepository.getPromptExample(
             getGenerateType(
@@ -151,10 +156,17 @@ constructor(
         }
     }
 
-    private suspend fun sendImagesToGenerate() {
+    /** 이미지 3장 업로드 및 생성 요청 관련*/
+
+    private suspend fun sendThreeImagesToGenerate() {
         runCatching {
             val imageBucketList = getThreeImageBucket(imageList = generateState.value.imageList)
-            postThreeImage(imageBucketList)
+            uploadThreeImageToBucket(imageBucketList)
+            postThreeImageToGenerate(imageBucketList)
+        }.onSuccess {
+            _generateSideEffect.emit(GenerateSideEffect.NavigateToWaiting)
+        }.onFailure {
+            _generateSideEffect.emit(GenerateSideEffect.ShowErrorToast)
         }
     }
 
@@ -165,14 +177,28 @@ constructor(
             }
         ).getOrThrow()
 
-    private suspend fun postThreeImage(imageBucketList: List<ImageBucketModel>) {
-        imageBucketList.mapIndexed { index, imageBucket ->
-            async {
-                uploadRepository.uploadImage(
-                    preSignedURL = imageBucket.presignedUrl,
-                    imageUri = generateState.value.imageList[index].url
-                ).getOrThrow()
-            }
-        }.awaitAll()
+    private suspend fun uploadThreeImageToBucket(imageBucketList: List<ImageBucketModel>) =
+        coroutineScope {
+            imageBucketList.mapIndexed { index, imageBucket ->
+                async {
+                    uploadRepository.uploadImage(
+                        preSignedURL = imageBucket.presignedUrl,
+                        imageUri = generateState.value.imageList[index].url
+                    ).getOrThrow()
+                }
+            }.awaitAll()
+        }
+
+    private suspend fun postThreeImageToGenerate(imageBucketList: List<ImageBucketModel>) {
+        val request = CreateRequestModel(
+            generateState.value.prompt,
+            imageBucketList.map { KeyRequestModel(it.s3Key) },
+            generateState.value.pictureRatio,
+        )
+        if (!generateState.value.isParentPic) {
+            createRepository.postToCreate(request).getOrThrow()
+        } else {
+            createRepository.postToCreateOne(request).getOrThrow()
+        }
     }
 }

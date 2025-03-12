@@ -112,7 +112,7 @@ constructor(
     private suspend fun sendVerifyImageToServer() {
         runCatching {
             val imageBucket = getSingleImageBucket()
-            postSingleImage(imageBucket.presignedUrl)
+            uploadImageToBucket(imageBucket.presignedUrl)
             postToVerifyImage(KeyRequestModel(imageBucket.s3Key))
         }.onSuccess {
             updateBooleanProperties("user_verified", true)
@@ -130,7 +130,7 @@ constructor(
             ),
         ).getOrThrow()
 
-    private suspend fun postSingleImage(s3Url: String) {
+    private suspend fun uploadImageToBucket(s3Url: String) {
         uploadRepository.uploadImage(s3Url, verifyState.value.imageUri.toString()).getOrThrow()
     }
 
