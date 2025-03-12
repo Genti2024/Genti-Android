@@ -14,6 +14,10 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kr.genti.common.manager.AmplitudeManager
+import kr.genti.common.manager.AmplitudeManager.EVENT_CLICK_BTN
+import kr.genti.common.manager.AmplitudeManager.PROPERTY_BTN
+import kr.genti.common.manager.AmplitudeManager.PROPERTY_PAGE
 import kr.genti.common.manager.ImageManager.getImageInfo
 import kr.genti.domain.entity.request.CreateRequestModel
 import kr.genti.domain.entity.request.CreateTwoRequestModel
@@ -27,6 +31,7 @@ import kr.genti.domain.enums.PictureRatio
 import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.repository.UploadRepository
 import kr.genti.generate.model.GenerateStage
+import kr.genti.generate.model.GenerateType
 import kr.genti.generate.model.GenerateType.Companion.getGenerateType
 import javax.inject.Inject
 
@@ -86,6 +91,7 @@ constructor(
     }
 
     private fun handleNextBtnClick() {
+        amplitudeTrackNextButton(generateState.value.currentStage)
         val nextStage =
             generateState.value.currentStage.nextStage(generateState.value.pictureNumber)
         if (nextStage != GenerateStage.RESULT) {
@@ -93,6 +99,7 @@ constructor(
                 it.copy(currentStage = nextStage, currentStep = it.currentStep + 1)
             }
         } else {
+            amplitudeTrackStartCreate()
             viewModelScope.launch {
                 changeLoadingState(true)
                 requestGenerate()
@@ -108,7 +115,7 @@ constructor(
     }
 
     private fun handlePromptExampleSwipe() {
-        // TODO : 앰플리튜드 작업
+        amplitudeTrackExampleSwipe()
     }
 
     private fun handlePromptChange(prompt: String) {
@@ -144,6 +151,7 @@ constructor(
             ImageFileModel(uriInfo.first, uriInfo.second, uriInfo.third)
         }
         _generateState.update {
+            amplitudeTrackSelectImage(it.isSelectingExtra)
             if (!it.isSelectingExtra) {
                 it.copy(imageList = selectedImageList)
             } else {
@@ -161,15 +169,15 @@ constructor(
     /** 프롬프트뷰 예시 이미지 리스트 관련*/
 
     private suspend fun getExamplePrompt() {
-        createRepository.getPromptExample(
-            getGenerateType(
-                generateState.value.isParentPic, generateState.value.pictureNumber
-            ).name
-        ).onSuccess { result ->
-            _generateState.update {
-                it.copy(exampleList = result.toImmutableList())
+        val generateType =
+            getGenerateType(generateState.value.isParentPic, generateState.value.pictureNumber)
+        createRepository.getPromptExample(generateType.name)
+            .onSuccess { result ->
+                amplitudeTrackViewExample(generateType)
+                _generateState.update {
+                    it.copy(exampleList = result.toImmutableList())
+                }
             }
-        }
     }
 
     /** 이미지 생성 요청 관련*/
@@ -182,6 +190,7 @@ constructor(
                 postSixImageToGenerate()
             }
         }.onSuccess {
+            amplitudeTrackFinishCreate()
             _generateSideEffect.emit(GenerateSideEffect.NavigateToWaiting)
         }.onFailure {
             _generateSideEffect.emit(GenerateSideEffect.ShowErrorToast)
@@ -237,5 +246,71 @@ constructor(
                 ).getOrThrow()
             }
         }.awaitAll()
+    }
+
+    /** 앰플리튜드 관련*/
+
+    private fun amplitudeTrackNextButton(currentStage: GenerateStage) {
+        val stage = when (currentStage) {
+            GenerateStage.NUMBER_SELECT -> "create0"
+            GenerateStage.PROMPT_INPUT -> "create1"
+            GenerateStage.RATIO_SELECT -> "create2"
+            else -> ""
+        }
+        if (stage.isEmpty()) return
+        AmplitudeManager.trackEvent(
+            EVENT_CLICK_BTN,
+            mapOf(PROPERTY_PAGE to stage),
+            mapOf(PROPERTY_BTN to "next"),
+        )
+        if (currentStage == GenerateStage.RATIO_SELECT) {
+            when (generateState.value.pictureNumber) {
+                PictureNumber.ONE -> AmplitudeManager.trackEvent("view_createoneparent")
+                PictureNumber.TWO -> AmplitudeManager.trackEvent("view_createtwoparents")
+                else -> return
+            }
+        }
+    }
+
+    private fun amplitudeTrackExampleSwipe() {
+        AmplitudeManager.apply {
+            trackEvent(
+                EVENT_CLICK_BTN,
+                mapOf(PROPERTY_PAGE to "create1"),
+                mapOf(PROPERTY_BTN to "promptsuggest_refresh"),
+            )
+            plusIntProperties("user_promptsuggest_refresh")
+        }
+    }
+
+    private fun amplitudeTrackViewExample(generateType: GenerateType) {
+        when (generateType) {
+            GenerateType.PAID_ONE -> AmplitudeManager.trackEvent("view_oneparentpreset")
+            GenerateType.PAID_TWO -> AmplitudeManager.trackEvent("view_twoparentspreset")
+            else -> return
+        }
+    }
+
+    private fun amplitudeTrackSelectImage(isExtra: Boolean) {
+        AmplitudeManager.trackEvent(
+            EVENT_CLICK_BTN,
+            mapOf(PROPERTY_PAGE to "create3"),
+            mapOf(PROPERTY_BTN to if (!isExtra) "selectpic1" else "selectpic2")
+        )
+    }
+
+    private fun amplitudeTrackStartCreate() {
+        AmplitudeManager.trackEvent(
+            EVENT_CLICK_BTN, mapOf(PROPERTY_PAGE to "create3"), mapOf(PROPERTY_BTN to "createpic"),
+        )
+    }
+
+    private fun amplitudeTrackFinishCreate() {
+        when (generateState.value.pictureNumber) {
+            PictureNumber.NONE -> AmplitudeManager.plusIntProperties("user_piccreate_original")
+            PictureNumber.ONE -> AmplitudeManager.trackEvent("complete_oneparent")
+            PictureNumber.TWO -> AmplitudeManager.trackEvent("complete_twoparents")
+        }
+        AmplitudeManager.plusIntProperties("user_piccreate_total")
     }
 }
