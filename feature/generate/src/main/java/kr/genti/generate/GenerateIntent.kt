@@ -12,4 +12,5 @@ sealed class GenerateIntent {
     data class PromptChange(val prompt: String) : GenerateIntent()
     data class RatioSelect(val pictureRatio: PictureRatio) : GenerateIntent()
     data class TextFieldFocused(val isFocused: Boolean) : GenerateIntent()
+    data object ImageSelectBtnClick : GenerateIntent()
 }

@@ -41,6 +41,7 @@ constructor(
             is GenerateIntent.PromptChange -> handlePromptChange(intent.prompt)
             is GenerateIntent.TextFieldFocused -> handleTextFieldOutsideClick(intent.isFocused)
             is GenerateIntent.RatioSelect -> handleRatioSelect(intent.pictureRatio)
+            is GenerateIntent.ImageSelectBtnClick -> handleImageSelectBtnClick()
         }
     }
 
@@ -111,6 +112,10 @@ constructor(
         _generateState.update {
             it.copy(pictureRatio = pictureRatio)
         }
+    }
+
+    private fun handleImageSelectBtnClick() {
+
     }
 
     private suspend fun getExamplePrompt() {

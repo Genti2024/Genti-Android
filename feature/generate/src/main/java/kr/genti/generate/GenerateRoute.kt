@@ -27,6 +27,7 @@ import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.layout.GentiTopBar
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
+import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.domain.entity.response.PromptExampleModel
 import kr.genti.domain.enums.PictureNumber
 import kr.genti.domain.enums.PictureRatio
@@ -80,11 +81,14 @@ internal fun GenerateRoute(
         pictureRatio = generateState.pictureRatio,
         exampleList = generateState.exampleList,
         prompt = generateState.prompt,
+        imageList = generateState.imageList,
+        extraImageList = generateState.extraImageList,
         onPictureNumberClick = { viewModel.onIntent(GenerateIntent.NumberSelect(it)) },
         onExamplePageSwipe = { viewModel.onIntent(GenerateIntent.PromptExampleSwipe) },
         onPromptChanged = { viewModel.onIntent(GenerateIntent.PromptChange(it)) },
         onTextFieldOutsideClicked = { viewModel.onIntent(GenerateIntent.TextFieldFocused(true)) },
         onPictureRatioClick = { viewModel.onIntent(GenerateIntent.RatioSelect(it)) },
+        onImageSelectBtnClick = { viewModel.onIntent(GenerateIntent.ImageSelectBtnClick) },
         onBackBtnClick = { viewModel.onIntent(GenerateIntent.BackBtnClick) },
         onNextBtnClick = { viewModel.onIntent(GenerateIntent.NextBtnClick) }
     )
@@ -101,11 +105,14 @@ private fun GenerateScreen(
     pictureRatio: PictureRatio = PictureRatio.NONE,
     exampleList: ImmutableList<PromptExampleModel> = persistentListOf(),
     prompt: String = "",
+    imageList: List<ImageFileModel> = listOf(),
+    extraImageList: List<ImageFileModel> = listOf(),
     onPictureNumberClick: (PictureNumber) -> Unit = {},
     onExamplePageSwipe: () -> Unit = {},
     onPromptChanged: (String) -> Unit = {},
     onTextFieldOutsideClicked: () -> Unit = {},
     onPictureRatioClick: (PictureRatio) -> Unit = {},
+    onImageSelectBtnClick: () -> Unit = {},
     onNextBtnClick: () -> Unit = {},
     onBackBtnClick: () -> Unit = {},
 ) {
@@ -158,7 +165,12 @@ private fun GenerateScreen(
             }
 
             GenerateStage.IMAGE_THREE_SELECT -> {
-                ImageThreeSelectScreen()
+                ImageThreeSelectScreen(
+                    isParentPic = isParentPic,
+                    imageList = imageList,
+                    onImageSelectBtnClick = onImageSelectBtnClick,
+                    onNextBtnClick = onNextBtnClick
+                )
             }
 
             GenerateStage.IMAGE_SIX_SELECT -> {
