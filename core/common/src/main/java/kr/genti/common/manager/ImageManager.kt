@@ -87,6 +87,9 @@ object ImageManager {
             }
         }
 
+    /**
+     * 앱의 캐시 디렉토리에 임시 JPEG 이미지 파일을 생성하고, 해당 파일의 URI와 파일 이름을 반환하는 함수
+     */
     suspend fun getTempImageFile(): Result<TempImageFile> =
         runCatching {
             withContext(Dispatchers.IO) {

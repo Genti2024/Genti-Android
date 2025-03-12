@@ -1,8 +1,6 @@
 package kr.genti.onboarding.splash
 
 import android.app.Activity
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -20,12 +18,11 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.jakewharton.processphoenix.ProcessPhoenix
-import kr.genti.common.manager.AppUpdateManager
 import kr.genti.common.extension.toast
+import kr.genti.common.manager.AppUpdateManager
+import kr.genti.common.manager.LauncherManager.rememberIntentSenderLauncher
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.theme.GentiTheme
-import kr.genti.navigation.OnboardingRoute
-import kr.genti.navigation.Route
 
 @Composable
 internal fun SplashRoute(
@@ -36,15 +33,8 @@ internal fun SplashRoute(
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartIntentSenderForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            ProcessPhoenix.triggerRebirth(context)
-        } else {
-            (context as? Activity)?.finishAffinity()
-                ?: context.toast(context.getString(R.string.error_msg))
-        }
+    val launcher = rememberIntentSenderLauncher { isAppUpdateSuccess ->
+        viewModel.onIntent(SplashIntent.AppUpdateFinish(isAppUpdateSuccess))
     }
 
     LaunchedEffect(Unit) {
@@ -58,6 +48,8 @@ internal fun SplashRoute(
                 is SplashSideEffect.NavigateToLogin -> navigateToLogin()
                 is SplashSideEffect.NavigateToFeed -> navigateToFeed()
                 is SplashSideEffect.StartAppUpdate -> AppUpdateManager.startAppUpdate(launcher)
+                is SplashSideEffect.RestartApp -> ProcessPhoenix.triggerRebirth(context)
+                is SplashSideEffect.FinishApp -> (context as? Activity)?.finish()
             }
         }
     }
