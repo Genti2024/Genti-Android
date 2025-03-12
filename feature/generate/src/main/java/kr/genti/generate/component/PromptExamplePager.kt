@@ -48,7 +48,7 @@ internal fun PromptExamplePager(
             )
         }
 
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         GentiPageIndicator(pagerState = pagerState)
     }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -49,6 +50,7 @@ fun PromptInputScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
+            .imePadding()
             .noRippleClickable { onTextFieldOutsideClicked() }
     ) {
         Column(
@@ -77,7 +79,7 @@ fun PromptInputScreen(
             }
 
             if (exampleList.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
                     text = stringResource(R.string.create_tv_random_title),
@@ -86,7 +88,7 @@ fun PromptInputScreen(
                     textAlign = TextAlign.Center
                 )
 
-                Spacer(modifier = Modifier.height(14.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 PromptExamplePager(
                     exampleList = exampleList,
