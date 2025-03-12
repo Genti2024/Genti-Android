@@ -5,14 +5,14 @@ import kr.genti.data.dto.request.CreateRequestDto
 import kr.genti.data.dto.request.CreateTwoRequestDto
 import kr.genti.data.dto.request.KeyRequestDto
 import kr.genti.data.dto.request.PurchaseValidRequestDto
-import kr.genti.data.dto.request.S3RequestDto
+import kr.genti.data.dto.request.ImageBucketRequestDto
 import kr.genti.data.dto.response.PromptExampleDto
-import kr.genti.data.dto.response.S3PresignedUrlDto
+import kr.genti.data.dto.response.ImageBucketDto
 
 interface CreateDataSource {
-    suspend fun getSingleS3Url(request: S3RequestDto): BaseResponse<S3PresignedUrlDto>
+    suspend fun getSingleImageBucket(request: ImageBucketRequestDto): BaseResponse<ImageBucketDto>
 
-    suspend fun getMultiS3Url(request: List<S3RequestDto>): BaseResponse<List<S3PresignedUrlDto>>
+    suspend fun getThreeImageBucket(request: List<ImageBucketRequestDto>): BaseResponse<List<ImageBucketDto>>
 
     suspend fun postToCreate(request: CreateRequestDto): BaseResponse<Boolean>
 

@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -12,7 +14,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.genti.common.manager.ImageManager.getImageInfo
+import kr.genti.domain.entity.request.ImageBucketRequestModel
+import kr.genti.domain.entity.response.ImageBucketModel
 import kr.genti.domain.entity.response.ImageFileModel
+import kr.genti.domain.enums.FileType
 import kr.genti.domain.enums.PictureNumber
 import kr.genti.domain.enums.PictureRatio
 import kr.genti.domain.repository.CreateRepository
@@ -147,6 +152,27 @@ constructor(
     }
 
     private suspend fun sendImagesToGenerate() {
+        runCatching {
+            val imageBucketList = getThreeImageBucket(imageList = generateState.value.imageList)
+            postThreeImage(imageBucketList)
+        }
+    }
 
+    private suspend fun getThreeImageBucket(imageList: List<ImageFileModel>): List<ImageBucketModel> =
+        createRepository.getThreeImageBucket(
+            imageList.map { image ->
+                ImageBucketRequestModel(FileType.USER_UPLOADED_IMAGE, image.name)
+            }
+        ).getOrThrow()
+
+    private suspend fun postThreeImage(imageBucketList: List<ImageBucketModel>) {
+        imageBucketList.mapIndexed { index, imageBucket ->
+            async {
+                uploadRepository.uploadImage(
+                    preSignedURL = imageBucket.presignedUrl,
+                    imageUri = generateState.value.imageList[index].url
+                ).getOrThrow()
+            }
+        }.awaitAll()
     }
 }

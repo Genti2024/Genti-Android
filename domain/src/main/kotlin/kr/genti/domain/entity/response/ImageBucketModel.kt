@@ -1,7 +1,7 @@
 package kr.genti.domain.entity.response
 
-data class S3PresignedUrlModel(
+data class ImageBucketModel(
     val fileName: String,
-    val url: String,
+    val presignedUrl: String,
     val s3Key: String,
 )

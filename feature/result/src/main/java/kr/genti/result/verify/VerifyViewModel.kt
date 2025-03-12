@@ -17,8 +17,8 @@ import kr.genti.common.manager.AmplitudeManager.updateBooleanProperties
 import kr.genti.common.manager.ImageManager
 import kr.genti.core.common.BuildConfig
 import kr.genti.domain.entity.request.KeyRequestModel
-import kr.genti.domain.entity.request.S3RequestModel
-import kr.genti.domain.entity.response.S3PresignedUrlModel
+import kr.genti.domain.entity.request.ImageBucketRequestModel
+import kr.genti.domain.entity.response.ImageBucketModel
 import kr.genti.domain.enums.FileType
 import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.repository.UploadRepository
@@ -111,9 +111,9 @@ constructor(
 
     private suspend fun sendVerifyImageToServer() {
         runCatching {
-            val s3UrlModel = getSingleS3UrlModel()
-            postSingleImage(s3UrlModel.url)
-            postToVerifyImage(KeyRequestModel(s3UrlModel.s3Key))
+            val imageBucket = getSingleImageBucket()
+            postSingleImage(imageBucket.presignedUrl)
+            postToVerifyImage(KeyRequestModel(imageBucket.s3Key))
         }.onSuccess {
             updateBooleanProperties("user_verified", true)
             _verifySideEffect.emit(VerifySideEffect.VerifySuccess)
@@ -122,9 +122,9 @@ constructor(
         }
     }
 
-    private suspend fun getSingleS3UrlModel(): S3PresignedUrlModel =
-        createRepository.getS3SingleUrl(
-            S3RequestModel(
+    private suspend fun getSingleImageBucket(): ImageBucketModel =
+        createRepository.getSingleImageBucket(
+            ImageBucketRequestModel(
                 if (BuildConfig.DEBUG) FileType.DEV_USER_VERIFICATION_IMAGE else FileType.USER_VERIFICATION_IMAGE,
                 verifyState.value.imageName.toString(),
             ),

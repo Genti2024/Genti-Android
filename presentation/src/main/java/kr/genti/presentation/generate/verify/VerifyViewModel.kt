@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kr.genti.core.state.UiState
 import kr.genti.domain.entity.request.KeyRequestModel
-import kr.genti.domain.entity.request.S3RequestModel
+import kr.genti.domain.entity.request.ImageBucketRequestModel
 import kr.genti.domain.entity.response.ImageFileModel.Companion.emptyImageFileModel
-import kr.genti.domain.entity.response.S3PresignedUrlModel
+import kr.genti.domain.entity.response.ImageBucketModel
 import kr.genti.domain.enums.FileType
 import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.repository.UploadRepository
@@ -36,8 +36,8 @@ class VerifyViewModel
             _totalGeneratingState.value = UiState.Loading
             viewModelScope.launch {
                 createRepository
-                    .getS3SingleUrl(
-                        S3RequestModel(
+                    .getSingleImageBucket(
+                        ImageBucketRequestModel(
                             if (BuildConfig.DEBUG) FileType.DEV_USER_VERIFICATION_IMAGE else FileType.USER_VERIFICATION_IMAGE,
                             userImage.name,
                         ),
@@ -50,10 +50,10 @@ class VerifyViewModel
             }
         }
 
-        private fun postSingleImage(urlModel: S3PresignedUrlModel) {
+        private fun postSingleImage(urlModel: ImageBucketModel) {
             viewModelScope.launch {
                 uploadRepository
-                    .uploadImage(urlModel.url, userImage.url)
+                    .uploadImage(urlModel.presignedUrl, userImage.url)
                     .onSuccess {
                         postToVerifyImage()
                     }.onFailure {

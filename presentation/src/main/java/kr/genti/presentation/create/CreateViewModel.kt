@@ -16,10 +16,10 @@ import kr.genti.domain.entity.request.CreateRequestModel
 import kr.genti.domain.entity.request.CreateTwoRequestModel
 import kr.genti.domain.entity.request.KeyRequestModel
 import kr.genti.domain.entity.request.PurchaseValidRequestModel
-import kr.genti.domain.entity.request.S3RequestModel
+import kr.genti.domain.entity.request.ImageBucketRequestModel
 import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.domain.entity.response.PromptExampleModel
-import kr.genti.domain.entity.response.S3PresignedUrlModel
+import kr.genti.domain.entity.response.ImageBucketModel
 import kr.genti.domain.enums.FileType
 import kr.genti.domain.enums.PictureNumber
 import kr.genti.domain.enums.PictureRatio
@@ -191,23 +191,23 @@ constructor(
         }
     }
 
-    private suspend fun getThreeS3Urls(imageList: List<ImageFileModel>): List<S3PresignedUrlModel> {
-        return createRepository.getS3MultiUrl(
+    private suspend fun getThreeS3Urls(imageList: List<ImageFileModel>): List<ImageBucketModel> {
+        return createRepository.getThreeImageBucket(
             imageList.map { image ->
-                S3RequestModel(FileType.USER_UPLOADED_IMAGE, image.name)
+                ImageBucketRequestModel(FileType.USER_UPLOADED_IMAGE, image.name)
             }
         ).getOrThrow()
     }
 
     private suspend fun postThreeImage(
-        urlModelList: List<S3PresignedUrlModel>,
+        urlModelList: List<ImageBucketModel>,
         imageList: List<ImageFileModel>
     ) {
         coroutineScope {
             urlModelList.mapIndexed { i, urlModel ->
                 async {
                     runCatching {
-                        uploadRepository.uploadImage(urlModel.url, imageList[i].url)
+                        uploadRepository.uploadImage(urlModel.presignedUrl, imageList[i].url)
                     }.onFailure {
                         throw Exception(it.message)
                     }
