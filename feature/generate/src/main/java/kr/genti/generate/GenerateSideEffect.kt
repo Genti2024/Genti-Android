@@ -5,4 +5,5 @@ sealed class GenerateSideEffect {
     data object NavigateToWaiting : GenerateSideEffect()
     data object NavigateToBack : GenerateSideEffect()
     data object StartImageSelect : GenerateSideEffect()
+    data object StartPurchaseProduct : GenerateSideEffect()
 }

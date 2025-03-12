@@ -1,5 +1,6 @@
 package kr.genti.generate
 
+import android.app.Activity
 import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.activity.result.PickVisualMediaRequest
@@ -13,8 +14,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -24,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.android.billingclient.api.BillingClient.BillingResponseCode.USER_CANCELED
+import com.android.billingclient.api.Purchase
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kr.genti.common.extension.stringOf
@@ -40,6 +45,7 @@ import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.domain.entity.response.PromptExampleModel
 import kr.genti.domain.enums.PictureNumber
 import kr.genti.domain.enums.PictureRatio
+import kr.genti.generate.billing.BillingManager
 import kr.genti.generate.component.GenerateProgressBar
 import kr.genti.generate.model.GenerateStage
 
@@ -64,6 +70,26 @@ internal fun GenerateRoute(
         viewModel.onIntent(GenerateIntent.ImageSelect(uriList.take(3)))
     }
 
+    val billingManager = remember {
+        BillingManager(
+            activity = context as Activity,
+            callback = object : kr.genti.generate.billing.BillingCallback {
+                override fun onBillingSuccess(purchase: Purchase) {
+                    viewModel.onIntent(GenerateIntent.PurchaseSuccess(purchase))
+                }
+
+                override fun onBillingFailure(responseCode: Int) {
+                    viewModel.onIntent(GenerateIntent.PurchaseFailure)
+                    if (responseCode != USER_CANCELED) context.toast(context.getString(R.string.error_msg))
+                }
+            },
+        )
+    }
+
+    DisposableEffect(billingManager) {
+        onDispose { billingManager.endConnection() }
+    }
+
     LaunchedEffect(Unit) {
         viewModel.onIntent(GenerateIntent.Init(isParentPic))
     }
@@ -82,6 +108,8 @@ internal fun GenerateRoute(
                         galleryPickerLauncher.launch(getMultipleGalleryPickerIntent())
                     }
                 }
+
+                is GenerateSideEffect.StartPurchaseProduct -> billingManager.purchaseProduct()
             }
         }
     }
@@ -103,7 +131,8 @@ internal fun GenerateRoute(
         currentStep = generateState.currentStep,
         progress = generateState.progress,
         isParentPic = generateState.isParentPic,
-        isLoading = generateState.isLoading,
+        isBillingLoading = generateState.isBillingLoading,
+        isRequestLoading = generateState.isRequestLoading,
         pictureNumber = generateState.pictureNumber,
         pictureRatio = generateState.pictureRatio,
         exampleList = generateState.exampleList,
@@ -129,7 +158,8 @@ private fun GenerateScreen(
     currentStep: Int = 1,
     progress: Float = 0f,
     isParentPic: Boolean = false,
-    isLoading: Boolean = false,
+    isBillingLoading: Boolean = false,
+    isRequestLoading: Boolean = false,
     pictureNumber: PictureNumber = PictureNumber.NONE,
     pictureRatio: PictureRatio = PictureRatio.NONE,
     exampleList: ImmutableList<PromptExampleModel> = persistentListOf(),
@@ -218,8 +248,13 @@ private fun GenerateScreen(
     }
 
     GentiLoadingScreen(
-        isLoading = isLoading,
+        isLoading = isRequestLoading,
         rawRes = R.raw.lottie_loading_create,
+        modifier = Modifier.fillMaxSize()
+    )
+
+    GentiLoadingScreen(
+        isLoading = isBillingLoading,
         modifier = Modifier.fillMaxSize()
     )
 }

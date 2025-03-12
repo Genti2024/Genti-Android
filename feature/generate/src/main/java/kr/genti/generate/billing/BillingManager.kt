@@ -1,4 +1,4 @@
-package kr.genti.presentation.create.billing
+package kr.genti.generate.billing
 
 import android.app.Activity
 import com.android.billingclient.api.AcknowledgePurchaseParams
