@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -115,6 +116,7 @@ private fun SignupScreen(
             .background(Black)
             .statusBarsPadding()
             .navigationBarsPadding()
+            .imePadding()
             .noRippleClickable { onTextFieldOutsideClicked() }
     ) {
         Column(
@@ -124,7 +126,7 @@ private fun SignupScreen(
         ) {
             SignupTitle()
 
-            Spacer(Modifier.height(40.dp))
+            Spacer(Modifier.height(20.dp))
 
             SignupGenderSelect(
                 selectedGender = selectedGender,
@@ -205,7 +207,7 @@ private fun SignupGenderSelect(
             color = GentiGreen,
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         Row {
             GentiSelectButton(
@@ -250,7 +252,7 @@ fun SignupBirthYearTextField(
             color = GentiGreen,
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         BasicTextField(
             value = selectedYear,
