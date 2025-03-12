@@ -23,7 +23,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kr.genti.common.extension.toast
-import kr.genti.common.manager.ImageManager
+import kr.genti.common.manager.ImageManager.getImageChooserIntent
+import kr.genti.common.manager.LauncherManager.rememberPermissionLauncher
 import kr.genti.common.manager.PermissionManager
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.dialog.GentiImageDetailDialog
@@ -48,7 +49,7 @@ internal fun ProfileRoute(
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
-    val writePermissionLauncher = PermissionManager.rememberPermissionLauncher {
+    val writePermissionLauncher = rememberPermissionLauncher {
         viewModel.onIntent(ProfileIntent.SaveBtnClick)
     }
 
@@ -80,7 +81,7 @@ internal fun ProfileRoute(
                 }
 
                 is ProfileSideEffect.NavigateToShare -> {
-                    context.startActivity(ImageManager.getImageChooserIntent(sideEffect.imageUri))
+                    context.startActivity(getImageChooserIntent(sideEffect.imageUri))
                 }
             }
         }

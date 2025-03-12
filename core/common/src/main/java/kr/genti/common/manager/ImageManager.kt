@@ -23,6 +23,7 @@ import coil3.request.ImageRequest
 import coil3.toBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kr.genti.common.xml.extension.getFileName
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -87,6 +88,9 @@ object ImageManager {
             }
         }
 
+    /**
+     * 앱의 캐시 디렉토리에 임시 JPEG 이미지 파일을 생성하고, 해당 파일의 URI와 파일 이름을 반환하는 함수
+     */
     suspend fun getTempImageFile(): Result<TempImageFile> =
         runCatching {
             withContext(Dispatchers.IO) {
@@ -114,6 +118,17 @@ object ImageManager {
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             createChooser(this, "SHARE_IMAGE_CHOOSER")
         }
+
+    /**
+    •	Uri 객체의 Id(해시코드), 파일 이름, Uri 문자열을 추출하는 확장 함수
+     */
+    fun Uri.getImageInfo(): Triple<Long, String, String> {
+        return Triple(
+            hashCode().toLong(),
+            getFileName(resolver).toString(),
+            toString()
+        )
+    }
 
     private suspend fun downloadBitmap(imageUrl: String): Bitmap? =
         imageLoader.execute(

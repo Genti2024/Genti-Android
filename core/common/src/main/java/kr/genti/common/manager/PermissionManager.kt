@@ -14,15 +14,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 object PermissionManager {
-    @Composable
-    fun rememberPermissionLauncher(onPermissionGranted: () -> Unit): ManagedActivityResultLauncher<String, Boolean> {
-        return rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.RequestPermission()
-        ) { isGranted ->
-            if (isGranted) onPermissionGranted()
-        }
-    }
-
     fun checkPermissionAndLaunch(
         permission: String,
         context: Context,

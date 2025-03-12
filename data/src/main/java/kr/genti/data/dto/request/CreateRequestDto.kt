@@ -11,7 +11,7 @@ data class CreateRequestDto(
     @SerialName("prompt")
     val prompt: String,
     @SerialName("facePictureList")
-    val facePictureList: List<KeyRequestDto>,
+    val imageS3KeyList: List<KeyRequestDto>,
     @SerialName("pictureRatio")
     val pictureRatio: PictureRatio,
 ) {
@@ -19,7 +19,7 @@ data class CreateRequestDto(
         fun CreateRequestModel.toDto() =
             CreateRequestDto(
                 prompt,
-                facePictureList.map { it.toDto() },
+                imageS3KeyList.map { it.toDto() },
                 pictureRatio,
             )
     }

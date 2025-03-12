@@ -1,6 +1,10 @@
 package kr.genti.generate
 
+import android.os.Build
 import androidx.activity.compose.BackHandler
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.Companion.isPhotoPickerAvailable
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.ImageOnly
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,11 +26,17 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kr.genti.common.extension.stringOf
 import kr.genti.common.extension.toast
+import kr.genti.common.manager.LauncherManager.getMultipleGalleryPickerIntent
+import kr.genti.common.manager.LauncherManager.rememberGalleryPickerLauncher
+import kr.genti.common.manager.LauncherManager.rememberPhotoPickerLauncher
 import kr.genti.core.designsystem.R
+import kr.genti.designsystem.component.layout.GentiLoadingScreen
 import kr.genti.designsystem.component.layout.GentiTopBar
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
+import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.domain.entity.response.PromptExampleModel
 import kr.genti.domain.enums.PictureNumber
 import kr.genti.domain.enums.PictureRatio
@@ -45,6 +55,15 @@ internal fun GenerateRoute(
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
+    val photoPickerLauncher = rememberPhotoPickerLauncher(maxItems = 3) { uriList ->
+        viewModel.onIntent(GenerateIntent.ImageSelect(uriList))
+    }
+
+    val galleryPickerLauncher = rememberGalleryPickerLauncher { uriList ->
+        if (uriList.size > 3) context.toast(context.stringOf(R.string.selfie_toast_old_picker_limit))
+        viewModel.onIntent(GenerateIntent.ImageSelect(uriList.take(3)))
+    }
+
     LaunchedEffect(Unit) {
         viewModel.onIntent(GenerateIntent.Init(isParentPic))
     }
@@ -55,6 +74,14 @@ internal fun GenerateRoute(
                 is GenerateSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
                 is GenerateSideEffect.NavigateToWaiting -> navigateToWaiting()
                 is GenerateSideEffect.NavigateToBack -> navigateToBack()
+
+                is GenerateSideEffect.StartImageSelect -> {
+                    if (isPhotoPickerAvailable(context) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        photoPickerLauncher.launch(PickVisualMediaRequest(ImageOnly))
+                    } else {
+                        galleryPickerLauncher.launch(getMultipleGalleryPickerIntent())
+                    }
+                }
             }
         }
     }
@@ -72,19 +99,24 @@ internal fun GenerateRoute(
 
     GenerateScreen(
         modifier = Modifier,
-        isParentPic = generateState.isParentPic,
         currentStage = generateState.currentStage,
         currentStep = generateState.currentStep,
         progress = generateState.progress,
+        isParentPic = generateState.isParentPic,
+        isLoading = generateState.isLoading,
         pictureNumber = generateState.pictureNumber,
         pictureRatio = generateState.pictureRatio,
         exampleList = generateState.exampleList,
         prompt = generateState.prompt,
+        imageList = generateState.imageList,
+        extraImageList = generateState.extraImageList,
         onPictureNumberClick = { viewModel.onIntent(GenerateIntent.NumberSelect(it)) },
         onExamplePageSwipe = { viewModel.onIntent(GenerateIntent.PromptExampleSwipe) },
         onPromptChanged = { viewModel.onIntent(GenerateIntent.PromptChange(it)) },
         onTextFieldOutsideClicked = { viewModel.onIntent(GenerateIntent.TextFieldFocused(true)) },
         onPictureRatioClick = { viewModel.onIntent(GenerateIntent.RatioSelect(it)) },
+        onImageSelectBtnClick = { viewModel.onIntent(GenerateIntent.ImageSelectBtnClick(false)) },
+        onExtraImageSelectBtnClick = { viewModel.onIntent(GenerateIntent.ImageSelectBtnClick(true)) },
         onBackBtnClick = { viewModel.onIntent(GenerateIntent.BackBtnClick) },
         onNextBtnClick = { viewModel.onIntent(GenerateIntent.NextBtnClick) }
     )
@@ -93,19 +125,24 @@ internal fun GenerateRoute(
 @Composable
 private fun GenerateScreen(
     modifier: Modifier = Modifier,
-    isParentPic: Boolean = false,
     currentStage: GenerateStage = GenerateStage.INIT,
     currentStep: Int = 1,
     progress: Float = 0f,
+    isParentPic: Boolean = false,
+    isLoading: Boolean = false,
     pictureNumber: PictureNumber = PictureNumber.NONE,
     pictureRatio: PictureRatio = PictureRatio.NONE,
     exampleList: ImmutableList<PromptExampleModel> = persistentListOf(),
     prompt: String = "",
+    imageList: List<ImageFileModel> = listOf(),
+    extraImageList: List<ImageFileModel> = listOf(),
     onPictureNumberClick: (PictureNumber) -> Unit = {},
     onExamplePageSwipe: () -> Unit = {},
     onPromptChanged: (String) -> Unit = {},
     onTextFieldOutsideClicked: () -> Unit = {},
     onPictureRatioClick: (PictureRatio) -> Unit = {},
+    onImageSelectBtnClick: () -> Unit = {},
+    onExtraImageSelectBtnClick: () -> Unit = {},
     onNextBtnClick: () -> Unit = {},
     onBackBtnClick: () -> Unit = {},
 ) {
@@ -157,13 +194,34 @@ private fun GenerateScreen(
                 )
             }
 
-            GenerateStage.IMAGE_SELECT -> {
-                ImageSelectScreen()
+            GenerateStage.IMAGE_THREE_SELECT -> {
+                ImageThreeSelectScreen(
+                    isParentPic = isParentPic,
+                    imageList = imageList,
+                    onImageSelectBtnClick = onImageSelectBtnClick,
+                    onNextBtnClick = onNextBtnClick
+                )
+            }
+
+            GenerateStage.IMAGE_SIX_SELECT -> {
+                ImageSixSelectScreen(
+                    imageList = imageList,
+                    extraImageList = extraImageList,
+                    onImageSelectBtnClick = onImageSelectBtnClick,
+                    onExtraImageSelectBtnClick = onExtraImageSelectBtnClick,
+                    onNextBtnClick = onNextBtnClick
+                )
             }
 
             else -> {}
         }
     }
+
+    GentiLoadingScreen(
+        isLoading = isLoading,
+        rawRes = R.raw.lottie_loading_create,
+        modifier = Modifier.fillMaxSize()
+    )
 }
 
 @Preview

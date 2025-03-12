@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.genti.common.manager.AmplitudeManager
 import kr.genti.common.manager.ImageManager
+import kr.genti.common.manager.ImageManager.checkExternalStoragePermission
+import kr.genti.common.manager.ImageManager.saveImageToStorage
 import kr.genti.domain.entity.response.ImageModel
 import kr.genti.domain.enums.GenerateStatus
 import kr.genti.domain.enums.PictureRatio
@@ -85,11 +87,11 @@ constructor(
     private fun handleSaveBtnClick() {
         updateAmplitude("picdownload", "user_picturedownload")
         viewModelScope.launch {
-            if (!ImageManager.checkExternalStoragePermission()) {
+            if (!checkExternalStoragePermission()) {
                 _profileSideEffect.emit(ProfileSideEffect.StartPermissionLauncher)
                 return@launch
             }
-            ImageManager.saveImageToStorage(
+            saveImageToStorage(
                 id = profileState.value.detailImageId,
                 imageUrl = profileState.value.detailImageUrl,
             ).onSuccess {

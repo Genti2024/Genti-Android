@@ -4,6 +4,6 @@ import kr.genti.domain.enums.PictureRatio
 
 data class CreateRequestModel(
     val prompt: String,
-    val facePictureList: List<KeyRequestModel>,
+    val imageS3KeyList: List<KeyRequestModel>,
     val pictureRatio: PictureRatio,
 )

@@ -6,9 +6,9 @@ import kr.genti.data.dto.request.CreateRequestDto
 import kr.genti.data.dto.request.CreateTwoRequestDto
 import kr.genti.data.dto.request.KeyRequestDto
 import kr.genti.data.dto.request.PurchaseValidRequestDto
-import kr.genti.data.dto.request.S3RequestDto
+import kr.genti.data.dto.request.ImageBucketRequestDto
 import kr.genti.data.dto.response.PromptExampleDto
-import kr.genti.data.dto.response.S3PresignedUrlDto
+import kr.genti.data.dto.response.ImageBucketDto
 import kr.genti.data.service.CreateService
 import javax.inject.Inject
 
@@ -17,11 +17,11 @@ data class CreateDataSourceImpl
 constructor(
     private val createService: CreateService,
 ) : CreateDataSource {
-    override suspend fun getSingleS3Url(request: S3RequestDto): BaseResponse<S3PresignedUrlDto> =
-        createService.getSingleS3Url(request)
+    override suspend fun getSingleImageBucket(request: ImageBucketRequestDto): BaseResponse<ImageBucketDto> =
+        createService.getSingleImageBucket(request)
 
-    override suspend fun getMultiS3Url(request: List<S3RequestDto>): BaseResponse<List<S3PresignedUrlDto>> =
-        createService.getMultiS3Url(request)
+    override suspend fun getThreeImageBucket(request: List<ImageBucketRequestDto>): BaseResponse<List<ImageBucketDto>> =
+        createService.getThreeImageBucket(request)
 
     override suspend fun postToCreate(request: CreateRequestDto): BaseResponse<Boolean> =
         createService.postToCreate(request)

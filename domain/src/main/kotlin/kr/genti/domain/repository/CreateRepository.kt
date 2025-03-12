@@ -4,14 +4,14 @@ import kr.genti.domain.entity.request.CreateRequestModel
 import kr.genti.domain.entity.request.CreateTwoRequestModel
 import kr.genti.domain.entity.request.KeyRequestModel
 import kr.genti.domain.entity.request.PurchaseValidRequestModel
-import kr.genti.domain.entity.request.S3RequestModel
+import kr.genti.domain.entity.request.ImageBucketRequestModel
 import kr.genti.domain.entity.response.PromptExampleModel
-import kr.genti.domain.entity.response.S3PresignedUrlModel
+import kr.genti.domain.entity.response.ImageBucketModel
 
 interface CreateRepository {
-    suspend fun getS3SingleUrl(request: S3RequestModel): Result<S3PresignedUrlModel>
+    suspend fun getSingleImageBucket(request: ImageBucketRequestModel): Result<ImageBucketModel>
 
-    suspend fun getS3MultiUrl(request: List<S3RequestModel>): Result<List<S3PresignedUrlModel>>
+    suspend fun getThreeImageBucket(request: List<ImageBucketRequestModel>): Result<List<ImageBucketModel>>
 
     suspend fun postToCreate(request: CreateRequestModel): Result<Boolean>
 

@@ -5,9 +5,9 @@ import kr.genti.data.dto.request.CreateRequestDto
 import kr.genti.data.dto.request.CreateTwoRequestDto
 import kr.genti.data.dto.request.KeyRequestDto
 import kr.genti.data.dto.request.PurchaseValidRequestDto
-import kr.genti.data.dto.request.S3RequestDto
+import kr.genti.data.dto.request.ImageBucketRequestDto
 import kr.genti.data.dto.response.PromptExampleDto
-import kr.genti.data.dto.response.S3PresignedUrlDto
+import kr.genti.data.dto.response.ImageBucketDto
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -15,14 +15,14 @@ import retrofit2.http.Path
 
 interface CreateService {
     @POST("api/v1/presigned-url")
-    suspend fun getSingleS3Url(
-        @Body request: S3RequestDto,
-    ): BaseResponse<S3PresignedUrlDto>
+    suspend fun getSingleImageBucket(
+        @Body request: ImageBucketRequestDto,
+    ): BaseResponse<ImageBucketDto>
 
     @POST("api/v1/presigned-url/many")
-    suspend fun getMultiS3Url(
-        @Body request: List<S3RequestDto>,
-    ): BaseResponse<List<S3PresignedUrlDto>>
+    suspend fun getThreeImageBucket(
+        @Body request: List<ImageBucketRequestDto>,
+    ): BaseResponse<List<ImageBucketDto>>
 
     @POST("api/v1/users/picture-generate-requests")
     suspend fun postToCreate(

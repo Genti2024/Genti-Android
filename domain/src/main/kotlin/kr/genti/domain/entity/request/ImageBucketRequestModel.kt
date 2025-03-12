@@ -2,7 +2,7 @@ package kr.genti.domain.entity.request
 
 import kr.genti.domain.enums.FileType
 
-data class S3RequestModel(
+data class ImageBucketRequestModel(
     val fileType: FileType,
     val fileName: String,
 )
