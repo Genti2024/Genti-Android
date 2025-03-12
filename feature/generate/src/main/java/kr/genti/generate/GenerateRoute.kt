@@ -1,5 +1,6 @@
 package kr.genti.generate
 
+import android.app.Activity
 import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.activity.result.PickVisualMediaRequest
@@ -13,8 +14,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -24,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.android.billingclient.api.BillingClient.BillingResponseCode.USER_CANCELED
+import com.android.billingclient.api.Purchase
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kr.genti.common.extension.stringOf
@@ -40,6 +45,7 @@ import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.domain.entity.response.PromptExampleModel
 import kr.genti.domain.enums.PictureNumber
 import kr.genti.domain.enums.PictureRatio
+import kr.genti.generate.billing.BillingManager
 import kr.genti.generate.component.GenerateProgressBar
 import kr.genti.generate.model.GenerateStage
 
@@ -62,6 +68,28 @@ internal fun GenerateRoute(
     val galleryPickerLauncher = rememberGalleryPickerLauncher { uriList ->
         if (uriList.size > 3) context.toast(context.stringOf(R.string.selfie_toast_old_picker_limit))
         viewModel.onIntent(GenerateIntent.ImageSelect(uriList.take(3)))
+    }
+
+    val billingManager = remember {
+        BillingManager(
+            activity = context as Activity,
+            callback = object : kr.genti.generate.billing.BillingCallback {
+                override fun onBillingSuccess(purchase: Purchase) {
+                    viewModel.checkPurchaseValidToServer(purchase)
+                }
+
+                override fun onBillingFailure(responseCode: Int) {
+                    viewModel.resetValidProcessLoading()
+                    if (responseCode != USER_CANCELED) context.toast(context.getString(R.string.error_msg))
+                }
+            },
+        )
+    }
+
+    DisposableEffect(billingManager) {
+        onDispose {
+            billingManager.endConnection()
+        }
     }
 
     LaunchedEffect(Unit) {
