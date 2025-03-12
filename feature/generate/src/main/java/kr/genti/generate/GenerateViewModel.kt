@@ -101,9 +101,9 @@ constructor(
         } else {
             amplitudeTrackStartCreate()
             viewModelScope.launch {
-                changeLoadingState(true)
+                changeRequestLoadingState(true)
                 requestGenerate()
-                changeLoadingState(false)
+                changeRequestLoadingState(false)
             }
         }
     }
@@ -160,9 +160,15 @@ constructor(
         }
     }
 
-    private fun changeLoadingState(isLoading: Boolean) {
+    private fun changeBillingLoadingState(isLoading: Boolean) {
         _generateState.update {
-            it.copy(isLoading = isLoading)
+            it.copy(isBillingLoading = isLoading)
+        }
+    }
+
+    private fun changeRequestLoadingState(isLoading: Boolean) {
+        _generateState.update {
+            it.copy(isRequestLoading = isLoading)
         }
     }
 

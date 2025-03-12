@@ -103,7 +103,8 @@ internal fun GenerateRoute(
         currentStep = generateState.currentStep,
         progress = generateState.progress,
         isParentPic = generateState.isParentPic,
-        isLoading = generateState.isLoading,
+        isBillingLoading = generateState.isBillingLoading,
+        isRequestLoading = generateState.isRequestLoading,
         pictureNumber = generateState.pictureNumber,
         pictureRatio = generateState.pictureRatio,
         exampleList = generateState.exampleList,
@@ -129,7 +130,8 @@ private fun GenerateScreen(
     currentStep: Int = 1,
     progress: Float = 0f,
     isParentPic: Boolean = false,
-    isLoading: Boolean = false,
+    isBillingLoading: Boolean = false,
+    isRequestLoading: Boolean = false,
     pictureNumber: PictureNumber = PictureNumber.NONE,
     pictureRatio: PictureRatio = PictureRatio.NONE,
     exampleList: ImmutableList<PromptExampleModel> = persistentListOf(),
@@ -218,8 +220,13 @@ private fun GenerateScreen(
     }
 
     GentiLoadingScreen(
-        isLoading = isLoading,
+        isLoading = isRequestLoading,
         rawRes = R.raw.lottie_loading_create,
+        modifier = Modifier.fillMaxSize()
+    )
+
+    GentiLoadingScreen(
+        isLoading = isBillingLoading,
         modifier = Modifier.fillMaxSize()
     )
 }
