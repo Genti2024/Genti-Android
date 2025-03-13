@@ -1,31 +1,20 @@
 <resources>
     <string name="app_name">Genti</string>
 
-    <string name="to_string">%s</string>
     <string name="dummy">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
 
-    <string name="token_expire_error_msg">로그인 상태를 확인해주세요!</string>
     <string name="error_msg">오류가 발생했습니다. 잠시 후 다시 시도해주세요.</string>
     <string name="permission_to_setting">설정에서 권한에 동의해주세요.</string>
-    <string name="kakao_connection_error_msg">카카오톡 연동에 문제가 발생했습니다.</string>
-    <string name="adapter_not_initialized_error_msg">Adapter is not initialized</string>
-    <string name="manager_not_initialized_error_msg">Billing Manager is not initialized</string>
-    <string name="view_type_error_msg">Unknown View Type : %d</string>
 
     <string name="default_notification_channel_id">default_messaging_channel</string>
 
     <string name="btn_next">다음으로</string>
-    <string name="btn_done">사진 생성하기</string>
 
     <string name="btn_share">공유하기</string>
     <string name="btn_download">저장하기</string>
     <string name="btn_return">취소</string>
     <string name="btn_close">닫기</string>
     <string name="btn_dismiss">다음에</string>
-
-    <string name="menu_feed">피드</string>
-    <string name="menu_create">생성</string>
-    <string name="menu_profile">프로필</string>
 
     <string name="login_btn_kakao">카카오 로그인</string>
     <string name="login_tv_title">내 마음대로 세상에 하나뿐인\n나의 AI 사진을 찍어 보세요.</string>
@@ -38,8 +27,6 @@
     <string name="signup_tv_gender_female">여성</string>
     <string name="signup_tv_birth_title">출생년도</string>
     <string name="signup_tv_birth_hint">YYYY</string>
-    <string name="signup_tv_phone_title">전화번호</string>
-    <string name="signup_tv_phone_hint">010XXXXXXXX</string>
     <string name="signup_btn_submit">완료</string>
 
     <string name="onboarding_btn_next">다음</string>
@@ -62,9 +49,7 @@
     <string name="create_select_tv_parent_caption">흑백 사진이거나 화질이 안좋은 사진도 괜찮아요.</string>
 
     <string name="create_tv_title">사진 만들기</string>
-    <string name="create_phase_text">%1$d/3</string>
 
-    <string name="create_tv_script_title_parent">부모님의 어떤 모습을 담고 싶나요?</string>
     <string name="create_tv_script_subtitle_2_parent">부모님과 함께 찍고 싶은 사진이나 보고 싶은 부모님의 모습을 설명해주세요.</string>
     <string name="create_tv_script_title">어떤 사진을 만들고 싶나요?</string>
     <string name="create_tv_script_subtitle_1">AI가 이해하지 못하는 장소나 의상은 생성이 어려울 수 있어요.</string>
@@ -103,14 +88,6 @@
     <string name="selfie_btn_create">사진 생성하기</string>
 
     <string name="selfie_toast_old_picker_limit">이미지는 최대 3장까지 선택 가능합니다.</string>
-    <string name="selfie_toast_picker_error">갤러리 이미지를 가져오는 과정에서 오류가 발생했습니다.</string>
-
-    <string name="create_guide_tv_title_up">이번에는</string>
-    <string name="create_guide_tv_ratio">비율</string>
-    <string name="create_guide_tv_angle">앵글</string>
-    <string name="create_guide_tv_frame">프레임</string>
-    <string name="create_guide_tv_title_down">을 선택해야 해요!</string>
-    <string name="create_guide_tv_ex">예시</string>
 
     <string name="wait_btn_return">피드로 돌아가기</string>
     <string name="wait_tv_header">사진 생성 중</string>
@@ -140,18 +117,15 @@
     <string name="finished_error_input_tv_subtitle">구체적으로 작성 해주실수록\n오류 확인이 빠르게 진행됩니다.</string>
     <string name="finished_error_input_tv_hint">오류 사항을 입력해주세요.</string>
     <string name="finished_error_input_btn_submit">제출</string>
-    <string name="finished_error_input_btn_back">닫기</string>
 
     <string name="finished_error_output_tv_title">의견 감사합니다!</string>
     <string name="finished_error_output_tv_subtitle">작성해주신 내용을 잘 확인하여\n더 좋은 서비스를 제공하는 젠티가 되겠습니다.</string>
-    <string name="finished_error_output_btn_okay">닫기</string>
 
     <string name="finished_rating_tv_title">사진은 어떠셨나요?</string>
     <string name="finished_rating_tv_subtitle">별점을 남겨주시면 앞으로 더 마음에 드는\n사진을 만들어 드릴 수 있어요!</string>
     <string name="finished_rating_tv_btn_skip">건너뛰기</string>
 
     <string name="feed_tv_title">젠플루언서들이 만든 사진들을 둘러보세요.</string>
-    <string name="feed_btn_genfluencer"><u>젠플루언서란?</u></string>
     <string name="feed_tv_genfluencer_guide">여러분이 만든 사진은 자동으로 업로드되지 않습니다.</string>
     <string name="feed_tv_item_title">사진 설명</string>
     <string name="feed_info_tv_title">젠플루언서란?</string>
@@ -159,8 +133,6 @@
     <string name="feed_info_btn_more">어떤 혜택이 있나요?</string>
 
     <string name="profile_tv_title">마이페이지</string>
-    <string name="profile_tv_waiting">세상에 없던 나만의 사진 찍는 중 ⋯</string>
-    <string name="profile_tv_list_title">내가 만든 사진</string>
     <string name="profile_tv_empty">아직 내가 만든 사진이 없어요.</string>
     <string name="profile_tv_empty_guide">세상에 하나뿐인 나만의 사진을 만들어보세요!</string>
     <string name="profile_image_download_success">사진이 저장되었어요</string>
@@ -169,7 +141,6 @@
     <string name="setting_btn_terms_of_service">이용 약관</string>
     <string name="setting_btn_privacy_policy">개인정보처리방침</string>
     <string name="setting_btn_android_version">앱 버전</string>
-    <string name="setting_tv_android_version">v%s</string>
     <string name="setting_btn_company_info">사업자 정보</string>
     <string name="setting_btn_question">문의하기</string>
     <string name="setting_btn_logout">로그아웃</string>
@@ -187,13 +158,6 @@
     <string name="push_tv_subtitle">알림에 동의해 주시면\n사진이 완성되었을 때 알려드릴게요.</string>
     <string name="push_btn_get_alarm">알림 받기</string>
     <string name="push_success_toast">알림이 설정되었어요.</string>
-
-    <string name="openchat_tv_title_up">내가 만든 특별한 사진,</string>
-    <string name="openchat_tv_title_down">다른 사람에게 보여주고 싶다면?</string>
-    <string name="openchat_tv_subtitle">젠티 사진 공유방에서 사진을 자랑하고\n다른 사람의 사진도 구경해보세요!</string>
-    <string name="openchat_tv_guide">지금 %1$d명 이상이 나만의 하나뿐인 사진을 자랑하고 있어요!</string>
-    <string name="openchat_btn_enter">사진 공유방 참여하기</string>
-    <string name="openchat_btn_access">이 페이지 다시 보지 않기</string>
 
     <string name="verify_before_tv_title">사진을 만들기 전에\n본인 인증을 진행해주세요.</string>
     <string name="verify_before_tv_subtitle">사진 도용 없는 젠티를 위해 본인 촬영을 진행합니다.\n본인 인증은 1회만 진행되니 얼굴을 명확하게 촬영해주세요.</string>
@@ -213,11 +177,6 @@
     <string name="unable_tv_title">현재 점검 중입니다!</string>
     <string name="unable_tv_subtitle">09.30 22시까지 사진 생성이 불가능합니다.\n금방 돌아오겠습니다.</string>
 
-    <string name="pay_error_dialog_title">결제 오류</string>
-    <string name="pay_error_dialog_msg">오류로 인해 상품이 지급되지 않았어요. 고객센터로 문의 주시면 해결을 도와드리겠습니다.</string>
-    <string name="pay_error_dialog_btn">확인</string>
-
-    <string name="toast_service_finished">서비스가 종료되어 생성이 불가능해요.</string>
     <string name="toast_state_changed">사진 강제 생성이 요청되었어요.</string>
 
 </resources>
