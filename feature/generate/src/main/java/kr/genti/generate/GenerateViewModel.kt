@@ -221,7 +221,7 @@ constructor(
             }
         }.onSuccess {
             amplitudeTrackFinishCreate()
-            _generateSideEffect.emit(GenerateSideEffect.NavigateToWaiting)
+            _generateSideEffect.emit(GenerateSideEffect.NavigateToWaiting(generateState.value.isParentPic))
         }.onFailure {
             _generateSideEffect.emit(GenerateSideEffect.ShowErrorToast)
         }

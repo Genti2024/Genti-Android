@@ -1,13 +1,13 @@
 package kr.genti.result.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import kr.genti.navigation.ResultRoute
-import kr.genti.navigation.SettingRoute
 import kr.genti.result.verify.VerifyRoute
+import kr.genti.result.waiting.WaitingRoute
 
 fun NavController.navigateToVerify(
     navOptions: NavOptions? = null
@@ -15,11 +15,26 @@ fun NavController.navigateToVerify(
     navigate(ResultRoute.Verify, navOptions)
 }
 
+fun NavController.navigateToWaiting(
+    isParentPic: Boolean = false,
+    navOptions: NavOptions? = null
+) {
+    navigate(ResultRoute.Waiting(isParentPic), navOptions)
+}
+
 fun NavGraphBuilder.resultNavGraph(
-    navigateToBack: (Boolean) -> Unit = {}
+    navigateToBack: () -> Unit = {},
+    navigateToBackWithBoolean: (Boolean) -> Unit = {}
 ) {
     composable<ResultRoute.Verify> {
         VerifyRoute(
+            navigateToBack = navigateToBackWithBoolean
+        )
+    }
+    composable<ResultRoute.Waiting> { backStackEntry ->
+        val items = backStackEntry.toRoute<ResultRoute.Waiting>()
+        WaitingRoute(
+            isParentPic = items.isParentPic,
             navigateToBack = navigateToBack
         )
     }

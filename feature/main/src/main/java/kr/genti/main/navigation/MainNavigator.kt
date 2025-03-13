@@ -19,6 +19,7 @@ import kr.genti.onboarding.navigation.navigateToSplash
 import kr.genti.onboarding.navigation.navigateToTutorial
 import kr.genti.profile.navigation.navigateToProfile
 import kr.genti.result.navigation.navigateToVerify
+import kr.genti.result.navigation.navigateToWaiting
 import kr.genti.setting.navigation.navigateToSetting
 
 class MainNavigator(
@@ -76,7 +77,7 @@ class MainNavigator(
     fun removeBackStackEntry() =
         navController.currentBackStackEntry?.savedStateHandle?.remove<Boolean>(IS_SUCCESS)
 
-    fun navigateToFeed() = navController.navigateToFeed(inclusiveNavOptions)
+    fun navigateToFeedWithFinish() = navController.navigateToFeed(inclusiveNavOptions)
 
     fun navigateToProfile() = navController.navigateToProfile()
 
@@ -86,9 +87,10 @@ class MainNavigator(
 
     fun navigateToVerify() = navController.navigateToVerify()
 
-    fun navigateToWaiting() {
+    fun navigateToWaiting(isParentPic: Boolean) = navController.navigateToWaiting(isParentPic)
 
-    }
+    fun navigateToWaitingWithFinish(isParentPic: Boolean) =
+        navController.navigateToWaiting(isParentPic, inclusiveNavOptions)
 
     fun navigateToFinished() {
 
@@ -96,11 +98,11 @@ class MainNavigator(
 
     fun navigateToSplash() = navController.navigateToSplash()
 
-    fun navigateToLogin() = navController.navigateToLogin(inclusiveNavOptions)
+    fun navigateToLoginWithFinish() = navController.navigateToLogin(inclusiveNavOptions)
 
-    fun navigateToSignup() = navController.navigateToSignup(inclusiveNavOptions)
+    fun navigateToSignupWithFinish() = navController.navigateToSignup(inclusiveNavOptions)
 
-    fun navigateToTutorial() = navController.navigateToTutorial(inclusiveNavOptions)
+    fun navigateToTutorialWithFinish() = navController.navigateToTutorial(inclusiveNavOptions)
 
     companion object {
         const val IS_SUCCESS = "IS_SUCCESS"
