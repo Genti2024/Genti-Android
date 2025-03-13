@@ -10,8 +10,8 @@ object Constants {
     const val MIN_SDK = 28
     const val TARGET_SDK = 35
 
-    const val VERSION_CODE = 25
-    const val VERSION_NAME = "2.1.2"
+    const val VERSION_CODE = 26
+    const val VERSION_NAME = "3.0.0"
 
     val JVM_VERSION = JvmTarget.JVM_11
     val JAVA_VERSION = JavaVersion.VERSION_11
