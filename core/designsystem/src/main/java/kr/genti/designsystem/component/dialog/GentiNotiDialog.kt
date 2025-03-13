@@ -30,10 +30,8 @@ import kr.genti.common.extension.noRippleClickable
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.button.GentiButton
 import kr.genti.designsystem.component.button.GentiGradationButton
-import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.designsystem.theme.Gray
-import kr.genti.designsystem.theme.Transparent30
 import kr.genti.designsystem.theme.Transparent50
 import kr.genti.designsystem.theme.White
 import kr.genti.designsystem.theme.White80
@@ -45,7 +43,9 @@ fun GentiNotiDialog(
     @StringRes subtitleRes: Int,
     @StringRes btnTextRes: Int,
     modifier: Modifier = Modifier,
+    isDismissLogicNeeded: Boolean = false,
     onBtnClick: () -> Unit = {},
+    onDismissBtnClick: () -> Unit = {},
     onDismissRequest: () -> Unit = {},
 ) {
     Dialog(
@@ -96,7 +96,7 @@ fun GentiNotiDialog(
                 ) {
                     GentiButton(
                         textRes = R.string.btn_dismiss,
-                        onClick = onDismissRequest,
+                        onClick = if (isDismissLogicNeeded) onDismissBtnClick else onBtnClick,
                         btnColor = White,
                         modifier = Modifier.weight(1f)
                     )

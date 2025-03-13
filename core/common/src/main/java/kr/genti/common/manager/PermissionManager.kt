@@ -32,7 +32,7 @@ object PermissionManager {
         }
     }
 
-    private fun isPermissionGranted(permission: String, context: Context): Boolean =
+    fun isPermissionGranted(permission: String, context: Context): Boolean =
         ContextCompat.checkSelfPermission(
             context, permission
         ) == PackageManager.PERMISSION_GRANTED

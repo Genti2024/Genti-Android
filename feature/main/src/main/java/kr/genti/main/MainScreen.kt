@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -163,14 +164,15 @@ private fun MainScreen(
             }
         )
 
-        if (currentGenerateStatus == GenerateStatus.IN_PROGRESS && BuildConfig.DEBUG) {
+        if (currentGenerateStatus == GenerateStatus.IN_PROGRESS && BuildConfig.DEBUG && (LocalInspectionMode.current || navigator.shouldShowBottomBar())) {
             Image(
                 painter = painterResource(id = R.drawable.ic_download),
                 contentDescription = null,
                 modifier = Modifier
-                    .align(Alignment.BottomEnd)
+                    .align(Alignment.BottomCenter)
                     .noRippleClickable { onDebugPatchBtnClicked() }
-                    .padding(70.dp)
+                    .navigationBarsPadding()
+                    .padding(bottom = 80.dp)
             )
         }
 

@@ -1,11 +1,14 @@
 package kr.genti.result.waiting
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,7 +24,8 @@ constructor() : ViewModel() {
     fun onIntent(intent: WaitingIntent) {
         when (intent) {
             is WaitingIntent.Init -> handleInit(intent.isParentPic)
-            is WaitingIntent.ReturnButtonClick -> handleBackButtonClick()
+            is WaitingIntent.ReturnButtonClick -> handleReturnButtonClick()
+            is WaitingIntent.AlarmPermissionNeeded -> handleAlarmPermissionNeeded(intent.isNeeded)
             is WaitingIntent.AlarmDialogRequestButtonClick -> handleAlarmRequestButtonClick()
             is WaitingIntent.AlarmDialogReturnButtonClick -> handleAlarmDialogReturnButtonClick()
             is WaitingIntent.AlarmRequestGrant -> handleAlarmRequestGrant()
@@ -30,26 +34,52 @@ constructor() : ViewModel() {
     }
 
     private fun handleInit(isParentPic: Boolean) {
-
+        _waitingState.update {
+            it.copy(isParentPic = isParentPic)
+        }
     }
 
-    private fun handleBackButtonClick() {
+    private fun handleReturnButtonClick() {
+        viewModelScope.launch {
+            _waitingSideEffect.emit(WaitingSideEffect.CheckPermission)
+        }
+    }
 
+    private fun handleAlarmPermissionNeeded(isPermissionNeeded: Boolean) {
+        viewModelScope.launch {
+            if (isPermissionNeeded) {
+                _waitingState.update {
+                    it.copy(isAlarmDialogVisible = true)
+                }
+            } else {
+                _waitingSideEffect.emit(WaitingSideEffect.NavigateToBack)
+            }
+        }
     }
 
     private fun handleAlarmRequestButtonClick() {
-
+        viewModelScope.launch {
+            _waitingSideEffect.emit(WaitingSideEffect.StartPermissionLauncher)
+        }
     }
 
     private fun handleAlarmDialogReturnButtonClick() {
-
+        viewModelScope.launch {
+            handleAlarmDialogDismiss()
+            _waitingSideEffect.emit(WaitingSideEffect.NavigateToBack)
+        }
     }
 
     private fun handleAlarmRequestGrant() {
-
+        viewModelScope.launch {
+            handleAlarmDialogDismiss()
+            _waitingSideEffect.emit(WaitingSideEffect.GrantPermission)
+        }
     }
 
     private fun handleAlarmDialogDismiss() {
-
+        _waitingState.update {
+            it.copy(isAlarmDialogVisible = false)
+        }
     }
 }

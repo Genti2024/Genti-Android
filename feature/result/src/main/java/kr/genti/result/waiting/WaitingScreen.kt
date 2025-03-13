@@ -1,6 +1,7 @@
 package kr.genti.result.waiting
 
 import android.Manifest.permission.POST_NOTIFICATIONS
+import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,8 +38,10 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import kr.genti.common.extension.toast
 import kr.genti.common.manager.LauncherManager.rememberPermissionLauncher
 import kr.genti.common.manager.PermissionManager.checkPermissionAndLaunch
+import kr.genti.common.manager.PermissionManager.isPermissionGranted
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.button.GentiButton
+import kr.genti.designsystem.component.dialog.GentiNotiDialog
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiGreen
 import kr.genti.designsystem.theme.GentiTheme
@@ -59,10 +62,22 @@ internal fun WaitingRoute(
         viewModel.onIntent(WaitingIntent.AlarmRequestGrant)
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.onIntent(WaitingIntent.Init(isParentPic))
+    }
+
     LaunchedEffect(viewModel.waitingSideEffect, lifecycleOwner) {
         viewModel.waitingSideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is WaitingSideEffect.NavigateToBack -> navigateToBack()
+
+                is WaitingSideEffect.CheckPermission -> {
+                    val isPermissionNeeded =
+                        isPermissionGranted(POST_NOTIFICATIONS, context)
+                                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                    viewModel.onIntent(WaitingIntent.AlarmPermissionNeeded(isPermissionNeeded))
+                }
+
                 is WaitingSideEffect.StartPermissionLauncher -> {
                     checkPermissionAndLaunch(
                         permission = POST_NOTIFICATIONS,
@@ -77,6 +92,11 @@ internal fun WaitingRoute(
                         }
                     )
                 }
+
+                is WaitingSideEffect.GrantPermission -> {
+                    context.toast(context.getString(R.string.push_success_toast))
+                    navigateToBack()
+                }
             }
         }
     }
@@ -87,6 +107,24 @@ internal fun WaitingRoute(
         } else {
             viewModel.onIntent(WaitingIntent.ReturnButtonClick)
         }
+    }
+
+    WaitingScreen(
+        isParentPic = waitingState.isParentPic,
+        onReturnButtonClick = { viewModel.onIntent(WaitingIntent.ReturnButtonClick) },
+    )
+
+    if (waitingState.isAlarmDialogVisible) {
+        GentiNotiDialog(
+            iconRes = R.drawable.img_alarm,
+            titleRes = R.string.push_tv_title,
+            subtitleRes = R.string.push_tv_subtitle,
+            btnTextRes = R.string.push_btn_get_alarm,
+            isDismissLogicNeeded = true,
+            onBtnClick = { viewModel.onIntent(WaitingIntent.AlarmDialogRequestButtonClick) },
+            onDismissBtnClick = { viewModel.onIntent(WaitingIntent.AlarmDialogReturnButtonClick) },
+            onDismissRequest = { viewModel.onIntent(WaitingIntent.AlarmDialogDismiss) },
+        )
     }
 }
 
