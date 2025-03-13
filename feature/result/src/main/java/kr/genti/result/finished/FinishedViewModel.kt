@@ -28,11 +28,11 @@ constructor(
             is FinishedIntent.ImageClick -> handleImageClick()
             is FinishedIntent.BackButtonClick -> handleBackButtonClick()
             is FinishedIntent.ReportButtonClick -> handleReportButtonClick()
+            is FinishedIntent.DialogDismiss -> handleDialogDismiss()
             is FinishedIntent.ShareButtonClick -> handleShareButtonClick()
             is FinishedIntent.DownloadButtonClick -> handleDownloadButtonClick()
             is FinishedIntent.ReportDialogButtonClick -> handleReportDialogButtonClick()
             is FinishedIntent.RatingDialogButtonClick -> handleRatingDialogButtonClick()
-            is FinishedIntent.DialogDismiss -> handleDialogDismiss()
         }
     }
 
@@ -43,15 +43,31 @@ constructor(
     }
 
     private fun handleImageClick() {
-
+        _finishedState.update {
+            it.copy(isDetailDialogVisible = true)
+        }
     }
 
     private fun handleBackButtonClick() {
-
+        _finishedState.update {
+            it.copy(isRatingDialogVisible = true)
+        }
     }
 
     private fun handleReportButtonClick() {
+        _finishedState.update {
+            it.copy(isReportDialogVisible = true)
+        }
+    }
 
+    private fun handleDialogDismiss() {
+        _finishedState.update {
+            it.copy(
+                isDetailDialogVisible = false,
+                isReportDialogVisible = false,
+                isRatingDialogVisible = false
+            )
+        }
     }
 
     private fun handleShareButtonClick() {
@@ -67,10 +83,6 @@ constructor(
     }
 
     private fun handleRatingDialogButtonClick() {
-
-    }
-
-    private fun handleDialogDismiss() {
 
     }
 }

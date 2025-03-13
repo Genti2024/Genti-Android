@@ -41,6 +41,7 @@ import kr.genti.common.extension.toast
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.button.CloseButton
 import kr.genti.designsystem.component.button.GentiGradationButton
+import kr.genti.designsystem.component.dialog.GentiImageDetailDialog
 import kr.genti.designsystem.component.item.GentiAsyncImage
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
@@ -92,6 +93,24 @@ internal fun FinishedRoute(
         onShareButtonClick = { viewModel.onIntent(FinishedIntent.ShareButtonClick) },
         onDownloadButtonClick = { viewModel.onIntent(FinishedIntent.DownloadButtonClick) },
     )
+
+    if (finishedState.isDetailDialogVisible) {
+        GentiImageDetailDialog(
+            imageUrl = imageUrl,
+            isGaro = isGaro,
+            isOneButton = true,
+            onSaveBtnClick = { viewModel.onIntent(FinishedIntent.DownloadButtonClick) },
+            onDismissRequest = { viewModel.onIntent(FinishedIntent.DialogDismiss) }
+        )
+    }
+
+    if (finishedState.isReportDialogVisible) {
+
+    }
+
+    if (finishedState.isRatingDialogVisible) {
+
+    }
 }
 
 @Composable
