@@ -30,7 +30,7 @@ constructor() : ViewModel() {
             is WaitingIntent.Init -> handleInit(intent.isParentPic)
             is WaitingIntent.ReturnButtonClick -> handleReturnButtonClick()
             is WaitingIntent.AlarmPermissionNeeded -> handleAlarmPermissionNeeded(intent.isNeeded)
-            is WaitingIntent.NavigatedToSetting -> handleNavigateToSetting(true)
+            is WaitingIntent.NavigatedToSetting -> handleNavigateToSetting(intent.isNavigated)
             is WaitingIntent.AlarmDialogRequestButtonClick -> handleAlarmRequestButtonClick()
             is WaitingIntent.AlarmDialogReturnButtonClick -> handleAlarmDialogReturnButtonClick()
             is WaitingIntent.AlarmRequestGrant -> handleAlarmRequestGrant()
