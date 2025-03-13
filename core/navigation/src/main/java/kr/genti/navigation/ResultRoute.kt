@@ -5,9 +5,9 @@ import kotlinx.serialization.Serializable
 interface ResultRoute : Route {
     @Serializable
     data object Verify : ResultRoute
-    
+
     @Serializable
-    data object Waiting : ResultRoute
+    data class Waiting(val isParentPic: Boolean) : ResultRoute
 
     @Serializable
     data object Finished : ResultRoute

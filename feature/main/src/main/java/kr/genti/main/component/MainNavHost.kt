@@ -52,7 +52,8 @@ internal fun MainNavHost(
             navigateToBack = navigator::navigatePopBackStack
         )
         resultNavGraph(
-            navigateToBack = navigator::navigateBackWithBoolean
+            navigateToBack = navigator::navigatePopBackStack,
+            navigateToBackWithBoolean = navigator::navigateBackWithBoolean
         )
     }
 }

@@ -58,7 +58,7 @@ internal fun MainRoute(
                 is MainSideEffect.ShowStatusChangedToast -> context.toast(context.getString(R.string.toast_state_changed))
                 is MainSideEffect.NavigateToTab -> navigator.navigate(sideEffect.tab)
                 is MainSideEffect.NavigateToVerify -> navigator.navigateToVerify()
-                is MainSideEffect.NavigateToWaiting -> navigator.navigateToWaiting()
+                is MainSideEffect.NavigateToWaiting -> navigator.navigateToWaiting(sideEffect.isParentPic)
                 is MainSideEffect.NavigateToFinished -> navigator.navigateToFinished()
                 is MainSideEffect.NavigateToGenerate -> navigator.navigateToGenerate(sideEffect.isParentPic)
             }

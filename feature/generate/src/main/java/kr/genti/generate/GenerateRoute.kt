@@ -53,7 +53,7 @@ import kr.genti.generate.model.GenerateStage
 internal fun GenerateRoute(
     viewModel: GenerateViewModel = hiltViewModel(),
     isParentPic: Boolean = false,
-    navigateToWaiting: () -> Unit = {},
+    navigateToWaiting: (Boolean) -> Unit = {},
     navigateToBack: () -> Unit = {},
 ) {
     val generateState by viewModel.generateState.collectAsStateWithLifecycle()
@@ -98,7 +98,7 @@ internal fun GenerateRoute(
         viewModel.generateSideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is GenerateSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
-                is GenerateSideEffect.NavigateToWaiting -> navigateToWaiting()
+                is GenerateSideEffect.NavigateToWaiting -> navigateToWaiting(sideEffect.isParentPic)
                 is GenerateSideEffect.NavigateToBack -> navigateToBack()
 
                 is GenerateSideEffect.StartImageSelect -> {

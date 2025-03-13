@@ -16,7 +16,7 @@ fun NavController.navigateToGenerate(
 }
 
 fun NavGraphBuilder.generateNavGraph(
-    navigateToWaiting: () -> Unit = {},
+    navigateToWaiting: (Boolean) -> Unit = {},
     navigateToBack: () -> Unit = {},
 ) {
     composable<GenerateRoute.Generate> { backStackEntry ->

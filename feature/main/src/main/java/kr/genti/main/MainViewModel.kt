@@ -111,13 +111,13 @@ constructor(
                         currentGenerateStatus = result.status
                     )
                 }
-                showDialogWithStatus(result.status)
+                showDialogWithStatus(result.status, result.paid)
             }.onFailure {
                 _mainSideEffect.emit(MainSideEffect.ShowErrorToast)
             }
     }
 
-    private suspend fun showDialogWithStatus(status: GenerateStatus) {
+    private suspend fun showDialogWithStatus(status: GenerateStatus, isPaid: Boolean? = null) {
         when (status) {
             GenerateStatus.NEW_REQUEST_AVAILABLE -> {
                 getIsServerAvailable()
@@ -130,7 +130,7 @@ constructor(
             }
 
             GenerateStatus.IN_PROGRESS -> {
-                _mainSideEffect.emit(MainSideEffect.NavigateToWaiting)
+                _mainSideEffect.emit(MainSideEffect.NavigateToWaiting(isPaid == true))
             }
 
             GenerateStatus.CANCELED -> {

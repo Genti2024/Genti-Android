@@ -8,6 +8,6 @@ sealed class MainSideEffect {
     data class NavigateToTab(val tab: MainTab) : MainSideEffect()
     data class NavigateToGenerate(val isParentPic: Boolean) : MainSideEffect()
     data object NavigateToVerify : MainSideEffect()
-    data object NavigateToWaiting : MainSideEffect()
+    data class NavigateToWaiting(val isParentPic: Boolean) : MainSideEffect()
     data object NavigateToFinished: MainSideEffect()
 }
