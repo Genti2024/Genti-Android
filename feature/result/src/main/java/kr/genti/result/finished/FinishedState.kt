@@ -3,6 +3,7 @@ package kr.genti.result.finished
 data class FinishedState(
     val responseId: Long = -1,
     val isParentPic: Boolean = false,
+    val imageUrl: String = "",
     val reportText: String = "",
     val rating: Int = 5,
     val isReportSubmitted: Boolean = false,

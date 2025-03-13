@@ -1,5 +1,6 @@
 package kr.genti.result.finished
 
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -38,6 +39,9 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kr.genti.common.extension.noRippleClickable
 import kr.genti.common.extension.toast
+import kr.genti.common.manager.ImageManager.getImageChooserIntent
+import kr.genti.common.manager.LauncherManager.rememberPermissionLauncher
+import kr.genti.common.manager.PermissionManager
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.button.CloseButton
 import kr.genti.designsystem.component.button.GentiGradationButton
@@ -65,15 +69,38 @@ internal fun FinishedRoute(
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
+    val writePermissionLauncher = rememberPermissionLauncher {
+        viewModel.onIntent(FinishedIntent.DownloadButtonClick)
+    }
+
     LaunchedEffect(Unit) {
-        viewModel.onIntent(FinishedIntent.Init(responseId, isParentPic))
+        viewModel.onIntent(FinishedIntent.Init(responseId, isParentPic, imageUrl))
     }
 
     LaunchedEffect(viewModel.finishedSideEffect, lifecycleOwner) {
         viewModel.finishedSideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is FinishedSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
+                is FinishedSideEffect.ShowDownloadToast -> context.toast(context.getString(R.string.profile_image_download_success))
                 is FinishedSideEffect.NavigateToBack -> navigateToBack()
+                is FinishedSideEffect.StartPermissionLauncher -> {
+                    PermissionManager.checkPermissionAndLaunch(
+                        permission = WRITE_EXTERNAL_STORAGE,
+                        context = context,
+                        onPermissionGranted = { viewModel.onIntent(FinishedIntent.DownloadButtonClick) },
+                        onPermissionNotGranted = {
+                            writePermissionLauncher.launch(WRITE_EXTERNAL_STORAGE)
+                        },
+                        onPermissionAlreadyDenied = { intentToSetting ->
+                            context.toast(context.getString(R.string.permission_to_setting))
+                            context.startActivity(intentToSetting)
+                        }
+                    )
+                }
+
+                is FinishedSideEffect.NavigateToShare -> {
+                    context.startActivity(getImageChooserIntent(sideEffect.imageUri))
+                }
             }
         }
     }

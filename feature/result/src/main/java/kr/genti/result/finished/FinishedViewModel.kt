@@ -11,6 +11,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.genti.common.manager.AmplitudeManager
 import kr.genti.common.manager.AmplitudeManager.PROPERTY_TYPE
+import kr.genti.common.manager.ImageManager
+import kr.genti.common.manager.ImageManager.checkExternalStoragePermission
+import kr.genti.common.manager.ImageManager.saveImageToStorage
 import kr.genti.domain.entity.request.ReportRequestModel
 import kr.genti.domain.repository.GenerateRepository
 import javax.inject.Inject
@@ -29,7 +32,7 @@ constructor(
 
     fun onIntent(intent: FinishedIntent) {
         when (intent) {
-            is FinishedIntent.Init -> handleInit(intent.responseId, intent.isParentPic)
+            is FinishedIntent.Init -> handleInit(intent)
             is FinishedIntent.ImageClick -> handleImageClick()
             is FinishedIntent.BackButtonClick -> handleBackButtonClick()
             is FinishedIntent.ReportButtonClick -> handleReportButtonClick()
@@ -45,9 +48,13 @@ constructor(
         }
     }
 
-    private fun handleInit(responseId: Long, isParentPic: Boolean) {
+    private fun handleInit(intent: FinishedIntent.Init) {
         _finishedState.update {
-            it.copy(responseId = responseId, isParentPic = isParentPic)
+            it.copy(
+                responseId = intent.responseId,
+                isParentPic = intent.isParentPic,
+                imageUrl = intent.imageUrl
+            )
         }
     }
 
@@ -82,11 +89,35 @@ constructor(
     }
 
     private fun handleShareButtonClick() {
-
+        viewModelScope.launch {
+            ImageManager.getCacheImageUri(
+                id = finishedState.value.responseId,
+                imageUrl = finishedState.value.imageUrl,
+            ).onSuccess { uri ->
+                amplitudeTrackShare()
+                _finishedSideEffect.emit(FinishedSideEffect.NavigateToShare(uri))
+            }.onFailure {
+                _finishedSideEffect.emit(FinishedSideEffect.ShowErrorToast)
+            }
+        }
     }
 
     private fun handleDownloadButtonClick() {
-
+        viewModelScope.launch {
+            if (!checkExternalStoragePermission()) {
+                _finishedSideEffect.emit(FinishedSideEffect.StartPermissionLauncher)
+                return@launch
+            }
+            saveImageToStorage(
+                id = finishedState.value.responseId,
+                imageUrl = finishedState.value.imageUrl,
+            ).onSuccess {
+                amplitudeTrackDownload()
+                _finishedSideEffect.emit(FinishedSideEffect.ShowDownloadToast)
+            }.onFailure {
+                _finishedSideEffect.emit(FinishedSideEffect.ShowErrorToast)
+            }
+        }
     }
 
     private fun handleReportTextChange(text: String) {
