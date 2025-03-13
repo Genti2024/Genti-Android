@@ -13,9 +13,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kr.genti.common.extension.toast
 import kr.genti.common.manager.AmplitudeManager
-import kr.genti.common.manager.LauncherManager
 import kr.genti.common.manager.LauncherManager.rememberPermissionLauncher
-import kr.genti.common.manager.PermissionManager
 import kr.genti.common.manager.PermissionManager.checkPermissionAndLaunch
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.dialog.GentiWarningDialog

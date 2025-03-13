@@ -6,7 +6,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import kr.genti.navigation.MainTabRoute
-import kr.genti.navigation.Route
 import kr.genti.profile.ProfileRoute
 
 fun NavController.navigateToProfile(
