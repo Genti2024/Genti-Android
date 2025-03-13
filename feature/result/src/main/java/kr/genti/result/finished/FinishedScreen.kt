@@ -66,7 +66,7 @@ internal fun FinishedRoute(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.onIntent(FinishedIntent.Init(responseId))
+        viewModel.onIntent(FinishedIntent.Init(responseId, isParentPic))
     }
 
     LaunchedEffect(viewModel.finishedSideEffect, lifecycleOwner) {
@@ -91,6 +91,7 @@ internal fun FinishedRoute(
         isParentPic = isParentPic,
         isGaro = isGaro,
         onBackButtonClick = { viewModel.onIntent(FinishedIntent.BackButtonClick) },
+        onImageClick = { viewModel.onIntent(FinishedIntent.ImageClick) },
         onReportButtonClick = { viewModel.onIntent(FinishedIntent.ReportButtonClick) },
         onShareButtonClick = { viewModel.onIntent(FinishedIntent.ShareButtonClick) },
         onDownloadButtonClick = { viewModel.onIntent(FinishedIntent.DownloadButtonClick) },
@@ -135,6 +136,7 @@ private fun FinishedScreen(
     isParentPic: Boolean = false,
     isGaro: Boolean = false,
     onBackButtonClick: () -> Unit = {},
+    onImageClick: () -> Unit = {},
     onReportButtonClick: () -> Unit = {},
     onShareButtonClick: () -> Unit = {},
     onDownloadButtonClick: () -> Unit = {},
@@ -170,7 +172,9 @@ private fun FinishedScreen(
             FinishedImage(
                 imageUrl = imageUrl,
                 isGaro = isGaro,
-                isParentPic = isParentPic
+                isParentPic = isParentPic,
+                onImageClick = onImageClick,
+                onDownloadButtonClick = onDownloadButtonClick
             )
 
             Spacer(modifier = Modifier.weight(1f))

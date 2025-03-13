@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kr.genti.common.manager.AmplitudeManager
+import kr.genti.common.manager.AmplitudeManager.PROPERTY_TYPE
 import kr.genti.domain.entity.request.ReportRequestModel
 import kr.genti.domain.repository.GenerateRepository
 import javax.inject.Inject
@@ -27,7 +29,7 @@ constructor(
 
     fun onIntent(intent: FinishedIntent) {
         when (intent) {
-            is FinishedIntent.Init -> handleInit(intent.responseId)
+            is FinishedIntent.Init -> handleInit(intent.responseId, intent.isParentPic)
             is FinishedIntent.ImageClick -> handleImageClick()
             is FinishedIntent.BackButtonClick -> handleBackButtonClick()
             is FinishedIntent.ReportButtonClick -> handleReportButtonClick()
@@ -43,19 +45,21 @@ constructor(
         }
     }
 
-    private fun handleInit(responseId: Long) {
+    private fun handleInit(responseId: Long, isParentPic: Boolean) {
         _finishedState.update {
-            it.copy(responseId = responseId)
+            it.copy(responseId = responseId, isParentPic = isParentPic)
         }
     }
 
     private fun handleImageClick() {
+        amplitudeTrackEvent("enlarge_picdone_picture")
         _finishedState.update {
             it.copy(isDetailDialogVisible = true)
         }
     }
 
     private fun handleBackButtonClick() {
+        amplitudeTrackEvent("gomain")
         _finishedState.update {
             it.copy(isRatingDialogVisible = true)
         }
@@ -109,6 +113,7 @@ constructor(
     }
 
     private fun handleFinishButtonClick() {
+        amplitudeTrackEvent("reportpic_picdone")
         viewModelScope.launch {
             _finishedSideEffect.emit(FinishedSideEffect.NavigateToBack)
         }
@@ -126,6 +131,7 @@ constructor(
                 responseId = finishedState.value.responseId.toInt(),
                 star = finishedState.value.rating,
             ).onSuccess {
+                amplitudeTrackEvent("ratingsubmit_picdone")
                 _finishedSideEffect.emit(FinishedSideEffect.NavigateToBack)
             }.onFailure {
                 _finishedSideEffect.emit(FinishedSideEffect.ShowErrorToast)
@@ -137,10 +143,40 @@ constructor(
         viewModelScope.launch {
             generateRepository.postVerifyGenerateState(finishedState.value.responseId.toInt())
                 .onSuccess {
+                    amplitudeTrackEvent("ratingpass_picdone")
                     _finishedSideEffect.emit(FinishedSideEffect.NavigateToBack)
                 }.onFailure {
                     _finishedSideEffect.emit(FinishedSideEffect.ShowErrorToast)
                 }
+        }
+    }
+
+    private fun amplitudeTrackEvent(event: String) {
+        AmplitudeManager.trackEvent(
+            event,
+            mapOf(PROPERTY_TYPE to if (finishedState.value.isParentPic) "parents" else "original")
+        )
+    }
+
+    private fun amplitudeTrackDownload() {
+        AmplitudeManager.apply {
+            trackEvent(
+                EVENT_CLICK_BTN,
+                mapOf(PROPERTY_TYPE to if (finishedState.value.isParentPic) "parents" else "original"),
+                mapOf(PROPERTY_BTN to "picdownload")
+            )
+            plusIntProperties("user_picturedownload")
+        }
+    }
+
+    private fun amplitudeTrackShare() {
+        AmplitudeManager.apply {
+            trackEvent(
+                EVENT_CLICK_BTN,
+                mapOf(PROPERTY_TYPE to if (finishedState.value.isParentPic) "parents" else "original"),
+                mapOf(PROPERTY_BTN to "picshare")
+            )
+            plusIntProperties("user_share")
         }
     }
 }

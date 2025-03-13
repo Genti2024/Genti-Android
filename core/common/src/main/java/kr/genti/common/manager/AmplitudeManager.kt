@@ -74,7 +74,4 @@ object AmplitudeManager {
     const val PROPERTY_PAGE = "page_name"
     const val PROPERTY_BTN = "button_name"
     const val PROPERTY_TYPE = "picdone_type"
-
-    const val TYPE_ORIGINAL = "original"
-    const val TYPE_PARENT = "parents"
 }

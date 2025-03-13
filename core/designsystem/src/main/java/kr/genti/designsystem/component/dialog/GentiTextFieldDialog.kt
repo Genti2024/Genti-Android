@@ -35,7 +35,6 @@ import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.designsystem.theme.Gray
 import kr.genti.designsystem.theme.Transparent
-import kr.genti.designsystem.theme.Transparent50
 import kr.genti.designsystem.theme.White
 import kr.genti.designsystem.theme.White40
 import kr.genti.designsystem.theme.White80
@@ -67,7 +66,6 @@ fun GentiTextFieldDialog(
         Box(
             modifier = modifier
                 .fillMaxSize()
-                .background(Transparent50)
                 .imePadding()
                 .noRippleClickable { focusManager.clearFocus() }
                 .padding(horizontal = 16.dp),

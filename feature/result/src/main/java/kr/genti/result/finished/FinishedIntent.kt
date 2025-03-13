@@ -1,7 +1,7 @@
 package kr.genti.result.finished
 
 sealed class FinishedIntent {
-    data class Init(val responseId: Long) : FinishedIntent()
+    data class Init(val responseId: Long, val isParentPic: Boolean) : FinishedIntent()
     data object ImageClick : FinishedIntent()
     data object BackButtonClick : FinishedIntent()
     data object ReportButtonClick : FinishedIntent()

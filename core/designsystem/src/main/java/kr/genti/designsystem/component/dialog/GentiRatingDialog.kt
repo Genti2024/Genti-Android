@@ -30,7 +30,6 @@ import kr.genti.designsystem.component.button.GentiGradationButton
 import kr.genti.designsystem.component.item.GentiRatingBar
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.designsystem.theme.Gray
-import kr.genti.designsystem.theme.Transparent50
 import kr.genti.designsystem.theme.White
 import kr.genti.designsystem.theme.White80
 
@@ -52,7 +51,6 @@ fun GentiRatingDialog(
         Box(
             modifier = modifier
                 .fillMaxSize()
-                .background(Transparent50)
                 .noRippleClickable { onDismissRequest() }
                 .padding(16.dp),
             contentAlignment = Alignment.Center
