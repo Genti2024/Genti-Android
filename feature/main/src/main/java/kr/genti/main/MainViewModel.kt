@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.genti.common.manager.AmplitudeManager
 import kr.genti.domain.enums.GenerateStatus
+import kr.genti.domain.enums.PictureRatio
 import kr.genti.domain.repository.GenerateRepository
 import kr.genti.main.navigation.MainTab
 import timber.log.Timber
@@ -84,7 +85,14 @@ constructor(
     private fun handleFinishedDialogBtnClick() {
         handleDialogDismiss()
         viewModelScope.launch {
-            _mainSideEffect.emit(MainSideEffect.NavigateToFinished)
+            _mainSideEffect.emit(
+                MainSideEffect.NavigateToFinished(
+                    responseId = mainState.value.generatedImage.response?.responseId ?: -1,
+                    imageUrl = mainState.value.generatedImage.response?.picture?.url ?: "",
+                    isGaro = mainState.value.generatedImage.response?.picture?.pictureRatio == PictureRatio.RATIO_GARO,
+                    isParentPic = mainState.value.generatedImage.paid ?: false
+                )
+            )
         }
     }
 

@@ -36,7 +36,8 @@ fun GentiCheckedText(
         Icon(
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_check),
             contentDescription = null,
-            tint = GentiGreen
+            tint = GentiGreen,
+            modifier = Modifier.padding(top = 1.dp)
         )
 
         Spacer(modifier = Modifier.width(2.dp))

@@ -20,6 +20,7 @@ import kr.genti.onboarding.navigation.navigateToTutorial
 import kr.genti.profile.navigation.navigateToProfile
 import kr.genti.result.navigation.navigateToVerify
 import kr.genti.result.navigation.navigateToWaiting
+import kr.genti.result.navigation.navigateToFinished
 import kr.genti.setting.navigation.navigateToSetting
 
 class MainNavigator(
@@ -92,9 +93,12 @@ class MainNavigator(
     fun navigateToWaitingWithFinish(isParentPic: Boolean) =
         navController.navigateToWaiting(isParentPic, inclusiveNavOptions)
 
-    fun navigateToFinished() {
-
-    }
+    fun navigateToFinished(
+        responseId: Long,
+        imageUrl: String,
+        isGaro: Boolean,
+        isParentPic: Boolean
+    ) = navController.navigateToFinished(responseId, imageUrl, isGaro, isParentPic)
 
     fun navigateToSplash() = navController.navigateToSplash()
 

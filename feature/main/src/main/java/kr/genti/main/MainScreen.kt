@@ -55,8 +55,13 @@ internal fun MainRoute(
                 is MainSideEffect.NavigateToTab -> navigator.navigate(sideEffect.tab)
                 is MainSideEffect.NavigateToVerify -> navigator.navigateToVerify()
                 is MainSideEffect.NavigateToWaiting -> navigator.navigateToWaiting(sideEffect.isParentPic)
-                is MainSideEffect.NavigateToFinished -> navigator.navigateToFinished()
                 is MainSideEffect.NavigateToGenerate -> navigator.navigateToGenerate(sideEffect.isParentPic)
+                is MainSideEffect.NavigateToFinished -> navigator.navigateToFinished(
+                    responseId = sideEffect.responseId,
+                    imageUrl = sideEffect.imageUrl,
+                    isGaro = sideEffect.isGaro,
+                    isParentPic = sideEffect.isParentPic
+                )
             }
         }
     }

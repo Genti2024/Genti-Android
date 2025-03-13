@@ -71,7 +71,10 @@ fun PromptInputScreen(
             GentiCheckedText(text = stringResource(R.string.create_tv_script_subtitle_1))
 
             if (isParentPic) {
-                GentiCheckedText(text = stringResource(R.string.create_tv_script_subtitle_2_parent))
+                GentiCheckedText(
+                    text = stringResource(R.string.create_tv_script_subtitle_2_parent),
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
             } else {
                 GentiCheckedText(text = stringResource(R.string.create_tv_script_subtitle_2))
             }
