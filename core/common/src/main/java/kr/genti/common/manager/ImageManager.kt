@@ -23,7 +23,7 @@ import coil3.request.ImageRequest
 import coil3.toBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kr.genti.common.xml.extension.getFileName
+import kr.genti.common.extension.getFileName
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream

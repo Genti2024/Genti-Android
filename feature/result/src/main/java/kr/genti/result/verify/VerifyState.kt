@@ -1,7 +1,6 @@
 package kr.genti.result.verify
 
 import android.net.Uri
-import kr.genti.domain.entity.response.ImageFileModel
 
 data class VerifyState(
     val isPhotoTaken: Boolean = false,

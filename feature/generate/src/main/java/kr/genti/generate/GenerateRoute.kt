@@ -31,7 +31,6 @@ import com.android.billingclient.api.BillingClient.BillingResponseCode.USER_CANC
 import com.android.billingclient.api.Purchase
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kr.genti.common.extension.stringOf
 import kr.genti.common.extension.toast
 import kr.genti.common.manager.LauncherManager.getMultipleGalleryPickerIntent
 import kr.genti.common.manager.LauncherManager.rememberGalleryPickerLauncher
@@ -66,7 +65,7 @@ internal fun GenerateRoute(
     }
 
     val galleryPickerLauncher = rememberGalleryPickerLauncher { uriList ->
-        if (uriList.size > 3) context.toast(context.stringOf(R.string.selfie_toast_old_picker_limit))
+        if (uriList.size > 3) context.toast(context.getString(R.string.selfie_toast_old_picker_limit))
         viewModel.onIntent(GenerateIntent.ImageSelect(uriList.take(3)))
     }
 
@@ -243,7 +242,7 @@ private fun GenerateScreen(
                 )
             }
 
-            else -> {}
+            else -> return
         }
     }
 

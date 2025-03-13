@@ -1,9 +1,7 @@
 package kr.genti.onboarding.splash
 
-import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jakewharton.processphoenix.ProcessPhoenix
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,9 +9,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kr.genti.common.extension.toast
 import kr.genti.common.manager.AppUpdateManager
-import kr.genti.core.designsystem.R
 import kr.genti.domain.entity.request.ReissueRequestModel
 import kr.genti.domain.repository.AuthRepository
 import kr.genti.domain.repository.UserRepository

@@ -33,7 +33,6 @@ rootProject.name = "Genti-Android"
 include(":app")
 include(":domain")
 include(":data")
-include(":presentation")
 include(":core:common")
 include(":core:datastore")
 include(":core:designsystem")

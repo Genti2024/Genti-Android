@@ -91,7 +91,7 @@ internal fun WaitingRoute(
                         onPermissionAlreadyDenied = { intentToSetting ->
                             context.toast(context.getString(R.string.permission_to_setting))
                             context.startActivity(intentToSetting)
-                            viewModel.onIntent(WaitingIntent.NavigatedToSetting)
+                            viewModel.onIntent(WaitingIntent.NavigatedToSetting(true))
                         }
                     )
                 }
@@ -110,6 +110,8 @@ internal fun WaitingRoute(
                 if (isPermissionGranted(POST_NOTIFICATIONS, context)) {
                     context.toast(context.getString(R.string.push_success_toast))
                     navigateToBack()
+                } else {
+                    viewModel.onIntent(WaitingIntent.NavigatedToSetting(false))
                 }
             }
         }

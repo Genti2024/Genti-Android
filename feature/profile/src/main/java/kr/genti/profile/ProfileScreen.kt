@@ -163,7 +163,7 @@ private fun ProfileScreen(
     }
 }
 
-@Preview()
+@Preview
 @Composable
 private fun ProfileScreenPreviewOne() {
     GentiTheme {
@@ -200,7 +200,7 @@ private fun ProfileScreenPreviewOne() {
     }
 }
 
-@Preview()
+@Preview
 @Composable
 private fun ProfileScreenPreviewTwo() {
     GentiTheme {
@@ -232,7 +232,7 @@ private fun ProfileScreenPreviewTwo() {
     }
 }
 
-@Preview()
+@Preview
 @Composable
 private fun ProfileScreenPreviewThree() {
     GentiTheme {
@@ -243,7 +243,7 @@ private fun ProfileScreenPreviewThree() {
     }
 }
 
-@Preview()
+@Preview
 @Composable
 private fun ProfileScreenPreviewFour() {
     GentiTheme {

@@ -24,7 +24,6 @@ import kr.genti.common.extension.noRippleClickable
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
-import kr.genti.designsystem.theme.White
 import kr.genti.designsystem.theme.White40
 
 @Composable

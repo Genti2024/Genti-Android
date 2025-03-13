@@ -28,9 +28,9 @@ import kr.genti.designsystem.theme.GentiTheme
 
 @Composable
 fun GentiAsyncImage(
-    url: String,
-    isGaro: Boolean = false,
     modifier: Modifier = Modifier,
+    url: String = "",
+    isGaro: Boolean = false,
     isSquare: Boolean = false
 ) {
     val composition by rememberLottieComposition(

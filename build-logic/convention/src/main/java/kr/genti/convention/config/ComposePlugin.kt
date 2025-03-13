@@ -23,15 +23,10 @@ class ComposePlugin : Plugin<Project> {
         androidLibraryExtension.apply {
             buildFeatures {
                 compose = true
-                // TODO : 추후 제거
-                viewBinding = true
-                dataBinding = true
             }
         }
 
         dependencies {
-            // TODO : 추후 제거
-            implementation(libs.getBundle("androidxXml"))
             implementation(platform(libs.getLibrary("androidx-compose-bom")))
             implementation(libs.getBundle("compose"))
             implementation(libs.getBundle("navigation"))

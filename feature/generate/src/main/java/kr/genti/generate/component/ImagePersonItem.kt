@@ -74,7 +74,7 @@ internal fun ImagePersonItem(
 
 @Preview(showBackground = true)
 @Composable
-private fun ImagePersonItem() {
+private fun ImagePersonItemPreview() {
     GentiTheme {
         ImagePersonItem(
             title = "첫번째 인물",
