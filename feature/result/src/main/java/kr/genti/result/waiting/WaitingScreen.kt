@@ -29,8 +29,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -89,11 +91,23 @@ internal fun WaitingRoute(
                         onPermissionAlreadyDenied = { intentToSetting ->
                             context.toast(context.getString(R.string.permission_to_setting))
                             context.startActivity(intentToSetting)
+                            viewModel.onIntent(WaitingIntent.NavigatedToSetting)
                         }
                     )
                 }
 
                 is WaitingSideEffect.GrantPermission -> {
+                    context.toast(context.getString(R.string.push_success_toast))
+                    navigateToBack()
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(lifecycleOwner) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            if (waitingState.isNavigatedToSetting) {
+                if (isPermissionGranted(POST_NOTIFICATIONS, context)) {
                     context.toast(context.getString(R.string.push_success_toast))
                     navigateToBack()
                 }
