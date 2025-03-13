@@ -1,4 +1,4 @@
-package kr.genti.common.xml.extension
+package kr.genti.common.extension
 
 import android.content.ContentResolver
 import android.net.Uri
