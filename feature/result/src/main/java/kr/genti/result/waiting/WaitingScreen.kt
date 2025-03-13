@@ -73,7 +73,7 @@ internal fun WaitingRoute(
 
                 is WaitingSideEffect.CheckPermission -> {
                     val isPermissionNeeded =
-                        isPermissionGranted(POST_NOTIFICATIONS, context)
+                        !isPermissionGranted(POST_NOTIFICATIONS, context)
                                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
                     viewModel.onIntent(WaitingIntent.AlarmPermissionNeeded(isPermissionNeeded))
                 }

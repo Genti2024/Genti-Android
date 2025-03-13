@@ -39,16 +39,16 @@ internal fun MainNavHost(
             navigateToSetting = navigator::navigateToSetting
         )
         onboardingNavGraph(
-            navigateToLogin = navigator::navigateToLogin,
-            navigateToSignup = navigator::navigateToSignup,
-            navigateToFeed = navigator::navigateToFeed,
-            navigateToTutorial = navigator::navigateToTutorial,
+            navigateToLogin = navigator::navigateToLoginWithFinish,
+            navigateToSignup = navigator::navigateToSignupWithFinish,
+            navigateToFeed = navigator::navigateToFeedWithFinish,
+            navigateToTutorial = navigator::navigateToTutorialWithFinish,
         )
         settingNavGraph(
             navigateToBack = navigator::navigatePopBackStack
         )
         generateNavGraph(
-            navigateToWaiting = navigator::navigateToWaiting,
+            navigateToWaiting = navigator::navigateToWaitingWithFinish,
             navigateToBack = navigator::navigatePopBackStack
         )
         resultNavGraph(

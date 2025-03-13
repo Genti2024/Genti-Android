@@ -1,11 +1,8 @@
 package kr.genti.main
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,14 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
-import kr.genti.common.extension.noRippleClickable
 import kr.genti.common.extension.toast
 import kr.genti.core.common.BuildConfig
 import kr.genti.core.designsystem.R
@@ -32,6 +26,7 @@ import kr.genti.designsystem.component.dialog.GentiWarningDialog
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.domain.enums.GenerateStatus
+import kr.genti.main.component.GenerateForceButton
 import kr.genti.main.component.GenerateSelectDialog
 import kr.genti.main.component.MainBottomBar
 import kr.genti.main.component.MainBottomBtn
@@ -164,17 +159,11 @@ private fun MainScreen(
             }
         )
 
-        if (currentGenerateStatus == GenerateStatus.IN_PROGRESS && BuildConfig.DEBUG && (LocalInspectionMode.current || navigator.shouldShowBottomBar())) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_download),
-                contentDescription = null,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .noRippleClickable { onDebugPatchBtnClicked() }
-                    .navigationBarsPadding()
-                    .padding(bottom = 80.dp)
-            )
-        }
+        GenerateForceButton(
+            isVisible = BuildConfig.DEBUG && currentGenerateStatus == GenerateStatus.IN_PROGRESS && (LocalInspectionMode.current || navigator.shouldShowBottomBar()),
+            onDebugPatchBtnClicked = onDebugPatchBtnClicked,
+            modifier = Modifier.align(Alignment.BottomCenter)
+        )
 
         MainBottomBtn(
             visible = LocalInspectionMode.current || navigator.shouldShowBottomBar(),
@@ -188,6 +177,8 @@ private fun MainScreen(
 @Composable
 private fun MainScreenPreview() {
     GentiTheme {
-        MainScreen()
+        MainScreen(
+            currentGenerateStatus = GenerateStatus.IN_PROGRESS
+        )
     }
 }

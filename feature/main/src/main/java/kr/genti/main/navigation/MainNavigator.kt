@@ -77,7 +77,7 @@ class MainNavigator(
     fun removeBackStackEntry() =
         navController.currentBackStackEntry?.savedStateHandle?.remove<Boolean>(IS_SUCCESS)
 
-    fun navigateToFeed() = navController.navigateToFeed(inclusiveNavOptions)
+    fun navigateToFeedWithFinish() = navController.navigateToFeed(inclusiveNavOptions)
 
     fun navigateToProfile() = navController.navigateToProfile()
 
@@ -89,17 +89,20 @@ class MainNavigator(
 
     fun navigateToWaiting(isParentPic: Boolean) = navController.navigateToWaiting(isParentPic)
 
+    fun navigateToWaitingWithFinish(isParentPic: Boolean) =
+        navController.navigateToWaiting(isParentPic, inclusiveNavOptions)
+
     fun navigateToFinished() {
 
     }
 
     fun navigateToSplash() = navController.navigateToSplash()
 
-    fun navigateToLogin() = navController.navigateToLogin(inclusiveNavOptions)
+    fun navigateToLoginWithFinish() = navController.navigateToLogin(inclusiveNavOptions)
 
-    fun navigateToSignup() = navController.navigateToSignup(inclusiveNavOptions)
+    fun navigateToSignupWithFinish() = navController.navigateToSignup(inclusiveNavOptions)
 
-    fun navigateToTutorial() = navController.navigateToTutorial(inclusiveNavOptions)
+    fun navigateToTutorialWithFinish() = navController.navigateToTutorial(inclusiveNavOptions)
 
     companion object {
         const val IS_SUCCESS = "IS_SUCCESS"
