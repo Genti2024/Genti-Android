@@ -24,7 +24,7 @@ constructor(
 
     fun onIntent(intent: FinishedIntent) {
         when (intent) {
-            is FinishedIntent.Init -> handleInit(intent)
+            is FinishedIntent.Init -> handleInit(intent.responseId)
             is FinishedIntent.ImageClick -> handleImageClick()
             is FinishedIntent.BackButtonClick -> handleBackButtonClick()
             is FinishedIntent.ReportButtonClick -> handleReportButtonClick()
@@ -36,14 +36,9 @@ constructor(
         }
     }
 
-    private fun handleInit(intent: FinishedIntent.Init) {
+    private fun handleInit(responseId: Long) {
         _finishedState.update {
-            it.copy(
-                responseId = intent.responseId,
-                imageUrl = intent.imageUrl,
-                isGaro = intent.isGaro,
-                isParentPic = intent.isParentPic
-            )
+            it.copy(responseId = responseId)
         }
     }
 

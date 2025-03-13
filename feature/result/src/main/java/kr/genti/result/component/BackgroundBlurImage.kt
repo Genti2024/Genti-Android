@@ -21,6 +21,7 @@ import kr.genti.designsystem.theme.Transparent50
 internal fun BackgroundBlurImage(
     modifier: Modifier = Modifier,
     imageUrl: String = "",
+    isGaro: Boolean = false
 ) {
     Box(
         modifier = modifier.fillMaxSize()
@@ -28,7 +29,7 @@ internal fun BackgroundBlurImage(
         val context = LocalContext.current
 
         val imageRequest = ImageRequest.Builder(context)
-            .data(if (LocalInspectionMode.current) R.drawable.mock_img_3_2 else imageUrl)
+            .data(if (LocalInspectionMode.current) if (isGaro) R.drawable.mock_img_2_3 else R.drawable.mock_img_3_2 else imageUrl)
             .build()
 
         Box(modifier = modifier.fillMaxSize()) {
@@ -41,9 +42,11 @@ internal fun BackgroundBlurImage(
                     .blur(radiusX = 50.dp, radiusY = 50.dp)
             )
         }
-        Box(modifier = modifier
-            .fillMaxSize()
-            .background(Transparent50))
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .background(Transparent50)
+        )
     }
 }
 

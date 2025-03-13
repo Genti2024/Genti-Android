@@ -63,7 +63,7 @@ internal fun FinishedRoute(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.onIntent(FinishedIntent.Init(responseId, imageUrl, isGaro, isParentPic))
+        viewModel.onIntent(FinishedIntent.Init(responseId))
     }
 
     LaunchedEffect(viewModel.finishedSideEffect, lifecycleOwner) {
@@ -82,6 +82,16 @@ internal fun FinishedRoute(
             viewModel.onIntent(FinishedIntent.BackButtonClick)
         }
     }
+
+    FinishedScreen(
+        imageUrl = imageUrl,
+        isParentPic = isParentPic,
+        isGaro = isGaro,
+        onBackButtonClick = { viewModel.onIntent(FinishedIntent.BackButtonClick) },
+        onReportButtonClick = { viewModel.onIntent(FinishedIntent.ReportButtonClick) },
+        onShareButtonClick = { viewModel.onIntent(FinishedIntent.ShareButtonClick) },
+        onDownloadButtonClick = { viewModel.onIntent(FinishedIntent.DownloadButtonClick) },
+    )
 }
 
 @Composable
@@ -91,13 +101,18 @@ private fun FinishedScreen(
     isParentPic: Boolean = false,
     isGaro: Boolean = false,
     onBackButtonClick: () -> Unit = {},
+    onReportButtonClick: () -> Unit = {},
+    onShareButtonClick: () -> Unit = {},
+    onDownloadButtonClick: () -> Unit = {},
 ) {
     Box(
         modifier
             .fillMaxSize()
             .background(Black)
     ) {
-        BackgroundBlurImage(imageUrl = imageUrl)
+        BackgroundBlurImage(
+            imageUrl = imageUrl, isGaro = isGaro
+        )
 
         CloseButton(
             modifier = Modifier.statusBarsPadding(),
@@ -110,6 +125,8 @@ private fun FinishedScreen(
                 .statusBarsPadding()
                 .navigationBarsPadding()
         ) {
+            Spacer(modifier = Modifier.weight(1f))
+
             FinishedTitle(
                 isParentPic = isParentPic
             )
@@ -124,7 +141,12 @@ private fun FinishedScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            FinishedBottomContent()
+            FinishedBottomContent(
+                isParentPic = isParentPic,
+                onReportButtonClick = onReportButtonClick,
+                onShareButtonClick = onShareButtonClick,
+                onDownloadButtonClick = onDownloadButtonClick
+            )
         }
     }
 }
@@ -140,7 +162,7 @@ private fun FinishedTitle(
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.Center
     ) {
-        Spacer(modifier = Modifier.height(70.dp))
+        Spacer(modifier = Modifier.height(40.dp))
         Text(
             text = stringResource(if (!isParentPic) R.string.finished_tv_title else R.string.finished_tv_title_paid),
             style = GentiTheme.typography.title,
@@ -210,17 +232,21 @@ private fun FinishedBottomContent(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painterResource(R.drawable.img_tooltip_finished),
-            contentDescription = null,
-            modifier = Modifier.width(260.dp)
-        )
+        if (!isParentPic) {
+            Image(
+                painter = painterResource(R.drawable.img_tooltip_finished),
+                contentDescription = null,
+                modifier = Modifier.width(260.dp)
+            )
+        } else {
+            Spacer(modifier = Modifier.height(32.dp))
+        }
 
         Spacer(modifier = Modifier.height(8.dp))
 
         GentiGradationButton(
-            textRes = R.string.btn_share,
-            onClick = onShareButtonClick
+            textRes = if (!isParentPic) R.string.finished_btn_share else R.string.finished_btn_save,
+            onClick = if (!isParentPic) onShareButtonClick else onDownloadButtonClick
         )
 
         Spacer(modifier = Modifier.height(8.dp))
