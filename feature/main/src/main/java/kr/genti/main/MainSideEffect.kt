@@ -9,5 +9,10 @@ sealed class MainSideEffect {
     data class NavigateToGenerate(val isParentPic: Boolean) : MainSideEffect()
     data object NavigateToVerify : MainSideEffect()
     data class NavigateToWaiting(val isParentPic: Boolean) : MainSideEffect()
-    data object NavigateToFinished: MainSideEffect()
+    data class NavigateToFinished(
+        val responseId: Long,
+        val imageUrl: String,
+        val isGaro: Boolean,
+        val isParentPic: Boolean
+    ) : MainSideEffect()
 }

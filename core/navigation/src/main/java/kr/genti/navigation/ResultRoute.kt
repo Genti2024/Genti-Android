@@ -7,8 +7,15 @@ interface ResultRoute : Route {
     data object Verify : ResultRoute
 
     @Serializable
-    data class Waiting(val isParentPic: Boolean) : ResultRoute
+    data class Waiting(
+        val isParentPic: Boolean
+    ) : ResultRoute
 
     @Serializable
-    data object Finished : ResultRoute
+    data class Finished(
+        val responseId: Long,
+        val imageUrl: String,
+        val isGaro: Boolean,
+        val isParentPic: Boolean
+    ) : ResultRoute
 }
