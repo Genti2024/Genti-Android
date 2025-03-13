@@ -67,8 +67,8 @@
 - `Build Tools`  Gradle Version Catalog + Custom Convention Plugins
 - `CI/CD`  Github Actions (to Firebase App Distribution)
 - `Analytics` Amplitude
-- `Third Party` Kakao Open API, AWS S3 with Presigned Url
-- `Permission` Camera, External Storage(PhotoPicker), Notification(Firebase Cloud Messaging), Billing(Google Play Billing)
+- `Third Party` Kakao Open API, Firebase Cloud Messaging, Google Play Billing, AWS S3
+- `Permission` Camera, External Storage, Notification, Billing
 
 <br>
 
@@ -84,14 +84,14 @@
 
 ## EXPERIENCE
 
-- **MVI 전환** -- 기존 MVVM + XML (dataBinding, viewBinding) 구조를 MVI + Jetpack Compose로 전환하여 로직의 효율성과 유지보수성을 향상
-- **의존성 관리 혁신** -- 기존 buildSrc를 build-logic으로 전환하고 버전 카탈로그 및 feature 모듈 분리를 도입해 의존성 관리의 효율성과 가독성을 개선
+- **MVI 전환** -- 기존 MVVM + XML (dataBinding, viewBinding) 구조에서 MVI + Jetpack Compose로 전환
+- **의존성 관리 혁신** -- 기존 buildSrc를 build-logic으로 전환하고 버전 카탈로그 및 feature 모듈 분리를 도입
 - **인앱 결제 구현** -- Google Play 결제 라이브러리 v7을 활용해 안정적인 인앱 결제 시스템을 구축
 - **CI/CD 자동화** -- Github Actions와 Firebase App Distribution을 연계하여 자동 앱 배포 프로세스를 구축
 - **클라우드 이미지 업로드** -- AWS S3 Presigned URL을 활용해 클라우드로 이미지 업로드 기능을 구현
-- **실시간 사진 업로드** -- FileProvider와 cacheDirectory를 활용해 카메라로 촬영한 사진을 저장 없이 즉시 업로드할 수 있도록 설계
-- **유저 사진 선택 기능** -- 버전 분기 처리를 통해 PhotoPicker와 기존 갤러리 파일 탐색기를 모두 지원, 유저가 손쉽게 사진을 선택할 수 있도록 구현
-- **비동기 업로드 최적화** -- async와 await을 활용한 병렬 비동기 처리를 도입하여 여러 사진 업로드 시간을 효과적으로 단축
+- **실시간 사진 업로드** -- FileProvider와 cacheDirectory를 활용해 카메라로 촬영한 사진을 저장 없이 즉시 업로드
+- **유저 사진 선택 기능** -- 버전 분기 처리를 통해 PhotoPicker와 기존 갤러리 파일 탐색기를 모두 지원
+- **비동기 업로드 최적화** -- async와 await을 활용한 병렬 비동기 처리를 도입하여 여러 사진을 동시에 업로드
 
 <br>
 
