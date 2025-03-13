@@ -22,7 +22,9 @@ constructor() : ViewModel() {
         when (intent) {
             is WaitingIntent.Init -> handleInit(intent.isParentPic)
             is WaitingIntent.ReturnButtonClick -> handleBackButtonClick()
-            is WaitingIntent.AlarmDialogRequestButtonClick -> handleAlarmButtonClick()
+            is WaitingIntent.AlarmDialogRequestButtonClick -> handleAlarmRequestButtonClick()
+            is WaitingIntent.AlarmDialogReturnButtonClick -> handleAlarmDialogReturnButtonClick()
+            is WaitingIntent.AlarmRequestGrant -> handleAlarmRequestGrant()
             is WaitingIntent.AlarmDialogDismiss -> handleAlarmDialogDismiss()
         }
     }
@@ -35,7 +37,15 @@ constructor() : ViewModel() {
 
     }
 
-    private fun handleAlarmButtonClick() {
+    private fun handleAlarmRequestButtonClick() {
+
+    }
+
+    private fun handleAlarmDialogReturnButtonClick() {
+
+    }
+
+    private fun handleAlarmRequestGrant() {
 
     }
 

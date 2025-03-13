@@ -2,20 +2,48 @@ package kr.genti.result.waiting
 
 import android.Manifest.permission.POST_NOTIFICATIONS
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import kr.genti.common.extension.toast
 import kr.genti.common.manager.LauncherManager.rememberPermissionLauncher
 import kr.genti.common.manager.PermissionManager.checkPermissionAndLaunch
 import kr.genti.core.designsystem.R
+import kr.genti.designsystem.component.button.GentiButton
+import kr.genti.designsystem.theme.Black
+import kr.genti.designsystem.theme.GentiGreen
 import kr.genti.designsystem.theme.GentiTheme
+import kr.genti.designsystem.theme.White40
+import kr.genti.designsystem.theme.White80
 
 @Composable
 internal fun WaitingRoute(
@@ -65,8 +93,143 @@ internal fun WaitingRoute(
 @Composable
 private fun WaitingScreen(
     modifier: Modifier = Modifier,
+    isParentPic: Boolean = false,
+    onReturnButtonClick: () -> Unit = {},
 ) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+            .navigationBarsPadding()
+            .background(Black)
+    ) {
+        WaitingTopContent(
+            modifier = Modifier.align(Alignment.TopCenter),
+            isParentPic = isParentPic,
+        )
 
+        Image(
+            painter = painterResource(R.drawable.img_glow),
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+        )
+
+        WaitingLottie(
+            modifier = Modifier.align(Alignment.Center),
+        )
+
+        WaitingBottomContent(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            onReturnButtonClick = onReturnButtonClick,
+        )
+    }
+}
+
+@Composable
+private fun WaitingTopContent(
+    modifier: Modifier = Modifier,
+    isParentPic: Boolean = false,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+    ) {
+        Spacer(modifier = Modifier.height(60.dp))
+        Text(
+            text = stringResource(id = R.string.wait_tv_header),
+            style = GentiTheme.typography.body1,
+            color = GentiGreen,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = stringResource(id = if (isParentPic) R.string.wait_tv_title_paid else R.string.wait_tv_title),
+            style = GentiTheme.typography.title,
+            textAlign = TextAlign.Center,
+            fontSize = 24.sp,
+            lineHeight = 30.sp,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        Spacer(modifier = Modifier.height(14.dp))
+        Text(
+            text = stringResource(id = R.string.wait_tv_subtitle),
+            style = GentiTheme.typography.body2,
+            color = White80,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@Composable
+private fun WaitingLottie(
+    modifier: Modifier = Modifier,
+) {
+    val lottieComposition by rememberLottieComposition(
+        LottieCompositionSpec.RawRes(R.raw.lottie_waiting)
+    )
+    Box(
+        modifier = modifier
+            .padding(horizontal = 60.dp)
+            .padding(bottom = 30.dp)
+            .aspectRatio(1F)
+    ) {
+        LottieAnimation(
+            composition = lottieComposition,
+            iterations = LottieConstants.IterateForever,
+        )
+    }
+}
+
+@Composable
+private fun WaitingBottomContent(
+    modifier: Modifier = Modifier,
+    onReturnButtonClick: () -> Unit = {},
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+    ) {
+        Text(
+            text = stringResource(id = R.string.wait_tv_time_title),
+            style = GentiTheme.typography.body1,
+            color = White40,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        Spacer(modifier = Modifier.height(6.dp))
+
+        Text(
+            text = stringResource(id = R.string.wait_tv_time_subtitle),
+            style = GentiTheme.typography.subtitle1,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = stringResource(id = R.string.wait_tv_time_guide),
+            style = GentiTheme.typography.body2,
+            color = White80,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        GentiButton(
+            textRes = R.string.wait_btn_return,
+            onClick = onReturnButtonClick,
+            modifier = Modifier.padding(vertical = 16.dp)
+        )
+    }
 }
 
 @Preview
@@ -74,5 +237,15 @@ private fun WaitingScreen(
 private fun WaitingScreenPreview() {
     GentiTheme {
         WaitingScreen()
+    }
+}
+
+@Preview
+@Composable
+private fun WaitingScreenParentPreview() {
+    GentiTheme {
+        WaitingScreen(
+            isParentPic = true,
+        )
     }
 }
