@@ -42,7 +42,9 @@ import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.button.CloseButton
 import kr.genti.designsystem.component.button.GentiGradationButton
 import kr.genti.designsystem.component.dialog.GentiImageDetailDialog
+import kr.genti.designsystem.component.dialog.GentiTextFieldDialog
 import kr.genti.designsystem.component.item.GentiAsyncImage
+import kr.genti.designsystem.component.layout.GentiLoadingScreen
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.designsystem.theme.Gray
@@ -105,7 +107,14 @@ internal fun FinishedRoute(
     }
 
     if (finishedState.isReportDialogVisible) {
-
+        GentiTextFieldDialog(
+            text = finishedState.reportText,
+            isSubmitted = finishedState.isReportSubmitted,
+            onTextChange = { viewModel.onIntent(FinishedIntent.ReportTextChange(it)) },
+            onSubmitBtnClick = { viewModel.onIntent(FinishedIntent.ReportSubmitButtonClick) },
+            onSubmitFinishBtnClick = { viewModel.onIntent(FinishedIntent.FinishButtonClick) },
+            onDismissRequest = { viewModel.onIntent(FinishedIntent.DialogDismiss) }
+        )
     }
 
     if (finishedState.isRatingDialogVisible) {

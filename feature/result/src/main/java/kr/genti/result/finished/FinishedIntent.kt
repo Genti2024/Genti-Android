@@ -7,7 +7,10 @@ sealed class FinishedIntent {
     data object ReportButtonClick : FinishedIntent()
     data object ShareButtonClick : FinishedIntent()
     data object DownloadButtonClick : FinishedIntent()
-    data object ReportDialogButtonClick : FinishedIntent()
-    data object RatingDialogButtonClick : FinishedIntent()
     data object DialogDismiss : FinishedIntent()
+    data class ReportTextChange(val text: String) : FinishedIntent()
+    data object ReportSubmitButtonClick : FinishedIntent()
+    data object FinishButtonClick : FinishedIntent()
+    data object RatingSubmitButtonClick : FinishedIntent()
+    data object RatingSkipButtonClick : FinishedIntent()
 }

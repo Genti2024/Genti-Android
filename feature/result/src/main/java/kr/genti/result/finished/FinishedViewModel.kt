@@ -1,12 +1,15 @@
 package kr.genti.result.finished
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kr.genti.domain.entity.request.ReportRequestModel
 import kr.genti.domain.repository.GenerateRepository
 import javax.inject.Inject
 
@@ -31,8 +34,11 @@ constructor(
             is FinishedIntent.DialogDismiss -> handleDialogDismiss()
             is FinishedIntent.ShareButtonClick -> handleShareButtonClick()
             is FinishedIntent.DownloadButtonClick -> handleDownloadButtonClick()
-            is FinishedIntent.ReportDialogButtonClick -> handleReportDialogButtonClick()
-            is FinishedIntent.RatingDialogButtonClick -> handleRatingDialogButtonClick()
+            is FinishedIntent.ReportTextChange -> handleReportTextChange(intent.text)
+            is FinishedIntent.ReportSubmitButtonClick -> handleReportSubmitButtonClick()
+            is FinishedIntent.FinishButtonClick -> handleFinishButtonClick()
+            is FinishedIntent.RatingSubmitButtonClick -> handleRatingSubmitButtonClick()
+            is FinishedIntent.RatingSkipButtonClick -> handleRatingSkipButtonClick()
         }
     }
 
@@ -78,11 +84,40 @@ constructor(
 
     }
 
-    private fun handleReportDialogButtonClick() {
+    private fun handleReportTextChange(text: String) {
+        _finishedState.update {
+            it.copy(reportText = text)
+        }
+    }
+
+    private fun handleReportSubmitButtonClick() {
+        viewModelScope.launch {
+            generateRepository.postGenerateReport(
+                ReportRequestModel(
+                    finishedState.value.responseId,
+                    finishedState.value.reportText,
+                ),
+            ).onSuccess {
+                _finishedState.update {
+                    it.copy(isReportSubmitted = true)
+                }
+            }.onFailure {
+                _finishedSideEffect.emit(FinishedSideEffect.ShowErrorToast)
+            }
+        }
+    }
+
+    private fun handleFinishButtonClick() {
+        viewModelScope.launch {
+            _finishedSideEffect.emit(FinishedSideEffect.NavigateToBack)
+        }
+    }
+
+    private fun handleRatingSubmitButtonClick() {
 
     }
 
-    private fun handleRatingDialogButtonClick() {
+    private fun handleRatingSkipButtonClick() {
 
     }
 }
