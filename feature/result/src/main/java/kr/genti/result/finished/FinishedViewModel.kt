@@ -37,6 +37,7 @@ constructor(
             is FinishedIntent.ReportTextChange -> handleReportTextChange(intent.text)
             is FinishedIntent.ReportSubmitButtonClick -> handleReportSubmitButtonClick()
             is FinishedIntent.FinishButtonClick -> handleFinishButtonClick()
+            is FinishedIntent.RatingChange -> handleRatingChange(intent.rating)
             is FinishedIntent.RatingSubmitButtonClick -> handleRatingSubmitButtonClick()
             is FinishedIntent.RatingSkipButtonClick -> handleRatingSkipButtonClick()
         }
@@ -113,11 +114,33 @@ constructor(
         }
     }
 
-    private fun handleRatingSubmitButtonClick() {
+    private fun handleRatingChange(rating: Int) {
+        _finishedState.update {
+            it.copy(rating = rating)
+        }
+    }
 
+    private fun handleRatingSubmitButtonClick() {
+        viewModelScope.launch {
+            generateRepository.postGenerateRate(
+                responseId = finishedState.value.responseId.toInt(),
+                star = finishedState.value.rating,
+            ).onSuccess {
+                _finishedSideEffect.emit(FinishedSideEffect.NavigateToBack)
+            }.onFailure {
+                _finishedSideEffect.emit(FinishedSideEffect.ShowErrorToast)
+            }
+        }
     }
 
     private fun handleRatingSkipButtonClick() {
-
+        viewModelScope.launch {
+            generateRepository.postVerifyGenerateState(finishedState.value.responseId.toInt())
+                .onSuccess {
+                    _finishedSideEffect.emit(FinishedSideEffect.NavigateToBack)
+                }.onFailure {
+                    _finishedSideEffect.emit(FinishedSideEffect.ShowErrorToast)
+                }
+        }
     }
 }

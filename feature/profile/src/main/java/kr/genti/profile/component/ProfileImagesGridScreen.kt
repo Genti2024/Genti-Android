@@ -34,9 +34,7 @@ fun ProfileImagesGridScreen(
 
     LaunchedEffect(gridState) {
         snapshotFlow { gridState.layoutInfo.visibleItemsInfo }
-            .map { visibleItems ->
-                visibleItems.lastOrNull()?.index ?: 0
-            }
+            .map { visibleItems -> visibleItems.lastOrNull()?.index ?: 0 }
             .distinctUntilChanged()
             .collect { lastVisibleItemIndex ->
                 if (lastVisibleItemIndex >= itemList.size - 3) onLastColumnLoaded()
@@ -59,6 +57,7 @@ fun ProfileImagesGridScreen(
         ) { _, item ->
             GentiAsyncImage(
                 url = item.url,
+                isSquare = true,
                 modifier = Modifier.noRippleClickable { onImageItemClick(item) })
         }
         item {

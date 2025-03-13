@@ -11,6 +11,7 @@ sealed class FinishedIntent {
     data class ReportTextChange(val text: String) : FinishedIntent()
     data object ReportSubmitButtonClick : FinishedIntent()
     data object FinishButtonClick : FinishedIntent()
+    data class RatingChange(val rating: Int) : FinishedIntent()
     data object RatingSubmitButtonClick : FinishedIntent()
     data object RatingSkipButtonClick : FinishedIntent()
 }
