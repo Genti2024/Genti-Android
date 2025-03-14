@@ -43,14 +43,14 @@
 
 ## EXPERIENCE
 
-- **MVI 전환** __ 기존 MVVM + XML (dataBinding, viewBinding) 구조에서 MVI + Jetpack Compose로 전환
-- **모듈 간 의존성 관리 개선** __ 기존 buildSrc를 build-logic으로 전환하고 버전 카탈로그 및 feature 모듈 분리를 도입
-- **인앱 결제 구현** __ Google Play 결제 라이브러리 v7을 활용해 안정적인 인앱 결제 시스템을 구축
-- **CI/CD 자동화** __ Github Actions와 Firebase App Distribution을 연계하여 자동 앱 배포 프로세스를 구축
-- **클라우드 이미지 업로드** __ AWS S3 Presigned URL을 활용해 클라우드로 기기의 저장공간 내 이미지 업로드 기능을 구현
-- **사진 촬영 및 업로드** __ FileProvider와 cacheDirectory를 활용해 카메라로 촬영한 사진을 저장 없이 즉시 업로드
-- **갤러리 사진 선택** __ 버전 분기 처리를 통해 PhotoPicker와 기존 갤러리 파일 탐색기를 모두 지원
-- **비동기 업로드 최적화** __ async와 await을 활용한 병렬 비동기 처리를 도입하여 여러 사진을 동시에 업로드
+- **MVI + Compose 전환** _ 기존 MVVM + XML (dataBinding) 구조에서 MVI + Jetpack Compose로 전환
+- **CI/CD 자동화** _ Github Actions와 Firebase App Distribution을 연계하여 자동 앱 배포 프로세스 구축
+- **모듈 간 의존성 관리 개선** _ 기존 buildSrc를 build-logic으로 전환하고, 버전 카탈로그 및 feature 모듈 분리 도입
+- **클라우드 이미지 업로드** _ AWS S3 Presigned URL을 활용해 기기의 저장공간 내 이미지 클라우드 업로드 기능 구현
+- **비동기 업로드 최적화** _ async와 await을 활용한 병렬 비동기 처리를 도입하여 여러 사진을 동시에 업로드
+- **사진 촬영 및 캐시 업로드** _ FileProvider와 cacheDirectory를 활용해 카메라로 촬영한 사진을 저장 없이 즉시 업로드
+- **인앱 결제 구현** _ Google Play 결제 라이브러리 v7을 활용해 안정적인 인앱 결제 시스템을 구축
+- **푸시 알림 구현** _ Firebase Cloud Messaging을 통해 사용자가 사진 생성 완료 시 실시간 알림을 받을 수 있도록 구현
 
 <br>
 
