@@ -26,7 +26,7 @@
 - `Build Tools`  Gradle Version Catalog + Custom Convention Plugins
 - `CI/CD`  Github Actions (to Firebase App Distribution)
 - `Analytics` Amplitude
-- `Third Party` Kakao Open API, Firebase Cloud Messaging, Google Play Billing, AWS S3
+- `Third Party` Kakao Open API, Firebase Cloud Messaging, Google Play Billing API, AWS S3
 - `Permission` Camera, External Storage, Notification, Billing
 
 <br>
@@ -101,9 +101,9 @@
   | :-------------: | :-------------: | :-------------: |
   |  <img src="https://github.com/user-attachments/assets/b1f42fc3-463c-4101-90fb-5acd65081614" width=240 /> | <img src="https://github.com/user-attachments/assets/4470775b-a7cd-447f-b333-b4840398aa5a" width=240 /> |<img src="https://github.com/user-attachments/assets/0d0a556c-675c-4f78-85a8-c2e1cb5ff56d" width=240 /> |
 
-  | 피드 | 프로필  | 설정 |
+  | 피드 | 프로필 | 본인인증 (초기 생성 시) |
   | :-------------: | :-------------: | :-------------: |
-  |  <img src="https://github.com/user-attachments/assets/2601399d-3c57-446e-97ec-5f4450cf28a7" width=240 /> | <img src="https://github.com/user-attachments/assets/d1a0349f-8579-46d6-9820-5a363a3943b7" width=240 /> |<img src="https://github.com/user-attachments/assets/41649ce9-7b13-4f69-bc7f-65419d19e8e5" width=240 /> |
+  |  <img src="https://github.com/user-attachments/assets/2601399d-3c57-446e-97ec-5f4450cf28a7" width=240 /> | <img src="https://github.com/user-attachments/assets/d1a0349f-8579-46d6-9820-5a363a3943b7" width=240 /> |<img src="https://github.com/user-attachments/assets/a6e32f6b-d73a-4135-8f2f-c20d524ec517" width=240 /> |
 
   | 생성 진입  | 생성1 (프롬프트 선택) | 생성2 (비율 선택) |
   | :-------------: | :-------------: | :-------------: |
