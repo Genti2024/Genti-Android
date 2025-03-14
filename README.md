@@ -16,6 +16,44 @@
 
 <br>
 
+## TECH STACK
+- `Version`  Kotlin 2.0.0 / JVM 11 / SDK 28~35 / AGP 8.8.0
+- `Architecture`  Clean Architecture, MVI, Multi-Module
+- `UI`  Jetpack Compose
+- `DI`  Hilt
+- `Network`  Retrofit2, OkHttp
+- `Async`  Coroutine, Flow
+- `Build Tools`  Gradle Version Catalog + Custom Convention Plugins
+- `CI/CD`  Github Actions (to Firebase App Distribution)
+- `Analytics` Amplitude
+- `Third Party` Kakao Open API, Firebase Cloud Messaging, Google Play Billing, AWS S3
+- `Permission` Camera, External Storage, Notification, Billing
+
+<br>
+
+## ACHIEVEMENT
+
+- 2024 정주영 창업경진대회 (아산나눔재단) 사업실행팀 선발 및 본상 수상
+- 2024 고려대 KU 창업동아리 아이디어 트랙 선정
+- 2024 동국대 아이디어 사업화 지원사업 선발
+- 2024 KUCT 딥테크 스타트업 프론티어 선발전 도전상 수상
+- 2024 K-Digital Challenge AI 스타트업 창업 경진대회 장려상 수상
+
+<br>
+
+## EXPERIENCE
+
+- **MVI 전환** __ 기존 MVVM + XML (dataBinding, viewBinding) 구조에서 MVI + Jetpack Compose로 전환
+- **모듈 간 의존성 관리 개선** __ 기존 buildSrc를 build-logic으로 전환하고 버전 카탈로그 및 feature 모듈 분리를 도입
+- **인앱 결제 구현** __ Google Play 결제 라이브러리 v7을 활용해 안정적인 인앱 결제 시스템을 구축
+- **CI/CD 자동화** __ Github Actions와 Firebase App Distribution을 연계하여 자동 앱 배포 프로세스를 구축
+- **클라우드 이미지 업로드** __ AWS S3 Presigned URL을 활용해 클라우드로 기기의 저장공간 내 이미지 업로드 기능을 구현
+- **사진 촬영 및 업로드** __ FileProvider와 cacheDirectory를 활용해 카메라로 촬영한 사진을 저장 없이 즉시 업로드
+- **갤러리 사진 선택** __ 버전 분기 처리를 통해 PhotoPicker와 기존 갤러리 파일 탐색기를 모두 지원
+- **비동기 업로드 최적화** __ async와 await을 활용한 병렬 비동기 처리를 도입하여 여러 사진을 동시에 업로드
+
+<br>
+
 ## MODULE & PACKAGE CONVENTION
 
 ![project dot](https://github.com/user-attachments/assets/c776a94b-f4cf-45bb-8b73-d02a6d67f4eb)
@@ -57,46 +95,23 @@
 
 <br>
 
-## TECH STACK
-- `Version`  Kotlin 2.0.0 / JVM 11 / SDK 28~35 / AGP 8.8.0
-- `Architecture`  Clean Architecture, MVI, Multi-Module
-- `UI`  Jetpack Compose
-- `DI`  Hilt
-- `Network`  Retrofit2, OkHttp
-- `Async`  Coroutine, Flow
-- `Build Tools`  Gradle Version Catalog + Custom Convention Plugins
-- `CI/CD`  Github Actions (to Firebase App Distribution)
-- `Analytics` Amplitude
-- `Third Party` Kakao Open API, Firebase Cloud Messaging, Google Play Billing, AWS S3
-- `Permission` Camera, External Storage, Notification, Billing
-
-<br>
-
-## ACHIEVEMENT
-
-- 2024 정주영 창업경진대회 (아산나눔재단) 사업실행팀 선발 및 본상 수상
-- 2024 고려대 KU 창업동아리 아이디어 트랙 선정
-- 2024 동국대 아이디어 사업화 지원사업 선발
-- 2024 KUCT 딥테크 스타트업 프론티어 선발전 도전상 수상
-- 2024 K-Digital Challenge AI 스타트업 창업 경진대회 장려상 수상
-
-<br>
-
-## EXPERIENCE
-
-- **MVI 전환** -- 기존 MVVM + XML (dataBinding, viewBinding) 구조에서 MVI + Jetpack Compose로 전환
-- **모듈 간 의존성 관리 개선** -- 기존 buildSrc를 build-logic으로 전환하고 버전 카탈로그 및 feature 모듈 분리를 도입
-- **인앱 결제 구현** -- Google Play 결제 라이브러리 v7을 활용해 안정적인 인앱 결제 시스템을 구축
-- **CI/CD 자동화** -- Github Actions와 Firebase App Distribution을 연계하여 자동 앱 배포 프로세스를 구축
-- **클라우드 이미지 업로드** -- AWS S3 Presigned URL을 활용해 클라우드로 기기의 저장공간 내 이미지 업로드 기능을 구현
-- **사진 촬영 및 업로드** -- FileProvider와 cacheDirectory를 활용해 카메라로 촬영한 사진을 저장 없이 즉시 업로드
-- **갤러리 사진 선택** -- 버전 분기 처리를 통해 PhotoPicker와 기존 갤러리 파일 탐색기를 모두 지원
-- **비동기 업로드 최적화** -- async와 await을 활용한 병렬 비동기 처리를 도입하여 여러 사진을 동시에 업로드
-
-<br>
-
 ## PRODUCT
-![Group 8245](https://github.com/user-attachments/assets/6616126f-8be8-4011-afc8-d312145cd5e9)
+
+  | 로그인 | 회원가입  | 온보딩 |
+  | :-------------: | :-------------: | :-------------: |
+  |  <img src="https://github.com/user-attachments/assets/b1f42fc3-463c-4101-90fb-5acd65081614" width=200 /> | <img src="https://github.com/user-attachments/assets/4470775b-a7cd-447f-b333-b4840398aa5a" width=200 /> |<img src="https://github.com/user-attachments/assets/0d0a556c-675c-4f78-85a8-c2e1cb5ff56d" width=200 /> |
+
+  | 피드 | 프로필  | 설정 | 생성 진입 |
+  | :-------------: | :-------------: | :-------------: | :-------------: | 
+  |  <img src="https://github.com/user-attachments/assets/2601399d-3c57-446e-97ec-5f4450cf28a7" width=200 /> | <img src="https://github.com/user-attachments/assets/d1a0349f-8579-46d6-9820-5a363a3943b7" width=200 /> |<img src="https://github.com/user-attachments/assets/41649ce9-7b13-4f69-bc7f-65419d19e8e5" width=200 /> |<img src="https://github.com/user-attachments/assets/593a9b43-e6d2-4f27-b48d-7294484666c9" width=200 /> |
+
+  | 생성1 (프롬프르 선택) | 생성2 (비율 선택)  | 생성3 (사진 선택) | 생성3 (부모님 사진 선택) |
+  | :-------------: | :-------------: | :-------------: | :-------------: | 
+  |  <img src="https://github.com/user-attachments/assets/664409cb-df4d-4e60-9507-2a478b2eace8" width=200 /> | <img src="https://github.com/user-attachments/assets/fd5ff57d-62ba-4885-83b0-a4aa474b8269" width=200 /> |<img src="https://github.com/user-attachments/assets/353fa4a6-523e-49b2-a7f0-06a1a9b808c2" width=200 /> |<img src="https://github.com/user-attachments/assets/ad145181-ed49-4d21-82b2-7036fe265460" width=200 /> |
+
+  | 생성 대기 | 생성 완료 (푸시알림)  | 결과 별점 | 결과 오류 제보 |
+  | :-------------: | :-------------: | :-------------: | :-------------: | 
+  |  <img src="https://github.com/user-attachments/assets/8587e6e9-5ebb-4712-819a-35dd629796ec" width=200 /> | <img src="https://github.com/user-attachments/assets/d03b4118-ae33-4cc8-b10d-7c3345b5ab1d" width=200 /> |<img src="https://github.com/user-attachments/assets/912d04f8-284c-4391-b684-ffb264dc782a" width=200 /> |<img src="https://github.com/user-attachments/assets/5300a60a-f8cf-4457-93a8-c2207ee2e8b0" width=200 /> |
 
 <br>
 
