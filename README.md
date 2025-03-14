@@ -99,19 +99,23 @@
 
   | 로그인 | 회원가입  | 온보딩 |
   | :-------------: | :-------------: | :-------------: |
-  |  <img src="https://github.com/user-attachments/assets/b1f42fc3-463c-4101-90fb-5acd65081614" width=180 /> | <img src="https://github.com/user-attachments/assets/4470775b-a7cd-447f-b333-b4840398aa5a" width=180 /> |<img src="https://github.com/user-attachments/assets/0d0a556c-675c-4f78-85a8-c2e1cb5ff56d" width=180 /> |
+  |  <img src="https://github.com/user-attachments/assets/b1f42fc3-463c-4101-90fb-5acd65081614" width=240 /> | <img src="https://github.com/user-attachments/assets/4470775b-a7cd-447f-b333-b4840398aa5a" width=240 /> |<img src="https://github.com/user-attachments/assets/0d0a556c-675c-4f78-85a8-c2e1cb5ff56d" width=240 /> |
 
-  | 피드 | 프로필  | 설정 | 생성 진입 |
-  | :-------------: | :-------------: | :-------------: | :-------------: | 
-  |  <img src="https://github.com/user-attachments/assets/2601399d-3c57-446e-97ec-5f4450cf28a7" width=180 /> | <img src="https://github.com/user-attachments/assets/d1a0349f-8579-46d6-9820-5a363a3943b7" width=180 /> |<img src="https://github.com/user-attachments/assets/41649ce9-7b13-4f69-bc7f-65419d19e8e5" width=180 /> |<img src="https://github.com/user-attachments/assets/593a9b43-e6d2-4f27-b48d-7294484666c9" width=180 /> |
+  | 피드 | 프로필  | 설정 |
+  | :-------------: | :-------------: | :-------------: |
+  |  <img src="https://github.com/user-attachments/assets/2601399d-3c57-446e-97ec-5f4450cf28a7" width=240 /> | <img src="https://github.com/user-attachments/assets/d1a0349f-8579-46d6-9820-5a363a3943b7" width=240 /> |<img src="https://github.com/user-attachments/assets/41649ce9-7b13-4f69-bc7f-65419d19e8e5" width=240 /> |
 
-  | 생성1 (프롬프르 선택) | 생성2 (비율 선택)  | 생성3 (사진 선택) | 생성3 (부모님 사진 선택) |
-  | :-------------: | :-------------: | :-------------: | :-------------: | 
-  |  <img src="https://github.com/user-attachments/assets/664409cb-df4d-4e60-9507-2a478b2eace8" width=180 /> | <img src="https://github.com/user-attachments/assets/fd5ff57d-62ba-4885-83b0-a4aa474b8269" width=180 /> |<img src="https://github.com/user-attachments/assets/353fa4a6-523e-49b2-a7f0-06a1a9b808c2" width=180 /> |<img src="https://github.com/user-attachments/assets/ad145181-ed49-4d21-82b2-7036fe265460" width=180 /> |
+  | 생성 진입  | 생성1 (프롬프트 선택) | 생성2 (비율 선택) |
+  | :-------------: | :-------------: | :-------------: |
+  |  <img src="https://github.com/user-attachments/assets/593a9b43-e6d2-4f27-b48d-7294484666c9" width=240 /> | <img src="https://github.com/user-attachments/assets/664409cb-df4d-4e60-9507-2a478b2eace8" width=240 /> |<img src="https://github.com/user-attachments/assets/fd5ff57d-62ba-4885-83b0-a4aa474b8269" width=240 /> |
 
-  | 생성 대기 | 생성 완료 (푸시알림)  | 결과 별점 | 결과 오류 제보 |
-  | :-------------: | :-------------: | :-------------: | :-------------: | 
-  |  <img src="https://github.com/user-attachments/assets/8587e6e9-5ebb-4712-819a-35dd629796ec" width=180 /> | <img src="https://github.com/user-attachments/assets/d03b4118-ae33-4cc8-b10d-7c3345b5ab1d" width=180 /> |<img src="https://github.com/user-attachments/assets/912d04f8-284c-4391-b684-ffb264dc782a" width=180 /> |<img src="https://github.com/user-attachments/assets/5300a60a-f8cf-4457-93a8-c2207ee2e8b0" width=180 /> |
+  | 생성3 (사진 선택) | 생성3 (부모님 사진 선택) | 생성 대기 |
+  | :-------------: | :-------------: |  :-------------: |
+  |  <img src="https://github.com/user-attachments/assets/353fa4a6-523e-49b2-a7f0-06a1a9b808c2" width=240 /> |<img src="https://github.com/user-attachments/assets/ad145181-ed49-4d21-82b2-7036fe265460" width=240 /> | <img src="https://github.com/user-attachments/assets/8587e6e9-5ebb-4712-819a-35dd629796ec" width=240 /> |
+
+  | 생성 완료 (푸시알림)  | 결과 별점 | 결과 오류 제보 |
+  | :-------------: | :-------------: | :-------------: | 
+  | <img src="https://github.com/user-attachments/assets/d03b4118-ae33-4cc8-b10d-7c3345b5ab1d" width=240 /> |<img src="https://github.com/user-attachments/assets/912d04f8-284c-4391-b684-ffb264dc782a" width=240 /> |<img src="https://github.com/user-attachments/assets/5300a60a-f8cf-4457-93a8-c2207ee2e8b0" width=240 /> |
 
 <br>
 
