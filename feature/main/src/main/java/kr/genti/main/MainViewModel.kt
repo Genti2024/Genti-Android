@@ -13,6 +13,11 @@ import kr.genti.common.manager.AmplitudeManager
 import kr.genti.domain.enums.GenerateStatus
 import kr.genti.domain.enums.PictureRatio
 import kr.genti.domain.repository.GenerateRepository
+import kr.genti.domain.usecase.generate.CheckServerAvailableUseCase
+import kr.genti.domain.usecase.result.ForceGenerateInDebugUseCase
+import kr.genti.domain.usecase.result.GetCurrentGenerateStatusUseCase
+import kr.genti.domain.usecase.result.ResetGenerateStatusUseCase
+import kr.genti.domain.usecase.verify.CheckUserVerifiedUseCase
 import kr.genti.main.navigation.MainTab
 import timber.log.Timber
 import javax.inject.Inject
@@ -21,7 +26,11 @@ import javax.inject.Inject
 class MainViewModel
 @Inject
 constructor(
-    private val generateRepository: GenerateRepository,
+    private val checkUserVerifiedUseCase: CheckUserVerifiedUseCase,
+    private val checkServerAvailableUseCase: CheckServerAvailableUseCase,
+    private val getCurrentGenerateStatusUseCase: GetCurrentGenerateStatusUseCase,
+    private val resetGenerateStatusUseCase: ResetGenerateStatusUseCase,
+    private val forceGenerateInDebugUseCase: ForceGenerateInDebugUseCase
 ) : ViewModel() {
     private val _mainState = MutableStateFlow(MainState())
     val mainState = _mainState.asStateFlow()
@@ -111,7 +120,7 @@ constructor(
     }
 
     private suspend fun getGenerateStatus() {
-        generateRepository.getGenerateStatus()
+        getCurrentGenerateStatusUseCase()
             .onSuccess { result ->
                 _mainState.update {
                     it.copy(
@@ -152,7 +161,7 @@ constructor(
     }
 
     private suspend fun getIsServerAvailable() {
-        generateRepository.getIsServerAvailable()
+        checkServerAvailableUseCase()
             .onSuccess { result ->
                 if (result.status) {
                     getIsUserVerified()
@@ -170,7 +179,7 @@ constructor(
     }
 
     private suspend fun getIsUserVerified() {
-        generateRepository.getIsUserVerified()
+        checkUserVerifiedUseCase()
             .onSuccess { isVerified ->
                 if (isVerified) {
                     AmplitudeManager.trackEvent("click_createpictab")
@@ -186,15 +195,15 @@ constructor(
     }
 
     private suspend fun postToResetGenerateStatus() {
-        generateRepository.getCanceledToReset(
-            mainState.value.generatedImage.requestId.toString()
+        resetGenerateStatusUseCase(
+            generateRequestId = mainState.value.generatedImage.requestId
         ).onFailure {
             _mainSideEffect.emit(MainSideEffect.ShowErrorToast)
         }
     }
 
     private suspend fun patchStatusInDevelop() {
-        generateRepository.patchStatusInDevelop()
+        forceGenerateInDebugUseCase()
             .onSuccess {
                 _mainSideEffect.emit(MainSideEffect.ShowStatusChangedToast)
             }.onFailure {

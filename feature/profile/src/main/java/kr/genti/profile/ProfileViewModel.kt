@@ -17,14 +17,16 @@ import kr.genti.common.manager.ImageManager.saveImageToStorage
 import kr.genti.domain.entity.response.ImageModel
 import kr.genti.domain.enums.GenerateStatus
 import kr.genti.domain.enums.PictureRatio
-import kr.genti.domain.repository.GenerateRepository
+import kr.genti.domain.usecase.profile.GetGeneratedPictureListUseCase
+import kr.genti.domain.usecase.result.GetCurrentGenerateStatusUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel
 @Inject
 constructor(
-    private val generateRepository: GenerateRepository,
+    private val getGeneratedPictureListUseCase: GetGeneratedPictureListUseCase,
+    private val getCurrentGenerateStatusUseCase: GetCurrentGenerateStatusUseCase
 ) : ViewModel() {
     private val _profileState = MutableStateFlow(ProfileState())
     val profileState = _profileState.asStateFlow()
@@ -129,7 +131,7 @@ constructor(
     }
 
     private suspend fun getGenerateStatusFromServer() {
-        generateRepository.getGenerateStatus()
+        getCurrentGenerateStatusUseCase()
             .onSuccess { result ->
                 _profileState.update {
                     it.copy(isGenerating = result.status == GenerateStatus.IN_PROGRESS)
@@ -141,21 +143,20 @@ constructor(
 
     private suspend fun getPictureListFromServer() {
         if (profileState.value.isPagingFinish) return
-        generateRepository.getGeneratedPictureList(
-            page = profileState.value.currentPage + 1,
-            size = 10,
-        ).onSuccess { result ->
-            _profileState.update {
-                it.copy(
-                    totalPage = result.totalPages,
-                    currentPage = it.currentPage + 1,
-                    isPagingFinish = result.totalPages == it.currentPage + 1,
-                    itemList = (it.itemList + result.content).toImmutableList(),
-                )
+        val nextPage = profileState.value.currentPage + 1
+        getGeneratedPictureListUseCase(nextPage)
+            .onSuccess { result ->
+                _profileState.update {
+                    it.copy(
+                        totalPage = result.totalPages,
+                        currentPage = nextPage,
+                        isPagingFinish = result.totalPages == nextPage,
+                        itemList = (it.itemList + result.content).toImmutableList(),
+                    )
+                }
+            }.onFailure {
+                _profileSideEffect.emit(ProfileSideEffect.ShowErrorToast)
             }
-        }.onFailure {
-            _profileSideEffect.emit(ProfileSideEffect.ShowErrorToast)
-        }
     }
 
     private fun updateAmplitude(event: String, property: String) {
