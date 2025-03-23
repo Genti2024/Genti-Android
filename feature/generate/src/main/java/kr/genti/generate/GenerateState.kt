@@ -7,6 +7,8 @@ import kr.genti.domain.entity.response.PromptExampleModel
 import kr.genti.domain.enums.PictureNumber
 import kr.genti.domain.enums.PictureRatio
 import kr.genti.generate.model.GenerateStage
+import kr.genti.generate.model.GenerateType
+import kr.genti.generate.model.GenerateType.Companion.getGenerateType
 
 data class GenerateState(
     val currentStage: GenerateStage = GenerateStage.INIT,
@@ -25,4 +27,7 @@ data class GenerateState(
 ) {
     val progress: Float
         get() = currentStep / if (!isParentPic) 3F else 4F
+
+    val generateType: GenerateType
+        get() = getGenerateType(isParentPic, pictureNumber)
 }

@@ -9,16 +9,16 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kr.genti.domain.repository.InfoRepository
-import kr.genti.domain.repository.UserRepository
+import kr.genti.domain.usecase.setting.DeleteUserUseCase
+import kr.genti.domain.usecase.setting.LogoutUserUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel
 @Inject
 constructor(
-    private val infoRepository: InfoRepository,
-    private val userRepository: UserRepository,
+    private val logoutUserUseCase: LogoutUserUseCase,
+    private val deleteUserUseCase: DeleteUserUseCase
 ) : ViewModel() {
     private val _settingState = MutableStateFlow(SettingState())
     val settingState = _settingState.asStateFlow()
@@ -79,9 +79,8 @@ constructor(
     }
 
     private suspend fun logoutFromServer() {
-        infoRepository.postUserLogout()
+        logoutUserUseCase()
             .onSuccess {
-                userRepository.clearInfo()
                 _settingSideEffect.emit(SettingSideEffect.RestartApp)
             }.onFailure {
                 _settingState.update {
@@ -92,9 +91,8 @@ constructor(
     }
 
     private suspend fun quitFromServer() {
-        infoRepository.deleteUser()
+        deleteUserUseCase()
             .onSuccess {
-                userRepository.clearInfo()
                 _settingSideEffect.emit(SettingSideEffect.RestartApp)
             }.onFailure {
                 _settingState.update {

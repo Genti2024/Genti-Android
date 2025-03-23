@@ -7,29 +7,23 @@ import kr.genti.domain.entity.response.PicturePagedListModel
 import kr.genti.domain.entity.response.ServerAvailableModel
 
 interface GenerateRepository {
-    suspend fun getGenerateStatus(): Result<GenerateStatusModel>
+    suspend fun getGenerateStatus(): GenerateStatusModel
 
-    suspend fun getGeneratedPictureList(
-        page: Int,
-        size: Int,
-    ): Result<PicturePagedListModel>
+    suspend fun postGenerateReport(request: ReportRequestModel): Boolean
 
-    suspend fun postGenerateReport(request: ReportRequestModel): Result<Boolean>
+    suspend fun postGenerateRate(responseId: Int, star: Int): Boolean
 
-    suspend fun postGenerateRate(
-        responseId: Int,
-        star: Int,
-    ): Result<Boolean>
+    suspend fun postVerifyGenerateState(responseId: Int): Boolean
 
-    suspend fun postVerifyGenerateState(responseId: Int): Result<Boolean>
+    suspend fun getCanceledToReset(requestId: String): Boolean
 
-    suspend fun getCanceledToReset(requestId: String): Result<Boolean>
+    suspend fun getGeneratedPictureList(page: Int, size: Int): PicturePagedListModel
 
-    suspend fun getOpenchatData(): Result<OpenchatModel>
+    suspend fun getOpenchatData(): OpenchatModel
 
-    suspend fun getIsUserVerified(): Result<Boolean>
+    suspend fun getIsUserVerified(): Boolean
 
-    suspend fun getIsServerAvailable(): Result<ServerAvailableModel>
+    suspend fun getIsServerAvailable(): ServerAvailableModel
 
-    suspend fun patchStatusInDevelop(): Result<Boolean>
+    suspend fun patchStatusInDevelop(): Boolean
 }

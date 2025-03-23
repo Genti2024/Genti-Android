@@ -15,59 +15,33 @@ class GenerateRepositoryImpl
 constructor(
     private val generateDataSource: GenerateDataSource,
 ) : GenerateRepository {
-    override suspend fun getGenerateStatus(): Result<GenerateStatusModel> =
-        runCatching {
-            generateDataSource.getGenerateStatus().response.toModel()
-        }
+    override suspend fun getGenerateStatus(): GenerateStatusModel =
+        generateDataSource.getGenerateStatus().response.toModel()
 
-    override suspend fun getGeneratedPictureList(
-        page: Int,
-        size: Int,
-    ): Result<PicturePagedListModel> =
-        runCatching {
-            generateDataSource.getGeneratedPictureList(page, size).response.toModel()
-        }
+    override suspend fun postGenerateReport(request: ReportRequestModel): Boolean =
+        generateDataSource.postGenerateReport(request.toDto()).response
 
-    override suspend fun postGenerateReport(request: ReportRequestModel): Result<Boolean> =
-        runCatching {
-            generateDataSource.postGenerateReport(request.toDto()).response
-        }
+    override suspend fun postGenerateRate(responseId: Int, star: Int): Boolean =
+        generateDataSource.postGenerateRate(responseId, star).response
 
-    override suspend fun postGenerateRate(
-        responseId: Int,
-        star: Int,
-    ): Result<Boolean> =
-        runCatching {
-            generateDataSource.postGenerateRate(responseId, star).response
-        }
+    override suspend fun postVerifyGenerateState(responseId: Int): Boolean =
+        generateDataSource.postVerifyGenerateState(responseId).response
 
-    override suspend fun postVerifyGenerateState(responseId: Int): Result<Boolean> =
-        runCatching {
-            generateDataSource.postVerifyGenerateState(responseId).response
-        }
+    override suspend fun getCanceledToReset(requestId: String): Boolean =
+        generateDataSource.getCanceledToReset(requestId).response
 
-    override suspend fun getCanceledToReset(requestId: String): Result<Boolean> =
-        runCatching {
-            generateDataSource.getCanceledToReset(requestId).response
-        }
+    override suspend fun getGeneratedPictureList(page: Int, size: Int): PicturePagedListModel =
+        generateDataSource.getGeneratedPictureList(page, size).response.toModel()
 
-    override suspend fun getOpenchatData(): Result<OpenchatModel> =
-        runCatching {
-            generateDataSource.getOpenchatData().response.toModel()
-        }
+    override suspend fun getOpenchatData(): OpenchatModel =
+        generateDataSource.getOpenchatData().response.toModel()
 
-    override suspend fun getIsUserVerified(): Result<Boolean> =
-        runCatching {
-            generateDataSource.getIsUserVerified().response
-        }
+    override suspend fun getIsUserVerified(): Boolean =
+        generateDataSource.getIsUserVerified().response
 
-    override suspend fun getIsServerAvailable(): Result<ServerAvailableModel> =
-        runCatching {
-            generateDataSource.getIsServerAvailable().response.toModel()
-        }
+    override suspend fun getIsServerAvailable(): ServerAvailableModel =
+        generateDataSource.getIsServerAvailable().response.toModel()
 
-    override suspend fun patchStatusInDevelop(): Result<Boolean> =
-        runCatching {
-            generateDataSource.patchStatusInDevelop().response
-        }
+    override suspend fun patchStatusInDevelop(): Boolean =
+        generateDataSource.patchStatusInDevelop().response
 }

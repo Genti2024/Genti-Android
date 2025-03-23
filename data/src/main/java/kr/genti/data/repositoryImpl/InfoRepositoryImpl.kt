@@ -8,22 +8,16 @@ import kr.genti.domain.repository.InfoRepository
 import javax.inject.Inject
 
 class InfoRepositoryImpl
-    @Inject
-    constructor(
-        private val infoDataSource: InfoDataSource,
-    ) : InfoRepository {
-        override suspend fun postSignupData(request: SignupRequestModel): Result<SignUpUserModel> =
-            runCatching {
-                infoDataSource.postSignupData(request.toDto()).response.toModel()
-            }
+@Inject
+constructor(
+    private val infoDataSource: InfoDataSource,
+) : InfoRepository {
+    override suspend fun postSignupData(request: SignupRequestModel): SignUpUserModel =
+        infoDataSource.postSignupData(request.toDto()).response.toModel()
 
-        override suspend fun postUserLogout(): Result<Boolean> =
-            runCatching {
-                infoDataSource.postUserLogout().response
-            }
+    override suspend fun postUserLogout(): Boolean =
+        infoDataSource.postUserLogout().response
 
-        override suspend fun deleteUser(): Result<Boolean> =
-            runCatching {
-                infoDataSource.deleteUser().response
-            }
-    }
+    override suspend fun deleteUser(): Boolean =
+        infoDataSource.deleteUser().response
+}

@@ -14,15 +14,19 @@ import kr.genti.common.manager.AmplitudeManager.PROPERTY_TYPE
 import kr.genti.common.manager.ImageManager
 import kr.genti.common.manager.ImageManager.checkExternalStoragePermission
 import kr.genti.common.manager.ImageManager.saveImageToStorage
-import kr.genti.domain.entity.request.ReportRequestModel
 import kr.genti.domain.repository.GenerateRepository
+import kr.genti.domain.usecase.result.ReportUnwantedResultUseCase
+import kr.genti.domain.usecase.result.SkipGenerateRatingUseCase
+import kr.genti.domain.usecase.result.SubmitGenerateRatingUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class FinishedViewModel
 @Inject
 constructor(
-    private val generateRepository: GenerateRepository
+    private val reportUnwantedResultUseCase: ReportUnwantedResultUseCase,
+    private val submitGenerateRatingUseCase: SubmitGenerateRatingUseCase,
+    private val skipGenerateRatingUseCase: SkipGenerateRatingUseCase
 ) : ViewModel() {
     private val _finishedState = MutableStateFlow(FinishedState())
     val finishedState = _finishedState.asStateFlow()
@@ -128,11 +132,9 @@ constructor(
 
     private fun handleReportSubmitButtonClick() {
         viewModelScope.launch {
-            generateRepository.postGenerateReport(
-                ReportRequestModel(
-                    finishedState.value.responseId,
-                    finishedState.value.reportText,
-                ),
+            reportUnwantedResultUseCase(
+                imageResponseId = finishedState.value.responseId,
+                reportText = finishedState.value.reportText
             ).onSuccess {
                 _finishedState.update {
                     it.copy(isReportSubmitted = true)
@@ -158,9 +160,9 @@ constructor(
 
     private fun handleRatingSubmitButtonClick() {
         viewModelScope.launch {
-            generateRepository.postGenerateRate(
-                responseId = finishedState.value.responseId.toInt(),
-                star = finishedState.value.rating,
+            submitGenerateRatingUseCase(
+                imageResponseId = finishedState.value.responseId,
+                starRate = finishedState.value.rating
             ).onSuccess {
                 amplitudeTrackEvent("ratingsubmit_picdone")
                 _finishedSideEffect.emit(FinishedSideEffect.NavigateToBack)
@@ -172,13 +174,14 @@ constructor(
 
     private fun handleRatingSkipButtonClick() {
         viewModelScope.launch {
-            generateRepository.postVerifyGenerateState(finishedState.value.responseId.toInt())
-                .onSuccess {
-                    amplitudeTrackEvent("ratingpass_picdone")
-                    _finishedSideEffect.emit(FinishedSideEffect.NavigateToBack)
-                }.onFailure {
-                    _finishedSideEffect.emit(FinishedSideEffect.ShowErrorToast)
-                }
+            skipGenerateRatingUseCase(
+                imageResponseId = finishedState.value.responseId
+            ).onSuccess {
+                amplitudeTrackEvent("ratingpass_picdone")
+                _finishedSideEffect.emit(FinishedSideEffect.NavigateToBack)
+            }.onFailure {
+                _finishedSideEffect.emit(FinishedSideEffect.ShowErrorToast)
+            }
         }
     }
 

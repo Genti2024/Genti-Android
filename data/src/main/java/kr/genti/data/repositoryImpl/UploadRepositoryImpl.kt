@@ -9,19 +9,17 @@ import kr.genti.domain.repository.UploadRepository
 import javax.inject.Inject
 
 class UploadRepositoryImpl
-    @Inject
-    constructor(
-        @ApplicationContext private val context: Context,
-        private val uploadService: UploadService,
-    ) : UploadRepository {
-        override suspend fun uploadImage(
-            preSignedURL: String,
-            imageUri: String,
-        ): Result<Unit> =
-            runCatching {
-                uploadService.putS3Image(
-                    preSignedURL,
-                    ContentUriRequestBody(context, Uri.parse(imageUri)),
-                )
-            }
-    }
+@Inject
+constructor(
+    @ApplicationContext private val context: Context,
+    private val uploadService: UploadService,
+) : UploadRepository {
+    override suspend fun uploadImage(
+        preSignedURL: String,
+        imageUri: String,
+    ): Unit =
+        uploadService.putS3Image(
+            preSignedURL,
+            ContentUriRequestBody(context, Uri.parse(imageUri)),
+        )
+}

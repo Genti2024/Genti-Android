@@ -11,14 +11,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.genti.common.manager.AmplitudeManager
-import kr.genti.domain.repository.FeedRepository
+import kr.genti.domain.usecase.feed.GetFeedItemListUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class FeedViewModel
 @Inject
 constructor(
-    private val feedRepository: FeedRepository,
+    private val getFeedItemListUseCase: GetFeedItemListUseCase
 ) : ViewModel() {
     private val _feedState = MutableStateFlow(FeedState())
     val feedState = _feedState.asStateFlow()
@@ -89,7 +89,7 @@ constructor(
     }
 
     private suspend fun getExamplePromptsFromServer() {
-        feedRepository.getExampleItems()
+        getFeedItemListUseCase()
             .onSuccess { list ->
                 _feedState.update {
                     it.copy(itemList = list.toImmutableList())

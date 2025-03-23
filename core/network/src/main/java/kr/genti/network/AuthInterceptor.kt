@@ -7,9 +7,9 @@ import android.widget.Toast
 import com.jakewharton.processphoenix.ProcessPhoenix
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.runBlocking
-import kr.genti.domain.entity.request.ReissueRequestModel
 import kr.genti.domain.repository.AuthRepository
 import kr.genti.domain.repository.UserRepository
+import kr.genti.domain.usecase.auth.ReissueOldTokensUseCase
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -19,9 +19,9 @@ import javax.inject.Inject
 class AuthInterceptor
 @Inject
 constructor(
-    private val authRepository: AuthRepository,
-    private val userRepository: UserRepository,
     @ApplicationContext private val context: Context,
+    private val userRepository: UserRepository,
+    private val reissueOldTokensUseCase: ReissueOldTokensUseCase
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -52,17 +52,8 @@ constructor(
     private fun reissueTokenAndProceed(chain: Interceptor.Chain, authRequest: Request): Response? {
         return try {
             runBlocking {
-                authRepository.postReissueTokens(
-                    ReissueRequestModel(
-                        userRepository.getAccessToken(),
-                        userRepository.getRefreshToken()
-                    )
-                )
-            }.onSuccess { data ->
-                userRepository.setTokens(
-                    data.accessToken,
-                    data.refreshToken
-                )
+                reissueOldTokensUseCase()
+            }.onSuccess {
                 chain.call().cancel()
                 val newRequest = authRequest.newBuilder()
                     .removeHeader(AUTHORIZATION)
