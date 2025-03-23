@@ -27,20 +27,14 @@ constructor(
     override suspend fun getThreeImageBucket(request: List<ImageBucketRequestModel>): List<ImageBucketModel> =
         createDataSource.getThreeImageBucket(request.map { it.toDto() }).response.map { it.toModel() }
 
-    override suspend fun postToCreate(request: CreateRequestModel): Result<Boolean> =
-        runCatching {
-            createDataSource.postToCreate(request.toDto()).response
-        }
+    override suspend fun postToCreate(request: CreateRequestModel): Boolean =
+        createDataSource.postToCreate(request.toDto()).response
 
-    override suspend fun postToCreateOne(request: CreateRequestModel): Result<Boolean> =
-        runCatching {
-            createDataSource.postToCreateOne(request.toDto()).response
-        }
+    override suspend fun postToCreateOne(request: CreateRequestModel): Boolean =
+        createDataSource.postToCreateOne(request.toDto()).response
 
-    override suspend fun postToCreateTwo(request: CreateTwoRequestModel): Result<Boolean> =
-        runCatching {
-            createDataSource.postToCreateTwo(request.toDto()).response
-        }
+    override suspend fun postToCreateTwo(request: CreateTwoRequestModel): Boolean =
+        createDataSource.postToCreateTwo(request.toDto()).response
 
     override suspend fun postToVerify(request: KeyRequestModel): Boolean =
         createDataSource.postToVerify(request.toDto()).response

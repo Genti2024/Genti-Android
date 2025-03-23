@@ -20,8 +20,6 @@ import kr.genti.common.manager.AmplitudeManager.EVENT_CLICK_BTN
 import kr.genti.common.manager.AmplitudeManager.PROPERTY_BTN
 import kr.genti.common.manager.AmplitudeManager.PROPERTY_PAGE
 import kr.genti.common.manager.ImageManager.getImageInfo
-import kr.genti.domain.entity.request.CreateRequestModel
-import kr.genti.domain.entity.request.CreateTwoRequestModel
 import kr.genti.domain.entity.request.KeyRequestModel
 import kr.genti.domain.entity.response.ImageBucketModel
 import kr.genti.domain.entity.response.ImageFileModel
@@ -31,6 +29,7 @@ import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.usecase.generate.CheckPurchaseValidUseCase
 import kr.genti.domain.usecase.generate.GetPromptExampleListUseCase
 import kr.genti.domain.usecase.generate.GetThreeImageBucketUseCase
+import kr.genti.domain.usecase.generate.SendGenerateRequestUseCase
 import kr.genti.domain.usecase.upload.UploadImageToBucketUseCase
 import kr.genti.generate.model.GenerateStage
 import kr.genti.generate.model.GenerateType
@@ -44,6 +43,7 @@ constructor(
     private val getPromptExampleListUseCase: GetPromptExampleListUseCase,
     private val getThreeImageBucketUseCase: GetThreeImageBucketUseCase,
     private val uploadImageToBucketUseCase: UploadImageToBucketUseCase,
+    private val sendGenerateRequestUseCase: SendGenerateRequestUseCase,
     private val checkPurchaseValidUseCase: CheckPurchaseValidUseCase
 ) : ViewModel() {
     private val _generateState = MutableStateFlow(GenerateState())
@@ -112,7 +112,7 @@ constructor(
 //                    changeBillingLoadingState(true)
 //                    _generateSideEffect.emit(GenerateSideEffect.StartPurchaseProduct)
 //                } else {
-                requestGenerate()
+                uploadImagesAndRequestGenerate()
 //                }
             }
         }
@@ -176,7 +176,7 @@ constructor(
             changeBillingLoadingState(false)
             if (isPurchaseValid) {
                 amplitudeTrackPurchaseValid()
-                requestGenerate()
+                uploadImagesAndRequestGenerate()
             }
         }
     }
@@ -211,14 +211,16 @@ constructor(
 
     /** 이미지 생성 요청 관련*/
 
-    private suspend fun requestGenerate() {
+    private suspend fun uploadImagesAndRequestGenerate() {
         changeRequestLoadingState(true)
         runCatching {
-            if (generateState.value.pictureNumber != PictureNumber.TWO) {
-                postThreeImageToGenerate()
-            } else {
-                postSixImageToGenerate()
-            }
+            val keyList = getUploadedKeyList()
+            sendGenerateRequestUseCase(
+                prompt = generateState.value.prompt,
+                pictureRatio = generateState.value.pictureRatio,
+                isParentPic = generateState.value.isParentPic,
+                imageKeyList = keyList,
+            ).getOrThrow()
         }.onSuccess {
             amplitudeTrackFinishCreate()
             _generateSideEffect.emit(GenerateSideEffect.NavigateToWaiting(generateState.value.isParentPic))
@@ -228,27 +230,17 @@ constructor(
         changeRequestLoadingState(false)
     }
 
-    private suspend fun postThreeImageToGenerate() {
-        val keyList = uploadThreeImage(generateState.value.imageList)
-        val request = CreateRequestModel(
-            generateState.value.prompt, keyList, generateState.value.pictureRatio,
-        )
-        if (!generateState.value.isParentPic) {
-            createRepository.postToCreate(request).getOrThrow()
-        } else {
-            createRepository.postToCreateOne(request).getOrThrow()
-        }
-    }
-
-    private suspend fun postSixImageToGenerate() = coroutineScope {
-        val keyList = listOf(
+    private suspend fun getUploadedKeyList(): List<KeyRequestModel> = coroutineScope {
+        listOf(
             async { uploadThreeImage(generateState.value.imageList) },
-            async { uploadThreeImage(generateState.value.extraImageList) }
-        ).awaitAll()
-        val request = CreateTwoRequestModel(
-            generateState.value.prompt, keyList[0], keyList[1], generateState.value.pictureRatio
-        )
-        createRepository.postToCreateTwo(request).getOrThrow()
+            async {
+                if (generateState.value.extraImageList.isNotEmpty()) {
+                    uploadThreeImage(generateState.value.extraImageList)
+                } else {
+                    emptyList()
+                }
+            }
+        ).awaitAll().flatten()
     }
 
     /** 이미지 3장 AWS S3 업로드 관련*/

@@ -13,11 +13,11 @@ interface CreateRepository {
 
     suspend fun getThreeImageBucket(request: List<ImageBucketRequestModel>): List<ImageBucketModel>
 
-    suspend fun postToCreate(request: CreateRequestModel): Result<Boolean>
+    suspend fun postToCreate(request: CreateRequestModel): Boolean
 
-    suspend fun postToCreateOne(request: CreateRequestModel): Result<Boolean>
+    suspend fun postToCreateOne(request: CreateRequestModel): Boolean
 
-    suspend fun postToCreateTwo(request: CreateTwoRequestModel): Result<Boolean>
+    suspend fun postToCreateTwo(request: CreateTwoRequestModel): Boolean
 
     suspend fun postToVerify(request: KeyRequestModel): Boolean
 
