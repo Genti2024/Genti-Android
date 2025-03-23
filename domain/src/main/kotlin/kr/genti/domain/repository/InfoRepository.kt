@@ -6,7 +6,7 @@ import kr.genti.domain.entity.response.SignUpUserModel
 interface InfoRepository {
     suspend fun postSignupData(request: SignupRequestModel): SignUpUserModel
 
-    suspend fun postUserLogout(): Result<Boolean>
+    suspend fun postUserLogout(): Boolean
 
-    suspend fun deleteUser(): Result<Boolean>
+    suspend fun deleteUser(): Boolean
 }

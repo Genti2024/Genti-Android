@@ -15,13 +15,9 @@ constructor(
     override suspend fun postSignupData(request: SignupRequestModel): SignUpUserModel =
         infoDataSource.postSignupData(request.toDto()).response.toModel()
 
-    override suspend fun postUserLogout(): Result<Boolean> =
-        runCatching {
-            infoDataSource.postUserLogout().response
-        }
+    override suspend fun postUserLogout(): Boolean =
+        infoDataSource.postUserLogout().response
 
-    override suspend fun deleteUser(): Result<Boolean> =
-        runCatching {
-            infoDataSource.deleteUser().response
-        }
+    override suspend fun deleteUser(): Boolean =
+        infoDataSource.deleteUser().response
 }
