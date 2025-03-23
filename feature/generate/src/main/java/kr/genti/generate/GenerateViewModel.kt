@@ -32,7 +32,7 @@ import kr.genti.domain.enums.PictureNumber
 import kr.genti.domain.enums.PictureRatio
 import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.repository.UploadRepository
-import kr.genti.domain.usecase.upload.UploadSingleImageToBucketUseCase
+import kr.genti.domain.usecase.upload.UploadImageToBucketUseCase
 import kr.genti.generate.model.GenerateStage
 import kr.genti.generate.model.GenerateType
 import kr.genti.generate.model.GenerateType.Companion.getGenerateType
@@ -44,7 +44,7 @@ class GenerateViewModel
 constructor(
     private val createRepository: CreateRepository,
     private val uploadRepository: UploadRepository,
-    private val uploadImageToBucketUseCase: UploadSingleImageToBucketUseCase
+    private val uploadImageToBucketUseCase: UploadImageToBucketUseCase
 ) : ViewModel() {
     private val _generateState = MutableStateFlow(GenerateState())
     val generateState = _generateState.asStateFlow()

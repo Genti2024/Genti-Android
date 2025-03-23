@@ -17,9 +17,9 @@ import kr.genti.common.manager.AmplitudeManager.updateBooleanProperties
 import kr.genti.common.manager.ImageManager
 import kr.genti.core.common.BuildConfig
 import kr.genti.domain.entity.response.ImageBucketModel
-import kr.genti.domain.usecase.upload.UploadSingleImageToBucketUseCase
+import kr.genti.domain.usecase.upload.UploadImageToBucketUseCase
 import kr.genti.domain.usecase.verify.GetVerifyImageBucketUseCase
-import kr.genti.domain.usecase.verify.PostVerifyImageUploadedUseCase
+import kr.genti.domain.usecase.verify.CheckVerifyImageUploadedUseCase
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,8 +27,8 @@ class VerifyViewModel
 @Inject
 constructor(
     private val getVerifyImageBucketUseCase: GetVerifyImageBucketUseCase,
-    private val uploadImageToBucketUseCase: UploadSingleImageToBucketUseCase,
-    private val postVerifyImageUploadedUseCase: PostVerifyImageUploadedUseCase
+    private val uploadImageToBucketUseCase: UploadImageToBucketUseCase,
+    private val checkVerifyImageUploadedUseCase: CheckVerifyImageUploadedUseCase
 ) : ViewModel() {
 
     private val _verifyState = MutableStateFlow(VerifyState())
@@ -135,7 +135,7 @@ constructor(
     }
 
     private suspend fun postToVerifyImage(s3Key: String) {
-        postVerifyImageUploadedUseCase(
+        checkVerifyImageUploadedUseCase(
             bucketKey = s3Key
         ).getOrThrow()
     }

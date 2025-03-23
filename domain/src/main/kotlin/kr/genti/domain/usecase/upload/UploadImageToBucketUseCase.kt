@@ -3,7 +3,7 @@ package kr.genti.domain.usecase.upload
 import kr.genti.domain.repository.UploadRepository
 import javax.inject.Inject
 
-class UploadSingleImageToBucketUseCase @Inject constructor(
+class UploadImageToBucketUseCase @Inject constructor(
     private val uploadRepository: UploadRepository,
 ) {
     suspend operator fun invoke(

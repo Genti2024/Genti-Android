@@ -9,7 +9,7 @@ import kr.genti.domain.entity.response.PromptExampleModel
 import kr.genti.domain.entity.response.ImageBucketModel
 
 interface CreateRepository {
-    suspend fun getSingleImageBucket(request: ImageBucketRequestModel): Result<ImageBucketModel>
+    suspend fun getSingleImageBucket(request: ImageBucketRequestModel): ImageBucketModel
 
     suspend fun getThreeImageBucket(request: List<ImageBucketRequestModel>): Result<List<ImageBucketModel>>
 
@@ -19,7 +19,7 @@ interface CreateRepository {
 
     suspend fun postToCreateTwo(request: CreateTwoRequestModel): Result<Boolean>
 
-    suspend fun postToVerify(request: KeyRequestModel): Result<Boolean>
+    suspend fun postToVerify(request: KeyRequestModel): Boolean
 
     suspend fun getPromptExample(type: String): Result<List<PromptExampleModel>>
 
