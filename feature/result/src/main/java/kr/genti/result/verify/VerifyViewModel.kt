@@ -58,19 +58,7 @@ constructor(
 
     private fun handleCameraPermissionGrant() {
         viewModelScope.launch {
-            ImageManager.getTempImageFile()
-                .onSuccess { file ->
-                    _verifyState.update {
-                        it.copy(
-                            imageUri = file.uri,
-                            imageName = file.fileName,
-                            isPhotoTaken = false
-                        )
-                    }
-                    _verifySideEffect.emit(VerifySideEffect.StartCameraLauncher)
-                }.onFailure {
-                    _verifySideEffect.emit(VerifySideEffect.ShowErrorToast)
-                }
+            makeTempFileAndStartCamera()
         }
     }
 
@@ -106,6 +94,22 @@ constructor(
         _verifyState.update {
             it.copy(isLoading = isLoading)
         }
+    }
+
+    private suspend fun makeTempFileAndStartCamera() {
+        ImageManager.getTempImageFile()
+            .onSuccess { file ->
+                _verifyState.update {
+                    it.copy(
+                        imageUri = file.uri,
+                        imageName = file.fileName,
+                        isPhotoTaken = false
+                    )
+                }
+                _verifySideEffect.emit(VerifySideEffect.StartCameraLauncher)
+            }.onFailure {
+                _verifySideEffect.emit(VerifySideEffect.ShowErrorToast)
+            }
     }
 
     private suspend fun sendVerifyImageToServer() {

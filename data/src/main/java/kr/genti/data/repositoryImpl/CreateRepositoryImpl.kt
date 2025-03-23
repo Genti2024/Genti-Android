@@ -24,10 +24,8 @@ constructor(
     override suspend fun getSingleImageBucket(request: ImageBucketRequestModel): ImageBucketModel =
         createDataSource.getSingleImageBucket(request.toDto()).response.toModel()
 
-    override suspend fun getThreeImageBucket(request: List<ImageBucketRequestModel>): Result<List<ImageBucketModel>> =
-        runCatching {
-            createDataSource.getThreeImageBucket(request.map { it.toDto() }).response.map { it.toModel() }
-        }
+    override suspend fun getThreeImageBucket(request: List<ImageBucketRequestModel>): List<ImageBucketModel> =
+        createDataSource.getThreeImageBucket(request.map { it.toDto() }).response.map { it.toModel() }
 
     override suspend fun postToCreate(request: CreateRequestModel): Result<Boolean> =
         runCatching {
@@ -47,13 +45,9 @@ constructor(
     override suspend fun postToVerify(request: KeyRequestModel): Boolean =
         createDataSource.postToVerify(request.toDto()).response
 
-    override suspend fun getPromptExample(type: String): Result<List<PromptExampleModel>> =
-        runCatching {
-            createDataSource.getPromptExample(type).response.map { it.toModel() }
-        }
+    override suspend fun getPromptExample(type: String): List<PromptExampleModel> =
+        createDataSource.getPromptExample(type).response.map { it.toModel() }
 
-    override suspend fun postToValidatePurchase(request: PurchaseValidRequestModel): Result<Boolean> =
-        runCatching {
-            createDataSource.postToValidatePurchase(request.toDto()).response
-        }
+    override suspend fun postToValidatePurchase(request: PurchaseValidRequestModel): Boolean =
+        createDataSource.postToValidatePurchase(request.toDto()).response
 }

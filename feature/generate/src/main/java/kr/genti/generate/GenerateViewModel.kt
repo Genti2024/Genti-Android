@@ -22,20 +22,18 @@ import kr.genti.common.manager.AmplitudeManager.PROPERTY_PAGE
 import kr.genti.common.manager.ImageManager.getImageInfo
 import kr.genti.domain.entity.request.CreateRequestModel
 import kr.genti.domain.entity.request.CreateTwoRequestModel
-import kr.genti.domain.entity.request.ImageBucketRequestModel
 import kr.genti.domain.entity.request.KeyRequestModel
-import kr.genti.domain.entity.request.PurchaseValidRequestModel
 import kr.genti.domain.entity.response.ImageBucketModel
 import kr.genti.domain.entity.response.ImageFileModel
-import kr.genti.domain.enums.FileType
 import kr.genti.domain.enums.PictureNumber
 import kr.genti.domain.enums.PictureRatio
 import kr.genti.domain.repository.CreateRepository
-import kr.genti.domain.repository.UploadRepository
+import kr.genti.domain.usecase.generate.CheckPurchaseValidUseCase
+import kr.genti.domain.usecase.generate.GetPromptExampleListUseCase
+import kr.genti.domain.usecase.generate.GetThreeImageBucketUseCase
 import kr.genti.domain.usecase.upload.UploadImageToBucketUseCase
 import kr.genti.generate.model.GenerateStage
 import kr.genti.generate.model.GenerateType
-import kr.genti.generate.model.GenerateType.Companion.getGenerateType
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,8 +41,10 @@ class GenerateViewModel
 @Inject
 constructor(
     private val createRepository: CreateRepository,
-    private val uploadRepository: UploadRepository,
-    private val uploadImageToBucketUseCase: UploadImageToBucketUseCase
+    private val getPromptExampleListUseCase: GetPromptExampleListUseCase,
+    private val getThreeImageBucketUseCase: GetThreeImageBucketUseCase,
+    private val uploadImageToBucketUseCase: UploadImageToBucketUseCase,
+    private val checkPurchaseValidUseCase: CheckPurchaseValidUseCase
 ) : ViewModel() {
     private val _generateState = MutableStateFlow(GenerateState())
     val generateState = _generateState.asStateFlow()
@@ -200,11 +200,9 @@ constructor(
     /** 프롬프트뷰 예시 이미지 리스트 관련*/
 
     private suspend fun getExamplePrompt() {
-        val generateType =
-            getGenerateType(generateState.value.isParentPic, generateState.value.pictureNumber)
-        createRepository.getPromptExample(generateType.name)
+        getPromptExampleListUseCase(generateState.value.generateType.name)
             .onSuccess { result ->
-                amplitudeTrackViewExample(generateType)
+                amplitudeTrackViewExample(generateState.value.generateType)
                 _generateState.update {
                     it.copy(exampleList = result.toImmutableList())
                 }
@@ -262,10 +260,8 @@ constructor(
     }
 
     private suspend fun getThreeImageBucket(selectedImageList: List<ImageFileModel>): List<ImageBucketModel> =
-        createRepository.getThreeImageBucket(
-            selectedImageList.map { image ->
-                ImageBucketRequestModel(FileType.USER_UPLOADED_IMAGE, image.name)
-            }
+        getThreeImageBucketUseCase(
+            selectedImageList = selectedImageList
         ).getOrThrow()
 
     private suspend fun uploadThreeImageToBucket(
@@ -284,16 +280,11 @@ constructor(
 
     /** 결제 관련 */
     private suspend fun checkPurchaseValidToServer(purchase: Purchase): Boolean =
-        createRepository.postToValidatePurchase(
-            PurchaseValidRequestModel(
-                purchase.packageName,
-                purchase.products.first(),
-                purchase.purchaseToken
-            )
-        ).fold(
-            onSuccess = { isValidSuccess -> isValidSuccess },
-            onFailure = { false }
-        )
+        checkPurchaseValidUseCase(
+            packageName = purchase.packageName,
+            productId = purchase.products.first(),
+            purchaseToken = purchase.purchaseToken
+        ).isSuccess
 
     /** 앰플리튜드 관련*/
 

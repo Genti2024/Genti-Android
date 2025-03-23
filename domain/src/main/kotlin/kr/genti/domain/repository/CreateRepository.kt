@@ -11,7 +11,7 @@ import kr.genti.domain.entity.response.ImageBucketModel
 interface CreateRepository {
     suspend fun getSingleImageBucket(request: ImageBucketRequestModel): ImageBucketModel
 
-    suspend fun getThreeImageBucket(request: List<ImageBucketRequestModel>): Result<List<ImageBucketModel>>
+    suspend fun getThreeImageBucket(request: List<ImageBucketRequestModel>): List<ImageBucketModel>
 
     suspend fun postToCreate(request: CreateRequestModel): Result<Boolean>
 
@@ -21,7 +21,7 @@ interface CreateRepository {
 
     suspend fun postToVerify(request: KeyRequestModel): Boolean
 
-    suspend fun getPromptExample(type: String): Result<List<PromptExampleModel>>
+    suspend fun getPromptExample(type: String): List<PromptExampleModel>
 
-    suspend fun postToValidatePurchase(request: PurchaseValidRequestModel): Result<Boolean>
+    suspend fun postToValidatePurchase(request: PurchaseValidRequestModel): Boolean
 }
