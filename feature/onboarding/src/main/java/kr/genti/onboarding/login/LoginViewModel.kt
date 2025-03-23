@@ -14,9 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.genti.common.manager.AmplitudeManager
-import kr.genti.domain.entity.request.AuthRequestModel
-import kr.genti.domain.repository.AuthRepository
-import kr.genti.domain.repository.UserRepository
+import kr.genti.domain.usecase.auth.GetNewTokensFromOauthUseCase
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -24,8 +22,7 @@ import javax.inject.Inject
 class LoginViewModel
 @Inject
 constructor(
-    private val authRepository: AuthRepository,
-    private val userRepository: UserRepository,
+    private val getNewTokensFromOauthUseCase: GetNewTokensFromOauthUseCase
 ) : ViewModel() {
 
     private val _loginState = MutableStateFlow(LoginState())
@@ -120,14 +117,11 @@ constructor(
 
     private fun changeTokenFromServer(accessToken: String, fcmToken: String) {
         viewModelScope.launch {
-            authRepository.postOauthDataToGetToken(
-                AuthRequestModel(accessToken, fcmToken)
-            ).onSuccess {
-                with(userRepository) {
-                    setTokens(it.accessToken, it.refreshToken)
-                    setUserRole(it.userRoleString)
-                }
-                if (it.userRoleString == ALREADY_ASSIGNED) {
+            getNewTokensFromOauthUseCase(
+                newAccessToken = accessToken,
+                fcmToken = fcmToken
+            ).onSuccess { isAssigned ->
+                if (isAssigned) {
                     emitSideEffect(LoginSideEffect.NavigateToFeed)
                 } else {
                     AmplitudeManager.trackEvent("sign_in")
@@ -137,9 +131,5 @@ constructor(
                 emitSideEffect(LoginSideEffect.ShowErrorToast)
             }
         }
-    }
-
-    companion object {
-        const val ALREADY_ASSIGNED = "USER"
     }
 }

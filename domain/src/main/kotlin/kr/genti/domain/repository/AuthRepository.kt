@@ -6,7 +6,7 @@ import kr.genti.domain.entity.response.AuthTokenModel
 import kr.genti.domain.entity.response.ReissueTokenModel
 
 interface AuthRepository {
-    suspend fun postReissueTokens(request: ReissueRequestModel): Result<ReissueTokenModel>
+    suspend fun postReissueTokens(request: ReissueRequestModel): ReissueTokenModel
 
-    suspend fun postOauthDataToGetToken(request: AuthRequestModel): Result<AuthTokenModel>
+    suspend fun postOauthDataToGetToken(request: AuthRequestModel): AuthTokenModel
 }

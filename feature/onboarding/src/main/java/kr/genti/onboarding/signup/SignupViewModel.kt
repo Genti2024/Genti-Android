@@ -10,19 +10,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.genti.common.manager.AmplitudeManager
-import kr.genti.domain.entity.request.SignupRequestModel
 import kr.genti.domain.entity.response.SignUpUserModel
 import kr.genti.domain.enums.Gender
-import kr.genti.domain.repository.InfoRepository
-import kr.genti.domain.repository.UserRepository
+import kr.genti.domain.usecase.auth.SignUpUserUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel
 @Inject
 constructor(
-    private val infoRepository: InfoRepository,
-    private val userRepository: UserRepository,
+    private val signUpUserUseCase: SignUpUserUseCase
 ) : ViewModel() {
     private val _signupState = MutableStateFlow(SignupState())
     val signupState = _signupState.asStateFlow()
@@ -81,14 +78,10 @@ constructor(
 
     private fun postSignupDataToServer() {
         viewModelScope.launch {
-            infoRepository.postSignupData(
-                SignupRequestModel(
-                    signupState.value.selectedYear,
-                    signupState.value.selectedGender.toString(),
-                    null
-                ),
+            signUpUserUseCase(
+                birthYear = signupState.value.selectedYear,
+                gender = signupState.value.selectedGender,
             ).onSuccess { userData ->
-                userRepository.setUserRole(ROLE_USER)
                 setAmplitudeUserProperty(userData)
                 _signupSideEffect.emit(SignupSideEffect.NavigateToTutorial)
             }.onFailure {

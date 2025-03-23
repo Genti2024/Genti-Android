@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.genti.common.manager.AppUpdateManager
-import kr.genti.domain.entity.request.ReissueRequestModel
 import kr.genti.domain.repository.AuthRepository
 import kr.genti.domain.repository.UserRepository
+import kr.genti.domain.usecase.auth.ReissueOldTokensUseCase
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,7 +20,7 @@ class SplashViewModel
 @Inject
 constructor(
     private val userRepository: UserRepository,
-    private val authRepository: AuthRepository,
+    private val reissueOldTokensUseCase: ReissueOldTokensUseCase
 ) : ViewModel() {
     private val _splashState = MutableStateFlow(SplashState())
     val splashState = _splashState.asStateFlow()
@@ -67,26 +67,10 @@ constructor(
 
     private suspend fun getIsUserSigned(): Boolean =
         if (userRepository.getUserRole() == ROLE_USER) {
-            reissueToken()
+            reissueOldTokensUseCase().isSuccess
         } else {
             false
         }
-
-    private suspend fun reissueToken(): Boolean =
-        authRepository.postReissueTokens(
-            ReissueRequestModel(
-                userRepository.getAccessToken(),
-                userRepository.getRefreshToken()
-            )
-        ).fold(
-            onSuccess = { tokens ->
-                userRepository.setTokens(tokens.accessToken, tokens.refreshToken)
-                true
-            },
-            onFailure = {
-                false
-            }
-        )
 
     private suspend fun checkAllFinishedAndNavigate() {
         if (splashState.value.isLottieFinished && splashState.value.isCheckFinished) {
