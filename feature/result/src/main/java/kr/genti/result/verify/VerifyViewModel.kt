@@ -16,20 +16,19 @@ import kr.genti.common.manager.AmplitudeManager.PROPERTY_PAGE
 import kr.genti.common.manager.AmplitudeManager.updateBooleanProperties
 import kr.genti.common.manager.ImageManager
 import kr.genti.core.common.BuildConfig
-import kr.genti.domain.entity.request.KeyRequestModel
-import kr.genti.domain.entity.request.ImageBucketRequestModel
 import kr.genti.domain.entity.response.ImageBucketModel
-import kr.genti.domain.enums.FileType
-import kr.genti.domain.repository.CreateRepository
-import kr.genti.domain.repository.UploadRepository
+import kr.genti.domain.usecase.upload.UploadSingleImageToBucketUseCase
+import kr.genti.domain.usecase.verify.GetVerifyImageBucketUseCase
+import kr.genti.domain.usecase.verify.PostVerifyImageUploadedUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class VerifyViewModel
 @Inject
 constructor(
-    private val createRepository: CreateRepository,
-    private val uploadRepository: UploadRepository,
+    private val getVerifyImageBucketUseCase: GetVerifyImageBucketUseCase,
+    private val uploadImageToBucketUseCase: UploadSingleImageToBucketUseCase,
+    private val postVerifyImageUploadedUseCase: PostVerifyImageUploadedUseCase
 ) : ViewModel() {
 
     private val _verifyState = MutableStateFlow(VerifyState())
@@ -113,7 +112,7 @@ constructor(
         runCatching {
             val imageBucket = getSingleImageBucket()
             uploadImageToBucket(imageBucket.presignedUrl)
-            postToVerifyImage(KeyRequestModel(imageBucket.s3Key))
+            postToVerifyImage(imageBucket.s3Key)
         }.onSuccess {
             updateBooleanProperties("user_verified", true)
             _verifySideEffect.emit(VerifySideEffect.VerifySuccess)
@@ -123,19 +122,22 @@ constructor(
     }
 
     private suspend fun getSingleImageBucket(): ImageBucketModel =
-        createRepository.getSingleImageBucket(
-            ImageBucketRequestModel(
-                if (BuildConfig.DEBUG) FileType.DEV_USER_VERIFICATION_IMAGE else FileType.USER_VERIFICATION_IMAGE,
-                verifyState.value.imageName.toString(),
-            ),
+        getVerifyImageBucketUseCase(
+            imageName = verifyState.value.imageName,
+            isDebugMode = BuildConfig.DEBUG
         ).getOrThrow()
 
-    private suspend fun uploadImageToBucket(s3Url: String) {
-        uploadRepository.uploadImage(s3Url, verifyState.value.imageUri.toString()).getOrThrow()
+    private suspend fun uploadImageToBucket(presignedUrl: String) {
+        uploadImageToBucketUseCase(
+            bucketUrl = presignedUrl,
+            imageUrl = verifyState.value.imageUri.toString()
+        ).getOrThrow()
     }
 
-    private suspend fun postToVerifyImage(imageS3Key: KeyRequestModel) {
-        createRepository.postToVerify(imageS3Key).getOrThrow()
+    private suspend fun postToVerifyImage(s3Key: String) {
+        postVerifyImageUploadedUseCase(
+            bucketKey = s3Key
+        ).getOrThrow()
     }
 
     private fun trackAmplitude(btnName: String) {

@@ -32,6 +32,7 @@ import kr.genti.domain.enums.PictureNumber
 import kr.genti.domain.enums.PictureRatio
 import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.repository.UploadRepository
+import kr.genti.domain.usecase.upload.UploadSingleImageToBucketUseCase
 import kr.genti.generate.model.GenerateStage
 import kr.genti.generate.model.GenerateType
 import kr.genti.generate.model.GenerateType.Companion.getGenerateType
@@ -43,6 +44,7 @@ class GenerateViewModel
 constructor(
     private val createRepository: CreateRepository,
     private val uploadRepository: UploadRepository,
+    private val uploadImageToBucketUseCase: UploadSingleImageToBucketUseCase
 ) : ViewModel() {
     private val _generateState = MutableStateFlow(GenerateState())
     val generateState = _generateState.asStateFlow()
@@ -272,8 +274,9 @@ constructor(
     ) = coroutineScope {
         imageBucketList.mapIndexed { index, imageBucket ->
             async {
-                uploadRepository.uploadImage(
-                    imageBucket.presignedUrl, selectedImageList[index].url
+                uploadImageToBucketUseCase(
+                    bucketUrl = imageBucket.presignedUrl,
+                    imageUrl = selectedImageList[index].url
                 ).getOrThrow()
             }
         }.awaitAll()
