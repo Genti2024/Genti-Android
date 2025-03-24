@@ -6,10 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.runtime.Composable
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
@@ -21,14 +17,10 @@ object PermissionManager {
         onPermissionNotGranted: () -> Unit,
         onPermissionAlreadyDenied: (Intent) -> Unit
     ) {
-        if (isPermissionGranted(permission, context)) {
-            onPermissionGranted()
-        } else {
-            if (!isPermissionAlreadyRejected(permission, context)) {
-                onPermissionNotGranted()
-            } else {
-                onPermissionAlreadyDenied(intentToSetting(context))
-            }
+        when {
+            isPermissionGranted(permission, context) -> onPermissionGranted()
+            !isPermissionAlreadyRejected(permission, context) -> onPermissionNotGranted()
+            else -> onPermissionAlreadyDenied(intentToSetting(context))
         }
     }
 
@@ -38,11 +30,9 @@ object PermissionManager {
         ) == PackageManager.PERMISSION_GRANTED
 
     private fun isPermissionAlreadyRejected(permission: String, context: Context): Boolean =
-        (context as? Activity).run {
-            this?.let {
-                ActivityCompat.shouldShowRequestPermissionRationale(it, permission)
-            } ?: false
-        }
+        (context as? Activity)?.let {
+            ActivityCompat.shouldShowRequestPermissionRationale(it, permission)
+        } ?: false
 
     private fun intentToSetting(context: Context) =
         Intent(ACTION_APPLICATION_DETAILS_SETTINGS).apply {
