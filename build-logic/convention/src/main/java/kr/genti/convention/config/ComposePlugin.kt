@@ -1,7 +1,6 @@
 package kr.genti.convention.config
 
 import kr.genti.convention.extension.androidLibraryExtension
-import kr.genti.convention.extension.debugImplementation
 import kr.genti.convention.extension.getBundle
 import kr.genti.convention.extension.getLibrary
 import kr.genti.convention.extension.getPlugin
@@ -31,7 +30,6 @@ class ComposePlugin : Plugin<Project> {
             implementation(libs.getBundle("compose"))
             implementation(libs.getBundle("navigation"))
             implementation(libs.getBundle("ui"))
-            debugImplementation(libs.getBundle("androidx-ui-test"))
         }
     }
 }

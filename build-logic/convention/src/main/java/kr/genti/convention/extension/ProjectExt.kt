@@ -6,6 +6,7 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -36,5 +37,11 @@ fun Project.applyKotlinCompilerOptions(jvmVersion: JvmTarget) {
         compilerOptions {
             jvmTarget.set(jvmVersion)
         }
+    }
+}
+
+fun Project.applyJUnitPlatform() {
+    tasks.withType<Test> {
+        useJUnitPlatform()
     }
 }

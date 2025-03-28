@@ -54,9 +54,7 @@ firebase-crashlytics = "3.0.3"
 kakao = "2.20.6"
 
 # Test
-junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.0"
+junit5 = "5.12.1"
 
 # Etc
 timber = "5.0.1"
@@ -81,8 +79,6 @@ androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-animation = { group = "androidx.compose.animation", name = "animation" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
@@ -117,9 +113,9 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 phoenix = { group = "com.jakewharton", name = "process-phoenix", version.ref = "phoenix" }
 
 # Test
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit5" }
+junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit5" }
+junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-eparams", version.ref = "junit5" }
 
 # UI Libraries
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil-compose" }
@@ -154,6 +150,7 @@ androidx = [
 compose = [
     "androidx-ui",
     "androidx-ui-graphics",
+    "androidx-ui-tooling",
     "androidx-ui-tooling-preview",
     "androidx-compose-animation",
     "androidx-compose-foundation",
@@ -186,17 +183,6 @@ coroutines = [
 kotlinx = [
     "kotlinx-serialization",
     "kotlinx-immutable",
-]
-
-androidx-test = [
-    "androidx-junit",
-    "androidx-espresso-core",
-]
-
-androidx-ui-test = [
-    "androidx-ui-test-manifest",
-    "androidx-ui-test-junit4",
-    "androidx-ui-tooling",
 ]
 
 ui = [

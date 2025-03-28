@@ -52,3 +52,7 @@ fun DependencyHandlerScope.androidTestImplementation(provider: Provider<*>) {
 fun DependencyHandlerScope.testImplementation(provider: Provider<*>) {
     "testImplementation"(provider)
 }
+
+fun DependencyHandlerScope.testRuntimeOnly(provider: Provider<*>) {
+    "testRuntimeOnly"(provider)
+}
