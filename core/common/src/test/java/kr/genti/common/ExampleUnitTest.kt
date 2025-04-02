@@ -1,4 +1,4 @@
-package com.march.common
+package kr.genti.common
 
 import org.junit.Test
 
