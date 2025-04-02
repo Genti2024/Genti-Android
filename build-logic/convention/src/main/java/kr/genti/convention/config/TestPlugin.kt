@@ -1,8 +1,8 @@
 package kr.genti.convention.config
 
+import kr.genti.convention.extension.androidTestImplementation
 import kr.genti.convention.extension.applyJUnitPlatform
 import kr.genti.convention.extension.getLibrary
-import kr.genti.convention.extension.implementation
 import kr.genti.convention.extension.libs
 import kr.genti.convention.extension.testImplementation
 import kr.genti.convention.extension.testRuntimeOnly
@@ -29,7 +29,7 @@ class TestPlugin : Plugin<Project> {
             testImplementation(libs.getLibrary("mockk"))
 
             testImplementation(libs.getLibrary("junit"))
-            testImplementation(libs.getLibrary("androidx-junit"))
+            androidTestImplementation(libs.getLibrary("androidx-junit"))
         }
     }
 }
