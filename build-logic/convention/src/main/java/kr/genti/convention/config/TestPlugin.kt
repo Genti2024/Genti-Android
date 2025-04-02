@@ -2,6 +2,7 @@ package kr.genti.convention.config
 
 import kr.genti.convention.extension.applyJUnitPlatform
 import kr.genti.convention.extension.getLibrary
+import kr.genti.convention.extension.implementation
 import kr.genti.convention.extension.libs
 import kr.genti.convention.extension.testImplementation
 import kr.genti.convention.extension.testRuntimeOnly
@@ -18,9 +19,17 @@ class TestPlugin : Plugin<Project> {
         applyJUnitPlatform()
 
         dependencies {
+            testImplementation(platform(libs.getLibrary("junit-bom")))
             testRuntimeOnly(libs.getLibrary("junit-jupiter-engine"))
             testImplementation(libs.getLibrary("junit-jupiter-api"))
             testImplementation(libs.getLibrary("junit-jupiter-params"))
+            testImplementation(libs.getLibrary("junit-vintage-engine"))
+            testImplementation(libs.getLibrary("junit-platform-launcher"))
+
+            testImplementation(libs.getLibrary("mockk"))
+
+            testImplementation(libs.getLibrary("junit"))
+            testImplementation(libs.getLibrary("androidx-junit"))
         }
     }
 }
