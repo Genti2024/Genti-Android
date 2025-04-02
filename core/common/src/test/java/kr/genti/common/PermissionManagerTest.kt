@@ -33,23 +33,26 @@ class PermissionManagerTest {
 
     @BeforeEach
     fun setUp() {
-        // given: Activity 컨텍스트 생성 및 기본 stubbing
+        // Activity 컨텍스트 생성 및 기본 stubbing
         context = mockk(relaxed = true)
         every { context.applicationContext } returns context
         every { context.packageName } returns "kr.genti.android"
 
-        // static 메서드 mocking
+        // 필요한 static 메서드 모킹
         mockkStatic(ContextCompat::class)
         mockkStatic(ActivityCompat::class)
+        mockkStatic(Uri::class)
 
-        // 더미 Uri와 Intent 생성 (실제 Uri.fromParts 호출을 피하기 위함)
+        // 더미 Uri와 Intent 생성
         dummyUri = mockk()
-        dummyIntent = mockk() // 실제 Intent 생성자가 호출되지 않음
+        dummyIntent = mockk()
         every { dummyIntent.data } returns dummyUri
 
-        // PermissionManager 객체를 모킹하여 private 함수 intentToSetting을 대체함
-        mockkObject(PermissionManager)
-        every { PermissionManager["intentToSetting"](any<Context>()) } returns dummyIntent
+        // Intent 생성자 모킹 및 setData 호출 가로채기
+        mockkConstructor(Intent::class)
+        every { Uri.fromParts(any(), any(), any()) } returns dummyUri
+        every { anyConstructed<Intent>().setData(any()) } returns dummyIntent
+        every { anyConstructed<Intent>().data } returns dummyUri
     }
 
     @AfterEach
