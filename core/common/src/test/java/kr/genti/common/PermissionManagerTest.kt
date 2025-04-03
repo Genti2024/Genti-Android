@@ -2,19 +2,15 @@ package kr.genti.common
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkConstructor
-import io.mockk.mockkObject
 import io.mockk.mockkStatic
-import io.mockk.spyk
 import io.mockk.unmockkAll
 import kr.genti.common.manager.PermissionManager
 import org.junit.jupiter.api.AfterEach

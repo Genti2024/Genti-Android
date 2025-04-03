@@ -25,7 +25,6 @@ import kr.genti.domain.entity.response.ImageBucketModel
 import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.domain.enums.PictureNumber
 import kr.genti.domain.enums.PictureRatio
-import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.usecase.generate.CheckPurchaseValidUseCase
 import kr.genti.domain.usecase.generate.GetPromptExampleListUseCase
 import kr.genti.domain.usecase.generate.GetThreeImageBucketUseCase
@@ -39,7 +38,6 @@ import javax.inject.Inject
 class GenerateViewModel
 @Inject
 constructor(
-    private val createRepository: CreateRepository,
     private val getPromptExampleListUseCase: GetPromptExampleListUseCase,
     private val getThreeImageBucketUseCase: GetThreeImageBucketUseCase,
     private val uploadImageToBucketUseCase: UploadImageToBucketUseCase,
