@@ -21,6 +21,8 @@ import kotlinx.coroutines.test.setMain
 import kr.genti.common.extension.getFileName
 import kr.genti.common.manager.AmplitudeManager
 import kr.genti.common.manager.ImageManager
+import kr.genti.domain.entity.response.ImageBucketModel
+import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.domain.entity.response.PromptExampleModel
 import kr.genti.domain.usecase.generate.CheckPurchaseValidUseCase
 import kr.genti.domain.usecase.generate.GetPromptExampleListUseCase
@@ -65,6 +67,7 @@ class GenerateViewModelTest {
         every { AmplitudeManager.trackEvent(any()) } just Runs
         every { AmplitudeManager.trackEvent(any(), any()) } just Runs
         every { AmplitudeManager.trackEvent(any(), any(), any()) } just Runs
+        every { AmplitudeManager.plusIntProperties(any()) } just Runs
     }
 
     @AfterEach
@@ -163,6 +166,78 @@ class GenerateViewModelTest {
                 val state = viewModel.generateState.first()
                 assertEquals(3, state.extraImageList.size)
                 assertTrue(state.imageList.isEmpty())
+            }
+    }
+
+    @Nested
+    @DisplayName("GenerateStage가 RESULT 일 때")
+    inner class NextBtnIntentTest {
+
+        private val fakeImageFileList = listOf(
+            ImageFileModel(1, "image1", "url1"),
+            ImageFileModel(2, "image2", "url2"),
+            ImageFileModel(3, "image3", "url3")
+        )
+
+        private val fakeImageBucketList = listOf(
+            ImageBucketModel(s3Key = "key1", fileName = "image1", presignedUrl = "url1"),
+            ImageBucketModel(s3Key = "key2", fileName = "image2", presignedUrl = "url2"),
+            ImageBucketModel(s3Key = "key3", fileName = "image3", presignedUrl = "url3")
+        )
+
+        @BeforeEach
+        fun setUpNextStage() {
+            viewModel.setStageForTest(GenerateStage.RESULT)
+            viewModel.setImageFileModelListForTest(fakeImageFileList)
+
+            // sendGenerateRequestUseCase 모킹
+            coEvery {
+                sendGenerateRequestUseCase(
+                    prompt = any(),
+                    pictureRatio = any(),
+                    isParentPic = any(),
+                    imageKeyList = any()
+                )
+            } returns Result.success(true)
+
+            // getThreeImageBucketUseCase 모킹
+            coEvery {
+                getThreeImageBucketUseCase(
+                    selectedImageList = any()
+                )
+            } returns Result.success(fakeImageBucketList)
+
+            // uploadImageToBucketUseCase 모킹
+            coEvery {
+                uploadImageToBucketUseCase(
+                    bucketUrl = any(),
+                    imageUrl = any()
+                )
+            } returns Result.success(Unit)
+        }
+
+        @Test
+        fun `NextButton 인텐트 처리 시 이미지 업로드 로직 및 NavigateToWaiting side effect가 발생해야 한다`() =
+            runTest {
+                // when
+                viewModel.onIntent(GenerateIntent.NextBtnClick)
+
+                // then
+                val sideEffect = viewModel.generateSideEffect.first()
+                assertEquals(GenerateSideEffect.NavigateToWaiting(false), sideEffect)
+            }
+
+        @Test
+        fun `extraImageList가 빈 리스트가 아닐 시 item이 6개인 KeyList를 반환해야 한다`() =
+            runTest {
+                // given
+                viewModel.setExtraImageFileModelListForTest(fakeImageFileList)
+
+                // when
+                val keyList = viewModel.getUploadedKeyList()
+
+                // then
+                assertEquals(6, keyList.size)
             }
     }
 }

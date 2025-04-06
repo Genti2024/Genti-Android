@@ -228,7 +228,7 @@ constructor(
         changeRequestLoadingState(false)
     }
 
-    private suspend fun getUploadedKeyList(): List<KeyRequestModel> = coroutineScope {
+    internal suspend fun getUploadedKeyList(): List<KeyRequestModel> = coroutineScope {
         listOf(
             async { uploadThreeImage(generateState.value.imageList) },
             async {
@@ -275,6 +275,25 @@ constructor(
             productId = purchase.products.first(),
             purchaseToken = purchase.purchaseToken
         ).isSuccess
+
+    /** 테스트 관련 */
+    fun setStageForTest(stage: GenerateStage) {
+        _generateState.update {
+            it.copy(currentStage = stage)
+        }
+    }
+
+    fun setImageFileModelListForTest(imageList: List<ImageFileModel>) {
+        _generateState.update {
+            it.copy(imageList = imageList)
+        }
+    }
+
+    fun setExtraImageFileModelListForTest(imageList: List<ImageFileModel>) {
+        _generateState.update {
+            it.copy(extraImageList = imageList)
+        }
+    }
 
     /** 앰플리튜드 관련*/
 
