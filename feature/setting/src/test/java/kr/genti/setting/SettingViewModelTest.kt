@@ -4,6 +4,7 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -43,12 +44,13 @@ class SettingViewModelTest {
         runTest {
             // given
             coEvery { logoutUserUseCase() } returns Result.success(true)
+            val sideEffectDeferred = async { viewModel.settingSideEffect.first() }
 
             // when
             viewModel.onIntent(SettingIntent.LogoutRequest)
 
             // then
-            val sideEffect = viewModel.settingSideEffect.first()
+            val sideEffect = sideEffectDeferred.await()
             assertEquals(SettingSideEffect.RestartApp, sideEffect)
         }
 
@@ -57,12 +59,13 @@ class SettingViewModelTest {
         runTest {
             // given
             coEvery { deleteUserUseCase() } returns Result.success(true)
+            val sideEffectDeferred = async { viewModel.settingSideEffect.first() }
 
             // when
             viewModel.onIntent(SettingIntent.QuitRequest)
 
             // then
-            val sideEffect = viewModel.settingSideEffect.first()
+            val sideEffect = sideEffectDeferred.await()
             assertEquals(SettingSideEffect.RestartApp, sideEffect)
         }
 }

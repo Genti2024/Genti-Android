@@ -12,6 +12,7 @@ import io.mockk.mockkObject
 import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -110,6 +111,9 @@ class GenerateViewModelTest {
     @Test
     fun `ImageSelectBtnClick 인텐트 처리 시, isSelectingExtra 상태 변경 및 StartImageSelect side effect 발생해야 한다`() =
         runTest {
+            // given
+            val sideEffectDeferred = async { viewModel.generateSideEffect.first() }
+
             // when
             viewModel.onIntent(GenerateIntent.ImageSelectBtnClick(isExtra = true))
 
@@ -117,7 +121,7 @@ class GenerateViewModelTest {
             val state = viewModel.generateState.first()
             assertTrue(state.isSelectingExtra)
 
-            val sideEffect = viewModel.generateSideEffect.firstOrNull()
+            val sideEffect = sideEffectDeferred.await()
             assertEquals(GenerateSideEffect.StartImageSelect, sideEffect)
         }
 
@@ -209,11 +213,14 @@ class GenerateViewModelTest {
         @Test
         fun `NextButton 인텐트 처리 시, 이미지 업로드 로직 및 NavigateToWaiting side effect가 발생해야 한다`() =
             runTest {
+                // given
+                val sideEffectDeferred = async { viewModel.generateSideEffect.first() }
+
                 // when
                 viewModel.onIntent(GenerateIntent.NextBtnClick)
 
                 // then
-                val sideEffect = viewModel.generateSideEffect.first()
+                val sideEffect = sideEffectDeferred.await()
                 assertEquals(GenerateSideEffect.NavigateToWaiting(false), sideEffect)
             }
 
