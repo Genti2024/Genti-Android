@@ -14,8 +14,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -80,17 +80,21 @@ class GenerateViewModelTest {
     @Test
     fun `Init 인텐트 처리 시, 상태가 올바르게 초기화되어야 한다`() = runTest {
         // given
-        val exampleList =
-            listOf(PromptExampleModel("url1", "prompt1"), PromptExampleModel("url2", "prompt2"))
+        val exampleList = listOf(
+            PromptExampleModel("url1", "prompt1"),
+            PromptExampleModel("url2", "prompt2"),
+            PromptExampleModel("url3", "prompt3")
+        )
         coEvery { getPromptExampleListUseCase(any()) } returns Result.success(exampleList)
 
         // when
-        viewModel.onIntent(GenerateIntent.Init(isParentPic = true))
+        viewModel.onIntent(GenerateIntent.Init(isParentPic = false))
+        advanceUntilIdle()
 
         // then
         val state = viewModel.generateState.first()
         assertEquals(1, state.currentStep)
-        assertEquals(GenerateStage.NUMBER_SELECT, state.currentStage)
+        assertEquals(GenerateStage.PROMPT_INPUT, state.currentStage)
         assertEquals(3, state.exampleList.size)
     }
 
@@ -102,6 +106,7 @@ class GenerateViewModelTest {
 
             // when
             viewModel.onIntent(GenerateIntent.PromptChange(newPrompt))
+            advanceUntilIdle()
 
             // then
             val state = viewModel.generateState.first()
@@ -116,6 +121,7 @@ class GenerateViewModelTest {
 
             // when
             viewModel.onIntent(GenerateIntent.ImageSelectBtnClick(isExtra = true))
+            advanceUntilIdle()
 
             // then
             val state = viewModel.generateState.first()
@@ -152,6 +158,7 @@ class GenerateViewModelTest {
             runTest {
                 // when
                 viewModel.onIntent(GenerateIntent.ImageSelect(uriList))
+                advanceUntilIdle()
 
                 // then
                 val state = viewModel.generateState.first()
@@ -164,7 +171,10 @@ class GenerateViewModelTest {
             runTest {
                 // when
                 viewModel.onIntent(GenerateIntent.ImageSelectBtnClick(isExtra = true))
+                advanceUntilIdle()
+
                 viewModel.onIntent(GenerateIntent.ImageSelect(uriList))
+                advanceUntilIdle()
 
                 // then
                 val state = viewModel.generateState.first()
@@ -218,6 +228,7 @@ class GenerateViewModelTest {
 
                 // when
                 viewModel.onIntent(GenerateIntent.NextBtnClick)
+                advanceUntilIdle()
 
                 // then
                 val sideEffect = sideEffectDeferred.await()
@@ -232,6 +243,7 @@ class GenerateViewModelTest {
 
                 // when
                 val keyList = viewModel.getUploadedKeyList()
+                advanceUntilIdle()
 
                 // then
                 assertEquals(6, keyList.size)
