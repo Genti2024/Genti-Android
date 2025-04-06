@@ -43,8 +43,7 @@ class MainViewModelTest {
 
     private val checkUserVerifiedUseCase: CheckUserVerifiedUseCase = mockk(relaxed = true)
     private val checkServerAvailableUseCase: CheckServerAvailableUseCase = mockk(relaxed = true)
-    private val getCurrentGenerateStatusUseCase: GetCurrentGenerateStatusUseCase =
-        mockk(relaxed = true)
+    private val getCurrentGenerateStatusUseCase: GetCurrentGenerateStatusUseCase = mockk(relaxed = true)
     private val resetGenerateStatusUseCase: ResetGenerateStatusUseCase = mockk(relaxed = true)
     private val forceGenerateInDebugUseCase: ForceGenerateInDebugUseCase = mockk(relaxed = true)
 

@@ -17,6 +17,9 @@ import kr.genti.common.manager.AmplitudeManager
 import kr.genti.domain.usecase.auth.GetNewTokensFromOauthUseCase
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class LoginViewModel
@@ -62,74 +65,71 @@ constructor(
     private fun emitSideEffect(effect: LoginSideEffect) {
         viewModelScope.launch {
             _loginSideEffect.emit(effect)
-            if (effect == LoginSideEffect.ShowErrorToast) changeLoadingState(false)
         }
     }
 
-
     private fun startKakaoAppLogin() {
-        val appLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-            when {
-                error != null -> {
-                    if (!(error is ClientError && error.reason == ClientErrorCause.Cancelled)) {
-                        startKakaoWebLogin()
-                    }
-                }
-
-                token != null -> {
-                    Timber.tag("okhttp").d("KAKAO ACCESS TOKEN FROM APP : $token")
-                    getDeviceToken(token.accessToken)
-                }
-
-                else -> emitSideEffect(LoginSideEffect.ShowErrorToast)
-            }
-        }
+        val appLoginCallback = setLoginCallback(
+            onSuccess = { accessToken -> startDeviceLoginToServer(accessToken) },
+            onFailure = { startKakaoWebLogin() }
+        )
         emitSideEffect(LoginSideEffect.StartKakaoAppLogin(appLoginCallback))
     }
 
     private fun startKakaoWebLogin() {
-        val webLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-            if (error == null && token != null) {
-                Timber.tag("okhttp").d("KAKAO ACCESS TOKEN FROM WEB : $token")
-                getDeviceToken(token.accessToken)
-            } else {
-                if (!(error is ClientError && error.reason == ClientErrorCause.Cancelled)) {
-                    emitSideEffect(LoginSideEffect.ShowErrorToast)
-                }
-            }
-        }
+        val webLoginCallback = setLoginCallback(
+            onSuccess = { accessToken -> startDeviceLoginToServer(accessToken) },
+            onFailure = { emitSideEffect(LoginSideEffect.ShowErrorToast) }
+        )
         emitSideEffect(LoginSideEffect.StartKakaoWebLogin(webLoginCallback))
     }
 
-
-    private fun getDeviceToken(accessToken: String) {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            viewModelScope.launch {
-                if (task.isSuccessful) {
-                    Timber.tag("okhttp").d("FCM TOKEN : ${task.result}")
-                    changeTokenFromServer(accessToken, task.result)
-                } else {
-                    emitSideEffect(LoginSideEffect.ShowErrorToast)
-                }
-            }
+    private fun setLoginCallback(
+        onSuccess: (accessToken: String) -> Unit,
+        onFailure: () -> Unit,
+    ): (OAuthToken?, Throwable?) -> Unit = { token, error ->
+        if (error == null && token != null) {
+            Timber.tag("okhttp").d("KAKAO ACCESS TOKEN : $token")
+            onSuccess(token.accessToken)
+        } else if (!(error is ClientError && error.reason == ClientErrorCause.Cancelled)) {
+            changeLoadingState(false)
+            onFailure()
         }
     }
 
-    private fun changeTokenFromServer(accessToken: String, fcmToken: String) {
+    private fun startDeviceLoginToServer(accessToken: String) {
         viewModelScope.launch {
-            getNewTokensFromOauthUseCase(
-                newAccessToken = accessToken,
-                fcmToken = fcmToken
-            ).onSuccess { isAssigned ->
+            runCatching {
+                val deviceToken = getDeviceToken()
+                changeTokenFromServer(accessToken, deviceToken)
+            }.onSuccess { isAssigned ->
                 if (isAssigned) {
-                    emitSideEffect(LoginSideEffect.NavigateToFeed)
+                    _loginSideEffect.emit(LoginSideEffect.NavigateToFeed)
                 } else {
                     AmplitudeManager.trackEvent("sign_in")
-                    emitSideEffect(LoginSideEffect.NavigateToSignup)
+                    _loginSideEffect.emit(LoginSideEffect.NavigateToSignup)
                 }
             }.onFailure {
-                emitSideEffect(LoginSideEffect.ShowErrorToast)
+                _loginSideEffect.emit(LoginSideEffect.ShowErrorToast)
+            }
+        }
+        changeLoadingState(false)
+    }
+
+    private suspend fun getDeviceToken(): String = suspendCoroutine { continuation ->
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Timber.tag("okhttp").d("FCM TOKEN : ${task.result}")
+                continuation.resume(task.result)
+            } else {
+                continuation.resumeWithException(task.exception ?: Exception())
             }
         }
     }
+
+    private suspend fun changeTokenFromServer(accessToken: String, fcmToken: String): Boolean =
+        getNewTokensFromOauthUseCase(
+            newAccessToken = accessToken,
+            fcmToken = fcmToken
+        ).getOrThrow()
 }
