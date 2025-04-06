@@ -77,7 +77,7 @@ class GenerateViewModelTest {
     }
 
     @Test
-    fun `Init 인텐트 처리 시 상태가 올바르게 초기화되어야 한다`() = runTest {
+    fun `Init 인텐트 처리 시, 상태가 올바르게 초기화되어야 한다`() = runTest {
         // given
         val exampleList =
             listOf(PromptExampleModel("url1", "prompt1"), PromptExampleModel("url2", "prompt2"))
@@ -94,7 +94,7 @@ class GenerateViewModelTest {
     }
 
     @Test
-    fun `PromptChange 인텐트 처리 시 상태의 프롬프트가 변경되어야 한다`() =
+    fun `PromptChange 인텐트 처리 시, 상태의 프롬프트가 변경되어야 한다`() =
         runTest {
             // given
             val newPrompt = "새로운 프롬프트"
@@ -108,7 +108,7 @@ class GenerateViewModelTest {
         }
 
     @Test
-    fun `ImageSelectBtnClick 인텐트 처리 시 isSelectingExtra 상태 변경 및 StartImageSelect side effect 발생해야 한다`() =
+    fun `ImageSelectBtnClick 인텐트 처리 시, isSelectingExtra 상태 변경 및 StartImageSelect side effect 발생해야 한다`() =
         runTest {
             // when
             viewModel.onIntent(GenerateIntent.ImageSelectBtnClick(isExtra = true))
@@ -170,7 +170,7 @@ class GenerateViewModelTest {
     }
 
     @Nested
-    @DisplayName("GenerateStage가 RESULT 일 때")
+    @DisplayName("GenerateStage가 RESULT인 경우")
     inner class NextBtnIntentTest {
 
         private val fakeImageFileList = listOf(
@@ -217,7 +217,7 @@ class GenerateViewModelTest {
         }
 
         @Test
-        fun `NextButton 인텐트 처리 시 이미지 업로드 로직 및 NavigateToWaiting side effect가 발생해야 한다`() =
+        fun `NextButton 인텐트 처리 시, 이미지 업로드 로직 및 NavigateToWaiting side effect가 발생해야 한다`() =
             runTest {
                 // when
                 viewModel.onIntent(GenerateIntent.NextBtnClick)
@@ -228,7 +228,7 @@ class GenerateViewModelTest {
             }
 
         @Test
-        fun `extraImageList가 빈 리스트가 아닐 시 item이 6개인 KeyList를 반환해야 한다`() =
+        fun `extraImageList가 빈 리스트가 아닐 시, item이 6개인 KeyList를 반환해야 한다`() =
             runTest {
                 // given
                 viewModel.setExtraImageFileModelListForTest(fakeImageFileList)
