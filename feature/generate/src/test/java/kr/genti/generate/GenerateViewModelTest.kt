@@ -192,27 +192,17 @@ class GenerateViewModelTest {
 
             // sendGenerateRequestUseCase 모킹
             coEvery {
-                sendGenerateRequestUseCase(
-                    prompt = any(),
-                    pictureRatio = any(),
-                    isParentPic = any(),
-                    imageKeyList = any()
-                )
+                sendGenerateRequestUseCase(any(), any(), any(), any())
             } returns Result.success(true)
 
             // getThreeImageBucketUseCase 모킹
             coEvery {
-                getThreeImageBucketUseCase(
-                    selectedImageList = any()
-                )
+                getThreeImageBucketUseCase(any())
             } returns Result.success(fakeImageBucketList)
 
             // uploadImageToBucketUseCase 모킹
             coEvery {
-                uploadImageToBucketUseCase(
-                    bucketUrl = any(),
-                    imageUrl = any()
-                )
+                uploadImageToBucketUseCase(any(), any())
             } returns Result.success(Unit)
         }
 
