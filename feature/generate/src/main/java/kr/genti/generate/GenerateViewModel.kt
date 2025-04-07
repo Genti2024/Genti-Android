@@ -25,7 +25,6 @@ import kr.genti.domain.entity.response.ImageBucketModel
 import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.domain.enums.PictureNumber
 import kr.genti.domain.enums.PictureRatio
-import kr.genti.domain.repository.CreateRepository
 import kr.genti.domain.usecase.generate.CheckPurchaseValidUseCase
 import kr.genti.domain.usecase.generate.GetPromptExampleListUseCase
 import kr.genti.domain.usecase.generate.GetThreeImageBucketUseCase
@@ -39,7 +38,6 @@ import javax.inject.Inject
 class GenerateViewModel
 @Inject
 constructor(
-    private val createRepository: CreateRepository,
     private val getPromptExampleListUseCase: GetPromptExampleListUseCase,
     private val getThreeImageBucketUseCase: GetThreeImageBucketUseCase,
     private val uploadImageToBucketUseCase: UploadImageToBucketUseCase,
@@ -230,7 +228,7 @@ constructor(
         changeRequestLoadingState(false)
     }
 
-    private suspend fun getUploadedKeyList(): List<KeyRequestModel> = coroutineScope {
+    internal suspend fun getUploadedKeyList(): List<KeyRequestModel> = coroutineScope {
         listOf(
             async { uploadThreeImage(generateState.value.imageList) },
             async {
@@ -277,6 +275,25 @@ constructor(
             productId = purchase.products.first(),
             purchaseToken = purchase.purchaseToken
         ).isSuccess
+
+    /** 테스트 관련 */
+    fun setStageForTest(stage: GenerateStage) {
+        _generateState.update {
+            it.copy(currentStage = stage)
+        }
+    }
+
+    fun setImageFileModelListForTest(imageList: List<ImageFileModel>) {
+        _generateState.update {
+            it.copy(imageList = imageList)
+        }
+    }
+
+    fun setExtraImageFileModelListForTest(imageList: List<ImageFileModel>) {
+        _generateState.update {
+            it.copy(extraImageList = imageList)
+        }
+    }
 
     /** 앰플리튜드 관련*/
 
