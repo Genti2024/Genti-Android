@@ -26,6 +26,7 @@
 - `Build Tools`  Gradle Version Catalog + Custom Convention Plugins
 - `CI/CD`  Github Actions (to Firebase App Distribution)
 - `Analytics` Amplitude
+- `Test` JUnit5, MockK
 - `Third Party` Kakao Open API, Firebase Cloud Messaging, Google Play Billing API, AWS S3
 - `Permission` Camera, External Storage, Notification, Billing
 
@@ -51,6 +52,7 @@
 - **사진 촬영 및 캐시 업로드** _ FileProvider와 cacheDirectory를 활용해 카메라로 촬영한 사진을 저장 없이 즉시 업로드
 - **인앱 결제 구현** _ Google Play 결제 라이브러리 v7을 활용해 안정적인 인앱 결제 시스템을 구축
 - **푸시 알림 구현** _ Firebase Cloud Messaging을 통해 사용자가 사진 생성 완료 시 실시간 알림을 받을 수 있도록 구현
+- **단위 테스트 구현** _ JUnit5와 MockK를 사용한 단위 테스트 구현을 통해 뷰모델 로직의 안정성 보장
 
 <br>
 
