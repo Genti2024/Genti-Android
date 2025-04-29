@@ -60,6 +60,8 @@
 
 ![project dot](https://github.com/user-attachments/assets/c776a94b-f4cf-45bb-8b73-d02a6d67f4eb)
 
+![diagram](https://github.com/user-attachments/assets/4bcdd031-6d12-405d-8329-6511c3fad2a8)
+
 ```
 🗃️app
 
