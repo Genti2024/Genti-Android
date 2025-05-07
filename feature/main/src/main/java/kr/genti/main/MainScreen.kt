@@ -44,6 +44,7 @@ internal fun MainRoute(
     val mainState by viewModel.mainState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
+    val isPreview = LocalInspectionMode.current
 
     val verifyResult by navigator.verifyResultFlow.collectAsState()
 
@@ -79,6 +80,7 @@ internal fun MainRoute(
 
     MainScreen(
         navigator = navigator,
+        isPreview = isPreview,
         currentGenerateStatus = mainState.currentGenerateStatus,
         onTabSelected = { tab -> viewModel.onIntent(MainIntent.TabSelect(tab)) },
         onGenerateBtnClicked = { viewModel.onIntent(MainIntent.GenerateBtnClick) },
@@ -129,6 +131,7 @@ internal fun MainRoute(
 private fun MainScreen(
     modifier: Modifier = Modifier,
     navigator: MainNavigator = rememberMainNavigator(),
+    isPreview: Boolean = true,
     currentGenerateStatus: GenerateStatus = GenerateStatus.EMPTY,
     onTabSelected: (MainTab) -> Unit = {},
     onGenerateBtnClicked: () -> Unit = {},
@@ -140,14 +143,14 @@ private fun MainScreen(
         Scaffold(
             bottomBar = {
                 MainBottomBar(
-                    visible = LocalInspectionMode.current || navigator.shouldShowBottomBar(),
+                    visible = isPreview || navigator.shouldShowBottomBar(),
                     tabs = MainTab.entries.toImmutableList(),
                     currentTab = navigator.currentTab,
                     onTabSelected = onTabSelected
                 )
             },
             content = { paddingValues ->
-                if (LocalInspectionMode.current) {
+                if (isPreview) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -165,13 +168,13 @@ private fun MainScreen(
         )
 
         GenerateForceButton(
-            isVisible = BuildConfig.DEBUG && currentGenerateStatus == GenerateStatus.IN_PROGRESS && (LocalInspectionMode.current || navigator.shouldShowBottomBar()),
+            isVisible = BuildConfig.DEBUG && currentGenerateStatus == GenerateStatus.IN_PROGRESS && (isPreview || navigator.shouldShowBottomBar()),
             onDebugPatchBtnClicked = onDebugPatchBtnClicked,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
 
         MainBottomBtn(
-            visible = LocalInspectionMode.current || navigator.shouldShowBottomBar(),
+            visible = isPreview || navigator.shouldShowBottomBar(),
             onButtonClick = onGenerateBtnClicked,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
