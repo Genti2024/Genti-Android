@@ -1,5 +1,6 @@
 package kr.genti.main
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +24,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
+import kr.genti.common.util.DoubleBackHandler
 import kr.genti.core.common.BuildConfig
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.dialog.GentiErrorDialog
@@ -65,6 +67,12 @@ internal fun MainRoute(
             )
         }
     }
+
+    DoubleBackHandler(
+        navController = navigator.navController,
+        onFirstBack = { showSnackBar(R.string.back_pressed_msg) },
+        onSecondBack = { (context as Activity).finish() }
+    )
 
     LaunchedEffect(viewModel.mainSideEffect, lifecycleOwner) {
         viewModel.mainSideEffect.collect { sideEffect ->
