@@ -178,6 +178,9 @@
     <string name="unable_tv_title">현재 점검 중입니다!</string>
     <string name="unable_tv_subtitle">09.30 22시까지 사진 생성이 불가능합니다.\n금방 돌아오겠습니다.</string>
 
+    <string name="network_tv_title">네트워크가 불안정합니다.</string>
+    <string name="network_tv_subtitle">네트워크 상태를 확인한 후, 다시 시도해주세요.</string>
+
     <string name="toast_state_changed">사진 강제 생성이 요청되었어요.</string>
 
 </resources>

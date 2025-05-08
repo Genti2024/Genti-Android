@@ -165,6 +165,16 @@ internal fun MainRoute(
             onDismissRequest = { viewModel.onIntent(MainIntent.DialogDismiss) },
         )
     }
+
+    if (mainState.isNetworkDialogVisible) {
+        GentiWarningDialog(
+            titleRes = R.string.network_tv_title,
+            subtitleRes = R.string.network_tv_subtitle,
+            btnTextRes = R.string.btn_close,
+            isOneButton = true,
+            onDismissRequest = { viewModel.onIntent(MainIntent.DialogDismiss) }
+        )
+    }
 }
 
 @Composable
