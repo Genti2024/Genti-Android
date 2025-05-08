@@ -2,6 +2,6 @@ package kr.genti.designsystem.event
 
 import androidx.compose.runtime.staticCompositionLocalOf
 
-val LocalSnackBarTrigger = staticCompositionLocalOf<(String) -> Unit> {
+val LocalSnackBarTrigger = staticCompositionLocalOf<(Int) -> Unit> {
     error("LocalSnackBarTrigger not provided")
 }

@@ -23,10 +23,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jakewharton.processphoenix.ProcessPhoenix
-import kr.genti.common.extension.toast
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.dialog.GentiWarningDialog
 import kr.genti.designsystem.component.layout.GentiTopBar
+import kr.genti.designsystem.event.LocalSnackBarTrigger
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiGreen
 import kr.genti.designsystem.theme.GentiTheme
@@ -43,11 +43,12 @@ internal fun SettingRoute(
     val settingState by viewModel.settingState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
+    val showSnackBar = LocalSnackBarTrigger.current
 
     LaunchedEffect(viewModel.settingSideEffect, lifecycleOwner) {
         viewModel.settingSideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is SettingSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
+                is SettingSideEffect.ShowErrorToast -> showSnackBar(R.string.error_msg)
 
                 is SettingSideEffect.NavigateToBack -> navigateToBack()
 

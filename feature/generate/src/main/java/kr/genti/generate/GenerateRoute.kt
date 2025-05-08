@@ -38,12 +38,14 @@ import kr.genti.common.manager.LauncherManager.rememberPhotoPickerLauncher
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.layout.GentiLoadingScreen
 import kr.genti.designsystem.component.layout.GentiTopBar
+import kr.genti.designsystem.event.LocalSnackBarTrigger
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.domain.entity.response.ImageFileModel
 import kr.genti.domain.entity.response.PromptExampleModel
 import kr.genti.domain.enums.PictureNumber
 import kr.genti.domain.enums.PictureRatio
+import kr.genti.generate.billing.BillingCallback
 import kr.genti.generate.billing.BillingManager
 import kr.genti.generate.component.GenerateProgressBar
 import kr.genti.generate.model.GenerateStage
@@ -59,27 +61,28 @@ internal fun GenerateRoute(
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
+    val showSnackBar = LocalSnackBarTrigger.current
 
     val photoPickerLauncher = rememberPhotoPickerLauncher(maxItems = 3) { uriList ->
         viewModel.onIntent(GenerateIntent.ImageSelect(uriList))
     }
 
     val galleryPickerLauncher = rememberGalleryPickerLauncher { uriList ->
-        if (uriList.size > 3) context.toast(context.getString(R.string.selfie_toast_old_picker_limit))
+        if (uriList.size > 3) showSnackBar(R.string.selfie_toast_old_picker_limit)
         viewModel.onIntent(GenerateIntent.ImageSelect(uriList.take(3)))
     }
 
     val billingManager = remember {
         BillingManager(
             activity = context as Activity,
-            callback = object : kr.genti.generate.billing.BillingCallback {
+            callback = object : BillingCallback {
                 override fun onBillingSuccess(purchase: Purchase) {
                     viewModel.onIntent(GenerateIntent.PurchaseSuccess(purchase))
                 }
 
                 override fun onBillingFailure(responseCode: Int) {
                     viewModel.onIntent(GenerateIntent.PurchaseFailure)
-                    if (responseCode != USER_CANCELED) context.toast(context.getString(R.string.error_msg))
+                    if (responseCode != USER_CANCELED) showSnackBar(R.string.error_msg)
                 }
             },
         )
@@ -96,7 +99,7 @@ internal fun GenerateRoute(
     LaunchedEffect(viewModel.generateSideEffect, lifecycleOwner) {
         viewModel.generateSideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is GenerateSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
+                is GenerateSideEffect.ShowErrorToast -> showSnackBar(R.string.error_msg)
                 is GenerateSideEffect.NavigateToWaiting -> navigateToWaiting(sideEffect.isParentPic)
                 is GenerateSideEffect.NavigateToBack -> navigateToBack()
 

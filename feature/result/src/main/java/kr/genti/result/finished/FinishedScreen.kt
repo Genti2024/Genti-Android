@@ -49,6 +49,7 @@ import kr.genti.designsystem.component.dialog.GentiImageDetailDialog
 import kr.genti.designsystem.component.dialog.GentiRatingDialog
 import kr.genti.designsystem.component.dialog.GentiTextFieldDialog
 import kr.genti.designsystem.component.item.GentiAsyncImage
+import kr.genti.designsystem.event.LocalSnackBarTrigger
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.designsystem.theme.Gray
@@ -68,6 +69,7 @@ internal fun FinishedRoute(
     val finishedState by viewModel.finishedState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
+    val showSnackBar = LocalSnackBarTrigger.current
 
     val writePermissionLauncher = rememberPermissionLauncher {
         viewModel.onIntent(FinishedIntent.DownloadButtonClick)
@@ -80,8 +82,8 @@ internal fun FinishedRoute(
     LaunchedEffect(viewModel.finishedSideEffect, lifecycleOwner) {
         viewModel.finishedSideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is FinishedSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
                 is FinishedSideEffect.ShowDownloadToast -> context.toast(context.getString(R.string.profile_image_download_success))
+                is FinishedSideEffect.ShowErrorToast -> showSnackBar(R.string.error_msg)
                 is FinishedSideEffect.NavigateToBack -> navigateToBack()
                 is FinishedSideEffect.StartPermissionLauncher -> {
                     PermissionManager.checkPermissionAndLaunch(

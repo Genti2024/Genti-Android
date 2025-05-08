@@ -57,18 +57,20 @@ internal fun MainRoute(
 
     val coroutineScope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
-    val showSnackbar: (String) -> Unit = { text ->
+    val showSnackBar: (Int) -> Unit = { resId ->
         coroutineScope.launch {
             snackBarHostState.currentSnackbarData?.dismiss()
-            snackBarHostState.showSnackbar(text)
+            snackBarHostState.showSnackbar(
+                message = context.getString(resId)
+            )
         }
     }
 
     LaunchedEffect(viewModel.mainSideEffect, lifecycleOwner) {
         viewModel.mainSideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is MainSideEffect.ShowErrorToast -> showSnackbar(context.getString(R.string.error_msg))
-                is MainSideEffect.ShowStatusChangedToast -> showSnackbar(context.getString(R.string.toast_state_changed))
+                is MainSideEffect.ShowErrorToast -> showSnackBar(R.string.error_msg)
+                is MainSideEffect.ShowStatusChangedToast -> showSnackBar(R.string.toast_state_changed)
                 is MainSideEffect.NavigateToTab -> navigator.navigate(sideEffect.tab)
                 is MainSideEffect.NavigateToVerify -> navigator.navigateToVerify()
                 is MainSideEffect.NavigateToWaiting -> navigator.navigateToWaiting(sideEffect.isParentPic)
@@ -99,7 +101,7 @@ internal fun MainRoute(
         currentGenerateStatus = mainState.currentGenerateStatus,
         isPreview = isPreview,
         snackBarHostState = snackBarHostState,
-        onShowSnackbar = showSnackbar,
+        onShowSnackBar = showSnackBar,
         onTabSelected = { tab -> viewModel.onIntent(MainIntent.TabSelect(tab)) },
         onGenerateBtnClicked = { viewModel.onIntent(MainIntent.GenerateBtnClick) },
         onDebugPatchBtnClicked = { viewModel.onIntent(MainIntent.DebugPatchBtnClick) }
@@ -152,7 +154,7 @@ private fun MainScreen(
     currentGenerateStatus: GenerateStatus = GenerateStatus.EMPTY,
     isPreview: Boolean = LocalInspectionMode.current,
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
-    onShowSnackbar: (String) -> Unit = {},
+    onShowSnackBar: (Int) -> Unit = {},
     onTabSelected: (MainTab) -> Unit = {},
     onGenerateBtnClicked: () -> Unit = {},
     onDebugPatchBtnClicked: () -> Unit = {}
@@ -162,7 +164,7 @@ private fun MainScreen(
         modifier.fillMaxSize()
     ) {
         CompositionLocalProvider(
-            LocalSnackBarTrigger provides onShowSnackbar,
+            LocalSnackBarTrigger provides onShowSnackBar,
         ) {
             Scaffold(
                 snackbarHost = {

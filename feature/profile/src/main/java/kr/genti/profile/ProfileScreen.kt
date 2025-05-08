@@ -29,6 +29,7 @@ import kr.genti.common.manager.PermissionManager
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.dialog.GentiImageDetailDialog
 import kr.genti.designsystem.component.layout.GentiLoadingScreen
+import kr.genti.designsystem.event.LocalSnackBarTrigger
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.domain.entity.response.ImageModel
@@ -48,6 +49,7 @@ internal fun ProfileRoute(
     val profileState by viewModel.profileState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
+    val showSnackBar = LocalSnackBarTrigger.current
 
     val writePermissionLauncher = rememberPermissionLauncher {
         viewModel.onIntent(ProfileIntent.SaveBtnClick)
@@ -60,8 +62,8 @@ internal fun ProfileRoute(
     LaunchedEffect(viewModel.profileSideEffect, lifecycleOwner) {
         viewModel.profileSideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is ProfileSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
                 is ProfileSideEffect.ShowDownloadToast -> context.toast(context.getString(R.string.profile_image_download_success))
+                is ProfileSideEffect.ShowErrorToast -> showSnackBar(R.string.error_msg)
                 is ProfileSideEffect.NavigateToGenerate -> navigateToGenerate()
                 is ProfileSideEffect.NavigateToSetting -> navigateToSetting()
 
