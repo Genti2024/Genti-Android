@@ -1,5 +1,8 @@
 package kr.genti.main
 
+import kotlinx.coroutines.withTimeoutOrNull
+import androidx.compose.material3.SnackbarDuration
+
 import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -23,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kr.genti.common.util.DoubleBackHandler
 import kr.genti.core.common.BuildConfig
@@ -62,9 +66,9 @@ internal fun MainRoute(
     val showSnackBar: (Int) -> Unit = { resId ->
         coroutineScope.launch {
             snackBarHostState.currentSnackbarData?.dismiss()
-            snackBarHostState.showSnackbar(
-                message = context.getString(resId)
-            )
+            withTimeoutOrNull(2_000L) {
+                snackBarHostState.showSnackbar(context.getString(resId))
+            }
         }
     }
 

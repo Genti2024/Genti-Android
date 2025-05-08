@@ -24,7 +24,7 @@ fun GentiTextSnackBar(message: String) {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(16.dp),
+            .padding(vertical = 22.dp, horizontal = 16.dp)
     ) {
         Box(
             modifier = Modifier
