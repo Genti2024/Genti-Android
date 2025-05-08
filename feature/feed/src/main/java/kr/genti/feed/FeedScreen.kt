@@ -3,11 +3,13 @@ package kr.genti.feed
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,6 +28,8 @@ import kr.genti.designsystem.component.layout.GentiLoadingScreen
 import kr.genti.designsystem.event.LocalSnackBarTrigger
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
+import kr.genti.designsystem.theme.Gray
+import kr.genti.designsystem.theme.White80
 import kr.genti.domain.entity.response.FeedItemModel
 import kr.genti.domain.entity.response.ImageModel
 import kr.genti.domain.enums.PictureRatio
@@ -63,9 +67,11 @@ internal fun FeedRoute(
         modifier = Modifier,
         paddingValues = paddingValues,
         itemList = feedState.itemList,
+        isRefreshing = feedState.isRefreshing,
         isTooltipVisible = feedState.isTooltipVisible,
         isTooltipClosed = feedState.isTooltipClosed,
         isLoading = feedState.isLoading,
+        onRefresh = { viewModel.onIntent(FeedIntent.Refresh) },
         onInfoBtnClick = { viewModel.onIntent(FeedIntent.InfoBtnClick) },
         onTooltipClick = { viewModel.onIntent(FeedIntent.TooltipClick) },
         onListScroll = { viewModel.onIntent(FeedIntent.ListScroll) }
@@ -82,19 +88,36 @@ internal fun FeedRoute(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FeedScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues(),
     itemList: ImmutableList<FeedItemModel> = persistentListOf(),
+    isRefreshing: Boolean = false,
     isTooltipVisible: Boolean = false,
     isTooltipClosed: Boolean = false,
     isLoading: Boolean = false,
+    onRefresh: () -> Unit = {},
     onInfoBtnClick: () -> Unit = {},
     onTooltipClick: () -> Unit = {},
     onListScroll: () -> Unit = {}
 ) {
-    Box(
+    val refreshState = rememberPullToRefreshState()
+
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        state = refreshState,
+        onRefresh = onRefresh,
+        indicator = {
+            Indicator(
+                modifier = Modifier.align(Alignment.TopCenter),
+                isRefreshing = isRefreshing,
+                containerColor = White80,
+                color = Gray,
+                state = refreshState
+            )
+        },
         modifier = modifier
             .fillMaxSize()
             .background(Black)
