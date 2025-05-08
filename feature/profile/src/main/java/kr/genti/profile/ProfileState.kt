@@ -15,4 +15,5 @@ data class ProfileState(
     val isDetailDialogShown: Boolean = false,
     val isGenerating: Boolean = false,
     val isLoading: Boolean = false,
+    val isRefreshing: Boolean = false
 )
