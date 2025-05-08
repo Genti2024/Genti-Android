@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,11 +22,10 @@ import kotlinx.collections.immutable.persistentListOf
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.dialog.GentiBottomSheet
 import kr.genti.designsystem.component.layout.GentiLoadingScreen
+import kr.genti.designsystem.component.layout.GentiPullToRefreshBox
 import kr.genti.designsystem.event.LocalSnackBarTrigger
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
-import kr.genti.designsystem.theme.Gray
-import kr.genti.designsystem.theme.White80
 import kr.genti.domain.entity.response.FeedItemModel
 import kr.genti.domain.entity.response.ImageModel
 import kr.genti.domain.enums.PictureRatio
@@ -88,7 +84,6 @@ internal fun FeedRoute(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FeedScreen(
     modifier: Modifier = Modifier,
@@ -103,21 +98,9 @@ private fun FeedScreen(
     onTooltipClick: () -> Unit = {},
     onListScroll: () -> Unit = {}
 ) {
-    val refreshState = rememberPullToRefreshState()
-
-    PullToRefreshBox(
+    GentiPullToRefreshBox(
         isRefreshing = isRefreshing,
-        state = refreshState,
         onRefresh = onRefresh,
-        indicator = {
-            Indicator(
-                modifier = Modifier.align(Alignment.TopCenter),
-                isRefreshing = isRefreshing,
-                containerColor = White80,
-                color = Gray,
-                state = refreshState
-            )
-        },
         modifier = modifier
             .fillMaxSize()
             .background(Black)

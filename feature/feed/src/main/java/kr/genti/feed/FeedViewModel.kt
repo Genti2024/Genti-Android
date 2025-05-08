@@ -44,9 +44,6 @@ constructor(
             changeLoadingState(true)
             getExamplePromptsFromServer()
             changeLoadingState(false)
-            _feedState.update {
-                it.copy(isRefreshing = false)
-            }
         }
     }
 
@@ -54,7 +51,7 @@ constructor(
         viewModelScope.launch {
             _feedState.update { it.copy(isRefreshing = true) }
             getExamplePromptsFromServer()
-            delay(1_000)
+            delay(500)
             _feedState.update { it.copy(isRefreshing = false) }
         }
     }
