@@ -1,8 +1,5 @@
 package kr.genti.main
 
-import kotlinx.coroutines.withTimeoutOrNull
-import androidx.compose.material3.SnackbarDuration
-
 import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -26,8 +23,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import kr.genti.common.util.DoubleBackHandler
 import kr.genti.core.common.BuildConfig
 import kr.genti.core.designsystem.R
