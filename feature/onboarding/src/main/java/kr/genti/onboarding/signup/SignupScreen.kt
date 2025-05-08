@@ -38,11 +38,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kr.genti.common.extension.noRippleClickable
-import kr.genti.common.extension.toast
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.button.GentiButton
 import kr.genti.designsystem.component.button.GentiSelectButton
 import kr.genti.designsystem.component.layout.GentiLoadingScreen
+import kr.genti.designsystem.event.LocalSnackBarTrigger
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiGradationEnd
 import kr.genti.designsystem.theme.GentiGradationStart
@@ -60,8 +60,8 @@ internal fun SignupRoute(
 ) {
     val signupState by viewModel.signupState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
-    val context = LocalContext.current
     val focusManager = LocalFocusManager.current
+    val showSnackBar = LocalSnackBarTrigger.current
 
     LaunchedEffect(Unit) {
         viewModel.onIntent(SignupIntent.Init)
@@ -70,7 +70,7 @@ internal fun SignupRoute(
     LaunchedEffect(viewModel.signupSideEffect, lifecycleOwner) {
         viewModel.signupSideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is SignupSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
+                is SignupSideEffect.ShowErrorToast -> showSnackBar(R.string.error_msg)
                 is SignupSideEffect.NavigateToTutorial -> navigateToTutorial()
             }
         }

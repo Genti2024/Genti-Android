@@ -20,10 +20,10 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kr.genti.common.extension.toast
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.dialog.GentiBottomSheet
 import kr.genti.designsystem.component.layout.GentiLoadingScreen
+import kr.genti.designsystem.event.LocalSnackBarTrigger
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.domain.entity.response.FeedItemModel
@@ -41,6 +41,7 @@ internal fun FeedRoute(
     val feedState by viewModel.feedState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
+    val showSnackBar = LocalSnackBarTrigger.current
 
     LaunchedEffect(Unit) {
         viewModel.onIntent(FeedIntent.Init)
@@ -49,9 +50,7 @@ internal fun FeedRoute(
     LaunchedEffect(viewModel.feedSideEffect, lifecycleOwner) {
         viewModel.feedSideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is FeedSideEffect.ShowErrorToast -> {
-                    context.toast(context.getString(R.string.error_msg))
-                }
+                is FeedSideEffect.ShowErrorToast -> showSnackBar(R.string.error_msg)
 
                 is FeedSideEffect.NavigateToWebsite -> {
                     context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url)))

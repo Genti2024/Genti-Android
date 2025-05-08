@@ -17,6 +17,7 @@ import kr.genti.common.manager.LauncherManager.rememberPermissionLauncher
 import kr.genti.common.manager.PermissionManager.checkPermissionAndLaunch
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.dialog.GentiWarningDialog
+import kr.genti.designsystem.event.LocalSnackBarTrigger
 
 @Composable
 internal fun VerifyRoute(
@@ -26,6 +27,7 @@ internal fun VerifyRoute(
     val verifyState by viewModel.verifyState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
+    val showSnackBar = LocalSnackBarTrigger.current
 
     val cameraPermissionLauncher = rememberPermissionLauncher {
         viewModel.onIntent(VerifyIntent.CameraPermissionGrant)
@@ -40,7 +42,7 @@ internal fun VerifyRoute(
     LaunchedEffect(viewModel.verifySideEffect, lifecycleOwner) {
         viewModel.verifySideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is VerifySideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
+                is VerifySideEffect.ShowErrorToast -> showSnackBar(R.string.error_msg)
 
                 is VerifySideEffect.NavigateToBack -> navigateToBack(false)
 

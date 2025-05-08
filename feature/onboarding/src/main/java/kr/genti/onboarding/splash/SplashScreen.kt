@@ -22,6 +22,7 @@ import kr.genti.common.extension.toast
 import kr.genti.common.manager.AppUpdateManager
 import kr.genti.common.manager.LauncherManager.rememberIntentSenderLauncher
 import kr.genti.core.designsystem.R
+import kr.genti.designsystem.event.LocalSnackBarTrigger
 import kr.genti.designsystem.theme.GentiTheme
 
 @Composable
@@ -32,6 +33,7 @@ internal fun SplashRoute(
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
+    val showSnackBar = LocalSnackBarTrigger.current
 
     val launcher = rememberIntentSenderLauncher { isAppUpdateSuccess ->
         viewModel.onIntent(SplashIntent.AppUpdateFinish(isAppUpdateSuccess))
@@ -44,7 +46,7 @@ internal fun SplashRoute(
     LaunchedEffect(viewModel.splashSideEffect, lifecycleOwner) {
         viewModel.splashSideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is SplashSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
+                is SplashSideEffect.ShowErrorToast -> showSnackBar(R.string.error_msg)
                 is SplashSideEffect.NavigateToLogin -> navigateToLogin()
                 is SplashSideEffect.NavigateToFeed -> navigateToFeed()
                 is SplashSideEffect.StartAppUpdate -> AppUpdateManager.startAppUpdate(launcher)

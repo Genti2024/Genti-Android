@@ -5,6 +5,7 @@
 
     <string name="error_msg">오류가 발생했습니다. 잠시 후 다시 시도해주세요.</string>
     <string name="permission_to_setting">설정에서 권한에 동의해주세요.</string>
+    <string name="back_pressed_msg">버튼을 한번 더 누르면 종료됩니다.</string>
 
     <string name="default_notification_channel_id">default_messaging_channel</string>
 

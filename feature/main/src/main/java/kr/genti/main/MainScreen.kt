@@ -1,13 +1,22 @@
 package kr.genti.main
 
+import kotlinx.coroutines.withTimeoutOrNull
+import androidx.compose.material3.SnackbarDuration
+
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -17,12 +26,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
-import kr.genti.common.extension.toast
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kr.genti.common.util.DoubleBackHandler
 import kr.genti.core.common.BuildConfig
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.dialog.GentiErrorDialog
 import kr.genti.designsystem.component.dialog.GentiNotiDialog
 import kr.genti.designsystem.component.dialog.GentiWarningDialog
+import kr.genti.designsystem.component.snackbar.GentiTextSnackBar
+import kr.genti.designsystem.event.LocalSnackBarTrigger
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.domain.enums.GenerateStatus
@@ -44,14 +57,32 @@ internal fun MainRoute(
     val mainState by viewModel.mainState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
+    val isPreview = LocalInspectionMode.current
 
     val verifyResult by navigator.verifyResultFlow.collectAsState()
+
+    val coroutineScope = rememberCoroutineScope()
+    val snackBarHostState = remember { SnackbarHostState() }
+    val showSnackBar: (Int) -> Unit = { resId ->
+        coroutineScope.launch {
+            snackBarHostState.currentSnackbarData?.dismiss()
+            withTimeoutOrNull(2_000L) {
+                snackBarHostState.showSnackbar(context.getString(resId))
+            }
+        }
+    }
+
+    DoubleBackHandler(
+        navController = navigator.navController,
+        onFirstBack = { showSnackBar(R.string.back_pressed_msg) },
+        onSecondBack = { (context as Activity).finish() }
+    )
 
     LaunchedEffect(viewModel.mainSideEffect, lifecycleOwner) {
         viewModel.mainSideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is MainSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
-                is MainSideEffect.ShowStatusChangedToast -> context.toast(context.getString(R.string.toast_state_changed))
+                is MainSideEffect.ShowErrorToast -> showSnackBar(R.string.error_msg)
+                is MainSideEffect.ShowStatusChangedToast -> showSnackBar(R.string.toast_state_changed)
                 is MainSideEffect.NavigateToTab -> navigator.navigate(sideEffect.tab)
                 is MainSideEffect.NavigateToVerify -> navigator.navigateToVerify()
                 is MainSideEffect.NavigateToWaiting -> navigator.navigateToWaiting(sideEffect.isParentPic)
@@ -80,6 +111,9 @@ internal fun MainRoute(
     MainScreen(
         navigator = navigator,
         currentGenerateStatus = mainState.currentGenerateStatus,
+        isPreview = isPreview,
+        snackBarHostState = snackBarHostState,
+        onShowSnackBar = showSnackBar,
         onTabSelected = { tab -> viewModel.onIntent(MainIntent.TabSelect(tab)) },
         onGenerateBtnClicked = { viewModel.onIntent(MainIntent.GenerateBtnClick) },
         onDebugPatchBtnClicked = { viewModel.onIntent(MainIntent.DebugPatchBtnClick) }
@@ -130,48 +164,61 @@ private fun MainScreen(
     modifier: Modifier = Modifier,
     navigator: MainNavigator = rememberMainNavigator(),
     currentGenerateStatus: GenerateStatus = GenerateStatus.EMPTY,
+    isPreview: Boolean = LocalInspectionMode.current,
+    snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    onShowSnackBar: (Int) -> Unit = {},
     onTabSelected: (MainTab) -> Unit = {},
     onGenerateBtnClicked: () -> Unit = {},
     onDebugPatchBtnClicked: () -> Unit = {}
 ) {
+
     Box(
         modifier.fillMaxSize()
     ) {
-        Scaffold(
-            bottomBar = {
-                MainBottomBar(
-                    visible = LocalInspectionMode.current || navigator.shouldShowBottomBar(),
-                    tabs = MainTab.entries.toImmutableList(),
-                    currentTab = navigator.currentTab,
-                    onTabSelected = onTabSelected
-                )
-            },
-            content = { paddingValues ->
-                if (LocalInspectionMode.current) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(Black)
+        CompositionLocalProvider(
+            LocalSnackBarTrigger provides onShowSnackBar,
+        ) {
+            Scaffold(
+                snackbarHost = {
+                    SnackbarHost(hostState = snackBarHostState) {
+                        GentiTextSnackBar(it.visuals.message)
+                    }
+                },
+                bottomBar = {
+                    MainBottomBar(
+                        visible = isPreview || navigator.shouldShowBottomBar(),
+                        tabs = MainTab.entries.toImmutableList(),
+                        currentTab = navigator.currentTab,
+                        onTabSelected = onTabSelected
                     )
-                } else {
-                    MainNavHost(
-                        paddingValues = paddingValues,
-                        navigator = navigator,
-                        modifier = Modifier.background(Black),
-                        startNavigateToGenerate = onGenerateBtnClicked
-                    )
+                },
+                content = { paddingValues ->
+                    if (isPreview) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Black)
+                        )
+                    } else {
+                        MainNavHost(
+                            paddingValues = paddingValues,
+                            navigator = navigator,
+                            modifier = Modifier.background(Black),
+                            startNavigateToGenerate = onGenerateBtnClicked
+                        )
+                    }
                 }
-            }
-        )
+            )
+        }
 
         GenerateForceButton(
-            isVisible = BuildConfig.DEBUG && currentGenerateStatus == GenerateStatus.IN_PROGRESS && (LocalInspectionMode.current || navigator.shouldShowBottomBar()),
+            isVisible = BuildConfig.DEBUG && currentGenerateStatus == GenerateStatus.IN_PROGRESS && (isPreview || navigator.shouldShowBottomBar()),
             onDebugPatchBtnClicked = onDebugPatchBtnClicked,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
 
         MainBottomBtn(
-            visible = LocalInspectionMode.current || navigator.shouldShowBottomBar(),
+            visible = isPreview || navigator.shouldShowBottomBar(),
             onButtonClick = onGenerateBtnClicked,
             modifier = Modifier.align(Alignment.BottomCenter)
         )

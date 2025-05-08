@@ -26,6 +26,7 @@ import com.kakao.sdk.user.UserApiClient
 import kr.genti.common.extension.toast
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.layout.GentiLoadingScreen
+import kr.genti.designsystem.event.LocalSnackBarTrigger
 import kr.genti.designsystem.theme.GentiTheme
 import kr.genti.designsystem.theme.White80
 import kr.genti.onboarding.component.KakaoLoginButton
@@ -40,6 +41,7 @@ internal fun LoginRoute(
     val loginState by viewModel.loginState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
+    val showSnackBar = LocalSnackBarTrigger.current
 
     LaunchedEffect(Unit) {
         viewModel.onIntent(
@@ -50,7 +52,7 @@ internal fun LoginRoute(
     LaunchedEffect(viewModel.loginSideEffect, lifecycleOwner) {
         viewModel.loginSideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is LoginSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
+                is LoginSideEffect.ShowErrorToast -> showSnackBar(R.string.error_msg)
 
                 is LoginSideEffect.NavigateToSignup -> navigateToSignup()
 
