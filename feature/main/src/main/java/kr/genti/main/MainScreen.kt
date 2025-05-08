@@ -23,7 +23,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
-import kr.genti.common.extension.toast
 import kr.genti.core.common.BuildConfig
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.dialog.GentiErrorDialog
@@ -58,7 +57,7 @@ internal fun MainRoute(
 
     val coroutineScope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
-    val onShowSnackbar: (String) -> Unit = { text ->
+    val showSnackbar: (String) -> Unit = { text ->
         coroutineScope.launch {
             snackBarHostState.currentSnackbarData?.dismiss()
             snackBarHostState.showSnackbar(text)
@@ -68,8 +67,8 @@ internal fun MainRoute(
     LaunchedEffect(viewModel.mainSideEffect, lifecycleOwner) {
         viewModel.mainSideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is MainSideEffect.ShowErrorToast -> context.toast(context.getString(R.string.error_msg))
-                is MainSideEffect.ShowStatusChangedToast -> context.toast(context.getString(R.string.toast_state_changed))
+                is MainSideEffect.ShowErrorToast -> showSnackbar(context.getString(R.string.error_msg))
+                is MainSideEffect.ShowStatusChangedToast -> showSnackbar(context.getString(R.string.toast_state_changed))
                 is MainSideEffect.NavigateToTab -> navigator.navigate(sideEffect.tab)
                 is MainSideEffect.NavigateToVerify -> navigator.navigateToVerify()
                 is MainSideEffect.NavigateToWaiting -> navigator.navigateToWaiting(sideEffect.isParentPic)
@@ -100,7 +99,7 @@ internal fun MainRoute(
         currentGenerateStatus = mainState.currentGenerateStatus,
         isPreview = isPreview,
         snackBarHostState = snackBarHostState,
-        onShowSnackbar = onShowSnackbar,
+        onShowSnackbar = showSnackbar,
         onTabSelected = { tab -> viewModel.onIntent(MainIntent.TabSelect(tab)) },
         onGenerateBtnClicked = { viewModel.onIntent(MainIntent.GenerateBtnClick) },
         onDebugPatchBtnClicked = { viewModel.onIntent(MainIntent.DebugPatchBtnClick) }

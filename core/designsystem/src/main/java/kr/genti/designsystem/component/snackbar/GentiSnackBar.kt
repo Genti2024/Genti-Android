@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
-import kr.genti.designsystem.theme.White60
+import kr.genti.designsystem.theme.White80
 
 @Composable
 fun GentiTextSnackBar(message: String) {
@@ -29,7 +29,7 @@ fun GentiTextSnackBar(message: String) {
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(6.dp))
-                .background(color = White60)
+                .background(color = White80)
                 .padding(vertical = 14.dp, horizontal = 22.dp)
         ) {
             Text(
