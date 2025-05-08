@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 object NetworkMonitorManager {
     private lateinit var connectivityManager: ConnectivityManager
 
-    private val _isConnected = MutableStateFlow(false)
+    private val _isConnected = MutableStateFlow(true)
     val isConnected: StateFlow<Boolean> = _isConnected
 
     private val networkRequest = NetworkRequest.Builder()

@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 import kr.genti.common.manager.AmplitudeManager
 import kr.genti.domain.enums.GenerateStatus
 import kr.genti.domain.enums.PictureRatio
-import kr.genti.domain.repository.GenerateRepository
 import kr.genti.domain.usecase.generate.CheckServerAvailableUseCase
 import kr.genti.domain.usecase.result.ForceGenerateInDebugUseCase
 import kr.genti.domain.usecase.result.GetCurrentGenerateStatusUseCase
@@ -43,6 +42,7 @@ constructor(
             is MainIntent.TabSelect -> handleTabClick(intent.tab)
             is MainIntent.GenerateBtnClick -> handleGenerateBtnClick()
             is MainIntent.PushAlarmReceived -> handlePushAlarmReceived(intent.type)
+            is MainIntent.NetworkChangeMonitored -> handleNetworkChangeMonitored(intent.isConnected)
             is MainIntent.DialogDismiss -> handleDialogDismiss()
             is MainIntent.RegenerateDialogBtnClick -> handleRegenerateDialogBtnClick()
             is MainIntent.FinishedDialogBtnClick -> handleFinishedDialogBtnClick()
@@ -68,6 +68,12 @@ constructor(
         if (type == TYPE_SUCCESS || type == TYPE_CANCELED) handleGenerateBtnClick()
     }
 
+    private fun handleNetworkChangeMonitored(isConnected: Boolean) {
+        _mainState.update {
+            it.copy(isNetworkDialogVisible = !isConnected)
+        }
+    }
+
     private fun handleDialogDismiss() {
         viewModelScope.launch {
             _mainState.update {
@@ -75,7 +81,8 @@ constructor(
                     isErrorDialogVisible = false,
                     isUnableDialogVisible = false,
                     isFinishedDialogVisible = false,
-                    isSelectDialogVisible = false
+                    isSelectDialogVisible = false,
+                    isNetworkDialogVisible = false
                 )
             }
             if (mainState.value.currentGenerateStatus == GenerateStatus.CANCELED) {

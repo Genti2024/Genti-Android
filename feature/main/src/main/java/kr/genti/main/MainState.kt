@@ -13,4 +13,5 @@ data class MainState(
     val isErrorDialogVisible: Boolean = false,
     val isUnableDialogVisible: Boolean = false,
     val isSelectDialogVisible: Boolean = false,
+    val isNetworkDialogVisible: Boolean = false
 )

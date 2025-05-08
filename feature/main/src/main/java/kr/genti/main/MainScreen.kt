@@ -9,8 +9,8 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -25,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
+import kr.genti.common.manager.NetworkMonitorManager
 import kr.genti.common.util.DoubleBackHandler
 import kr.genti.core.common.BuildConfig
 import kr.genti.core.designsystem.R
@@ -56,7 +57,8 @@ internal fun MainRoute(
     val context = LocalContext.current
     val isPreview = LocalInspectionMode.current
 
-    val verifyResult by navigator.verifyResultFlow.collectAsState()
+    val verifyResult by navigator.verifyResultFlow.collectAsStateWithLifecycle()
+    val isNetworkConnected by NetworkMonitorManager.isConnected.collectAsStateWithLifecycle()
 
     val coroutineScope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
@@ -103,6 +105,15 @@ internal fun MainRoute(
             viewModel.onIntent(MainIntent.GenerateBtnClick)
             navigator.removeBackStackEntry()
         }
+    }
+
+    DisposableEffect(context) {
+        NetworkMonitorManager.registerNetworkCallback(context)
+        onDispose { NetworkMonitorManager.unRegisterNetworkCallback() }
+    }
+
+    LaunchedEffect(isNetworkConnected) {
+        viewModel.onIntent(MainIntent.NetworkChangeMonitored(isNetworkConnected))
     }
 
     MainScreen(
