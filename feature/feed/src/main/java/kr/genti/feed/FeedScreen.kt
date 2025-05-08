@@ -3,7 +3,6 @@ package kr.genti.feed
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,6 +22,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.dialog.GentiBottomSheet
 import kr.genti.designsystem.component.layout.GentiLoadingScreen
+import kr.genti.designsystem.component.layout.GentiPullToRefreshBox
 import kr.genti.designsystem.event.LocalSnackBarTrigger
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
@@ -63,9 +63,11 @@ internal fun FeedRoute(
         modifier = Modifier,
         paddingValues = paddingValues,
         itemList = feedState.itemList,
+        isRefreshing = feedState.isRefreshing,
         isTooltipVisible = feedState.isTooltipVisible,
         isTooltipClosed = feedState.isTooltipClosed,
         isLoading = feedState.isLoading,
+        onRefresh = { viewModel.onIntent(FeedIntent.Refresh) },
         onInfoBtnClick = { viewModel.onIntent(FeedIntent.InfoBtnClick) },
         onTooltipClick = { viewModel.onIntent(FeedIntent.TooltipClick) },
         onListScroll = { viewModel.onIntent(FeedIntent.ListScroll) }
@@ -87,14 +89,18 @@ private fun FeedScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues(),
     itemList: ImmutableList<FeedItemModel> = persistentListOf(),
+    isRefreshing: Boolean = false,
     isTooltipVisible: Boolean = false,
     isTooltipClosed: Boolean = false,
     isLoading: Boolean = false,
+    onRefresh: () -> Unit = {},
     onInfoBtnClick: () -> Unit = {},
     onTooltipClick: () -> Unit = {},
     onListScroll: () -> Unit = {}
 ) {
-    Box(
+    GentiPullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = onRefresh,
         modifier = modifier
             .fillMaxSize()
             .background(Black)

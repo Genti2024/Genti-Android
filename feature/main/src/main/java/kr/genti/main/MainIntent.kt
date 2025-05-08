@@ -6,6 +6,7 @@ sealed class MainIntent {
     data class TabSelect(val tab: MainTab) : MainIntent()
     data object GenerateBtnClick : MainIntent()
     data class PushAlarmReceived(val type: String?) : MainIntent()
+    data class NetworkChangeMonitored(val isConnected: Boolean) : MainIntent()
     data object DialogDismiss : MainIntent()
     data object RegenerateDialogBtnClick : MainIntent()
     data object FinishedDialogBtnClick : MainIntent()

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -37,6 +38,7 @@ constructor(
     fun onIntent(intent: ProfileIntent) {
         when (intent) {
             is ProfileIntent.Init -> handleInit()
+            is ProfileIntent.Refresh -> handleRefresh()
             is ProfileIntent.ImageItemClick -> handleImageItemClick(intent.item)
             is ProfileIntent.GenerateBtnClick -> handleGenerateBtnClick()
             is ProfileIntent.SettingBtnClick -> handleSettingBtnClick()
@@ -53,6 +55,16 @@ constructor(
             getGenerateStatusFromServer()
             getPictureListFromServer()
             changeLoadingState(false)
+        }
+    }
+
+    private fun handleRefresh() {
+        viewModelScope.launch {
+            _profileState.update { it.copy(isRefreshing = true) }
+            getGenerateStatusFromServer()
+            getPictureListFromServer()
+            delay(500)
+            _profileState.update { it.copy(isRefreshing = false) }
         }
     }
 

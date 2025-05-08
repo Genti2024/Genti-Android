@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -29,6 +30,7 @@ constructor(
     fun onIntent(intent: FeedIntent) {
         when (intent) {
             is FeedIntent.Init -> handleInit()
+            is FeedIntent.Refresh -> handleRefresh()
             is FeedIntent.InfoBtnClick -> handleInfoBtnClick()
             is FeedIntent.TooltipClick -> handleTooltipClick()
             is FeedIntent.ListScroll -> handleListScroll()
@@ -42,6 +44,15 @@ constructor(
             changeLoadingState(true)
             getExamplePromptsFromServer()
             changeLoadingState(false)
+        }
+    }
+
+    private fun handleRefresh() {
+        viewModelScope.launch {
+            _feedState.update { it.copy(isRefreshing = true) }
+            getExamplePromptsFromServer()
+            delay(500)
+            _feedState.update { it.copy(isRefreshing = false) }
         }
     }
 

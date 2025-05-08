@@ -6,6 +6,7 @@ import kr.genti.domain.entity.response.FeedItemModel
 
 data class FeedState(
     val itemList: ImmutableList<FeedItemModel> = persistentListOf(),
+    val isRefreshing: Boolean = false,
     val isTooltipVisible: Boolean = false,
     val isTooltipClosed: Boolean = false,
     val isBottomSheetVisible: Boolean = false,

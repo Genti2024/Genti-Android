@@ -29,6 +29,7 @@ import kr.genti.common.manager.PermissionManager
 import kr.genti.core.designsystem.R
 import kr.genti.designsystem.component.dialog.GentiImageDetailDialog
 import kr.genti.designsystem.component.layout.GentiLoadingScreen
+import kr.genti.designsystem.component.layout.GentiPullToRefreshBox
 import kr.genti.designsystem.event.LocalSnackBarTrigger
 import kr.genti.designsystem.theme.Black
 import kr.genti.designsystem.theme.GentiTheme
@@ -92,8 +93,10 @@ internal fun ProfileRoute(
     ProfileScreen(
         paddingValues = paddingValues,
         itemList = profileState.itemList,
+        isRefreshing = profileState.isRefreshing,
         isLoading = profileState.isLoading,
         isGenerating = profileState.isGenerating,
+        onRefresh = { viewModel.onIntent(ProfileIntent.Refresh) },
         onImageItemClick = { viewModel.onIntent(ProfileIntent.ImageItemClick(it)) },
         onGenerateBtnClick = { viewModel.onIntent(ProfileIntent.GenerateBtnClick) },
         onSettingBtnClick = { viewModel.onIntent(ProfileIntent.SettingBtnClick) },
@@ -117,18 +120,22 @@ private fun ProfileScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues(),
     itemList: ImmutableList<ImageModel> = persistentListOf(),
+    isRefreshing: Boolean = false,
     isLoading: Boolean = false,
     isGenerating: Boolean = false,
+    onRefresh: () -> Unit = {},
     onImageItemClick: (ImageModel) -> Unit = {},
     onGenerateBtnClick: () -> Unit = {},
     onSettingBtnClick: () -> Unit = {},
     onLastColumnLoaded: () -> Unit = {}
 ) {
-    Box(
+    GentiPullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = onRefresh,
         modifier = modifier
             .fillMaxSize()
             .background(Black)
-            .padding(bottom = paddingValues.calculateBottomPadding()),
+            .padding(bottom = paddingValues.calculateBottomPadding())
     ) {
         Column(
             Modifier
