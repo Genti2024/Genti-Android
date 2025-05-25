@@ -27,19 +27,20 @@ import kr.genti.common.extension.getFileName
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 object ImageManager {
     private lateinit var appContext: Context
     private lateinit var resolver: ContentResolver
-    private lateinit var imageLoader: ImageLoader
+    private lateinit var coilImageLoader: ImageLoader
+
+    private val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")
 
     fun init(context: Context) {
         appContext = context
         resolver = context.contentResolver
-        imageLoader = ImageLoader.Builder(context).build()
+        coilImageLoader = ImageLoader.Builder(context).build()
     }
 
     /**
@@ -65,13 +66,39 @@ object ImageManager {
     suspend fun saveImageToStorage(id: Long, imageUrl: String) =
         runCatching {
             withContext(Dispatchers.IO) {
-                val bitmap = downloadBitmap(imageUrl) ?: throw Exception()
+                val bitmap = downloadBitmapFromUrl(imageUrl) ?: throw Exception()
                 val imageUri =
                     resolver.insert(setContentUri(), setMetaData(id)) ?: throw Exception()
-                resolver.openOutputStream(imageUri).saveImageUri(bitmap)
+                resolver.openOutputStream(imageUri).saveBitmapToFile(bitmap)
                 resetPendingState(imageUri)
             }
         }
+
+    private fun setContentUri() =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+        } else {
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        }
+
+    private fun setMetaData(id: Long) =
+        ContentValues().apply {
+            put(DISPLAY_NAME, createGentiFileName(id))
+            put(MIME_TYPE, "image/jpeg")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                put(RELATIVE_PATH, DIRECTORY_PICTURES)
+                put(MediaStore.Images.Media.IS_PENDING, 1)
+            } else {
+                Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES).mkdirs()
+            }
+        }
+
+    private fun resetPendingState(uri: Uri) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val values = ContentValues().apply { put(MediaStore.Images.Media.IS_PENDING, 0) }
+            resolver.update(uri, values, null, null)
+        }
+    }
 
     /**
      * 주어진 URL에서 이미지를 다운로드 받아 앱의 캐시 디렉토리에 임시 파일로 저장한 후, FileProvider를 사용하여 해당 파일의 URI를 반환하는 함수
@@ -81,9 +108,9 @@ object ImageManager {
     suspend fun getCacheImageUri(id: Long, imageUrl: String) =
         runCatching {
             withContext(Dispatchers.IO) {
-                val bitmap = downloadBitmap(imageUrl) ?: throw Exception()
-                val tempFile = File(appContext.cacheDir, "img_genti_${id}.jpeg")
-                FileOutputStream(tempFile).saveImageUri(bitmap)
+                val bitmap = downloadBitmapFromUrl(imageUrl) ?: throw Exception()
+                val tempFile = createNamedCacheFile(id)
+                FileOutputStream(tempFile).saveBitmapToFile(bitmap)
                 FileProvider.getUriForFile(appContext, "kr.genti.android.fileprovider", tempFile)
             }
         }
@@ -91,19 +118,25 @@ object ImageManager {
     /**
      * 앱의 캐시 디렉토리에 임시 JPEG 이미지 파일을 생성하고, 해당 파일의 URI와 파일 이름을 반환하는 함수
      */
-    suspend fun getTempImageFile(): Result<TempImageFile> =
+    suspend fun getTempImageFile(): Result<File> =
         runCatching {
             withContext(Dispatchers.IO) {
-                val fileDateFormat =
-                    SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-                val tempFile: File =
-                    File.createTempFile("Genti_${fileDateFormat}_", ".jpg", appContext.cacheDir)
-                val uri = FileProvider.getUriForFile(
-                    appContext, "kr.genti.android.fileprovider", tempFile
-                )
-                TempImageFile(uri, tempFile.name)
+                createNamedCacheFile()
             }
         }
+
+    /**
+     * 용도가 끝난 (공유 완료, 이미지 서버통신 완료) 캐시 이미지를 제거하는 함수
+     */
+    suspend fun deleteTempImageFile(fileName: String) {
+        withContext(Dispatchers.IO) {
+            val tempFile = File(appContext.cacheDir, fileName)
+            if (tempFile.exists()) {
+                val isDeleted = tempFile.delete()
+                if (!isDeleted) throw Exception()
+            }
+        }
+    }
 
     /**
      * 주어진 이미지 URI를 사용하여 이미지 공유를 위한 인텐트를 생성하는 함수
@@ -120,55 +153,33 @@ object ImageManager {
         }
 
     /**
-    •	Uri 객체의 Id(해시코드), 파일 이름, Uri 문자열을 추출하는 확장 함수
+    Uri 객체의 파일 이름을 추출하는 확장 함수
      */
-    fun Uri.getImageInfo(): Triple<Long, String, String> {
-        return Triple(
-            hashCode().toLong(),
-            getFileName(resolver).toString(),
-            toString()
-        )
-    }
+    fun Uri.getImageName(): String = getFileName(resolver).toString()
 
-    private suspend fun downloadBitmap(imageUrl: String): Bitmap? =
-        imageLoader.execute(
+
+    private suspend fun downloadBitmapFromUrl(imageUrl: String): Bitmap? =
+        coilImageLoader.execute(
             ImageRequest.Builder(appContext).data(imageUrl).build()
         ).image?.toBitmap()
 
-    private fun setContentUri() =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
-        } else {
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        }
-
-    private fun setMetaData(id: Long) =
-        ContentValues().apply {
-            put(DISPLAY_NAME, "img_genti_${id}_${System.currentTimeMillis()}.jpeg")
-            put(MIME_TYPE, "image/jpeg")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                put(RELATIVE_PATH, DIRECTORY_PICTURES)
-                put(MediaStore.Images.Media.IS_PENDING, 1)
-            } else {
-                Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES).mkdirs()
-            }
-        }
-
-    private fun OutputStream?.saveImageUri(bitmap: Bitmap) {
+    private fun OutputStream?.saveBitmapToFile(bitmap: Bitmap) {
         this?.use { outputStream ->
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
         } ?: throw Exception()
     }
 
-    private fun resetPendingState(uri: Uri) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val values = ContentValues().apply { put(MediaStore.Images.Media.IS_PENDING, 0) }
-            resolver.update(uri, values, null, null)
+    private fun createNamedCacheFile(id: Long? = null): File =
+        File(appContext.cacheDir, createGentiFileName(id)).apply {
+            if (!exists()) createNewFile()
+        }
+
+    private fun createGentiFileName(id: Long?): String {
+        val timestamp = dateTimeFormatter.format(LocalDateTime.now())
+        return if (id != null) {
+            "img_genti_${id}_${timestamp}.jpeg"
+        } else {
+            "img_genti_${timestamp}.jpeg"
         }
     }
-
-    data class TempImageFile(
-        val uri: Uri,
-        val fileName: String
-    )
 }

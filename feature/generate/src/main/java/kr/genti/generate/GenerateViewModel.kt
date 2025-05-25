@@ -19,7 +19,7 @@ import kr.genti.common.manager.AmplitudeManager
 import kr.genti.common.manager.AmplitudeManager.EVENT_CLICK_BTN
 import kr.genti.common.manager.AmplitudeManager.PROPERTY_BTN
 import kr.genti.common.manager.AmplitudeManager.PROPERTY_PAGE
-import kr.genti.common.manager.ImageManager.getImageInfo
+import kr.genti.common.manager.ImageManager.getImageName
 import kr.genti.domain.entity.request.KeyRequestModel
 import kr.genti.domain.entity.response.ImageBucketModel
 import kr.genti.domain.entity.response.ImageFileModel
@@ -155,8 +155,11 @@ constructor(
 
     private fun handleImageSelect(uriList: List<Uri>) {
         val selectedImageList = uriList.map { uri ->
-            val uriInfo = uri.getImageInfo()
-            ImageFileModel(uriInfo.first, uriInfo.second, uriInfo.third)
+            ImageFileModel(
+                id = uri.hashCode().toLong(),
+                name = uri.getImageName(),
+                url = uri.toString()
+            )
         }
         _generateState.update {
             amplitudeTrackSelectImage(it.isSelectingExtra)
