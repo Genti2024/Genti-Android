@@ -118,6 +118,7 @@ constructor(
             val imageBucket = getSingleImageBucket()
             uploadImageToBucket(imageBucket.presignedUrl)
             postToVerifyImage(imageBucket.s3Key)
+            verifyState.value.imageName?.let { ImageManager.deleteTempImageFile(it) }
         }.onSuccess {
             updateBooleanProperties("user_verified", true)
             _verifySideEffect.emit(VerifySideEffect.VerifySuccess)

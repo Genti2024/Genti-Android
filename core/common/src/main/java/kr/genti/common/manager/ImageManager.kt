@@ -126,6 +126,19 @@ object ImageManager {
         }
 
     /**
+     * 용도가 끝난 (공유 완료, 이미지 서버통신 완료) 캐시 이미지를 제거하는 함수
+     */
+    suspend fun deleteTempImageFile(fileName: String) {
+        withContext(Dispatchers.IO) {
+            val tempFile = File(appContext.cacheDir, fileName)
+            if (tempFile.exists()) {
+                val isDeleted = tempFile.delete()
+                if (!isDeleted) throw Exception()
+            }
+        }
+    }
+
+    /**
      * 주어진 이미지 URI를 사용하여 이미지 공유를 위한 인텐트를 생성하는 함수
      *
      * Intent.ACTION_SEND 액션을 설정하고, 이미지 URI를 EXTRA_STREAM에 추가하며, 읽기 권한을 부여한 후, 사용자에게 공유할 앱을 선택할 수 있도록 chooser 인텐트를 생성
