@@ -91,17 +91,13 @@ object ImageManager {
     /**
      * 앱의 캐시 디렉토리에 임시 JPEG 이미지 파일을 생성하고, 해당 파일의 URI와 파일 이름을 반환하는 함수
      */
-    suspend fun getTempImageFile(): Result<TempImageFile> =
+    suspend fun getTempImageFile(): Result<File> =
         runCatching {
             withContext(Dispatchers.IO) {
-                val fileDateFormat =
-                    SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-                val tempFile: File =
-                    File.createTempFile("Genti_${fileDateFormat}_", ".jpg", appContext.cacheDir)
-                val uri = FileProvider.getUriForFile(
-                    appContext, "kr.genti.android.fileprovider", tempFile
-                )
-                TempImageFile(uri, tempFile.name)
+                val timestamp =
+                    SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
+                        .format(Date())
+                File.createTempFile("Genti_${timestamp}_", ".jpg", appContext.cacheDir)
             }
         }
 
@@ -120,15 +116,9 @@ object ImageManager {
         }
 
     /**
-    •	Uri 객체의 Id(해시코드), 파일 이름, Uri 문자열을 추출하는 확장 함수
+    •	Uri 객체의 파일 이름을 추출하는 확장 함수
      */
-    fun Uri.getImageInfo(): Triple<Long, String, String> {
-        return Triple(
-            hashCode().toLong(),
-            getFileName(resolver).toString(),
-            toString()
-        )
-    }
+    fun Uri.getImageName(): String = getFileName(resolver).toString()
 
     private suspend fun downloadBitmap(imageUrl: String): Bitmap? =
         imageLoader.execute(
@@ -166,9 +156,4 @@ object ImageManager {
             resolver.update(uri, values, null, null)
         }
     }
-
-    data class TempImageFile(
-        val uri: Uri,
-        val fileName: String
-    )
 }

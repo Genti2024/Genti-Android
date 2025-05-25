@@ -1,5 +1,6 @@
 package kr.genti.result.verify
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,8 +19,8 @@ import kr.genti.common.manager.ImageManager
 import kr.genti.core.common.BuildConfig
 import kr.genti.domain.entity.response.ImageBucketModel
 import kr.genti.domain.usecase.upload.UploadImageToBucketUseCase
-import kr.genti.domain.usecase.verify.GetVerifyImageBucketUseCase
 import kr.genti.domain.usecase.verify.CheckVerifyImageUploadedUseCase
+import kr.genti.domain.usecase.verify.GetVerifyImageBucketUseCase
 import javax.inject.Inject
 
 @HiltViewModel
@@ -101,8 +102,8 @@ constructor(
             .onSuccess { file ->
                 _verifyState.update {
                     it.copy(
-                        imageUri = file.uri,
-                        imageName = file.fileName,
+                        imageUri = Uri.fromFile(file),
+                        imageName = file.name,
                         isPhotoTaken = false
                     )
                 }
